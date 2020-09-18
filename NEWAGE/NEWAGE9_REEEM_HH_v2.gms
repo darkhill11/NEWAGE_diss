@@ -26,7 +26,7 @@ $ONEMPTY
 * ====================================================================== *
 
 * ------ 26.10.2016 - Set the SOURCE (.map file that contains mapping of regions and comodities)
-$if not set source  $set source     18x18x4_gtap9
+$if not set source  $set source     18x19x4_gtap9
 
 * ------ 26.10.2016 - Set the name of the OUTPUT file (.gdx)
 $if not set output       $set output     %source%
@@ -414,6 +414,7 @@ SET
 * ------ 13.09.2015 Diss
          mvh(i)          Motor vehicles                  / mvh /
          bui(i)          Building and construction       / bui /
+         dwe(i)          Dwelings Sector                 / dwe /
          ser(i)          Building and construction       / ser /
          buiser(i)       Building and construction       / bui, ser /
 
@@ -1260,7 +1261,7 @@ co2em_ele("all",r)       = sum(fe, co2em(fe,"ele",r));
 co2em_ele("all","all")   = sum(r, co2em_ele("all",r));
 display co2em, co2em_ele;
 
-*$exit
+$exit
 *co2em(i,"TOTAL",r)       = 0;
 * ------ Benchmark
 carbon_bmk(r,fe)         = co2em(fe,"final",r) + sum(i, co2em(fe,i,r));          // neu
