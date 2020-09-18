@@ -1,0 +1,2 @@
+"0","# export for csv output file"
+"0","write.table(pf_NEWAGE, file = ""hh_income.csv"", sep ="";"", dec = ""."", row.names = FALSE)"

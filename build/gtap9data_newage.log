@@ -1,0 +1,14 @@
+
+--- Job gtap9data_newage.gms Start 08/17/16 17:46:57 24.7.3 r58181 WEX-WEI x86 64bit/MS Windows
+GAMS 24.7.3   Copyright (C) 1987-2016 GAMS Development. All rights reserved
+Licensee: IER                                            S151125:0513AO-WIN
+          Universitaet Stuttgart                                      DC848
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- gtap9data_newage.gms(15) 2 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsd.gdx
+--- gtap9data_newage.gms(192) 129 Mb
+--- Starting execution: elapsed 0:00:00.450
+--- gtap9data_newage.gms(190) 361 Mb
+*** Status: Normal completion
+--- Job gtap9data_newage.gms Stop 08/17/16 17:47:02 elapsed 0:00:04.895

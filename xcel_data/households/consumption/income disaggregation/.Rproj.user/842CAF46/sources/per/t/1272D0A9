@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1551692384105.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3286871054",
+    "id" : "1272D0A9",
+    "lastKnownWriteTime" : 1555079977,
+    "last_content_update" : 1555079977321,
+    "path" : "C:/Users/rm/Desktop/REEEM/households/consumption/income disaggregation/cons_diss.Rmd",
+    "project_path" : "cons_diss.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "3,3",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

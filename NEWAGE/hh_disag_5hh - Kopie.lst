@@ -1,0 +1,175 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/20 17:15:29 Page 1
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+   2   
+   4   
+   5  OPTION decimals = 5;
+   6   
+   7  * eolcom // does not work correctly with xldump? (ele_calib_10.xls)
+  10   
+  11   
+  12  * ------ Read GTAP9 data set without BAW
+  13   
+  14   
+  16   
+  18   
+  20   
+  21   
+  22  set
+  23          yr(*)   years
+  24          sec(*)  sectors
+  25          r(*)    regions
+  26          hh(*)   households;
+  27   
+  28  parameter
+  29          pco2_deu_yr(sec,yr)
+  30          vd_pinv_hh_yr(hh,r,yr)
+  31          pinv_yr(*,yr)
+  32          trdblnc_yr(*,*,yr)
+  33          vd_pc_gov_yr(r,yr)
+  34          gdpreal_yr(*,yr)
+  35          abs_sector_hh_yr(r,*,hh,yr)
+  36          gdpreal_disag_yr(*,*,yr)
+  37   
+GDXIN   C:\GAMS\NEWAGE_article_coupling\results\results_no_VAT.gdx
+--- LOAD  yr = 246:YR
+--- LOAD  sec = 188:sec
+--- LOAD  r = 5:r
+--- LOAD  hh = 191:hh
+  43   
+--- LOAD  pco2_deu_yr = 758:pco2_DEU_yr
+--- LOAD  vd_pinv_hh_yr = 774:VD_PINV_HH_yr
+--- LOAD  pinv_yr = 749:pinv_yr
+--- LOAD  trdblnc_yr = 819:trdblnc_yr
+--- LOAD  vd_pc_gov_yr = 775:VD_PC_gov_yr
+--- LOAD  gdpreal_yr = 805:gdpreal_yr
+--- LOAD  abs_sector_hh_yr = 880:abs_sector_hh_yr
+  52   
+  53  display hh,r;
+  54   
+  55  set          HH_DISAG(R)     countries with household disaggregation
+  56                           / DEU, FRA, ITA, UKI, BNL, ESP, POL, EUN, EUS /;
+  57   
+  58  gdpreal_disag_yr("cons_HH",r,yr)$HH_DISAG(r) = sum(hh, abs_sector_hh_yr(r,"total",hh,yr));
+  59  gdpreal_disag_yr("inv",r,yr)$HH_DISAG(r) = sum(hh, vd_pinv_hh_yr(hh,r,yr) * pinv_yr(r,yr));
+  60  gdpreal_disag_yr("trade",r,yr)$HH_DISAG(r) =  trdblnc_yr(r,"total",yr);
+  61  gdpreal_disag_yr("cons_gov",r,yr)$HH_DISAG(r) = gdpreal_yr(r,yr) - gdpreal_disag_yr("cons_HH",r,yr) - gdpreal_disag_yr("inv",r,yr) - gdpreal_disag_yr("trade",r,yr);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/20 17:15:29 Page 2
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+  62  gdpreal_disag_yr("total",r,yr)$HH_DISAG(r) = gdpreal_yr(r,yr);
+  63   
+  64  display gdpreal_disag_yr;
+  65   
+  66  execute_unload  '..\results\extra_no_VAT.gdx' , gdpreal_disag_yr ;
+  67   
+  68   
+  69   
+  70  Execute  'gdxxrw.exe i=..\results\results_no_VAT.gdx o=..\results\report_pivot.xlsx epsout=0 @dumppar_ohneDiss.txt'
+  71  Execute  'gdxxrw.exe i=..\results\extra_no_VAT.gdx o=..\results\report_pivot.xlsx epsout=0 @dumppar_extra.txt'
+EXIT C:\GAMS\NEWAGE_article_coupling\NEWAGE\hh_disag_5hh - Kopie.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/20 17:15:29 Page 3
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_article_coupling\NEWAGE\hh_disag_5hh - Kopie.gms
+     2       38 GDXIN          1      38  C:\GAMS\NEWAGE_article_coupling\results\results_no_VAT.gdx
+     3       72 EXIT           1      72  C:\GAMS\NEWAGE_article_coupling\NEWAGE\hh_disag_5hh - Kopie.gms
+
+
+COMPILATION TIME     =        0.016 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/20 17:15:29 Page 4
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+----     53 SET hh  households
+
+hh1,    hh2,    hh3,    hh4,    hh5
+
+
+----     53 SET r  regions
+
+IND,    USA,    FRA,    DEU,    ITA,    POL,    ESP,    RUS,    UKI,    BNL,    EUN,    EUS,    OEC,    BRZ,    CHI,    RSA,    OPA,    ROW
+
+
+----     64 PARAMETER gdpreal_disag_yr  
+
+                    2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+total   .FRA  1988.63564  2096.02436  2239.41343  2327.46817  2505.76036  2719.79600  2819.81924  3140.14183  3385.10646
+total   .DEU  2584.17772  2700.29734  2847.21529  3026.31610  3104.41208  3281.82164  3184.98609  3395.76141  3601.15936
+total   .ITA  1593.44787  1537.53921  1671.27747  1758.03621  1961.75912  2056.24967  2030.65717  2178.97519  2323.02978
+total   .POL   369.23913   407.31698   453.89083   518.12984   589.06281   627.00568   621.91784   668.62926   700.43641
+total   .ESP  1216.34869  1233.92328  1321.51984  1493.52940  1594.97861  1731.90317  1702.37449  1761.09569  1833.18212
+total   .UKI  1755.15065  1937.94365  2092.44807  2204.45394  2451.98604  2687.57451  2858.14820  3195.97113  3526.57936
+total   .BNL   981.80246  1087.63088  1109.76630  1184.45721  1241.04447  1363.61059  1392.44929  1583.89295  1691.01245
+total   .EUN  1032.87620  1121.93704  1229.47052  1348.92430  1473.65645  1619.61133  1669.16960  1827.26748  1999.05763
+total   .EUS  1111.45824  1132.08331  1250.95889  1308.12309  1487.21120  1538.78692  1566.29214  1583.65853  1737.63844
+cons_HH .FRA  1161.10909  1209.03000  1302.35325  1346.71247  1443.19413  1557.84044  1551.36060  1750.18311  1897.09957
+cons_HH .DEU  1507.53484  1588.94966  1673.52772  1784.09560  1824.38872  1946.15598  1810.68136  1986.18601  2197.55994
+cons_HH .ITA   985.72195   926.87768  1018.47392  1069.64219  1204.35329  1264.15399  1182.72781  1284.31579  1391.24999
+cons_HH .POL   240.44902   260.12957   274.55806   308.54285   352.05772   359.48388   332.43681   368.34175   415.26759
+cons_HH .ESP   742.88065   744.19778   786.32298   880.92539   934.07614   995.53890   927.80827   962.49503  1040.35765
+cons_HH .UKI  1199.76406  1318.58696  1411.36854  1458.30061  1627.04727  1784.91384  1796.91468  2001.52924  2207.42047
+cons_HH .BNL   508.34458   549.58335   556.48134   574.00286   602.26664   672.44656   680.45182   770.96919   843.99413
+cons_HH .EUN   522.80571   579.22366   649.59138   705.97899   782.70945   869.79163   872.62348   970.58260  1085.77937
+cons_HH .EUS   712.32543   720.12826   781.76064   801.02013   875.54494   912.70755   912.66903   929.64924  1056.84242
+inv     .FRA   401.74115   419.74370   451.43244   468.96175   502.79669   543.87305   582.95291   651.88462   701.16522
+inv     .DEU   477.21653   499.95198   526.58742   563.72485   581.12805   621.44105   633.37939   686.93247   744.42803
+inv     .ITA   307.42779   291.85699   318.54977   335.75324   377.32557   396.64899   401.64855   433.47383   463.99588
+inv     .POL    79.66434    88.30473    96.81655   110.23395   125.74635   132.33554   144.89599   157.62724   167.22922
+inv     .ESP   253.57851   254.73024   269.40871   303.31089   323.09832   346.69605   354.57941   367.90380   391.51617
+inv     .UKI   266.72887   292.02794   317.41133   337.76656   377.95094   416.86572   509.99454   569.98817   623.10043
+inv     .BNL   204.41600   223.94375   231.60310   248.50194   263.36957   290.07703   325.47765   368.82218   395.66960
+inv     .EUN   182.35580   200.93145   225.27030   244.09088   270.51079   300.53923   303.13544   337.93345   379.45829
+inv     .EUS   235.65952   237.01755   257.24349   263.67800   288.53297   300.83828   301.12000   307.38915   349.63653
+trade   .FRA   -64.18136   -45.10347   -50.68047   -56.60626   -45.50541   -31.56490   -30.53242   -28.62313   -38.87430
+trade   .DEU    95.28577    93.38456    95.11293    76.32238    50.78446    17.76489   -37.49452  -103.78918  -221.15021
+trade   .ITA   -28.28056   -17.12215    -6.76569   -10.73805    -6.98803   -17.72587   -21.15959   -33.80939   -55.48742
+trade   .POL   -21.63642   -19.19306    -6.53012     0.00166     0.86824    10.30554    -4.75302   -23.83546   -66.11467
+trade   .ESP   -42.90438   -36.49921   -19.82670    -6.17238    -3.59833    15.71323     0.69287   -16.77342   -68.87505
+trade   .UKI  -119.52499   -87.90491   -87.32544   -86.49525   -90.78162   -98.69018  -126.76376  -141.94433  -162.99853
+trade   .BNL   -10.32952    10.14318    -4.58668     1.65505   -13.40014   -20.63625   -50.24779   -65.74070  -108.45051
+trade   .EUN    70.01231    73.55230    60.69590    71.50374    63.53872    57.57173    40.86207    29.18598     2.24564
+trade   .EUS   -27.93174   -24.26819     6.92329    10.10307    59.44050    41.40508    57.02226    22.58623   -11.79979
+cons_gov.FRA   489.96676   512.35413   536.30821   568.40022   605.27495   649.64741   716.03814   766.69723   825.71597
+cons_gov.DEU   504.14058   518.01116   551.98721   602.17327   648.11085   696.45970   778.41987   826.43212   880.32160
+cons_gov.ITA   328.57870   335.92670   341.01947   363.37883   387.06830   413.17255   467.44041   494.99496   523.27133
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/20 17:15:29 Page 5
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+         64 PARAMETER gdpreal_disag_yr  
+
+                    2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+cons_gov.POL    70.76220    78.07574    89.04634    99.35138   110.39049   124.88073   149.33806   166.49573   184.05428
+cons_gov.ESP   262.79390   271.49446   285.61485   315.46551   341.40247   373.95499   419.29394   447.47028   470.18336
+cons_gov.UKI   408.18271   415.23366   450.99364   494.88202   537.76945   584.48513   678.00275   766.39805   859.05699
+cons_gov.BNL   279.37140   303.96060   326.26854   360.29736   388.80841   421.72324   436.76761   509.84229   559.79924
+cons_gov.EUN   257.70238   268.22963   293.91294   327.35070   356.89749   391.70874   452.54860   489.56544   531.57434
+cons_gov.EUS   191.40503   199.20569   205.03148   233.32190   263.69279   283.83600   295.48084   324.03391   342.95928
+
+
+
+EXECUTION TIME       =       29.562 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_article_coupling\NEWAGE\hh_disag_5hh - Kopie.gms
+Output     C:\GAMS\NEWAGE_article_coupling\NEWAGE\hh_disag_5hh - Kopie.lst

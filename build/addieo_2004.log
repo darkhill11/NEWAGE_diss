@@ -1,0 +1,17 @@
+--- Job addieo Start 05/26/15 23:30:52 24.4.2 r51415 WEX-WEI x86 64bit/MS Windows
+GAMS 24.4.2   Copyright (C) 1987-2015 GAMS Development. All rights reserved
+Licensee: Thomas F. Rutherford                           G140903/0001AO-WIN
+          University of Wisconsin-Madison, Agricultural & Applied EcoDC9899
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- addieo.gms(14) 3 Mb
+--- .gtap9data.gms(15) 3 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data07\gtap9ingams_001.gdx
+--- .gtap9data.gms(185) 77 Mb
+--- addieo.gms(67) 77 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\ieo2013\gdx\ieo_gtap9_2100_2004.gdx
+--- addieo.gms(141) 132 Mb
+--- Starting execution: elapsed 0:00:00.886
+--- addieo.gms(319) 476 Mb
+*** Status: Normal completion
+--- Job addieo.gms Stop 05/26/15 23:30:58 elapsed 0:00:06.509

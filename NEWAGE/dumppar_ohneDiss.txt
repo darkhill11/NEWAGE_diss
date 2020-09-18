@@ -1,0 +1,196 @@
+par=status 		rng=status!B2 		cdim=0
+
+par=welf_yr		rng=welf_yr!B2		cdim=0
+par=tradematrix_yr	rng=tradematrix_yr!B2	cdim=0
+par=ex_yr		rng=ex_yr!B2		cdim=0
+par=im_yr  		rng=im_yr!B2		cdim=0
+par=trdblnc_yr		rng=trdblnc_yr!B2	cdim=0
+par=trdblnc2_yr		rng=trdblnc2_yr!B2	cdim=0
+par=gva_real_yr		rng=gva_real_yr!B2	cdim=0
+par=gdpreal_yr		rng=gdpreal_yr!B2	cdim=0
+par=demand_yr		rng=demand_yr!B2	cdim=0
+par=vinv_pinv_yr	rng=vinv_pinv_yr!B2	cdim=0
+par=vc_pc_yr		rng=vc_pc_yr!B2		cdim=0
+par=emplmt_yr 		rng=emplmt_yr!B2	cdim=0
+par=emplmtno_yr 	rng=emplmtno_yr!B2	cdim=0
+par=emplmt_endow_yr 	rng=emplmtno_endow_yr!B2	cdim=0
+par=emplmt_sec_yr 	rng=emplmt_sec_yr!B2	cdim=0
+par=emplmtno_sec_yr 	rng=emplmtno_sec_yr!B2	cdim=0
+par=ur_yr 		rng=ur_yr!B2		cdim=0
+par=gdpreal5_yr		rng=gdpreal5_yr!B2	cdim=0
+
+par=rwa_yr		rng=rwa_yr!B2		cdim=0
+par=rca_yr		rng=rca_yr!B2 		cdim=0
+
+par=elex_yr 		rng=elex_yr!B2 		cdim=0
+par=elen_yr 		rng=elen_yr!B2 		cdim=0
+par=ele_yr 		rng=ele_yr!B2 		cdim=0
+par=elextwh_yr 		rng=elextwh_yr!B2 	cdim=0	
+par=elentwh_yr 		rng=elentwh_yr!B2 	cdim=0	
+par=ele_twh_yr 		rng=ele_twh_yr!B2 	cdim=0	
+par=elecontwh_yr 	rng=elecontwh_yr!B2 	cdim=0	
+par=elecontwh2_yr 	rng=elecontwh2_yr!B2 	cdim=0	
+par=eletwhyr 		rng=eletwhyr!B2 	cdim=0
+par=zubau_ele		rng=zubau_ele!B2	cdim=0
+
+par=carblim_yr		rng=carblim_yr!B2	cdim=0
+par=carblim_ets_yr	rng=carblim_ets_yr!B2	cdim=0
+par=co2w_yr		rng=co2w_yr!B2		cdim=0
+par=co2nets_yr		rng=co2nets_yr!B2	cdim=0
+par=co2ets_yr		rng=co2ets_yr!B2	cdim=0
+par=co2ets_y		rng=co2ets_y!B2		cdim=0
+par=co2ets_elex		rng=co2ets_elex!B2	cdim=0
+par=co2ets_elen		rng=co2ets_elen!B2	cdim=0
+par=co2ets_ele		rng=co2ets_ele!B2	cdim=0
+par=co2c_yr		rng=co2c_yr!B2		cdim=0
+par=co2y_yr		rng=co2y_yr!B2		cdim=0
+par=co2ele_yr		rng=co2ele_yr!B2	cdim=0
+par=co2_yr		rng=co2_yr!B2		cdim=0
+par=co2_yr_2		rng=co2_yr_2!B2		cdim=0
+par=co2all_yr		rng=co2all_yr!B2	cdim=0
+par=co2sec_yr		rng=co2sec_yr!B2	cdim=0
+
+par=co2gdp_yr		rng=co2gdp_yr!B2	cdim=0
+par=gdpco2_yr		rng=gdpco2_yr!B2	cdim=0
+
+*par=co2hh_yr		rng=co2hh_yr!B2		cdim=0
+*par=co2hhsum_yr		rng=co2hhsum_yr!B2	cdim=0
+
+*par=anz_car		rng=anz_car!B2		cdim=0
+*par=anz_car_newrel	rng=anz_car_newrel!B2	cdim=0
+*par=anz_qm		rng=anz_qm!B2		cdim=0
+*par=anz_qm_newrel	rng=anz_qm_newrel!B2	cdim=0
+*par=sanrate		rng=sanrate!B2		cdim=0
+*par=cars2_yr		rng=cars2_yr!B2		cdim=0
+
+
+par=VY_PY_yr		rng=VY_PY_yr!B2		cdim=0
+par=VY_PA_yr		rng=VY_PA_yr!B2		cdim=0
+par=VD_PINV_yr		rng=VD_PINV_yr!B2	cdim=0
+par=VD_PC_yr		rng=VD_PC_yr!B2		cdim=0
+par=VINV_PA_yr		rng=VINV_PA_yr!B2	cdim=0
+
+par=pk_yr 		rng=pk_yr!B2 		cdim=0
+par=pusk_yr 		rng=pusk_yr!B2 		cdim=0
+par=pskl_yr 		rng=pskl_yr!B2 		cdim=0
+par=pc_yr 		rng=pc_yr!B2 		cdim=0
+par=pco2_ets_yr 	rng=pco2_ets_yr!B2 	cdim=0
+par=pco2_nets_yr 	rng=pco2_nets_yr!B2 	cdim=0
+par=pco2_netsr_yr 	rng=pco2_netsr_yr!B2 	cdim=0
+par=pco2w_yr 		rng=pco2w_yr!B2 	cdim=0
+par=pco2_yr 		rng=pco2_yr!B2 		cdim=0
+par=pco2_DEU_yr		rng=pco2_deu!B2		cdim=0
+
+par=pc_yr		rng=pc_yr!B2		cdim=0
+par=py_yr		rng=py_yr!B2		cdim=0
+par=pinv_yr		rng=pinv_yr!B2		cdim=0
+par=pa_yr		rng=pa_yr!B2		cdim=0
+par=pr_yr		rng=pr_yr!B2		cdim=0
+par=pgen_yr		rng=pgen_yr!B2		cdim=0
+par=rkx_ele_yr		rng=rkx_ele_yr!B2	cdim=0
+
+par=up_yr		rng=up_yr!B2		cdim=0
+par=lo_yr		rng=lo_yr!B2		cdim=0
+par=gen_limit_yr	rng=gen_limit_yr!B2	cdim=0
+par=genlimit_twh_yr	rng=genlimit_twh_yr!B2	cdim=0
+par=evoa_yr		rng=evoa_yr!B2		cdim=0
+par=ks_x_yr		rng=ks_x_yr!B2		cdim=0
+par=size_usk		rng=size_usk!B2		cdim=0
+par=size_skl		rng=size_skl!B2		cdim=0
+
+par=aeei_yr		rng=aeei_yr!B2		cdim=0
+par=aeei_elexyr		rng=aeei_elexyr!B2	cdim=0
+par=aeei_elenyr		rng=aeei_elenyr!B2	cdim=0
+par=abschreibung_bmk	rng=abschreibung_bmk!B2	cdim=0
+par=abschreibung	rng=abschreibung!B2	cdim=0
+par=abschr_pfad		rng=abschr_pfad!B2	cdim=0
+par=pytarget_yr		rng=pytarget_yr!B2	cdim=0
+par=ressize		rng=ressize!B2		cdim=0
+par=nucsize		rng=nucsize!B2		cdim=0
+par=gew_wg		rng=gew_wg!B2		cdim=0
+par=wg_yr		rng=wg_yr!B2		cdim=0
+par=wg_diff		rng=wg_diff!B2		cdim=0
+
+par=shareC_yr 		rng=shareC_yr!B2	cdim=0
+par=shareY_yr 		rng=shareY_yr!B2	cdim=0
+par=shareYgva_yr	rng=shareYgva_yr!B2	cdim=0
+par=eleYgva_yr 		rng=eleYgva_yr!B2	cdim=0
+
+par=energy_cons_sec_yr	rng=energy_cons_sec_yr!B2	cdim=0
+
+par=gva_yr		rng=gva_yr!B2		cdim=0
+
+par=delta_ele		rng=delta_ele!B2		cdim=0
+
+par=welf_hh_yr		rng=welf_hh_yr!B2		cdim=0 
+par=share_sector_hh_yr	rng=share_sector_hh_yr!B2	cdim=0
+par=abs_sector_hh_yr	rng=abs_sector_hh_yr!B2		cdim=0
+par=vd_pc_hh_yr		rng=vd_pc_hh_yr!B2		cdim=0
+par=vd_pinv_hh_yr	rng=vd_pinv_hh_yr!B2		cdim=0
+
+par=RA_hh_par_yr	rng=RA_hh_par_yr!B2		cdim=0
+par=share_income_hh	rng=share_income_hh!B2		cdim=0	
+
+par=pco2_deu_yr		rng=pco2_deu_yr!B2		cdim=0
+
+
+*-------------------------------------------------------
+*par=vc_esd_yr 		rng=vc_esd_yr!B2 	cdim=0
+*par=vesd_o_yr 		rng=vesd_o_yr!B2 	cdim=0
+*par=vesd_cart_yr 	rng=vesd_cart_yr!B2 	cdim=0
+*ar=vesd_trn_yr 	rng=vesd_trn_yr!B2 	cdim=0
+*par=vesd_heat_yr 	rng=vesd_heat_yr!B2 	cdim=0
+*par=vheat_o_yr 		rng=vheat_o_yr!B2 	cdim=0
+*par=vheat_f_yr 		rng=vheat_f_yr!B2 	cdim=0
+*par=vcart_o_yr 		rng=vcart_o_yr!B2 	cdim=0
+*par=vcart_f_yr 		rng=vcart_f_yr!B2 	cdim=0
+*par=vheatf_o_yr 	rng=vheatf_o_yr!B2 	cdim=0
+*par=vheatf_pa_yr 	rng=vheatf_pa_yr!B2 	cdim=0
+*par=vheatf_pbio_yr 	rng=vheatf_pbio_yr!B2 	cdim=0
+*par=vheatf_pfuels_yr 	rng=vheatf_pfuels_yr!B2 cdim=0
+*par=vheatf_stock_yr 	rng=vheatf_stock_yr!B2 cdim=0
+*par=vheatf_pco2nets_yr 	rng=vheatf_pco2nets_yr!B2 cdim=0
+*par=vcartf_o_yr 	rng=vcartf_o_yr!B2 	cdim=0
+*par=vcartf_pa_yr 	rng=vcartf_pa_yr!B2 	cdim=0
+*par=vcartf_pfuels_yr 	rng=vcartf_pfuels_yr!B2 cdim=0
+*par=vcartf_stock_yr 	rng=vcartf_stock_yr!B2 cdim=0
+*par=vcartf_pco2nets_yr 	rng=vcartf_pco2nets_yr!B2 cdim=0
+*par=vnc_newcar_yr 	rng=vnc_newcar_yr!B2 	cdim=0
+*par=vnc_pa_yr 		rng=vnc_pa_yr!B2 	cdim=0
+*par=vnc_peff_i_yr 	rng=vnc_peff_i_yr!B2 	cdim=0
+*par=vnc_peff_o_yr 	rng=vnc_peff_o_yr!B2 	cdim=0
+*par=vnh_newhouse_yr 	rng=vnh_newhouse_yr!B2 cdim=0
+*par=vnh_pa_yr 		rng=vnh_pa_yr!B2 	cdim=0
+*par=vnh_peff_i_yr 	rng=vnh_peff_i_yr!B2 	cdim=0
+*par=vnh_peff_o_yr 	rng=vnh_peff_o_yr!B2 	cdim=0
+*par=vstock_co_yr 	rng=vstock_co_yr!B2 	cdim=0
+*par=vstock_cnc_yr 	rng=vstock_cnc_yr!B2 	cdim=0
+*par=vstock_cxc_yr 	rng=vstock_cxc_yr!B2 	cdim=0
+*par=vstock_ho_yr 	rng=vstock_ho_yr!B2 	cdim=0
+*par=vstock_hnh_yr 	rng=vstock_hnh_yr!B2 	cdim=0
+*par=vstock_hxh_yr 	rng=vstock_hxh_yr!B2 	cdim=0
+*par=vstock_hpeffi_yr 	rng=vstock_hpeffi_yr!B2 cdim=0
+*par=vstock_hpeffo_yr 	rng=vstock_hpeffo_yr!B2 cdim=0
+*par=voils_o_yr 		rng=voils_o_yr!B2 	cdim=0
+*par=voils_pa_yr 	rng=voils_pa_yr!B2 	cdim=0
+*par=vb_bio_yr 		rng=vb_bio_yr!B2 	cdim=0
+*par=vb_pa_yr 		rng=vb_pa_yr!B2 	cdim=0
+
+
+*-------------------------------------------------------
+
+*par=co2indcost_yr	rng=co2indcost_yr!B2	cdim=0
+*par=co2dircost_yr	rng=co2dircost_yr!B2	cdim=0
+*par=co2dircost3_yr	rng=co2dircost3_yr!B2	cdim=0
+*par=co2elecost_yr	rng=co2elecost_yr!B2	cdim=0
+***par=VY_PAY_yr	rng=VY_PAY_yr!B2	cdim=0
+*par=evoa1		rng=evoa1!B2		cdim=0
+*par=evoa11		rng=evoa11!B2		cdim=0
+*par=evoa2		rng=evoa2!B2		cdim=0
+*par=ele_labdem		rng=ele_labdem!B2	cdim=0
+*par=ele_capdem		rng=ele_capdem!B2	cdim=0
+*par=vinv_pic_yr	rng=vinv_pic_yr!B2	cdim=0
+*par=pic_yr		rng=pic_yr!B2		cdim=0
+*par=adapt1_yr		rng=adapt1_yr!B2	cdim=0
+*par=adapt2_yr		rng=adapt2_yr!B2	cdim=0
+

@@ -1,0 +1,80 @@
+--- Job mrtmcp Start 05/26/15 23:37:58 24.4.2 r51415 WEX-WEI x86 64bit/MS Windows
+GAMS 24.4.2   Copyright (C) 1987-2015 GAMS Development. All rights reserved
+Licensee: Thomas F. Rutherford                           G140903/0001AO-WIN
+          University of Wisconsin-Madison, Agricultural & Applied EcoDC9899
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- mrtmcp.gms(5) 2 Mb
+--- .gtap9data.gms(15) 2 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data07\g20.gdx
+--- .gtap9data.gms(185) 12 Mb
+--- mrtmcp.gms(313) 12 Mb
+--- Starting execution: elapsed 0:00:00.037
+--- mrtmcp.gms(494) 26 Mb
+--- Generating MCP model gtap9mcp
+--- mrtmcp.gms(495) 607 Mb
+---   5,562 rows  5,613 columns  745,999 non-zeroes
+---   101,575,256 nl-code  743,247 nl-non-zeroes
+--- mrtmcp.gms(495) 87 Mb
+--- Executing PATH: elapsed 0:01:01.921
+Reading dictionary...
+Reading row data...
+Evaluating functions...
+Checking model...
+Calculating Jacobian...
+
+PATH             24.4.2 r51415 Released Mar 15, 2015 WEI x86 64bit/MS Windows 
+
+5562 row/cols, 740422 non-zeros, 2.39% dense.
+
+Path 4.7.02 (Sun Mar 15 19:21:36 2015)
+Written by Todd Munson, Steven Dirkse, and Michael Ferris
+
+INITIAL POINT STATISTICS
+Maximum of X. . . . . . . . . .  3.9590e+003 var: (RA(REU))
+Maximum of F. . . . . . . . . .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Maximum of Grad F . . . . . . .  9.8469e+003 eqn: (mkt_p(c,USA))
+                                            var: (Y(c,USA))
+
+INITIAL JACOBIAN NORM STATISTICS
+Maximum Row Norm. . . . . . . .  1.9694e+004 eqn: (mkt_p(c,USA))
+Minimum Row Norm. . . . . . . .  9.7641e-006 eqn: (mkt_ps(lnd,wol,SAU))
+Maximum Column Norm . . . . . .  1.9461e+004 var: (Y(c,USA))
+Minimum Column Norm . . . . . .  2.3512e-004 var: (M(c_b,ZAF))
+
+Major Iteration Log
+major minor  func  grad  residual    step  type prox    inorm  (label)
+    0     0     1     1 1.5949e-009           I 0.0e+000 1.6e-009 (prf_m(c_b,LIC))
+
+FINAL STATISTICS
+Inf-Norm of Complementarity . .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Inf-Norm of Normal Map. . . . .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Inf-Norm of Minimum Map . . . .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Inf-Norm of Fischer Function. .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Inf-Norm of Grad Fischer Fcn. .  3.5562e-009 eqn: (mkt_pf(cap,MIC))
+Two-Norm of Grad Fischer Fcn. .  7.7104e-009
+
+FINAL POINT STATISTICS
+Maximum of X. . . . . . . . . .  3.9590e+003 var: (RA(REU))
+Maximum of F. . . . . . . . . .  1.5643e-009 eqn: (prf_m(c_b,LIC))
+Maximum of Grad F . . . . . . .  9.8469e+003 eqn: (mkt_p(c,USA))
+                                            var: (Y(c,USA))
+
+ ** EXIT - solution found.
+
+Major Iterations. . . . 0
+Minor Iterations. . . . 0
+Restarts. . . . . . . . 0
+Crash Iterations. . . . 0
+Gradient Steps. . . . . 0
+Function Evaluations. . 1
+Gradient Evaluations. . 1
+Total Time. . . . . . . 8.349000
+Residual. . . . . . . . 1.594930e-009
+
+--- Restarting execution
+--- mrtmcp.gms(495) 24 Mb
+--- Reading solution for model gtap9mcp
+--- mrtmcp.gms(496) 25 Mb
+*** Status: Normal completion
+--- Job mrtmcp.gms Stop 05/26/15 23:39:18 elapsed 0:01:20.449

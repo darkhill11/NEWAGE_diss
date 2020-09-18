@@ -1,0 +1,399 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 1
+Satellite code to transform LIBINCLUDE Data from Excel to GDX
+C o m p i l a t i o n
+
+
+   3   
+   6  * if you want a comment in brackets, like: y = 2 ; { this is also a comment } z = 3 ; type:
+   7  *$inlinecom {}
+   8  * --------------------------------------------------------------------- *
+   9   
+  10  * ------ Definiere den Lösungsalgorithmus (Solver) für das MCP-Problem
+  11  OPTION   MCP = PATH ;
+  12   
+  13  *$if not set source       $set source     26x18x4_baw
+  14  *$if not set source       $set source     17x18x4_baw_new
+  15  *$if not set source       $set source     18x18x4
+  17   
+  18  * ------ 10.04.2014 OUTPUT
+  20  * ------ 10.04.2014 DataSet
+  23   
+  26   
+  28   
+INCLUDE    C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 2
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  31   
+  33   
+  34  scalar nd       Number of decimals /0/;
+  35  abort$(nd<>round(nd)) "Number of decimals must be an integer";
+  36   
+  39   
+  42   
+  43  set     g(*)    Goods plus C and G;
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9.gdx
+--- LOAD  g = 1:g
+  47   
+  48  set     i(g)    Goods
+  49          f(*)    Factors;
+--- LOAD  f = 3:f
+--- LOAD  i = 4:i
+  52  set r(*)        Regions;
+--- LOAD  r = 2:r
+  54   
+  55   
+  56  set     rnum(r) Numeraire region,
+  57          sf(f)   Sluggish primary factors (sector-specific),
+  58          mf(f)   Mobile primary factors;
+  59   
+  60  alias (r,s), (i,j);
+  61   
+  62  display r;
+  63   
+  64  Parameter vdep(r) Value of capital decpreciation;
+  65  Parameter vkb(r) Value of capital stock;
+  66  Parameter save(r) Savings;
+  67   
+--- LOAD  vdep = 28:vdep
+--- LOAD  vkb = 29:vkb
+--- LOAD  save = 30:save
+  69   
+  70  parameters
+  71          vfm(f,g,r)      Endowments - Firms  purchases at market prices,
+  72          vdfm(i,g,r)     Intermediates - firms  domestic purchases at market prices,
+  73          vifm(i,g,r)     Intermediates - firms  imports at market prices,
+  74          vxmd(i,r,s)     Trade - bilateral exports at market prices,
+  75          vst(i,r)        Trade - exports for international transportation
+  77          vtwr(i,j,r,s)   Trade - Margins for international transportation at world prices;
+  78   
+--- LOAD  vfm = 5:vfm
+--- LOAD  vdfm = 6:vdfm
+--- LOAD  vifm = 7:vifm
+--- LOAD  vxmd = 8:vxmd
+--- LOAD  vst = 9:vst
+--- LOAD  vtwr = 10:vtwr
+  81   
+  82  if (nd>0,
+  83          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
+  84          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 3
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  85          vifm(i,g,r) = vifm(i,g,r)$round(vifm(i,g,r),nd);
+  86          vxmd(i,r,s) = vxmd(i,r,s)$round(vxmd(i,r,s),nd);
+  87          vst(i,r) = vst(i,r)$round(vst(i,r),nd);
+  88          vtwr(i,j,r,s) = vtwr(i,j,r,s)$round(vtwr(i,j,r,s),nd);
+  90  );
+  91   
+  92  parameter
+  93          evt(i,r,r)      Volume of energy trade (mtoe),
+  94          evd(i,g,r)      Domestic energy use (mtoe),
+  95          evi(i,g,r)      Imported energy use (mtoe),
+  96          eco2d(i,g,r)    CO2 emissions in domestic fuels - Mt CO2,
+  97          eco2i(i,g,r)    CO2 emissions in foreign fuels - Mt CO2;
+  98   
+--- LOAD  evd = 17:evd
+--- LOAD  evi = 18:evi
+--- LOAD  evt = 19:evt
+--- LOAD  eco2d = 20:eco2d
+--- LOAD  eco2i = 21:eco2i
+ 100  if (nd>0,
+ 101          evt(i,r,s)  = evt(i,r,s)$round(evt(i,r,s), nd);
+ 102          evd(i,g,r) = evd(i,g,r)$round(evd(i,g,r), nd);
+ 103          evi(i,g,r) = evi(i,g,r)$round(evi(i,g,r), nd);
+ 104          eco2d(i,g,r) = eco2d(i,g,r)$round(eco2d(i,g,r), nd);
+ 105          eco2i(i,g,r) = eco2i(i,g,r)$round(eco2i(i,g,r), nd);
+ 106  );
+ 107   
+ 108  parameter
+ 109          rto(g,r)        Output (or income) subsidy rates
+ 110          rtf(f,g,r)      Primary factor and commodity rates taxes
+ 111          rtfd(i,g,r)     Firms domestic tax rates
+ 112          rtfi(i,g,r)     Firms  import tax rates
+ 113          rtxs(i,r,s)     Export subsidy rates
+ 115          rtms(i,r,s)     Import taxes rates;
+ 116   
+--- LOAD  rto = 11:rto
+--- LOAD  rtf = 12:rtf
+--- LOAD  rtfd = 13:rtfd
+--- LOAD  rtfi = 14:rtfi
+--- LOAD  rtxs = 15:rtxs
+--- LOAD  rtms = 16:rtms
+ 119   
+ 120  if (nd>0,
+ 121          rto(g,r) = rto(g,r)$round(rto(g,r),nd);
+ 122          rtf(f,g,r) = rtf(f,g,r)$round(rtf(f,g,r),nd);
+ 123          rtfd(i,g,r) = rtfd(i,g,r)$round(rtfd(i,g,r),nd);
+ 124          rtfi(i,g,r) = rtfi(i,g,r)$round(rtfi(i,g,r),nd);
+ 125          rtxs(i,r,s) = rtxs(i,r,s)$round(rtxs(i,r,s),nd);
+ 126          rtms(i,r,s) = rtms(i,r,s)$round(rtms(i,r,s),nd);
+ 128  );
+ 129  parameter
+ 130          esubd(i)        Elasticity of substitution (M versus D),
+ 131          esubva(g)       Elasticity of substitution between factors
+ 132          esubm(i)        Intra-import elasticity of substitution,
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 4
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 133          etrae(f)        Elasticity of transformation,
+ 134          eta(i,r)        Income elasticity of demand,
+ 135          epsilon(i,r)    Own-price elasticity of demand;
+ 136   
+--- LOAD  esubd = 22:esubd
+--- LOAD  esubva = 23:esubva
+--- LOAD  esubm = 24:esubm
+--- LOAD  etrae = 25:etrae
+--- LOAD  eta = 26:eta
+--- LOAD  epsilon = 27:epsilon
+ 138   
+ 139  *       Declare some intermediate arrays which are required to
+ 140  *       evaluate tax rates:
+ 141   
+ 142  parameter       vdm(g,r)        Aggregate demand for domestic output,
+ 143                  vom(g,r)        Total supply at market prices;
+ 144   
+ 145  vdm(i,r) = sum(g, vdfm(i,g,r));
+ 146  vom(i,r) = vdm(i,r) + sum(s, vxmd(i,r,s)) + vst(i,r);
+ 147   
+ 148  parameter
+ 149          rtf0(f,g,r)     Primary factor and commodity rates taxes
+ 150          rtfd0(i,g,r)    Firms domestic tax rates
+ 151          rtfi0(i,g,r)    Firms  import tax rates
+ 152          rtxs0(i,r,s)    Export subsidy rates
+ 153          rtms0(i,r,s)    Import taxes rates;
+ 154   
+ 155  rtf0(f,g,r) = rtf(f,g,r);
+ 156  rtfd0(i,g,r) = rtfd(i,g,r);
+ 157  rtfi0(i,g,r) = rtfi(i,g,r);
+ 158  rtxs0(i,r,s) = rtxs(i,r,s);
+ 159  rtms0(i,r,s) = rtms(i,r,s);
+ 160   
+ 161  parameter       pvxmd(i,s,r)    Import price (power of benchmark tariff)
+ 162                  pvtwr(i,s,r)    Import price for transport services;
+ 163   
+ 164  pvxmd(i,s,r) = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r));
+ 165  pvtwr(i,s,r) = 1+rtms0(i,s,r);
+ 166   
+ 167  parameter
+ 168          vtw(j)          Aggregate international transportation services,
+ 169          vpm(r)          Aggregate private demand,
+ 170          vgm(r)          Aggregate public demand,
+ 171          vim(i,r)        Aggregate imports,
+ 172          evom(f,r)       Aggregate factor endowment at market prices,
+ 173          vb(*)           Current account balance;
+ 174   
+ 175  vtw(j) = sum(r, vst(j,r));
+ 176  vom("c",r) = sum(i, vdfm(i,"c",r)*(1+rtfd0(i,"c",r)) + vifm(i,"c",r)*(1+rtfi0(i,"c",r)))/(1-rto("c",r));
+ 177  vom("g",r) = sum(i, vdfm(i,"g",r)*(1+rtfd0(i,"g",r)) + vifm(i,"g",r)*(1+rtfi0(i,"g",r)))/(1-rto("g",r));
+ 178  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
+ 179   
+ 180  vdm("c",r) = vom("c",r);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 5
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 181  vdm("g",r) = vom("g",r);
+ 182  vim(i,r) =  sum(g, vifm(i,g,r));
+ 183  evom(f,r) = sum(g, vfm(f,g,r));
+ 184  vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 185          - sum(f, evom(f,r))
+ 186          - sum(g,  vom(g,r)*rto(g,r))
+ 187          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+ 188          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 189          - sum((i,s), rtms(i,s,r) *  (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+ 190          + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+ 191   
+ 192  vb("chksum") = sum(r, vb(r));
+ 193  display vb;
+ 194   
+ 195  *       Determine which factors are sector-specific
+ 196   
+ 197  mf(f) = yes$(1/etrae(f)=0);
+ 198  sf(f) = yes$(1/etrae(f)>0);
+ 199  display mf,sf;
+ 200   
+ 201  parameter       mprofit Zero profit for m,
+ 202                  yprofit Zero profit for y;
+ 203   
+ 204  mprofit(i,r) = vim(i,r) - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j, vtwr(j,i,s,r))*pvtwr(i,s,r));
+ 205  mprofit(i,r) = round(mprofit(i,r),5);
+ 206  display mprofit;
+ 207   
+ 208  yprofit(g,r) = vom(g,r)*(1-rto(g,r))
+ 209          - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r))
+ 210                 + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+ 211          - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r)));
+ 212   
+ 213  yprofit(g,r) = round(yprofit(g,r),6)
+ 214  display yprofit;
+ 215   
+ 216  *       Define a numeraire region for denominating international
+ 217  *       transfers:
+ 218   
+ 219  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
+ 220  display rnum;
+ 221   
+EXIT C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+ 223   
+ 224   
+ 225  * ---------------------------------------------------------------------- *
+ 226  *        SET and additional sets (SUBSETS) for technology BOUP
+ 227  *        in ELECTRICITY GENERATION
+ 228  * ---------------------------------------------------------------------- *
+ 229  *        b = baseload, m = middleload, p = peakload
+ 230   
+ 231  SET      GEN             Stromerzeugungsarten /  bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS,
+ 232                                                   mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS, pOIL, pGAS, pHYDRO,
+ 233                                                   HYDRO, GEO, BIO, SOLAR, WIND /;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 6
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 234   
+ 235  * ---------------------------------------------------------------------------- *
+ 236  *        SET and additional sets (SUBSETS) for DYNAMIC MILESTONES
+ 237  * ---------------------------------------------------------------------------- *
+ 238   
+ 239  * ------ 17.01.2012 ORIGINAL Zeithorizont bis 2050
+ 240  *$ontext
+ 241  SET      YR MILESTONES  / 2007, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050    / ;
+ 242   
+ 243  * ---------------------------------------------------------------------------- *
+ 244  *        Define ALIAS indices for interactions etc.
+ 245  * ---------------------------------------------------------------------------- *
+ 246  ALIAS    (i,j), (r,s), (r,rr), (gen,gengen), (yr,yryr);
+ 247   
+ 248   
+ 249  * ##############################################################################
+ 250  * ---------------------------------------------------------------------------- *
+ 251  * ------ Parameter declaration for exogenous data ---------------------------- *
+ 252  * ---------------------------------------------------------------------------- *
+ 253   
+ 254  PARAMETER
+ 255           ele_prod(gen,r)                 Benchmark electricity production [TWh]
+ 256           ressize(r,gen,yr)               Growth rates for renewable energy sources
+ 257           co2pfad(r,yr)                   CO2-growth
+ 258           co2pfad_ets(r,yr)               CO2-growth in the EU-ETS
+ 259           pytarget_yr(r,i,yr)             Exogenous price paths for resources
+ 260   
+ 261  * ------ 10.06.2013: Zusammenfassung aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+ 262           ur_read(r,*)                    Einlesen aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+ 263           urun0(*)                        Initial unemployment rate among unskilled
+ 264           ursk0(*)                        Initial unemployment rate among skilled
+ 265           diffcost(gen,r)                 Differenzkosten
+ 266           diffcost_exogen(gen,r)          Differenzkosten
+ 267           cost_red(gen,yr)                Renewable energies cost reduction
+ 268           wg0(gen,r)                      Wirkungsgrad im bmk
+ 269           wg_yr(gen,yr)                   Wirkungsgrad nach jahren jeweils bat
+ 270           nucsize(r,yr)                   Ausbau- bzw. Rückbaupfad Kernenergie
+ 271  *         un_numb0(r)                     Initial employment supply (potential) absolute unskilled
+ 272  *         sk_numb0(r)                     Initial employment supply (potential) absolute skilled
+ 273  *         labsize(r,yr)                   Changes in economically active population based ilo from 2020 onward constant
+ 274   
+ 275  * ------ 10.06.2013:
+ 276  *        --> Die Parameter abschreibung_z und abschreibung_bmk_z sind nun auch über das set r definiert
+ 277  *        --> der Einfachheit sollten diese beiden Parameter aber im NEWAGE Code entfernt werden
+ 278  *        --> auch mit bCCS und mCCS aufpassen --> werden in Epro Ra nicht mit eingelesen sondern erst im Code definiert
+ 279           abschreibung(r,gen,yr)          Decommissioning geg. vorperiode
+ 280           abschreibung_z(r,gen,yr)        Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+ 281           abschreibung_bmk(r,gen,yr)      Decommissioning geg. basis-bmk
+ 282           abschreibung_bmk_z(r,gen,yr)    Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+ 283   
+ 284  * ------ 10.06.2013: Zusammenfassung aller AEEI-Pfade in Tabelle aeei.xlsx
+ 285           aeei_read(*,yr)                 Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
+ 286   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 7
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 287           AEEI_exo(yr)                    AEEI exogen
+ 288           AEEI_exo_emerge(yr)             AEEI exogen emerge
+ 289           AEEI_exo_deu(yr)                AEEI exogen deu
+ 290           AEEI_exo_neu(yr)                AEEI exogen neu
+ 291           AEEI_exo_ele_c(yr)              AEEI exogen ele_c
+ 292           AEEI_exogen(yr)                 AEEI exogen für deutschland
+ 293           AEEI_exogen_after2020(yr)       AEEI exogen für deutschland nach erreichen von mckinsey
+ 294           AEEI_exogen_after2025(yr)       AEEI exogen für deutschland nach erreichen von mckinsey II
+ 295           AEEI_exogen_gen_yr(yr)          AEEI exogen für den einstaz von fe in stromerzeugung in deu!
+ 296           AEEI_exogen_gen_yr_after2020(yr) AEEI exogen electricity generation nach erreichen von mckinsey
+ 297           AEEI_exogen_gen_yr_after2025(yr) AEEI exogen electricity generation nach erreichen von mckinsey II
+ 298           AEEI_exogen_ele(yr)             AEEI exogen für deutschland stromverbrauch
+ 299           AEEI_exogen_ele_after2020(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
+ 300           AEEI_exogen_ele_after2025(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
+ 301           AEEI_exogen_trn(yr)             AEEI exogen für deutschland TRN
+ 302           AEEI_exogen_trn_after2020(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey
+ 303           AEEI_exogen_trn_after2025(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey II
+ 304           AEEI_exogen_hh(yr)              AEEI exogen für deutschland HH
+ 305           AEEI_exogen_hh_after2020(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey
+ 306           AEEI_exogen_hh_after2025(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey II
+ 307   
+ 308   
+ 309  * ------ 15.07.2014 Reading in Energy productivity and total factor productivity from the BASELINE Database
+ 310           lfhc_usk(r,yr)                  Labor force and human capital development for unskilled labor (BASELINE Database)
+ 311           lfhc_skl(r,yr)                  Labor force and human capital development for   skilled labor (BASELINE Database)
+ 312   
+ 313           ep(yr,r)                        Energy productivity development (BASELINE Database)
+ 314           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
+ 315   
+ 316  * ------ 28.05.2015
+ 317           co2pfad_ets_eu(*,yr)
+ 318  ;
+ 319   
+ 320  *$ontext
+ 321  * ---------------------------------------------------------------------------- *
+ 322  *        READ AEEI
+ 323  * ---------------------------------------------------------------------------- *
+ 324  * ###### AEEI ##################################################################
+ 325  * Modellparameter AEEI basiert auf AEEI_yr, welches im Wesentlichen auf AEEI_EXO beruht.(AEEI_EXOGEN... = AEEI_Variante)
+ 326  * REF: AEEI = AEEI_HH = AEEI_TRN
+ 327   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 360   
+ 361  aeei_exo(yr)                     = aeei_read("aeei_exo",yr);
+ 362  aeei_exo_ele_c(yr)               = aeei_read("aeei_exo_ele_c",yr);
+ 363  aeei_exo_deu(yr)                 = aeei_read("aeei_exo_deu",yr);
+ 364  aeei_exo_neu(yr)                 = aeei_read("aeei_exo_neu",yr);
+ 365  aeei_exo_emerge(yr)              = aeei_read("aeei_exo_emerge",yr);
+ 366  aeei_exogen(yr)                  = aeei_read("aeei_exogen",yr);
+ 367   
+ 368  aeei_exogen_after2020(yr)        = aeei_read("aeei_exogen_after2020",yr);
+ 369  aeei_exogen_after2025(yr)        = aeei_read("aeei_exogen_after2025",yr);
+ 370  aeei_exogen_ele(yr)              = aeei_read("aeei_exogen_ele",yr);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/18/16 16:24:21 Page 8
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 371  aeei_exogen_ele_after2020(yr)    = aeei_read("aeei_exogen_ele_after2020",yr);
+ 372  aeei_exogen_ele_after2025(yr)    = aeei_read("aeei_exogen_ele_after2025",yr);
+ 373  aeei_exogen_gen_yr(yr)           = aeei_read("aeei_exogen_gen_yr",yr);
+ 374  aeei_exogen_gen_yr_after2020(yr) = aeei_read("aeei_exogen_gen_yr_after2020",yr);
+ 375  aeei_exogen_gen_yr_after2025(yr) = aeei_read("aeei_exogen_gen_yr_after2025",yr);
+ 376  aeei_exogen_hh(yr)               = aeei_read("aeei_exogen_hh",yr);
+ 377  aeei_exogen_hh_after2020(yr)     = aeei_read("aeei_exogen_hh_after2020",yr);
+ 378  aeei_exogen_hh_after2025(yr)     = aeei_read("aeei_exogen_hh_after2025",yr);
+ 379  aeei_exogen_trn(yr)              = aeei_read("aeei_exogen_trn",yr);
+ 380  aeei_exogen_trn_after2020(yr)    = aeei_read("aeei_exogen_trn_after2020",yr);
+ 381  aeei_exogen_trn_after2025(yr)    = aeei_read("aeei_exogen_trn_after2025",yr);
+ 382   
+ 383  display
+ 384  aeei_read
+ 385  AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c,
+ 386  AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025
+ 387  AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025
+ 388  AEEI_exogen_ele, AEEI_exogen_ele_after2020, AEEI_exogen_ele_after2025
+ 389  AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025
+ 390  AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025
+ 391  ;
+ 392   
+ 393   

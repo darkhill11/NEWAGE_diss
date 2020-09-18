@@ -1,0 +1,27 @@
+--- Job flex2gdx Start 05/26/15 23:26:19 24.4.2 r51415 WEX-WEI x86 64bit/MS Windows
+GAMS 24.4.2   Copyright (C) 1987-2015 GAMS Development. All rights reserved
+Licensee: Thomas F. Rutherford                           G140903/0001AO-WIN
+          University of Wisconsin-Madison, Agricultural & Applied EcoDC9899
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- flex2gdx.gms(54) 2 Mb
+--- call gams setx gdx=setx
+--- flex2gdx.gms(57) 2 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\build\setx.gdx
+--- flex2gdx.gms(60) 3 Mb
+--- call del /q setx.*
+--- flex2gdx.gms(337) 3 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data04\gsdset.gdx
+--- flex2gdx.gms(392) 3 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data04\gsddat.gdx
+--- flex2gdx.gms(407) 254 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data04\gsdpar.gdx
+--- flex2gdx.gms(418) 255 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data04\gsdemiss.gdx
+--- flex2gdx.gms(528) 257 Mb
+--- GDXin=d:\ec.lochalpineeconomics.com\gtap\gtap9\data04\gsdvole.gdx
+--- flex2gdx.gms(716) 264 Mb
+--- Starting execution: elapsed 0:00:01.686
+--- flex2gdx.gms(691) 447 Mb
+*** Status: Normal completion
+--- Job flex2gdx.gms Stop 05/26/15 23:26:24 elapsed 0:00:05.579

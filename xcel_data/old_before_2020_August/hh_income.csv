@@ -1,0 +1,361 @@
+"r";"category";"hh";"Value"
+"DEU";"skl_labor";"hh1";16.984550375
+"DEU";"usk_labor";"hh1";45.48923265
+"DEU";"rkr";"hh1";41.77687926
+"DEU";"rkx_ele";"hh1";0.64495796
+"DEU";"taxes income";"hh1";91.2510362
+"DEU";"tax on income";"hh1";-46.29752469
+"DEU";"cons_hh";"hh1";-191.21021338
+"DEU";"savings";"hh1";41.361081628
+"FRA";"skl_labor";"hh1";11.464561777
+"FRA";"usk_labor";"hh1";40.12087924
+"FRA";"rkr";"hh1";15.831262232
+"FRA";"rkx_ele";"hh1";0.282874094
+"FRA";"taxes income";"hh1";91.07585054
+"FRA";"tax on income";"hh1";-35.32621971
+"FRA";"cons_hh";"hh1";-148.43326901
+"FRA";"savings";"hh1";24.984060835
+"ITA";"skl_labor";"hh1";7.401830983
+"ITA";"usk_labor";"hh1";20.468224092
+"ITA";"rkr";"hh1";26.62004639
+"ITA";"rkx_ele";"hh1";0.498888854
+"ITA";"taxes income";"hh1";21.002294378
+"ITA";"tax on income";"hh1";-9.939507674
+"ITA";"cons_hh";"hh1";-76.96998294
+"ITA";"savings";"hh1";10.918205899
+"POL";"skl_labor";"hh1";1.184716739
+"POL";"usk_labor";"hh1";6.27079353
+"POL";"rkr";"hh1";3.638496828
+"POL";"rkx_ele";"hh1";0.111462789
+"POL";"taxes income";"hh1";22.099093617
+"POL";"tax on income";"hh1";-10.45949792
+"POL";"cons_hh";"hh1";-29.06422865
+"POL";"savings";"hh1";6.219163067
+"UKI";"skl_labor";"hh1";7.444524776
+"UKI";"usk_labor";"hh1";22.028076013
+"UKI";"rkr";"hh1";27.17489923
+"UKI";"rkx_ele";"hh1";0.726584263
+"UKI";"taxes income";"hh1";64.13582107
+"UKI";"tax on income";"hh1";-5.975342274
+"UKI";"cons_hh";"hh1";-177.08549575
+"UKI";"savings";"hh1";61.55093267
+"ESP";"skl_labor";"hh1";3.728855605
+"ESP";"usk_labor";"hh1";19.426121454
+"ESP";"rkr";"hh1";12.576334258
+"ESP";"rkx_ele";"hh1";0.512936218
+"ESP";"taxes income";"hh1";45.74922192
+"ESP";"tax on income";"hh1";-18.086605754
+"ESP";"cons_hh";"hh1";-86.72440472
+"ESP";"savings";"hh1";22.817541013
+"BNL";"skl_labor";"hh1";5.189845174
+"BNL";"usk_labor";"hh1";14.37102974
+"BNL";"rkr";"hh1";22.181701445
+"BNL";"rkx_ele";"hh1";0.45619939
+"BNL";"taxes income";"hh1";22.084639341
+"BNL";"tax on income";"hh1";-13.750285728
+"BNL";"cons_hh";"hh1";-82.2778301
+"BNL";"savings";"hh1";31.744700741
+"EUN";"skl_labor";"hh1";7.734857045
+"EUN";"usk_labor";"hh1";6.637552523
+"EUN";"rkr";"hh1";-0.577077543
+"EUN";"rkx_ele";"hh1";-0.022160284
+"EUN";"taxes income";"hh1";22.567404092
+"EUN";"tax on income";"hh1";-12.136958534
+"EUN";"cons_hh";"hh1";-30.9036695
+"EUN";"savings";"hh1";6.700052204
+"EUS";"skl_labor";"hh1";2.761702019
+"EUS";"usk_labor";"hh1";14.414424063
+"EUS";"rkr";"hh1";32.349564651
+"EUS";"rkx_ele";"hh1";1.319609305
+"EUS";"taxes income";"hh1";13.688284187
+"EUS";"tax on income";"hh1";-7.135249478
+"EUS";"cons_hh";"hh1";-42.21877879
+"EUS";"savings";"hh1";-15.179555964
+"DEU";"skl_labor";"hh2";42.99724876
+"DEU";"usk_labor";"hh2";101.20589671
+"DEU";"rkr";"hh2";60.52437345
+"DEU";"rkx_ele";"hh2";0.93438469
+"DEU";"taxes income";"hh2";117.43754301
+"DEU";"tax on income";"hh2";-79.56993302
+"DEU";"cons_hh";"hh2";-231.5858029
+"DEU";"savings";"hh2";-11.943710684
+"FRA";"skl_labor";"hh2";36.72846856
+"FRA";"usk_labor";"hh2";76.07313903
+"FRA";"rkr";"hh2";28.08671529
+"FRA";"rkx_ele";"hh2";0.501855381
+"FRA";"taxes income";"hh2";108.82542995
+"FRA";"tax on income";"hh2";-75.24587847
+"FRA";"cons_hh";"hh2";-185.56200142
+"FRA";"savings";"hh2";10.592271678
+"ITA";"skl_labor";"hh2";19.709931426
+"ITA";"usk_labor";"hh2";36.79811832
+"ITA";"rkr";"hh2";50.82839196
+"ITA";"rkx_ele";"hh2";0.95257979
+"ITA";"taxes income";"hh2";40.82957286
+"ITA";"tax on income";"hh2";-23.214866783
+"ITA";"cons_hh";"hh2";-123.52626946
+"ITA";"savings";"hh2";-2.377458114
+"POL";"skl_labor";"hh2";3.275454362
+"POL";"usk_labor";"hh2";10.671180255
+"POL";"rkr";"hh2";6.900320696
+"POL";"rkx_ele";"hh2";0.211386467
+"POL";"taxes income";"hh2";33.07698176
+"POL";"tax on income";"hh2";-17.817701264
+"POL";"cons_hh";"hh2";-36.18035081
+"POL";"savings";"hh2";-0.137271471
+"UKI";"skl_labor";"hh2";21.79700357
+"UKI";"usk_labor";"hh2";55.9477769
+"UKI";"rkr";"hh2";21.1175075
+"UKI";"rkx_ele";"hh2";0.564625779
+"UKI";"taxes income";"hh2";72.32196294
+"UKI";"tax on income";"hh2";-17.327022066
+"UKI";"cons_hh";"hh2";-185.74101352
+"UKI";"savings";"hh2";31.3191589
+"ESP";"skl_labor";"hh2";11.480895608
+"ESP";"usk_labor";"hh2";39.38956293
+"ESP";"rkr";"hh2";25.313598258
+"ESP";"rkx_ele";"hh2";1.032436089
+"ESP";"taxes income";"hh2";74.71573371
+"ESP";"tax on income";"hh2";-29.93241012
+"ESP";"cons_hh";"hh2";-115.23035597
+"ESP";"savings";"hh2";-6.769460511
+"BNL";"skl_labor";"hh2";17.874643033
+"BNL";"usk_labor";"hh2";31.07660227
+"BNL";"rkr";"hh2";28.57891124
+"BNL";"rkx_ele";"hh2";0.58776744
+"BNL";"taxes income";"hh2";24.90219106
+"BNL";"tax on income";"hh2";-26.36761025
+"BNL";"cons_hh";"hh2";-83.34648
+"BNL";"savings";"hh2";6.693975199
+"EUN";"skl_labor";"hh2";18.186623349
+"EUN";"usk_labor";"hh2";16.001745679
+"EUN";"rkr";"hh2";34.45380476
+"EUN";"rkx_ele";"hh2";1.323056333
+"EUN";"taxes income";"hh2";112.68428896
+"EUN";"tax on income";"hh2";-51.54045249
+"EUN";"cons_hh";"hh2";-81.15774177
+"EUN";"savings";"hh2";-49.95132482
+"EUS";"skl_labor";"hh2";15.58196449
+"EUS";"usk_labor";"hh2";29.85453844
+"EUS";"rkr";"hh2";53.81910164
+"EUS";"rkx_ele";"hh2";2.195398551
+"EUS";"taxes income";"hh2";26.37522496
+"EUS";"tax on income";"hh2";-19.380886291
+"EUS";"cons_hh";"hh2";-67.05956717
+"EUS";"savings";"hh2";-41.38577461
+"DEU";"skl_labor";"hh3";97.31108431
+"DEU";"usk_labor";"hh3";122.79830929
+"DEU";"rkr";"hh3";101.76777892
+"DEU";"rkx_ele";"hh3";1.571106799
+"DEU";"taxes income";"hh3";121.70291253
+"DEU";"tax on income";"hh3";-126.0515194
+"DEU";"cons_hh";"hh3";-272.5577994
+"DEU";"savings";"hh3";-46.54187305
+"FRA";"skl_labor";"hh3";73.86616693
+"FRA";"usk_labor";"hh3";92.92123989
+"FRA";"rkr";"hh3";48.50711533
+"FRA";"rkx_ele";"hh3";0.866728509
+"FRA";"taxes income";"hh3";113.26824113
+"FRA";"tax on income";"hh3";-113.13693078
+"FRA";"cons_hh";"hh3";-214.9727771
+"FRA";"savings";"hh3";-1.319783885
+"ITA";"skl_labor";"hh3";40.62531493
+"ITA";"usk_labor";"hh3";50.10770899
+"ITA";"rkr";"hh3";74.45463526
+"ITA";"rkx_ele";"hh3";1.395361491
+"ITA";"taxes income";"hh3";50.8806446
+"ITA";"tax on income";"hh3";-38.93791286
+"ITA";"cons_hh";"hh3";-164.86644204
+"ITA";"savings";"hh3";-13.659310382
+"POL";"skl_labor";"hh3";7.468260431
+"POL";"usk_labor";"hh3";14.386863538
+"POL";"rkr";"hh3";4.394581811
+"POL";"rkx_ele";"hh3";0.134624921
+"POL";"taxes income";"hh3";37.90807589
+"POL";"tax on income";"hh3";-25.53800234
+"POL";"cons_hh";"hh3";-43.63554405
+"POL";"savings";"hh3";4.881139789
+"UKI";"skl_labor";"hh3";56.03274611
+"UKI";"usk_labor";"hh3";82.59632727
+"UKI";"rkr";"hh3";45.31398118
+"UKI";"rkx_ele";"hh3";1.211574893
+"UKI";"taxes income";"hh3";68.75357389
+"UKI";"tax on income";"hh3";-41.26386084
+"UKI";"cons_hh";"hh3";-206.66211508
+"UKI";"savings";"hh3";-5.98222745
+"ESP";"skl_labor";"hh3";27.62301125
+"ESP";"usk_labor";"hh3";58.73328974
+"ESP";"rkr";"hh3";44.09073071
+"ESP";"rkx_ele";"hh3";1.798277
+"ESP";"taxes income";"hh3";85.25747629
+"ESP";"tax on income";"hh3";-56.77686665
+"ESP";"cons_hh";"hh3";-135.40193956
+"ESP";"savings";"hh3";-25.323978783
+"BNL";"skl_labor";"hh3";39.64261037
+"BNL";"usk_labor";"hh3";47.06835274
+"BNL";"rkr";"hh3";38.97389795
+"BNL";"rkx_ele";"hh3";0.801555665
+"BNL";"taxes income";"hh3";20.061063248
+"BNL";"tax on income";"hh3";-44.4795541
+"BNL";"cons_hh";"hh3";-99.5231746
+"BNL";"savings";"hh3";-2.54475128
+"EUN";"skl_labor";"hh3";33.13518832
+"EUN";"usk_labor";"hh3";36.64808269
+"EUN";"rkr";"hh3";60.2068293
+"EUN";"rkx_ele";"hh3";2.311995071
+"EUN";"taxes income";"hh3";138.03776272
+"EUN";"tax on income";"hh3";-107.65743498
+"EUN";"cons_hh";"hh3";-105.95117583
+"EUN";"savings";"hh3";-56.73124728
+"EUS";"skl_labor";"hh3";47.81084246
+"EUS";"usk_labor";"hh3";40.85922478
+"EUS";"rkr";"hh3";43.78786122
+"EUS";"rkx_ele";"hh3";1.786202374
+"EUS";"taxes income";"hh3";35.6804391
+"EUS";"tax on income";"hh3";-31.76341945
+"EUS";"cons_hh";"hh3";-99.41777218
+"EUS";"savings";"hh3";-38.74337832
+"DEU";"skl_labor";"hh4";190.46160344
+"DEU";"usk_labor";"hh4";155.98521233
+"DEU";"rkr";"hh4";161.97109302
+"DEU";"rkx_ele";"hh4";2.500534925
+"DEU";"taxes income";"hh4";108.80882119
+"DEU";"tax on income";"hh4";-211.24945016
+"DEU";"cons_hh";"hh4";-329.3274588
+"DEU";"savings";"hh4";-79.15035589
+"FRA";"skl_labor";"hh4";143.21786489
+"FRA";"usk_labor";"hh4";93.78362269
+"FRA";"rkr";"hh4";94.05721659
+"FRA";"rkx_ele";"hh4";1.680620885
+"FRA";"taxes income";"hh4";129.67012491
+"FRA";"tax on income";"hh4";-165.42205559
+"FRA";"cons_hh";"hh4";-253.9255029
+"FRA";"savings";"hh4";-43.06189145
+"ITA";"skl_labor";"hh4";81.38833593
+"ITA";"usk_labor";"hh4";66.71150988
+"ITA";"rkr";"hh4";120.84660337
+"ITA";"rkx_ele";"hh4";2.264797835
+"ITA";"taxes income";"hh4";52.01063163
+"ITA";"tax on income";"hh4";-61.81266499
+"ITA";"cons_hh";"hh4";-221.7610212
+"ITA";"savings";"hh4";-39.648192427
+"POL";"skl_labor";"hh4";16.401126228
+"POL";"usk_labor";"hh4";17.636755657
+"POL";"rkr";"hh4";9.513144973
+"POL";"rkx_ele";"hh4";0.2914285
+"POL";"taxes income";"hh4";39.45525325
+"POL";"tax on income";"hh4";-36.03087917
+"POL";"cons_hh";"hh4";-52.19374785
+"POL";"savings";"hh4";4.926918412
+"UKI";"skl_labor";"hh4";120.41670576
+"UKI";"usk_labor";"hh4";108.04510554
+"UKI";"rkr";"hh4";111.9124429
+"UKI";"rkx_ele";"hh4";2.992239977
+"UKI";"taxes income";"hh4";57.00793465
+"UKI";"tax on income";"hh4";-80.35050036
+"UKI";"cons_hh";"hh4";-257.3976216
+"UKI";"savings";"hh4";-62.62630688
+"ESP";"skl_labor";"hh4";64.17354663
+"ESP";"usk_labor";"hh4";76.12085121
+"ESP";"rkr";"hh4";72.73657755
+"ESP";"rkx_ele";"hh4";2.96662161
+"ESP";"taxes income";"hh4";97.13902421
+"ESP";"tax on income";"hh4";-104.1207232
+"ESP";"cons_hh";"hh4";-169.7876328
+"ESP";"savings";"hh4";-39.22826521
+"BNL";"skl_labor";"hh4";70.96763715
+"BNL";"usk_labor";"hh4";52.91242958
+"BNL";"rkr";"hh4";55.84669282
+"BNL";"rkx_ele";"hh4";1.148569565
+"BNL";"taxes income";"hh4";18.865455116
+"BNL";"tax on income";"hh4";-63.26214548
+"BNL";"cons_hh";"hh4";-110.0731571
+"BNL";"savings";"hh4";-26.405481645
+"EUN";"skl_labor";"hh4";76.62980268
+"EUN";"usk_labor";"hh4";59.91192325
+"EUN";"rkr";"hh4";86.4070511
+"EUN";"rkx_ele";"hh4";3.318106577
+"EUN";"taxes income";"hh4";108.13597147
+"EUN";"tax on income";"hh4";-170.51815872
+"EUN";"cons_hh";"hh4";-130.29338539
+"EUN";"savings";"hh4";-33.59131096
+"EUS";"skl_labor";"hh4";80.44565998
+"EUS";"usk_labor";"hh4";50.73399269
+"EUS";"rkr";"hh4";119.61146345
+"EUS";"rkx_ele";"hh4";4.879212501
+"EUS";"taxes income";"hh4";51.07105361
+"EUS";"tax on income";"hh4";-42.41967304
+"EUS";"cons_hh";"hh4";-153.72533864
+"EUS";"savings";"hh4";-110.59637055
+"DEU";"skl_labor";"hh5";435.2895385
+"DEU";"usk_labor";"hh5";157.04354243
+"DEU";"rkr";"hh5";524.4356319
+"DEU";"rkx_ele";"hh5";8.096318849
+"DEU";"taxes income";"hh5";137.42375153
+"DEU";"tax on income";"hh5";-398.1634401
+"DEU";"cons_hh";"hh5";-483.1323391
+"DEU";"savings";"hh5";-380.99300399
+"FRA";"skl_labor";"hh5";327.7576046
+"FRA";"usk_labor";"hh5";95.30670038
+"FRA";"rkr";"hh5";478.70475724
+"FRA";"rkx_ele";"hh5";8.553529883
+"FRA";"taxes income";"hh5";211.80492484
+"FRA";"tax on income";"hh5";-370.9582472
+"FRA";"cons_hh";"hh5";-358.2291193
+"FRA";"savings";"hh5";-392.94015049
+"ITA";"skl_labor";"hh5";251.08326206
+"ITA";"usk_labor";"hh5";77.6062046
+"ITA";"rkr";"hh5";393.5731921
+"ITA";"rkx_ele";"hh5";7.375993106
+"ITA";"taxes income";"hh5";79.40860603
+"ITA";"tax on income";"hh5";-147.68657658
+"ITA";"cons_hh";"hh5";-398.680104
+"ITA";"savings";"hh5";-262.68057736
+"POL";"skl_labor";"hh5";61.78767867
+"POL";"usk_labor";"hh5";20.102660349
+"POL";"rkr";"hh5";124.09802486
+"POL";"rkx_ele";"hh5";3.801655638
+"POL";"taxes income";"hh5";35.94305044
+"POL";"tax on income";"hh5";-71.37680859
+"POL";"cons_hh";"hh5";-78.95184909
+"POL";"savings";"hh5";-95.404412302
+"UKI";"skl_labor";"hh5";388.1720594
+"UKI";"usk_labor";"hh5";103.16563617
+"UKI";"rkr";"hh5";330.15095165
+"UKI";"rkx_ele";"hh5";8.827355122
+"UKI";"taxes income";"hh5";60.48131673
+"UKI";"tax on income";"hh5";-226.88570512
+"UKI";"cons_hh";"hh5";-372.9112288
+"UKI";"savings";"hh5";-291.00038509
+"ESP";"skl_labor";"hh5";236.24350893
+"ESP";"usk_labor";"hh5";84.58914734
+"ESP";"rkr";"hh5";282.36829059
+"ESP";"rkx_ele";"hh5";11.516624797
+"ESP";"taxes income";"hh5";120.5617121
+"ESP";"tax on income";"hh5";-294.36637459
+"ESP";"cons_hh";"hh5";-235.8177351
+"ESP";"savings";"hh5";-205.09517412
+"BNL";"skl_labor";"hh5";164.67047723
+"BNL";"usk_labor";"hh5";52.9451073
+"BNL";"rkr";"hh5";220.61724385
+"BNL";"rkx_ele";"hh5";4.537318845
+"BNL";"taxes income";"hh5";23.79759365
+"BNL";"tax on income";"hh5";-119.49119914
+"BNL";"cons_hh";"hh5";-133.16336978
+"BNL";"savings";"hh5";-213.91317192
+"EUN";"skl_labor";"hh5";165.2568593
+"EUN";"usk_labor";"hh5";77.13135822
+"EUN";"rkr";"hh5";171.85774677
+"EUN";"rkx_ele";"hh5";6.599488266
+"EUN";"taxes income";"hh5";90.58135981
+"EUN";"tax on income";"hh5";-288.1086328
+"EUN";"cons_hh";"hh5";-174.52764154
+"EUN";"savings";"hh5";-48.790537986
+"EUS";"skl_labor";"hh5";112.38993003
+"EUS";"usk_labor";"hh5";64.21924139
+"EUS";"rkr";"hh5";178.30564397
+"EUS";"rkx_ele";"hh5";7.273476154
+"EUS";"taxes income";"hh5";68.71250508
+"EUS";"tax on income";"hh5";-51.21252115
+"EUS";"cons_hh";"hh5";-349.9267328
+"EUS";"savings";"hh5";-29.76154271

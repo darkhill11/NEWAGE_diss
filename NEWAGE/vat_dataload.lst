@@ -1,0 +1,122 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 1
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+   2   
+   4   
+   5  OPTION decimals = 5;
+   6   
+   7  * eolcom // does not work correctly with xldump? (ele_calib_10.xls)
+  10   
+  11   
+  12  * ------ Read GTAP9 data set without BAW
+  13   
+  14  * ------ source must match target in gtapaggr.gms
+  17   
+  18  * ------ 15.04.2014
+  21  *$if not set yr           $set yr         11
+  22   
+  24   
+  26   
+  28   
+  29  *$include ..\build\gtap9data_newage
+  30   
+  31  *display r, i, j, g, f, vfm, vdfm, vom, vifm, vxmd, vst, vtwr;
+  32  *$exit
+  33   
+  34  *alias(r,rr), (s,ss), (i,ii), (j,jj), (g,gg), (f,ff);
+  35   
+  36  *SET      D       Submarkets for which import shares are differentiated /
+  37  *         G       Public,
+  38  *         C       Private Consumption,
+  39  *         I       Intermediate input
+  40  *         /;
+  41   
+  42  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  43  *    SET OF REGIONS AND SECTORS
+  44  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  45   
+  46  SET
+  47          r       'regions' / DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW /
+  48          i       'sectors' / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, AGR, BUI, SER, TRN, ELE, OIL, CRU, COL, GAS /;
+  49   
+  50   
+  51   
+  52   
+  53  * ############################################################################ *
+  54  * ------ Parameter declaration for new tax for consumers -----------------------
+  55   
+  56  PARAMETER
+  57   
+  58           tp_vat(r,i)    tax for consumers witout VAT
+  59  ;
+  60   
+  61  * ---------------------------------------------------------------------------- *
+  62   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+  95   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 2
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+  96   
+  97  display tp_vat;
+  98   
+  99   
+ 100   
+ 101  Execute_Unload '..\data11\18x18x4_gtap9_tp_no_vat', tp_vat;
+ 102   
+ 103   
+ 104  *display hh_consumption;
+EXIT C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 3
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+     2       63 LIBINCLUDE     1      63  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+     3       70 IF EXIST       2       7  .C:\GAMS\NEWAGE_article_coupling\xcel_data\vat_for_newage.xlsx
+     4       88 CALL           2      49  .gdxxrw "..\xcel_data\vat_for_newage.xlsx" @xllink.txt log=xllink.log
+     5       92 GDXIN          2      53  .C:\GAMS\NEWAGE_article_coupling\NEWAGE\xllink.gdx
+     6      105 EXIT           1      74  C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+
+
+COMPILATION TIME     =        1.451 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 4
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+----     97 PARAMETER tp_vat  tax for consumers witout VAT
+
+            CHM         PPP         IRS         NFM         NMM         FOT         MVH         MAC         ROI         BUI         TRN         ELE         OIL         COL         GAS
+
+DEU     0.03550     0.04282                             0.01607     0.08098                 0.07781                 0.21214     0.00955     0.91190     0.48886     0.20779     0.57552
+FRA     0.18637     0.11881     0.06047     0.06057     0.04983     0.18286                 0.08482     0.02253     0.26788                 0.26389     0.98277     0.03549     0.29967
+ITA     0.01878     0.11243                                         0.09931                                         0.28964                 0.15824     0.98620     0.03233     0.81499
+POL     0.09895     0.09030     0.03831     0.03822                 0.13254     0.07378     0.04886     0.02918     0.08571                 0.10906     0.72933     0.27918     0.26478
+UKI     0.15172     0.13016     0.07819     0.07674     0.09089     0.18918                 0.09305                 0.36847     0.08578                 0.90450     0.01260
+ESP     0.19824     0.09133     0.05556     0.04853     0.05903     0.10113     0.09886     0.06195                 0.25941                 0.06737     0.62672                 0.23458
+BNL     0.14455     0.06912     0.07455     0.07039     0.06158     0.06128                 0.07697                 0.31223                 0.21208     0.81895     0.24590     0.86197
+EUN     0.22642     0.22096     0.03169     0.02537     0.04713     0.17042                 0.05463     0.03588     0.12357     0.08179     0.55648     0.63958     0.15504     1.17552
+EUS     0.10947     0.09562     0.08467     0.07652     0.03183     0.03048     0.03802     0.03955                 0.08684                 0.07430     0.72637     0.30848     0.15736
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+Output     C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.lst

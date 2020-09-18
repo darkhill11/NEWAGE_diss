@@ -1,0 +1,470 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows 08/17/16 17:46:57 Page 1
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+   2   
+   4   
+   5  scalar nd       Number of decimals /0/;
+   6  abort$(nd<>round(nd)) "Number of decimals must be an integer";
+   7   
+  12   
+  13  set     g(*)    Goods plus C and G;
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\gsd.gdx
+--- LOAD  g = 3:g
+  17   
+  18  set     i(g)    Goods
+  19          f(*)    Factors;
+--- LOAD  f = 2:f
+--- LOAD  i = 4:i
+  22  set r(*)        Regions;
+--- LOAD  r = 1:r
+  24   
+  25   
+  26  set     rnum(r) Numeraire region,
+  27          sf(f)   Sluggish primary factors (sector-specific),
+  28          mf(f)   Mobile primary factors;
+  29   
+  30  alias (r,s), (i,j);
+  31   
+  32  display r;
+  33   
+  34  Parameter vdep(r) Value of capital decpreciation;
+  35  Parameter vkb(r) Value of capital stock;
+  36  Parameter save(r) Savings;
+  37   
+--- LOAD  vdep = 28:vdep
+--- LOAD  vkb = 29:vkb
+--- LOAD  save = 30:save
+  39   
+  40  parameters
+  41          vfm(f,g,r)      Endowments - Firms  purchases at market prices,
+  42          vdfm(i,g,r)     Intermediates - firms  domestic purchases at marke
+      t prices,
+  43          vifm(i,g,r)     Intermediates - firms  imports at market prices,
+  44          vxmd(i,r,s)     Trade - bilateral exports at market prices,
+  45          vst(i,r)        Trade - exports for international transportation
+  47          vtwr(i,j,r,s)   Trade - Margins for international transportation a
+      t world prices;
+  48   
+--- LOAD  vfm = 5:vfm
+--- LOAD  vdfm = 6:vdfm
+--- LOAD  vifm = 7:vifm
+--- LOAD  vxmd = 8:vxmd
+--- LOAD  vst = 9:vst
+--- LOAD  vtwr = 10:vtwr
+  51   
+  52  if (nd>0,
+  53          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
+  54          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
+  55          vifm(i,g,r) = vifm(i,g,r)$round(vifm(i,g,r),nd);
+  56          vxmd(i,r,s) = vxmd(i,r,s)$round(vxmd(i,r,s),nd);
+  57          vst(i,r) = vst(i,r)$round(vst(i,r),nd);
+  58          vtwr(i,j,r,s) = vtwr(i,j,r,s)$round(vtwr(i,j,r,s),nd);
+  60  );
+  61   
+  62  parameter
+  63          evt(i,r,r)      Volume of energy trade (mtoe),
+  64          evd(i,g,r)      Domestic energy use (mtoe),
+  65          evi(i,g,r)      Imported energy use (mtoe),
+  66          eco2d(i,g,r)    CO2 emissions in domestic fuels - Mt CO2,
+  67          eco2i(i,g,r)    CO2 emissions in foreign fuels - Mt CO2;
+  68   
+--- LOAD  evd = 23:evd
+--- LOAD  evi = 24:evi
+--- LOAD  evt = 25:evt
+--- LOAD  eco2d = 26:eco2d
+--- LOAD  eco2i = 27:eco2i
+  70  if (nd>0,
+  71          evt(i,r,s)  = evt(i,r,s)$round(evt(i,r,s), nd);
+  72          evd(i,g,r) = evd(i,g,r)$round(evd(i,g,r), nd);
+  73          evi(i,g,r) = evi(i,g,r)$round(evi(i,g,r), nd);
+  74          eco2d(i,g,r) = eco2d(i,g,r)$round(eco2d(i,g,r), nd);
+  75          eco2i(i,g,r) = eco2i(i,g,r)$round(eco2i(i,g,r), nd);
+  76  );
+  77   
+  78  parameter
+  79          rto(g,r)        Output (or income) subsidy rates
+  80          rtf(f,g,r)      Primary factor and commodity rates taxes
+  81          rtfd(i,g,r)     Firms domestic tax rates
+  82          rtfi(i,g,r)     Firms  import tax rates
+  83          rtxs(i,r,s)     Export subsidy rates
+  85          rtms(i,r,s)     Import taxes rates;
+  86   
+--- LOAD  rto = 11:rto
+--- LOAD  rtf = 12:rtf
+--- LOAD  rtfd = 13:rtfd
+--- LOAD  rtfi = 14:rtfi
+--- LOAD  rtxs = 15:rtxs
+--- LOAD  rtms = 16:rtms
+  89   
+  90  if (nd>0,
+  91          rto(g,r) = rto(g,r)$round(rto(g,r),nd);
+  92          rtf(f,g,r) = rtf(f,g,r)$round(rtf(f,g,r),nd);
+  93          rtfd(i,g,r) = rtfd(i,g,r)$round(rtfd(i,g,r),nd);
+  94          rtfi(i,g,r) = rtfi(i,g,r)$round(rtfi(i,g,r),nd);
+  95          rtxs(i,r,s) = rtxs(i,r,s)$round(rtxs(i,r,s),nd);
+  96          rtms(i,r,s) = rtms(i,r,s)$round(rtms(i,r,s),nd);
+  98  );
+  99  parameter
+ 100          esubd(i)        Elasticity of substitution (M versus D),
+ 101          esubva(g)       Elasticity of substitution between factors
+ 102          esubm(i)        Intra-import elasticity of substitution,
+ 103          etrae(f)        Elasticity of transformation,
+ 104          eta(i,r)        Income elasticity of demand,
+ 105          epsilon(i,r)    Own-price elasticity of demand;
+ 106   
+--- LOAD  esubd = 17:esubd
+--- LOAD  esubva = 18:esubva
+--- LOAD  esubm = 19:esubm
+--- LOAD  etrae = 20:etrae
+--- LOAD  eta = 21:eta
+--- LOAD  epsilon = 22:epsilon
+ 108   
+ 109  *       Declare some intermediate arrays which are required to
+ 110  *       evaluate tax rates:
+ 111   
+ 112  parameter       vdm(g,r)        Aggregate demand for domestic output,
+ 113                  vom(g,r)        Total supply at market prices;
+ 114   
+ 115  vdm(i,r) = sum(g, vdfm(i,g,r));
+ 116  vom(i,r) = vdm(i,r) + sum(s, vxmd(i,r,s)) + vst(i,r);
+ 117   
+ 118  parameter
+ 119          rtf0(f,g,r)     Primary factor and commodity rates taxes
+ 120          rtfd0(i,g,r)    Firms domestic tax rates
+ 121          rtfi0(i,g,r)    Firms  import tax rates
+ 122          rtxs0(i,r,s)    Export subsidy rates
+ 123          rtms0(i,r,s)    Import taxes rates;
+ 124   
+ 125  rtf0(f,g,r) = rtf(f,g,r);
+ 126  rtfd0(i,g,r) = rtfd(i,g,r);
+ 127  rtfi0(i,g,r) = rtfi(i,g,r);
+ 128  rtxs0(i,r,s) = rtxs(i,r,s);
+ 129  rtms0(i,r,s) = rtms(i,r,s);
+ 130   
+ 131  parameter       pvxmd(i,s,r)    Import price (power of benchmark tariff)
+ 132                  pvtwr(i,s,r)    Import price for transport services;
+ 133   
+ 134  pvxmd(i,s,r) = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r));
+ 135  pvtwr(i,s,r) = 1+rtms0(i,s,r);
+ 136   
+ 137  parameter
+ 138          vtw(j)          Aggregate international transportation services,
+ 139          vpm(r)          Aggregate private demand,
+ 140          vgm(r)          Aggregate public demand,
+ 141          vim(i,r)        Aggregate imports,
+ 142          evom(f,r)       Aggregate factor endowment at market prices,
+ 143          vb(*)           Current account balance;
+ 144   
+ 145  vtw(j) = sum(r, vst(j,r));
+ 146  vom("c",r) = sum(i, vdfm(i,"c",r)*(1+rtfd0(i,"c",r)) + vifm(i,"c",r)*(1+rt
+      fi0(i,"c",r)))/(1-rto("c",r));
+ 147  vom("g",r) = sum(i, vdfm(i,"g",r)*(1+rtfd0(i,"g",r)) + vifm(i,"g",r)*(1+rt
+      fi0(i,"g",r)))/(1-rto("g",r));
+ 148  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rt
+      fi0(i,"i",r)))/(1-rto("i",r));
+ 149   
+ 150  vdm("c",r) = vom("c",r);
+ 151  vdm("g",r) = vom("g",r);
+ 152  vim(i,r) =  sum(g, vifm(i,g,r));
+ 153  evom(f,r) = sum(g, vfm(f,g,r));
+ 154  vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 155          - sum(f, evom(f,r))
+ 156          - sum(g,  vom(g,r)*rto(g,r))
+ 157          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)
+      ))
+ 158          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 159          - sum((i,s), rtms(i,s,r) *  (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j
+      ,vtwr(j,i,s,r))))
+ 160          + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+ 161   
+ 162  vb("chksum") = sum(r, vb(r));
+ 163  display vb;
+ 164   
+ 165  *       Determine which factors are sector-specific
+ 166   
+ 167  mf(f) = yes$(1/etrae(f)=0);
+ 168  sf(f) = yes$(1/etrae(f)>0);
+ 169  display mf,sf;
+ 170   
+ 171  parameter       mprofit Zero profit for m,
+ 172                  yprofit Zero profit for y;
+ 173   
+ 174  mprofit(i,r) = vim(i,r) - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j, vtwr(j,i,
+      s,r))*pvtwr(i,s,r));
+ 175  mprofit(i,r) = round(mprofit(i,r),5);
+ 176  display mprofit;
+ 177   
+ 178  yprofit(g,r) = vom(g,r)*(1-rto(g,r))
+ 179          - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r))
+ 180                 + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+ 181          - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r)));
+ 182   
+ 183  yprofit(g,r) = round(yprofit(g,r),6)
+ 184  display yprofit;
+ 185   
+ 186  *       Define a numeraire region for denominating international
+ 187  *       transfers:
+ 188   
+ 189  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
+ 190  display rnum;
+ 191   
+EXIT C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows 08/17/16 17:46:57 Page 2
+GAMS Code to Read a GTAP 9 Dataset
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM\build\gtap9data_n
+                                          ewage.gms
+     2       14 IF EXIST       1      14  C:\GAMS\NEWAGE_REEEM\build\gsd.gdx
+     3       15 IF EXIST       1      15  C:\GAMS\NEWAGE_REEEM\build\gsd.gdx
+     4       15 GDXIN          1      15  C:\GAMS\NEWAGE_REEEM\data11\gsd.gdx
+     5      192 EXIT           1     192  C:\GAMS\NEWAGE_REEEM\build\gtap9data_n
+                                          ewage.gms
+
+
+COMPILATION TIME     =        0.421 SECONDS    129 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows 08/17/16 17:46:57 Page 3
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----     32 SET r  Regions
+
+isr,    omn,    AUS,    NZL,    XOC,    CHN,    HKG,    JPN,    KOR,    MNG
+TWN,    XEA,    BRN,    KHM,    IDN,    LAO,    MYS,    PHL,    SGP,    THA
+VNM,    XSE,    BGD,    IND,    NPL,    PAK,    LKA,    XSA,    CAN,    USA
+MEX,    XNA,    ARG,    BOL,    BRA,    CHL,    COL,    ECU,    PRY,    PER
+URY,    VEN,    XSM,    CRI,    GTM,    HND,    NIC,    PAN,    SLV,    XCA
+DOM,    JAM,    PRI,    TTO,    XCB,    AUT,    BEL,    CYP,    CZE,    DNK
+EST,    FIN,    FRA,    DEU,    GRC,    HUN,    IRL,    ITA,    LVA,    LTU
+LUX,    MLT,    NLD,    POL,    PRT,    SVK,    SVN,    ESP,    SWE,    GBR
+CHE,    NOR,    XEF,    ALB,    BGR,    BLR,    HRV,    ROU,    RUS,    UKR
+XEE,    XER,    KAZ,    KGZ,    XSU,    ARM,    AZE,    GEO,    BHR,    IRN
+JOR,    KWT,    QAT,    SAU,    TUR,    ARE,    XWS,    EGY,    MAR,    TUN
+XNF,    BEN,    BFA,    CMR,    CIV,    GHA,    GIN,    NGA,    SEN,    TGO
+XWF,    XCF,    XAC,    ETH,    KEN,    MDG,    MWI,    MUS,    MOZ,    RWA
+TZA,    UGA,    ZMB,    ZWE,    XEC,    BWA,    NAM,    ZAF,    XSC,    XTW
+
+
+----    163 PARAMETER vb  Current account balance
+
+isr          3.578,    omn        -14.436,    AUS        -16.556
+NZL         -2.990,    XOC          9.092,    CHN       -215.432
+HKG         -7.503,    JPN          9.814,    KOR        -16.338
+MNG          0.481,    TWN        -55.155,    XEA         -3.561
+BRN         -3.188,    KHM          0.687,    IDN         -5.200
+LAO          0.588,    MYS        -21.681,    PHL         13.714
+SGP        -45.564,    THA         -4.946,    VNM         17.504
+XSE          2.461,    BGD          4.608,    IND        110.989
+NPL          3.048,    PAK         18.627,    LKA          7.400
+XSA          6.291,    CAN         -3.249,    USA        571.845
+MEX        -21.656,    XNA          1.720,    ARG         -9.780
+BOL          0.581,    BRA         -4.852,    CHL         -9.432
+COL          1.146,    ECU          1.655,    PRY          1.323
+PER         -6.771,    URY          0.873,    VEN        -20.169
+XSM          0.289,    CRI         -2.751,    GTM          2.812
+HND          0.698,    NIC          0.470,    PAN         12.997
+SLV          3.092,    XCA         -0.190,    DOM          3.576
+JAM          2.235,    PRI          4.015,    TTO         -6.727
+XCB          9.314,    AUT         -6.420,    BEL         28.378
+CYP          2.820,    CZE         -6.899,    DNK        -12.323
+EST          1.325,    FIN          4.538,    FRA         62.145
+DEU       -112.865,    GRC         32.590,    HUN         -5.305
+IRL        -58.776,    ITA         48.248,    LVA          3.368
+LTU          4.782,    LUX          5.972,    MLT          3.784
+NLD        -48.700,    POL         20.362,    PRT          8.796
+SVK          1.373,    SVN          1.828,    ESP         35.969
+SWE        -20.959,    GBR        108.062,    CHE        -36.291
+NOR        -50.442,    XEF          0.909,    ALB          2.398
+BGR          3.985,    BLR          7.667,    HRV          1.241
+ROU          9.239,    RUS       -139.645,    UKR         10.802
+XEE          2.606,    XER          8.798,    KAZ        -25.490
+KGZ          4.332,    XSU         -5.142,    ARM          1.546
+AZE        -14.246,    GEO          3.528,    BHR         -2.254
+IRN        -51.193,    JOR          8.608,    KWT        -58.294
+QAT        -52.546,    SAU       -139.043,    TUR         55.993
+ARE         17.933,    XWS        -14.733,    EGY         16.782
+MAR         11.341,    TUN          2.283,    XNF         -9.527
+BEN          4.668,    BFA         -0.819,    CMR          0.810
+CIV         -1.646,    GHA          4.865,    GIN          1.099
+NGA        -17.879,    SEN          2.917,    TGO          1.812
+XWF         12.239,    XCF        -10.352,    XAC        -19.123
+ETH          3.487,    KEN          5.464,    MDG          0.170
+MWI          0.289,    MUS          1.403,    MOZ          1.036
+RWA          0.107,    TZA          3.110,    UGA          0.354
+ZMB         -2.224,    ZWE          2.456,    XEC          1.534
+BWA         -1.762,    NAM         -1.119,    ZAF          5.162
+XSC         -0.694,    XTW    6.252349E-5,    chksum -6.58062E-5
+
+
+----    169 SET mf  Mobile primary factors
+
+tech_aspros ,    clerks      ,    service_shop,    off_mgr_pros,    ag_othlowsk 
+Capital     
+
+
+----    169 SET sf  Sluggish primary factors (sector-specific)
+
+Land   ,    NatlRes
+
+
+----    176 PARAMETER mprofit  Zero profit for m
+
+            omn         AUS         CHN         HKG         JPN         KOR
+
+obs                                                 1.000000E-5
+gro                                                             -1.00000E-5
+osd                         1.000000E-5
+fsh                                     1.000000E-5
+coa                                                 1.000000E-5
+oil                         1.000000E-5             -2.00000E-5 1.000000E-5
+omn                         -3.00000E-5             -2.00000E-5
+wap                                                 -1.00000E-5
+p_c                                                 -1.00000E-5
+crp 1.000000E-5 -1.00000E-5 -2.00000E-5 8.000000E-5 -2.00000E-5 1.000000E-5
+i_s                                     2.000000E-5
+nfm                         -3.00000E-5
+fmp                         1.000000E-5
+mvh                         -2.00000E-5
+ele                                     1.000000E-5 -2.00000E-5
+ome             -1.00000E-5 4.000000E-5 3.000000E-5 -2.00000E-5
+omf                                     1.000000E-5
+trd                         -2.00000E-5
+
+  +         MNG         TWN         KHM         IDN         MYS         PHL
+
+omn                                                 1.000000E-5 1.000000E-5
+crp                         1.000000E-5 -1.00000E-5 -4.00000E-5
+nmm                         -1.00000E-5
+mvh -1.00000E-5
+ele             -1.00000E-5
+ome -1.00000E-5             1.000000E-5
+
+  +         SGP         THA         VNM         IND         CAN         USA
+
+isr                                                             1.000000E-5
+obs                                     1.000000E-5             1.000000E-5
+osg                                                             -1.00000E-5
+v_f                                                 -1.00000E-5
+frs                                     -1.00000E-5
+oil                                     2.000000E-5             8.000000E-5
+omn                                     1.000000E-5 -1.00000E-5
+b_t                         1.000000E-5
+tex             1.000000E-5 2.000000E-5 2.000000E-5             1.000000E-5
+lea                                                             -1.00000E-5
+lum                                                             -1.00000E-5
+ppp                         1.000000E-5                         -1.00000E-5
+p_c -1.00000E-5                                     -1.00000E-5 -3.00000E-5
+crp             -1.00000E-5             8.000000E-5 -5.00000E-5 7.000000E-5
+nmm                                     2.000000E-5 -1.00000E-5
+i_s                                                             -1.00000E-5
+nfm                                                             -1.00000E-5
+fmp                                                 -2.00000E-5 -1.00000E-5
+mvh                                                 -2.00000E-5 -2.00000E-5
+ele                                                             -1.00000E-5
+ome 1.000000E-5 -1.00000E-5 1.000000E-5 5.000000E-5 -5.00000E-5 2.000000E-5
+omf                                                             2.000000E-5
+trd                                                             1.000000E-5
+otp                                                             1.000000E-5
+atp                                                             1.000000E-5
+
+  +         MEX         BRA         PER         PAN         AUT         BEL
+
+gro -1.00000E-5
+v_f                                                 1.000000E-5
+omt -1.10000E-4
+wap                                                 -1.00000E-5
+lea                                     1.000000E-5
+lum -1.90000E-4
+crp -1.50000E-4 -1.00000E-5 -2.00000E-5             -2.00000E-5 1.000000E-5
+fmp -1.00000E-5
+mvh -2.00000E-5
+ele 1.000000E-5
+ome -2.00000E-5             -1.00000E-5             -1.00000E-4 1.000000E-5
+
+  +         CZE         FRA         DEU         ITA         LTU         NLD
+
+obs             -1.00000E-5 1.000000E-5
+osg                         1.000000E-5
+v_f                                                 1.000000E-5
+ocr                                     1.000000E-5
+fsh                                                 -1.00000E-5
+oil             1.000000E-5             1.000000E-5
+gas                         -1.00000E-5
+omn 5.000000E-5
+ofd             1.000000E-5
+tex                         -1.00000E-5
+wap             6.000000E-5             2.000000E-5
+lea             3.000000E-5             1.000000E-5
+lum             2.000000E-5
+p_c             -1.00000E-5
+crp -2.00000E-5 1.100000E-4 1.000000E-5 7.000000E-5 1.000000E-5
+i_s             -1.00000E-5             2.000000E-5
+nfm                         -1.00000E-5
+fmp                         -1.00000E-5
+mvh             2.000000E-5 1.000000E-5                         -1.00000E-5
+otn             1.000000E-5
+ele -2.00000E-5 2.000000E-5 -3.00000E-5 -1.00000E-5
+ome -4.00000E-5 8.000000E-5 -1.00000E-5 -1.00000E-5 -3.00000E-5
+omf             2.000000E-5
+trd             1.000000E-5 -1.00000E-5
+
+  +         POL         SVK         ESP         GBR         CHE         NOR
+
+obs                         -1.00000E-5 1.000000E-5
+oil                                     1.000000E-5
+crp 1.000000E-5 2.000000E-5 -1.00000E-5 1.000000E-5
+nfm                                     -1.00000E-5 -1.00000E-5
+fmp                                                             1.000000E-5
+mvh -1.00000E-5                         -1.00000E-5
+ele -1.00000E-5 -2.00000E-5             -2.00000E-5
+ome -1.00000E-5             1.000000E-5 -1.00000E-5 -1.00000E-5 -1.00000E-5
+
+  +         BLR         ROU         RUS         UKR         IRN         SAU
+
+v_f                                                             1.000000E-5
+fsh                                     -1.00000E-5
+tex             1.000000E-5
+crp             3.000000E-5
+nmm             1.000000E-5
+i_s             1.000000E-5
+mvh                         -1.00000E-5
+ele                         -1.00000E-5
+ome 1.000000E-5 -1.00000E-5 -1.00000E-5 1.000000E-5 -1.00000E-5
+
+  +         TUR         XWS         XAC         MOZ
+
+crp -1.00000E-5 -1.00000E-5
+nmm             2.000000E-5
+fmp             1.000000E-5
+ome                         -1.00000E-5 -1.00000E-5
+
+
+----    184 PARAMETER yprofit  Zero profit for y
+
+                      ( ALL       0.000 )
+
+
+----    190 SET rnum  Numeraire region
+
+USA
+
+
+
+EXECUTION TIME       =        4.462 SECONDS    361 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+Output     C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.lst

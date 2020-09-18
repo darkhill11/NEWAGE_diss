@@ -1,0 +1,86 @@
+
+--- Job NEWAGE9_WITHdiss_v2.gms Start 10/24/16 12:22:21 24.7.3 r58181 WEX-WEI x86 64bit/MS Windows
+GAMS 24.7.3   Copyright (C) 1987-2016 GAMS Development. All rights reserved
+Licensee: IER                                            S151125:0513AO-WIN
+          Universitaet Stuttgart                                      DC848
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- NEWAGE9_WITHdiss_v2.gms(49) 2 Mb
+--- .gtap9data_newage.gms(16) 2 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9.gdx
+--- .gtap9data_newage.gms(193) 4 Mb
+--- NEWAGE9_WITHdiss_v2.gms(606) 4 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_ELE.gdx
+--- NEWAGE9_WITHdiss_v2.gms(1158) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_XCEL.gdx
+--- NEWAGE9_WITHdiss_v2.gms(1186) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_ELE.gdx
+--- NEWAGE9_WITHdiss_v2.gms(1594) 5 Mb
+--- .dataload_hhenergy_v88.gms(24) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\results\temp_data.gdx
+--- .dataload_hhenergy_v88.gms(152) 5 Mb
+--- call gdxxrw ..\xcel_data\energy_data.xlsx @temp.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\energy_data.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\energy_data.gdx
+Total time = 1108 Ms
+--- .dataload_hhenergy_v88.gms(153) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\energy_data.gdx
+--- .dataload_hhenergy_v88.gms(863) 5 Mb
+--- NEWAGE9_WITHdiss_v2.gms(1781) 5 Mb
+--- call gdxxrw ..\xcel_data\Annahmen_Stromerzeugung.xlsx @temp1.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\Annahmen_Stromerzeugung.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\Annahmen_Stromerzeugung.gdx
+Total time = 375 Ms
+--- NEWAGE9_WITHdiss_v2.gms(1783) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\Annahmen_Stromerzeugung.gdx
+--- NEWAGE9_WITHdiss_v2.gms(1795) 5 Mb
+--- call gdxxrw ..\xcel_data\ETP2014_CO2_emissions.xlsx @temp2.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\ETP2014_CO2_emissions.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\ETP2014_CO2_emissions.gdx
+Total time = 765 Ms
+--- NEWAGE9_WITHdiss_v2.gms(1797) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\ETP2014_CO2_emissions.gdx
+--- NEWAGE9_WITHdiss_v2.gms(1841) 5 Mb
+--- call gdxxrw ..\xcel_data\CO2-Pfad_EU-ETS_v7.xlsx @temp3.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\CO2-Pfad_EU-ETS_v7.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\CO2-Pfad_EU-ETS_v7.gdx
+Total time = 514 Ms
+--- NEWAGE9_WITHdiss_v2.gms(1842) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\CO2-Pfad_EU-ETS_v7.gdx
+--- NEWAGE9_WITHdiss_v2.gms(2764) 5 Mb
+--- Running the MPSGE preprocessor ...
+--- .mpsgeset(19) 5 Mb
+--- call gmsge_nx "C:\GAMS\NEWAGE_REEEM\NEWAGE\225a\gamscge.dat"
+--- .mpsgeset(20) 5 Mb
+--- ..gamsgeh.dat(1840) 5 Mb
+--- .mpsgeset(22) 5 Mb
+--- NEWAGE9_WITHdiss_v2.gms(2870) 5 Mb
+--- .NEWAGE.gen(2892) 5 Mb
+--- NEWAGE9_WITHdiss_v2.gms(2873) 5 Mb
+--- Starting execution: elapsed 0:00:03.180
+--- NEWAGE9_WITHdiss_v2.gms(1783) 11 Mb
+--- GDX File C:\GAMS\NEWAGE_REEEM\results\temp_data.gdx
+--- NEWAGE9_WITHdiss_v2.gms(2648) 11 Mb
+--- GDX File C:\GAMS\NEWAGE_REEEM\data11\hh_data.gdx
+--- NEWAGE9_WITHdiss_v2.gms(8679) 14 Mb
+--- Generating MCP model NEWAGE
+--- NEWAGE9_WITHdiss_v2.gms(4271) 18 Mb
+*** Error at line 4271: rPower: FUNC DOMAIN: x**y, x < 0
+--- NEWAGE9_WITHdiss_v2.gms(4271) 18 Mb 1 Error
+*** Error at line 4271: A constant in a nonlinear expression in equation EQ_001 evaluated to UNDF
+--- NEWAGE9_WITHdiss_v2.gms(8681) 16 Mb 2 Errors
+*** SOLVE aborted
+--- Executing MPSGE: elapsed 0:00:03.700
+--- Putfile MPS C:\GAMS\NEWAGE_REEEM\NEWAGE\225a\gamscge.dat
+--- NEWAGE9_WITHdiss_v2.gms(8681) 16 Mb 2 Errors
+*** Status: Execution error(s)
+--- Job NEWAGE9_WITHdiss_v2.gms Stop 10/24/16 12:22:24 elapsed 0:00:03.700
+Exit code = 3

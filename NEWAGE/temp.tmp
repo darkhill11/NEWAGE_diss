@@ -1,0 +1,20 @@
+set=cbt          rng=sets!B4     cdim=0  rdim=1
+set=cbf          rng=sets!C4     cdim=0  rdim=1
+set=bt           rng=sets!D4     cdim=0  rdim=1
+set=bf           rng=sets!E4     cdim=0  rdim=1
+set=ct           rng=sets!F4     cdim=0  rdim=1
+set=cf           rng=sets!G4     cdim=0  rdim=1
+
+par=energy       rng=Summary!B7:K14      cdim=1  rdim=2
+par=price_mwh    rng=Summary!A65:C71             rdim=2
+par=house_qm     rng=Summary!A55:G59     cdim=1  rdim=2
+par=price_qm     rng=Summary!B39:D42             rdim=2
+par=assets       rng=Summary!B35:D36             rdim=2
+
+par=hrents       rng=IVD_Preise!AX72:AY75 cdim=0 rdim=1
+par=avrent       rng=IVD_Preise!AX70:AY71 cdim=1 rdim=1
+
+par=HH_boup      rng=dataset!D4:X32      cdim=1  rdim=3
+*par=HH_boup      rng=dataset_DEU!D4:X32   cdim=1  rdim=3
+*par=HH_boup      rng=dataset_komb!D4:X60 cdim=1  rdim=3
+

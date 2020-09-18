@@ -1,0 +1,3 @@
+"0","# transfor quintiles into rows"
+"0","pf_NEWAGE <- pf2"
+"0","pf_NEWAGE <- pf_NEWAGE %>% gather('hh1','hh2','hh3','hh4','hh5',key = 'Quintile',value = 'Value' )"

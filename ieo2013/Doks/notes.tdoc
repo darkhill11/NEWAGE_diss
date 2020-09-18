@@ -1,0 +1,208 @@
+*	Table of contents:
+
+Scenarios:
+a	Reference Growth Path		
+b	High economic growth path		
+c	Low Economic Growth Path		
+d	High Oil Price Path			
+e	Low oil price path			
+
+Tables:
+1-12 ==> 
+1	"World Total Primary Energy Consumption by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+2	"World Total Energy Consumption by Region and Fuel, Reference Case, 2005-2035 (Quadrillion Btu)"
+3	"World Gross Domestic Product (GDP) by Region Expressed in Purchasing Power Parity, Reference Case, 2005-2035 (Billion 2005 Dollars)"
+4	"World Liquids Consumption by Region, Reference Case, 2005-2035 (Million Barrels per Day)"
+5	"World Natural Gas Consumption by Region, Reference Case, 2005-2035 (Trillion Cubic Feet)"
+6	"World Coal Consumption by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+7	"World Nuclear Energy Consumption by Region, Reference Case, 2005-2035 (Billion Kilowatthours)"
+8	"World Consumption of Hydroelectricity and Other Renewable Energy by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+9	"World Carbon Dioxide Emissions by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+10      "World Carbon Dioxide Emissions from Liquids Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+11      "World Carbon Dioxide Emissions from Natural Gas Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+12      "World Carbon Dioxide Emissions from Coal Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+
+*. formerly  4	"World Gross Domestic Product (GDP) by Region Expressed in Market Exchange Rates, Reference Case, 2005-2035 (Billion 2005 Dollars)"
+*. formerly 14	"World Population by Region, Reference Case, 2005-2035 (Millions)";
+
+
+
+*	IEO2013 provides historical data and projected data in annual time-steps from 2005 - 2040
+
+*	In order to provide data for 2004 and data for periods after 2040 we adopt the following procedures:
+(i)	To fill in the values for 2004 we make a uniform growth assumption for the period between 2005-2006 (see subtroutine extrap.gms).
+(ii)	To extrapolate data for time steps t > 2035 we use a geometric extapolation for t based on values for t-1 and t-2 
+	(see subroutine extrap.gms). 
+
+
+To use our data routines we keep the file structure below:
+
+reada.gms ==> $call  'xlsdump xls\ieorefcase.xls'	==> a(*,*,yr)	  Reference Growth Path,
+readb.gms ==> $call  'xlsdump xls\ieohecon.xls'	==> b(*,r,yr)	  High economic growth path,
+readc.gms ==> $call  'xlsdump xls\ieolecon.xls'	==> c(*,r,yr)	  Low Economic Growth Path,
+readd.gms ==> $call  'xlsdump xls\ieohprce.xls'	==> d(*,r,yr)	  High Oil Price Path			       
+reade.gms ==> $call  'xlsdump xls\ieolprce.xls'	==> e(*,r,yr)	  Low oil price path,			       
+
+readf.gms ==> $call  'xlsdump xls\ieoenduse.xls'	==> f(r,s,*,yr)	  Sectoral demand projections,		       
+readg.gms ==> $call  'xlsdump xls\ieopol.xls'		==> g(scn,r,*,yr) World oil market statistics,		       
+readh.gms ==> $call  'xlsdump xls\ieoecg.xls'		==> h(*,r,yr)	  Electricity capacity and generation statistics;
+
+
+
+					IEO2010		IEO2009
+reada - ieorefcase.xls'			A1-A14		A1-A14		
+readb - ieohecon.xls'			B1-B12		B1-B12
+readc - ieolecon.xls'			C1-C12		C1-C12
+readd - ieohprce.xls'			D1-D12		D1-D12
+reade - ieolprce.xls'			E1-E12		E1-E12
+			
+readf - ieoenduse.xls'			F1-F19		F1-F19
+readg - ieopol.xls'			G1-G15		G1-G15		
+readh - ieoecg.xls'			H1-H20		H1-H18
+
+
+
+parameter
+	a1(*,*)		"World Total Primary Energy Consumption by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+	a2(*,*,*)	"World Total Energy Consumption by Region and Fuel, Reference Case, 2005-2035 (Quadrillion Btu)"
+	a3(*,*)		"World Gross Domestic Product (GDP) by Region Expressed in Purchasing Power Parity, Reference Case, 2005-2035 (Billion 2005 Dollars)"
+	a4(*,*)		"World Gross Domestic Product (GDP) by Region Expressed in Market Exchange Rates, Reference Case, 2005-2035 (Billion 2005 Dollars)"
+	a5(*,*)		"World Liquids Consumption by Region, Reference Case, 2005-2035 (Million Barrels per Day)"
+	a6(*,*)		"World Natural Gas Consumption by Region, Reference Case, 2005-2035 (Trillion Cubic Feet)"
+	a7(*,*)		"World Coal Consumption by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+	a8(*,*)		"World Nuclear Energy Consumption by Region, Reference Case, 2005-2035 (Billion Kilowatthours)"
+	a9(*,*)		"World Consumption of Hydroelectricity and Other Renewable Energy by Region, Reference Case, 2005-2035 (Quadrillion Btu)"
+	a10(*,*)	"World Carbon Dioxide Emissions by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+	a11(*,*)	"World Carbon Dioxide Emissions from Liquids Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+	a12(*,*)	"World Carbon Dioxide Emissions from Natural Gas Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+	a13(*,*)	"World Carbon Dioxide Emissions from Coal Use by Region, Reference Case, 2005-2035 (Million Metric Tons Carbon Dioxide)"
+	a14(*,*)	"World Population by Region, Reference Case, 2005-2035 (Millions)";
+
+parameter
+	b1(*,*)		"Total Energy Consumption by Region, High Economic Growth Case (Quadrillion Btu)",
+	b2(*,*,*)	"Total Energy Consumption by Region and Fuel, High Economic Growth Case (Quadrillion Btu)",
+	b3(*,*)		"Gross Domestic Product (GDP) by Region in Purchasing Power Parity, High Economic Growth Case (Billion 2000 Dollars)",
+	b4(*,*)		"Liquids Consumption by Region, High Economic Growth Case (Million Barrels per Day)",
+	b5(*,*)		"Natural Gas Consumption by Region, High Economic Growth Case (Trillion Cubic Feet)",
+	b6(*,*)		"Coal Consumption by Region, High Economic Growth Case (Million Short Tons)",
+	b7(*,*)		"Nuclear Energy Consumption by Region, High Economic Growth Case (Billion Kilowatthours)",
+	b8(*,*)		"Consumption of Hydroelectricity and Other Renewable Energy by Region, High Economic Growth Case (Quadrillion Btu)"
+	b9(*,*)		"Carbon Dioxide Emissions by Region, High Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	b10(*,*)	"Carbon Dioxide Emissions from Liquids Use by Region, High Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	b11(*,*)	"Carbon Dioxide Emissions from Natural Gas Use by Region, High Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	b12(*,*)	"Carbon Dioxide Emissions from Coal Use by Region, High Economic Growth Case (Million Metric Tons Carbon Dioxide)";
+
+parameter
+	c1(*,*)		"Total Energy Consumption by Region, Low Economic Growth Case (Quadrillion Btu)",
+	c2(*,*,*)	"Total Energy Consumption by Region and Fuel, Low Economic Growth Case (Quadrillion Btu)",
+	c3(*,*)		"Gross Domestic Product (GDP) by Region in Purchasing Power Parity, Low Economic Growth Case (Billion 2005 Dollars)",
+	c4(*,*)		"Liquids Consumption by Region, Low Economic Growth Case (Million Barrels per Day)",
+	c5(*,*)		"Natural Gas Consumption by Region, Low Economic Growth Case (Trillion Cubic Feet)",
+	c6(*,*)		"Coal Consumption by Region, Low Economic Growth Case (Million Short Tons)",
+	c7(*,*)		"Nuclear Energy Consumption by Region, Low Economic Growth Case (Billion Kilowatthours)",
+	c8(*,*)		"Consumption of Hydroelectricity and Other Renewable Energy by Region, Low Economic Growth Case (Quadrillion Btu)"
+	c9(*,*)		"Carbon Dioxide Emissions by Region, Low Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	c10(*,*)	"Carbon Dioxide Emissions from Liquids Use by Region, Low Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	c11(*,*)	"Carbon Dioxide Emissions from Natural Gas Use by Region, Low Economic Growth Case (Million Metric Tons Carbon Dioxide)",
+	c12(*,*)	"Carbon Dioxide Emissions from Coal Use by Region, Low Economic Growth Case (Million Metric Tons Carbon Dioxide)";
+	
+
+parameter
+	d1(*,*)		"Total Energy Consumption by Region, High Oil Price  Case (Quadrillion Btu)",
+	d2(*,*,*)	"Total Energy Consumption by Region and Fuel, High Oil Price  Case (Quadrillion Btu)",
+	d3(*,*)		"Gross Domestic Product (GDP) by Region, High Oil Price  Case (Billion 2005 Dollars)",
+	d4(*,*)		"Liquids Consumption by Region in Purchasing Power Parity, High Oil Price  Case (Million Barrels per Day)",
+	d5(*,*)		"Natural Gas Consumption by Region, High Oil Price  Case (Trillion Cubic Feet)",
+	d6(*,*)		"Coal Consumption by Region, High Oil Price  Case (Million Short Tons)",
+	d7(*,*)		"Nuclear Energy Consumption by Region, High Oil Price  Case (Billion Kilowatthours)",
+	d8(*,*)		"Consumption of Hydroelectricity and Other Renewable Energy by Region, High Oil Price  Case (Quadrillion Btu)"
+	d9(*,*)		"Carbon Dioxide Emissions by Region, High Oil Price  Case (Million Metric Tons Carbon Dioxide)",
+	d10(*,*)	"Carbon Dioxide Emissions from Liquids Use by Region, High Oil Price  Case (Million Metric Tons Carbon Dioxide)",
+	d11(*,*)	"Carbon Dioxide Emissions from Natural Gas Use by Region, High Oil Price  Case (Million Metric Tons Carbon Dioxide)",
+	d12(*,*)	"Carbon Dioxide Emissions from Coal Use by Region, High Oil Price  Case (Million Metric Tons Carbon Dioxide)";
+
+
+
+parameter
+	e1(*,*)		"Total Energy Consumption by Region, Low Oil Price Case (Quadrillion Btu)",
+	e2(*,*,*)	"Total Energy Consumption by Region and Fuel, Low Oil Price Case (Quadrillion Btu)",
+	e3(*,*)		"Gross Domestic Product (GDP) by Region in Purchasing Power Parity, Low Oil Price Case (Billion 2005 Dollars)",
+	e4(*,*)		"Liquids Consumption by Region, Low Oil Price Case (Million Barrels per Day)",
+	e5(*,*)		"Natural Gas Consumption by Region, Low Oil Price Case (Trillion Cubic Feet)",
+	e6(*,*)		"Coal Consumption by Region, Low Oil Price Case (Million Short Tons)",
+	e7(*,*)		"Nuclear Energy Consumption by Region, Low Oil Price Case (Billion Kilowatthours)",
+	e8(*,*)		"Consumption of Hydroelectricity and Other Renewable Energy by Region, Low Oil Price Case (Quadrillion Btu)"
+	e9(*,*)		"Carbon Dioxide Emissions by Region, Low Oil Price Case (Million Metric Tons Carbon Dioxide)",
+	e10(*,*)	"Carbon Dioxide Emissions from Liquids Use by Region, Low Oil Price Case (Million Metric Tons Carbon Dioxide)",
+	e11(*,*)	"Carbon Dioxide Emissions from Natural Gas Use by Region, Low Oil Price Case (Million Metric Tons Carbon Dioxide)",
+	e12(*,*)	"Carbon Dioxide Emissions from Coal Use by Region, Low Oil Price Case (Million Metric Tons Carbon Dioxide)";
+
+parameter
+	f1(*,*,*)	"Total World Delivered Energy Consumption by End-Use Sector and Fuel, (Quadrillion Btu)",
+	f2(*,*,*)	"Total OECD Delivered Energy Consumption by End-Use Sector and Fuel (Quadrillion Btu)",
+	f3(*,*,*)	"Delivered Energy Consumption in the United States by End-Use Sector and Fuel (Quadrillion Btu)",
+	f4(*,*,*)	"Delivered Energy Consumption in Canada by End-Use Sector and Fuel (Quadrillion Btu)",
+	f5(*,*,*)	"Delivered Energy Consumption in Mexico by End-Use Sector and Fuel (Quadrillion Btu)",
+	f6(*,*,*)	"Delivered Energy Consumption in OECD Europe by End-Use Sector and Fuel (Quadrillion Btu)",
+	f7(*,*,*)	"Delivered Energy Consumption in Japan by End-Use Sector and Fuel (Quadrillion Btu)",
+	f8(*,*,*)	"Delivered Energy Consumption in South Korea by End-Use Sector and Fuel (Quadrillion Btu)",
+	f9(*,*,*)	"Delivered Energy Consumption in Australia/New Zealand by End-Use Sector and Fuel (Quadrillion Btu)",
+	f10(*,*,*)	"Total Non-OECD Delivered Energy Consumption by End-Use Sector and Fuel (Quadrillion Btu)",
+	f11(*,*,*)	"Delivered Energy Consumption in Russia by End-Use Sector and Fuel (Quadrillion Btu)",
+	f12(*,*,*)	"Delivered Energy Consumption Otherin  Non-OECD Europe and Eurasia by End-Use Sector and Fuel (Quadrillion Btu)",
+	f13(*,*,*)	"Delivered Energy Consumption in China by End-Use Sector and Fuel (Quadrillion Btu)",
+	f14(*,*,*)	"Delivered Energy Consumption in India by End-Use Sector and Fuel (Quadrillion Btu)",
+	f15(*,*,*)	"Delivered Energy Consumption in Other Non-OECD Asia by End-Use Sector and Fuel (Quadrillion Btu)",
+	f16(*,*,*)	"Delivered Energy Consumption in the Middle East by End-Use Sector and Fuel (Quadrillion Btu)",
+	f17(*,*,*)	"Delivered Energy Consumption in Africa by End-Use Sector and Fuel (Quadrillion Btu)",
+	f18(*,*,*)	"Delivered Energy Consumption in Brazil by End-Use Sector and Fuel (Quadrillion Btu)",
+	f19(*,*,*)	"Delivered Energy Consumption in Other Central and South America by End-Use Sector and Fuel (Quadrillion Btu)";
+
+parameter
+	g1(*,*)	  "Total Liquids Production by Region and Country, Reference Case"
+	g2(*,*)	   "Conventional Liquids Production by Region and Country, Reference Case"
+	g3(*,*,*)  "Unconventional Liquids Production by Region and Country, Reference Case"
+
+	g4(*,*)	   "Total Liquids Production by Region and Country, High Oil Price Case"
+	g5(*,*)	   "Conventional Liquids Production by Region and Country, High Oil Price Case"
+	g6(*,*,*)  "Unconventional Liquids Production by Region and Country, High Oil Price Case"
+
+	g7(*,*)	   "Total Liquids Production by Region and Country, Low Oil Price Case"
+	g8(*,*)	   "Conventional Liquids Production by Region and Country, Low Oil Price Case"
+	g9(*,*,*)  "Unconventional Liquids Production by Region and Country, Low Oil Price Case",
+
+	g10(*,*)   "Total Liquids Production by Region and Country, High Economic Growth Case"
+	g11(*,*)   "Conventional Liquids Production by Region and Country, High Economic Growth Case"
+	g12(*,*,*) "Unconventional Liquids Production by Region and Country, High Economic Growth Case"
+
+	g13(*,*)   "Total Liquids Production by Region and Country, Low Economic Growth Case"
+	g14(*,*)   "Conventional Liquids Production by Region and Country, Low Economic Growth Case"
+	g15(*,*,*) "Unconventional Liquids Production by Region and Country, Low Economic Growth Case";
+
+parameter
+*	Units: Gigawatts
+
+	h1(*,*)		"Total Installed Generating Capacity",
+	h2(*,*)		"Installed Liquids-Fired Generating Capacity",
+	h3(*,*)		"Installed Natural-Gas-Fired Generating Capacity",
+	h4(*,*)		"Installed Coal-Fired Generating Capacity",
+	h5(*,*)		"Installed Nuclear Generating Capacity",
+	h6(*,*)		"Installed Hydroelectric Renewable Generating Capacity",
+	h7(*,*)		"Installed Wind-Powered Generating Capacity",
+	h8(*,*)		"Installed Geothermal Generating Capacity",
+	h9(*,*)		"Installed Other Renewable Generating Capacity",
+
+*	units:	"Billion Kilowatthours --  from central producers"
+
+	h10(*,*)	"Total Net Electricity Generation",
+	h11(*,*)	"Net Liquids-Fired Electricity Generation",
+	h12(*,*)	"Net Natural-Gas-Fired Electricity Generation",
+	h13(*,*)	"Net Coal-Fired Electricity Generation",
+	h14(*,*)	"Net Nuclear Electricity Generation",
+	h15(*,*)	"Net Hydroelectric Generation",
+	h16(*,*)	"Net Wind-Powered Electricity Generation",
+	h17(*,*)	"Net Geothermal Electricity Generation",
+	h18(*,*)	"Net Other Renewable Electricity Generation",
+
+	h19(*,*)	"Installed solar generating capacity",
+	h20(*,*)	"Net solar electricity generation from central producers";

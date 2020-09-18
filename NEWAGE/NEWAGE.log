@@ -1,0 +1,115 @@
+
+--- Job NEWAGE.gms Start 08/19/16 10:28:45 24.7.3 r58181 WEX-WEI x86 64bit/MS Windows
+GAMS 24.7.3   Copyright (C) 1987-2016 GAMS Development. All rights reserved
+Licensee: IER                                            S151125:0513AO-WIN
+          Universitaet Stuttgart                                      DC848
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- NEWAGE.gms(49) 2 Mb
+--- .gtap9data_newage.gms(16) 2 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9.gdx
+--- .gtap9data_newage.gms(193) 4 Mb
+--- NEWAGE.gms(614) 4 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9_ELE.gdx
+--- NEWAGE.gms(1071) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9_XCEL.gdx
+--- NEWAGE.gms(1099) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9_ELE.gdx
+--- NEWAGE.gms(1696) 5 Mb
+--- call gdxxrw ..\xcel_data\Annahmen_Stromerzeugung.xlsx @temp1.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\Annahmen_Stromerzeugung.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\Annahmen_Stromerzeugung.gdx
+Total time = 405 Ms
+--- NEWAGE.gms(1698) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\Annahmen_Stromerzeugung.gdx
+--- NEWAGE.gms(1710) 5 Mb
+--- call gdxxrw ..\xcel_data\ETP2014_CO2_emissions.xlsx @temp2.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\ETP2014_CO2_emissions.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\ETP2014_CO2_emissions.gdx
+Total time = 765 Ms
+--- NEWAGE.gms(1712) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\ETP2014_CO2_emissions.gdx
+--- NEWAGE.gms(1756) 5 Mb
+--- call gdxxrw ..\xcel_data\CO2-Pfad_EU-ETS_v7.xlsx @temp3.tmp
+
+GDXXRW           24.7.3 r58181 Released Jul 11, 2016 VS8 x86 32bit/MS Windows 
+Input file : C:\GAMS\NEWAGE_REEEM\xcel_data\CO2-Pfad_EU-ETS_v7.xlsx
+Output file: C:\GAMS\NEWAGE_REEEM\NEWAGE\CO2-Pfad_EU-ETS_v7.gdx
+Total time = 499 Ms
+--- NEWAGE.gms(1757) 5 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\NEWAGE\CO2-Pfad_EU-ETS_v7.gdx
+--- NEWAGE.gms(2485) 5 Mb
+--- Running the MPSGE preprocessor ...
+--- .mpsgeset(19) 5 Mb
+--- call gmsge_nx "C:\GAMS\NEWAGE_REEEM\NEWAGE\225a\gamscge.dat"
+--- .mpsgeset(20) 5 Mb
+--- ..gamsgeh.dat(1142) 5 Mb
+--- .mpsgeset(22) 5 Mb
+--- NEWAGE.gms(2589) 5 Mb
+--- .NEWAGE.gen(1698) 5 Mb
+--- NEWAGE.gms(2774) 5 Mb
+--- Starting execution: elapsed 0:00:01.981
+--- NEWAGE.gms(5643) 10 Mb
+--- Generating MCP model NEWAGE
+--- NEWAGE.gms(5645) 14 Mb
+---   47 rows  26,763 columns  26,879 non-zeroes
+---   313 nl-code  96 nl-non-zeroes
+--- NEWAGE.gms(5645) 12 Mb
+--- Executing MPSGE: elapsed 0:00:02.451
+
+MPSGE: Extracting Jacobian nonzero structure.
+
+--- Executing MCP subsolver PATH
+Reading dictionary...
+Reading row data...
+Evaluating functions...
+Checking model...
+Calculating Jacobian...
+
+PATH             24.7.3 r58181 Released Jul 11, 2016 WEI x86 64bit/MS Windows 
+
+2387 row/cols, 65772 non-zeros, 1.15% dense.
+
+Path 4.7.04 (Mon Jul 11 07:51:42 2016)
+Written by Todd Munson, Steven Dirkse, and Michael Ferris
+
+Major Iteration Log
+major minor  func  grad  residual    step  type prox    inorm  (label)
+    0     0     1     1 8.3226e-005           I 0.0e+000 5.7e-005 (PY.SER.USA)
+
+FINAL STATISTICS
+Inf-Norm of Complementarity . .  5.6963e-005 eqn: (PY.SER.USA)
+Inf-Norm of Normal Map. . . . .  5.6963e-005 eqn: (PY.SER.USA)
+Inf-Norm of Minimum Map . . . .  5.6963e-005 eqn: (PY.SER.USA)
+Inf-Norm of Fischer Function. .  5.6965e-005 eqn: (PY.SER.USA)
+Inf-Norm of Grad Fischer Fcn. .  8.3363e-001 eqn: (A.SER.USA)
+Two-Norm of Grad Fischer Fcn. .  1.2271e+000
+
+ ** EXIT - iteration limit.
+
+Major Iterations. . . . 0
+Minor Iterations. . . . 0
+Restarts. . . . . . . . 0
+Crash Iterations. . . . 0
+Gradient Steps. . . . . 0
+Function Evaluations. . 1
+Gradient Evaluations. . 1
+Basis Time. . . . . . . 0.000000
+Total Time. . . . . . . 0.374000
+Residual. . . . . . . . 8.322570e-005
+
+--- Restarting execution
+--- NEWAGE.gms(5645) 8 Mb
+--- Reading solution for model NEWAGE
+--- NEWAGE.gms(5645) 10 Mb
+--- Executing after solve: elapsed 0:00:04.271
+--- NEWAGE.gms(5825) 11 Mb
+--- GDX File C:\GAMS\NEWAGE_REEEM\NEWAGE\bmk.gdx
+--- NEWAGE.gms(5827) 11 Mb
+--- Putfile MPS C:\GAMS\NEWAGE_REEEM\NEWAGE\225a\gamscge.dat
+*** Status: Normal completion
+--- Job NEWAGE.gms Stop 08/19/16 10:28:49 elapsed 0:00:04.291

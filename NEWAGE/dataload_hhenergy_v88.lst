@@ -1,0 +1,2503 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 1
+Load technology specific car data
+C o m p i l a t i o n
+
+
+   2   
+   3  * ------ 30.09.2014 Mainly taken from impose_transport_v02.gms
+   4  * ------ in D:\GAMS\Modell_TRN\Dataload\With CO2 - 2011-12-07\w efficiency - wo distance (new)\Code
+   5   
+   6  *$if not set source       $set source     18x18x4
+   9   
+  10  *$if not set ds           $set ds         %output%FINAL
+  12   
+  16   
+  21   
+  22  * ------ temp_data.gdx kommt aus NEWAGE8, wo die vorübergehenden Daten gespeichert werden
+  23  * ------ Der Include-Befehl für dataload_hhenergy... in NEWAGE8 darf daher nicht NICHT VOR dem Execute_unload-Befehl kommen (vgl. NEWAGE...gms)
+GDXIN   C:\GAMS\NEWAGE_REEEM\results\temp_data.gdx
+  25   
+  26  *$stop
+  27   
+  28  set r(*)        Regions;
+  29  set g(*)        Sectors;
+  30  set i(*)        Goods;
+  31  set e(*)        Energy Goods;
+  32  set bawdeu(r)   BRD ;
+  33  set cru(*)      Crude oil good;
+  34  set deu(*)      Germany;
+  35  set buiser(*)   Buildings and Services;
+  36  set oil(*)      Mineral oil;
+  37  set gas(*)      Gas;
+  38  set col(*)      Coal;
+  39  set fe(*)       Final energy goods col-gas-oil;
+  40  set agr(*)      Agricultural goods;
+  41  set trn(*)      Transport services;
+  42  set ele(*)      Electricity sector;
+--- LOAD  r = 5:r
+--- LOAD  g = 2:g
+--- LOAD  i = 3:i
+--- LOAD  e = 121:e
+--- LOAD  fe = 124:fe
+  48  *$if not defined bawdeu   $load bawdeu
+--- LOAD  cru = 127:cru
+--- LOAD  deu = 81:DEU
+--- LOAD  buiser = 147:buiser
+--- LOAD  oil = 128:oil
+--- LOAD  gas = 129:gas
+--- LOAD  col = 130:col
+--- LOAD  agr = 142:agr
+--- LOAD  trn = 133:trn
+--- LOAD  ele = 125:ele
+  58   
+  59  parameter c0    Final demand by commodity
+  60  parameter tc    Tax rate on final demand
+  61  parameter pc0   Reference price for private demand
+  62  parameter ty
+  63  parameter vom
+  64  parameter aeei
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 2
+Load technology specific car data
+C o m p i l a t i o n
+
+
+  65  parameter co2em
+  66  parameter co2em_total
+  67  parameter eco2d
+  68  parameter eco2i
+  69  parameter eco2
+  70  parameter cecphys
+--- LOAD  c0 = 246:c0
+--- LOAD  tc = 248:tc
+--- LOAD  pc0 = 238:pc0
+--- LOAD  ty = 230:ty
+--- LOAD  vom = 38:vom
+--- LOAD  aeei = 300:aeei
+--- LOAD  co2em = 306:co2em
+--- LOAD  co2em_total = 320:co2em_total
+--- LOAD  eco2d = 23:eco2d
+--- LOAD  eco2i = 24:eco2i
+--- LOAD  eco2 = 323:eco2
+--- LOAD  cecphys = 305:cecphys
+  83   
+  84  SET      select(r)       Dynamic set for selecting regions ;
+  85  select("deu") = yes;
+  86   
+  87  *display r, g, i, e, cru, c0, tc, pc0, select;
+  88   
+  89   
+  90  *$eolcom //
+  91  * ------ 7.01.2015
+  92   
+  93  *###############################################################################
+  94  *                  (2) LOAD BOTTOM UP CAR TECHNOLOGY DATA
+  95  *###############################################################################
+  96   
+  97   
+  98   
+  99   
+ 100  * ##############################################################################
+ 101  * ------ 7.01.2015 Energy Quantities
+ 102  set cbt, cbf, bt(cbt), bf(cbf), ct(cbt), cf(cbf);
+ 103   
+ 104   
+ 105   
+ 106  parameter
+ 107           HH_boup                 BoUp dataset on household energy oonsumption by technology
+ 108           HH_boup_deu             BoUp dataset on household energy oonsumption by technology in DEU
+ 109           HH_boup_baw             BoUp dataset on household energy oonsumption by technology in BAW
+ 110           energy                  Energy demand quantities in cars and buildings [GWh]
+ 111           ener_c(r,ct,cf)         Energy demand quantities in cars [TWh]
+ 112           ener_b(r,bt,bf)         Energy demand quantities in buildings [TWh]
+ 113           price_mwh(r,cbf)        Energy carrier prices [€ per MWh]
+ 114           price_qm(r,bt)          Floor space prices per housing type [K€ per m²]
+ 115           house_qm(r,cbt,cbt)     Living space per housing type [m²]
+ 116           assets(r,*)             Net assets of xtant and new cars and buildings [Bn €]
+ 117           phev_ele                Electricity share in PHEV fuel consumption per 100km / 0.20 /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 3
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 118           PJ_TWh                  PJ per TWh / 3.6 /
+ 119           carfactor               Price proportion of new and old cars (DAT Report 2008)  / 3.1 /
+ 120           hrents                  Housing rents in 2007 per m² (IVD Preisspiegel 2007-2008)
+ 121           avrent                  Average Housing rent in 2007 per m² (IVD Preisspiegel 2007-2008)
+ 122  ;
+ 123   
+ 124  * Energiemengen einlesen, Preise ergeben sich durch Division mit den Werten
+ 125  *enerb(
+ 126   
+ 127  *------------------------ LOAD DATA FROM SPREADSHEET ---------------------------
+ 128  * ------ write gdxxrw option file
+ 151   
+GDXIN   C:\GAMS\NEWAGE_REEEM\NEWAGE\energy_data.gdx
+ 154   
+--- LOAD  energy = 7:energy
+--- LOAD  cbt = 1:cbt
+--- LOAD  cbf = 2:cbf
+--- LOAD  bt = 3:bt
+--- LOAD  bf = 4:bf
+--- LOAD  ct = 5:ct
+--- LOAD  cf = 6:cf
+--- LOAD  price_mwh = 8:price_mwh
+--- LOAD  price_qm = 10:price_qm
+--- LOAD  house_qm = 9:house_qm
+--- LOAD  assets = 11:assets
+--- LOAD  hrents = 12:hrents
+--- LOAD  avrent = 13:avrent
+--- LOAD  HH_boup = 14:HH_boup
+ 161   
+ 162  ener_b(r,bt,bf)  = energy(r,bf,bt) / 1000;
+ 163  ener_c(r,ct,cf)  = energy(r,cf,ct) / 1000;
+ 164  price_qm(r,bt)   = price_qm(r,bt)  / 1000;
+ 165   
+ 166  alias (r,rr), (ct,cct), (cf,ccf), (bt,bbt), (bf,bbf), (cbt,ccbt), (cbf,ccbf) ;
+ 167   
+ 168  set
+ 169   
+ 170           car(cbt)        / small, middl, large /
+ 171           house(cbt)      / old_x, old_r, new_e, new_p /
+ 172           other(cbt)      / other /
+ 173           new(cbt)        / old_r, new_e, new_p /
+ 174           old(cbt)        / old_x /
+ 175           oldxr(cbt)      / old_x, old_r /
+ 176           large(cbt)      / large /
+ 177   
+ 178           oilc(cbf)       Oil based fuels                 / ben, die, hoi /
+ 179           bendie(cf)      Gasoline and diesel fuels       / ben, die /
+ 180           hoi(bf)         Heating oil                     / hoi /
+ 181           co2cbf(cbf)     CO2 relevant fuels              / col, gas, ben, die, hoi, phe /
+ 182           co2cf(cf)       CO2 relevant fuels              /      gas, ben, die,      phe /
+ 183           co2bf(bf)       CO2 relevant fuels              / col, gas,           hoi      /
+ 184           gass(cbf)       / gas /
+ 185           eles(cbf)       / ele /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 4
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 186           cols(cbf)       / col /
+ 187           bios(cbf)       / bio /
+ 188           phe(cbf)        / phe /
+ 189  ;
+ 190   
+ 191  *display cbt, car, house, other;
+ 192  *display cbt, cbf, ct, cf, bt, bf, new, energy, ener_b, ener_c, price_mwh, price_qm, house_qm, assets, hrents, avrent ;
+ 193  *display old, large, new ;
+ 194  display HH_boup ;
+ 195  *$exit
+ 196   
+ 197  parameter
+ 198  * ------ Cars technology and costs
+ 199           cars            Car stock and new cars per technology [Mio.]
+ 200           carkm           Average kilometer demand per year per car class [K km]
+ 201           carco2          Specific CO2 emissions per car technology [gCO2 per km]
+ 202           carccm          Cubic capacity per car technology [ccm]
+ 203           carliter        Fuel demand per car technology [l per 100km]
+ 204           carkwh          Specific energy demand per car technology [kWh per km]
+ 205           carprice        Car rental costs for old and new cars [Mio. Euro]
+ 206           carpricenew     Catalog price for new cars [K Euro]
+ 207           car_ekn         Relation factor of rental and (net) energy costs for cars
+ 208           car_ekg         Relation factor of rental and (gross) energy costs for cars
+ 209   
+ 210  * ------ Buildings technology and costs
+ 211           houseqm         Buildings floor space per technology [Bn. m²]
+ 212           housekwh        Specific energy demand per buildings technology [kWh per m²]
+ 213           houseprice      Rental costs per per buildings technology (IVD Preisspiegel) [Euro per m²]
+ 214   
+ 215  * ------ Energy quantities, prices and costs
+ 216           carTWh          Total energy demand of cars per technology [TWH]
+ 217           carPJ           Total energy demand of cars per technology [PJ]
+ 218           houseTWh        Total heat demand in buildings per technology [TWh]
+ 219           housePJ         Total heat demand in buildings per technology [PJ]
+ 220           othereleTWh     Non-heating electricity demand in buildings per technology [TWh]
+ 221           otherelePJ      Non-heating electricity demand in buildings per technology [PJ]
+ 222           HH_energy       Total energy demand of households [TWh and PJ]
+ 223           TWh(r,cbt,cbf)
+ 224   
+ 225           eprice_n        Energy price net of taxes [€ per MWh]
+ 226           eprice_g        Energy price gross of taxes [€ per MWh]
+ 227   
+ 228           kmcosten        Specific energy costs (net) per car technology and km [€ per km]
+ 229           kmcosteg        Specific energy costs (gross) per car technology and km [€ per km]
+ 230           kmcostc         Specific capital or rental costs per car technology and km [€ per km]
+ 231           qmcosten        Specific energy costs (net) per buildings technology and qm [€ per m²]
+ 232           qmcosteg        Specific energy costs (gross) per buildings technology and qm [€ per m²]
+ 233           qmcostc         Specific capital or rental costs per buildings technology and qm [€ per m²]
+ 234   
+ 235           house_ekn       Relation factor of rental and energy costs (net) for buildings
+ 236           house_ekg       Relation factor of rental and energy costs (gross) for buildings
+ 237   
+ 238           carcostcap      Capital costs for existing cars per technology [Bn €]
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 5
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 239           carcostnew      Capital costs for new cars per technology [Bn €]
+ 240           carcostenn      Energy costs (net) for cars per technology [Bn €]
+ 241           carcosteng      Energy costs (gross) for cars per technology [Bn €]
+ 242           housecostcap    Capital costs for existing buildings per technology [Bn €]
+ 243           housecostnew    Capital costs for new and renovated buildings per technology [Bn €]
+ 244           housecostenn    Energy costs (net) for buildings per technology [Bn €]
+ 245           housecosteng    Energy costs (gross) for buildings per technology [Bn €]
+ 246           othercostenn    Energy costs (net) for non-heating electricity demand in buildings [Bn €]
+ 247           othercosteng    Energy costs (gross) for non-heating electricity demand in buildings [Bn €]
+ 248   
+ 249           c00
+ 250  ;
+ 251   
+ 252  * ------ Store existing final demand in parameter c00:
+ 253  c00(i,r)   = c0(i,r) ; display c00;
+ 254   
+ 255  * ------ Cars stock and technology
+ 256  cars(r,ct,cf,"stock")    = HH_boup(r,ct,cf,"Stock")/1000;
+ 257  cars(r,ct,cf,"new")      = HH_boup(r,ct,cf,"New")/1000;
+ 258  cars(r,ct,cf,"old")      = cars(r,ct,cf,"stock") - cars(r,ct,cf,"new") ;
+ 259  cars(r,"total","total","stock")  = sum((ct,cf), cars(r,ct,cf,"stock")) ;
+ 260  cars(r,"total","total","new")    = sum((ct,cf), cars(r,ct,cf,"new")) ;
+ 261  cars(r,"total","total","old")    = sum((ct,cf), cars(r,ct,cf,"old")) ;
+ 262   
+ 263  carkm(r,ct,cf)           = HH_boup(r,ct,cf,"Kkm/car")    ;
+ 264  carco2(r,ct,cf)          = HH_boup(r,ct,cf,"gCO2/km")    ;
+ 265  carccm(r,ct,cf)          = HH_boup(r,ct,cf,"ccm")        ;
+ 266  carliter(r,ct,cf)        = HH_boup(r,ct,cf,"l/100km")    ;
+ 267  carkwh(r,ct,cf)          = HH_boup(r,ct,cf,"kWh/km")     ;
+ 268  car_ekn(r,ct,cf)         = HH_boup(r,ct,cf,"K/E_n")     ;
+ 269  car_ekg(r,ct,cf)         = HH_boup(r,ct,cf,"K/E_b")     ;
+ 270  carpricenew(r,ct,cf)     = HH_boup(r,ct,cf,"K€/car")     ;
+ 271  carpricenew(r,"avg","avg")$cars(r,"total","total","stock") = sum((ct,cf), carpricenew(r,ct,cf) * cars(r,ct,cf,"stock")) / cars(r,"total","total","stock") ;
+ 272   
+ 273  * ------ Buildings floor and technology
+ 274  houseqm(r,bt,bf)         = HH_boup(r,bt,bf,"Mio_qm")/1000 ;
+ 275  houseqm(r,"total","total")= sum((bt,bf), houseqm(r,bt,bf)) ;
+ 276   
+ 277  housekwh(r,bt,bf)        = HH_boup(r,bt,bf,"kWh/m²") ;
+ 278  houseprice(r,bt,bf)      = HH_boup(r,bt,bf,"€/m²(K)") ;
+ 279   
+ 280  *display cars, carkm, carco2, carliter, carkwh, carpricenew, car_ekn, car_ekg, houseqm, housekwh, houseprice;
+ 281   
+ 282   
+ 283  * ------ Energy quantities, prices and costs
+ 284  carTWh(r,ct,cf)                  = cars(r,ct,cf,"stock") * carkm(r,ct,cf) * carkwh(r,ct,cf);
+ 285  carTWh(r,"total","total")        = sum((ct,cf), carTWh(r,ct,cf));
+ 286  carPJ(r,ct,cf)                   = carTWh(r,ct,cf) * PJ_TWh;
+ 287  carPJ(r,"total","total")         = carTWh(r,"total","total") * PJ_TWh;
+ 288  houseTWh(r,bt,bf)                = houseqm(r,bt,bf) * housekwh(r,bt,bf) ;
+ 289  houseTWh(r,"total","total")      = sum((bt,bf), houseTWh(r,bt,bf)) ;
+ 290  housePJ(r,bt,bf)                 = houseTWh(r,bt,bf) * PJ_TWh;
+ 291  housePJ(r,"total","total")       = houseTWh(r,"total","total") * PJ_TWh;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 6
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 292  othereleTWh(r,"other",cbf,"TWh") = HH_boup(r,"other",cbf,"TWh") ;
+ 293  otherelePJ(r,"other",cbf,"PJ")   = HH_boup(r,"other",cbf,"TWh") * PJ_TWh ;
+ 294   
+ 295  HH_energy(r,"cars","TWh")        = carTWh(r,"total","total") ;
+ 296  HH_energy(r,"houses","TWh")      = houseTWh(r,"total","total");
+ 297  HH_energy(r,"other","TWh")       = sum(cbf, othereleTWh(r,"other",cbf,"TWh"));
+ 298  HH_energy(r,"cars","PJ")         = HH_energy(r,"cars","TWh") * PJ_TWh ;
+ 299  HH_energy(r,"houses","PJ")       = HH_energy(r,"houses","TWh") * PJ_TWh ;
+ 300  HH_energy(r,"other","PJ")        = HH_energy(r,"other","TWh") * PJ_TWh ;
+ 301  HH_energy(r,"SUM","TWh")         = HH_energy(r,"cars","TWh") + HH_energy(r,"houses","TWh") + HH_energy(r,"other","TWh") ;
+ 302  HH_energy(r,"SUM","PJ")          = HH_energy(r,"cars","PJ") + HH_energy(r,"houses","PJ") + HH_energy(r,"other","PJ") ;
+ 303   
+ 304  TWh(r,ct,cf) = carTWh(r,ct,cf) ;
+ 305  TWh(r,bt,bf) = houseTWh(r,bt,bf) ;
+ 306  TWh(r,"other","ele") = othereleTWh(r,"other","ele","TWh") ;
+ 307   
+ 308  * ------ Assign energy prices
+ 309  eprice_n(r,cbf)                          = sum(cbt$old(cbt), HH_boup(r,cbt,cbf,"€/MWh_n"));
+ 310  eprice_n(r,cbf)$(not eprice_n(r,cbf))    = sum(cbt$large(cbt), HH_boup(r,cbt,cbf,"€/MWh_n"));
+ 311  eprice_g(r,cbf)                          = sum(cbt$old(cbt), HH_boup(r,cbt,cbf,"€/MWh_b"));
+ 312  eprice_g(r,cbf)$(not eprice_g(r,cbf))    = sum(cbt$large(cbt), HH_boup(r,cbt,cbf,"€/MWh_b"));
+ 313   
+ 314  *display carTWh, carPJ, houseTWh, housePJ, othereleTWh, otherelePJ, hh_energy, eprice_n, eprice_g, cbf ;
+ 315   
+ 316   
+ 317  * ------ Energy and capital costs per km and qm
+ 318  kmcosten(r,ct,cf) = carkwh(r,ct,cf)    * eprice_n(r,cf) / 1000 ;
+ 319  kmcosteg(r,ct,cf) = carkwh(r,ct,cf)    * eprice_g(r,cf) / 1000 ;
+ 320  *kmcostc(r,ct,cf)  = kmcosteg(r,ct,cf)  * car_ekg(r,ct,cf) ; display kmcostc;
+ 321  kmcostc(r,ct,cf)  = kmcosten(r,ct,cf)  * car_ekn(r,ct,cf) ; display kmcostc;
+ 322  *$exit
+ 323  * ------ 2.04.2015 (oben) bei kmcostc-Berechnung und eff_target = 40 führt car_ekb zu Lösungs-Problemen, car_ekn geht aber problemlos (Warum?) --> kmcostc wird weiter unten für ssd0 benötigt!
+ 324   
+ 325  qmcosten(r,bt,bf) = housekwh(r,bt,bf)  * eprice_n(r,bf) / 1000 ;
+ 326  qmcosteg(r,bt,bf) = housekwh(r,bt,bf)  * eprice_g(r,bf) / 1000 ;
+ 327  qmcostc(r,bt,bf)  = houseprice(r,bt,bf) ;
+ 328   
+ 329  house_ekn(r,bt,bf)$qmcosten(r,bt,bf) = qmcostc(r,bt,bf) / qmcosten(r,bt,bf) ;
+ 330  house_ekg(r,bt,bf)$qmcosteg(r,bt,bf) = qmcostc(r,bt,bf) / qmcosteg(r,bt,bf) ;
+ 331   
+ 332  *display car_ekg, car_ekn, kmcosten, kmcosteg, kmcostc, qmcosten, qmcosteg, qmcostc, house_ekn, house_ekg ;
+ 333   
+ 334  * ------ Energy and capital costs for cars and buildings
+ 335  carprice(r,ct,cf,"new")  = carfactor * kmcostc(r,ct,cf) * carkm(r,ct,cf) ;
+ 336  carprice(r,ct,cf,"old")  =             kmcostc(r,ct,cf) * carkm(r,ct,cf)  ;
+ 337  carprice(r,ct,cf,"AVG")$cars(r,ct,cf,"stock") = (carprice(r,ct,cf,"new") * cars(r,ct,cf,"new") + carprice(r,ct,cf,"old") * cars(r,ct,cf,"old")) / cars(r,ct,cf,"stock") ;
+ 338  carprice(r,"TOTAL","AVG","new")$sum((ct,cf), cars(r,ct,cf,"new")) = sum((ct,cf),carprice(r,ct,cf,"new") * cars(r,ct,cf,"new")) / sum((ct,cf), cars(r,ct,cf,"new")) ;
+ 339  carprice(r,"TOTAL","AVG","old")$sum((ct,cf), cars(r,ct,cf,"new")) = sum((ct,cf),carprice(r,ct,cf,"old") * cars(r,ct,cf,"old")) / sum((ct,cf), cars(r,ct,cf,"old")) ;
+ 340  carprice(r,"TOTAL","AVG","AVG")$cars(r,"total","total","stock") = (carprice(r,"TOTAL","AVG","new") * cars(r,"total","total","new") + carprice(r,"TOTAL","AVG","old") * cars(r,"total","total","old")) / cars(r,"total","total","stock") ;
+ 341   
+ 342  carcostcap(r,ct,cf)              = cars(r,ct,cf,"old") * carprice(r,ct,cf,"old") ;
+ 343  carcostcap(r,"total","total")    = sum((ct,cf), carcostcap(r,ct,cf));
+ 344  carcostnew(r,ct,cf)              = cars(r,ct,cf,"new") * carprice(r,ct,cf,"new") ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 7
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 345  carcostnew(r,"total","total")    = sum((ct,cf), carcostnew(r,ct,cf));
+ 346  carcostenn(r,ct,cf)              = cars(r,ct,cf,"stock") * kmcosten(r,ct,cf) * carkm(r,ct,cf) ;
+ 347  carcostenn(r,"stock","stock")    = sum((ct,cf), cars(r,ct,cf,"stock") * kmcosten(r,ct,cf) * carkm(r,ct,cf)) ;
+ 348  carcosteng(r,ct,cf)              = cars(r,ct,cf,"stock") * kmcosteg(r,ct,cf) * carkm(r,ct,cf) ;
+ 349  carcosteng(r,"stock","stock")    = sum((ct,cf), cars(r,ct,cf,"stock") * kmcosteg(r,ct,cf) * carkm(r,ct,cf)) ;
+ 350   
+ 351  housecostcap(r,bt,bf)$old(bt)    = houseqm(r,bt,bf) * qmcostc(r,bt,bf) ;
+ 352  housecostcap(r,"total","total")  = sum((bt,bf), housecostcap(r,bt,bf)) ;
+ 353  housecostnew(r,bt,bf)$new(bt)    = houseqm(r,bt,bf) * qmcostc(r,bt,bf) ;
+ 354  housecostnew(r,"total","total")  = sum((bt,bf), housecostnew(r,bt,bf)) ;
+ 355  housecostenn(r,bt,bf)            = houseqm(r,bt,bf) * qmcosten(r,bt,bf) ;
+ 356  housecostenn(r,"total","total")  = sum((bt,bf), housecostenn(r,bt,bf)) ;
+ 357  housecosteng(r,bt,bf)            = houseqm(r,bt,bf) * qmcosteg(r,bt,bf) ;
+ 358  housecosteng(r,"total","total")  = sum((bt,bf), housecosteng(r,bt,bf)) ;
+ 359   
+ 360  othercostenn(r,cbt,cbf)          = othereleTWh(r,cbt,cbf,"TWh") * eprice_n(r,cbf) /1000 ;
+ 361  othercosteng(r,cbt,cbf)          = othereleTWh(r,cbt,cbf,"TWh") * eprice_g(r,cbf) /1000 ;
+ 362   
+ 363  *display carprice, carcostcap, carcostnew, carcostenn, housecostcap, housecostnew, housecostenn, othercostenn, carcosteng, housecosteng, othercosteng ;
+ 364   
+ 365  * ------------------------------------------------------------------------------
+ 366   
+ 367  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 368   
+ 369  * ------ 21.01.2015 Energy purchases
+ 370  parameter
+ 371           c0_oil(r,i,cbt,cbf)         Fuel transformation from OIL to fuels
+ 372           c0_gas(r,i,cbt,cbf)
+ 373           c0_ele(r,i,cbt,cbf)
+ 374           c0_col(r,i,cbt,cbf)
+ 375           c0_agr(r,i,cbt,cbf)
+ 376   
+ 377           c0_en(r,i,cbt,cbf)
+ 378           c0_eg(r,i,cbt,cbf)
+ 379   
+ 380           fbun
+ 381           fbug
+ 382           oilnrel
+ 383           oilgrel
+ 384           gasnrel
+ 385           gasgrel
+ 386           elenrel
+ 387           elegrel
+ 388           colnrel
+ 389           colgrel
+ 390           bionrel
+ 391           biogrel
+ 392           elephenrel
+ 393           elephegrel
+ 394           oilphenrel
+ 395           oilphegrel
+ 396   
+ 397           fuel0(r,cbt,cbf)            Fuel demand [former c0]
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 8
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 398           fueln0
+ 399           fuelg0
+ 400           tfuel
+ 401           tfuel0
+ 402           pfuel0
+ 403           tfueli
+ 404           tfueli0
+ 405           pfueli0
+ 406           pcar0
+ 407           pbui0
+ 408           tcar
+ 409           tbui
+ 410           tcar0
+ 411           tbui0
+ 412   
+ 413           chk1            Relative shares of fbunrel must sum up to 1
+ 414           chk2            Relative shares of fbugrel must sum up to 1
+ 415           chk3            Check if tfuel connects fuelg0 and fuel0 correctly [= 0]
+ 416           chk4            Check if twh weighted average of tfuel equals tc for "oil" [= 0]
+ 417           chk5
+ 418           chk6
+ 419           chk7
+ 420           chk8
+ 421           chk12
+ 422           chkc0
+ 423           chkc0t
+ 424           chkc
+ 425           chkstockc
+ 426           chkstockh
+ 427   
+ 428           snd0
+ 429           ssd0
+ 430           sy0
+ 431   
+ 432           bnd0rel
+ 433           bnd0(r,i,bt,bf)
+ 434           bsd0
+ 435           by0
+ 436   
+ 437           sr0by
+ 438           sr0qm
+ 439  ;
+ 440   
+ 441   
+ 442  * ------ Calculate BoUp energy demand values as well as relative shares per energy carrier
+ 443  fbun(r,cbt,cbf)          = TWh(r,cbt,cbf) * eprice_n(r,cbf) / 1000 ;
+ 444  fbug(r,cbt,cbf)          = TWh(r,cbt,cbf) * eprice_g(r,cbf) / 1000 ;
+ 445  oilnrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbun(r,cbt,cbf)$oilc(cbf) / sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf)) ;
+ 446  oilgrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbug(r,cbt,cbf)$oilc(cbf) / sum((ccbt,ccbf)$oilc(ccbf), fbug(r,ccbt,ccbf)) ;
+ 447  gasnrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbun(r,cbt,cbf)$gass(cbf) / sum((ccbt,ccbf)$gass(ccbf), fbun(r,ccbt,ccbf)) ;
+ 448  gasgrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbug(r,cbt,cbf)$gass(cbf) / sum((ccbt,ccbf)$gass(ccbf), fbug(r,ccbt,ccbf)) ;
+ 449  elenrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbun(r,cbt,cbf)$eles(cbf) / sum((ccbt,ccbf)$eles(ccbf), fbun(r,ccbt,ccbf)) ;
+ 450  elegrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbug(r,cbt,cbf)$eles(cbf) / sum((ccbt,ccbf)$eles(ccbf), fbug(r,ccbt,ccbf)) ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/28/16 17:03:09 Page 9
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 451  colnrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbun(r,cbt,cbf)$cols(cbf) / sum((ccbt,ccbf)$cols(ccbf), fbun(r,ccbt,ccbf)) ;
+ 452  colgrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbug(r,cbt,cbf)$cols(cbf) / sum((ccbt,ccbf)$cols(ccbf), fbug(r,ccbt,ccbf)) ;
+ 453  bionrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbun(r,cbt,cbf)$bios(cbf) / sum((ccbt,ccbf)$bios(ccbf), fbun(r,ccbt,ccbf)) ;
+ 454  biogrel(r,cbt,cbf)$sum((ccbt,ccbf)$oilc(ccbf), fbun(r,ccbt,ccbf))= fbug(r,cbt,cbf)$bios(cbf) / sum((ccbt,ccbf)$bios(ccbf), fbug(r,ccbt,ccbf)) ;
+ 455   
+      * ------ Check relative proportions (must sum up to 1)
+      chk1(r) = 0; chk1(r) = sum((cbt,cbf), oilnrel(r,cbt,cbf)); display chk1;
+      chk2(r) = 0; chk2(r) = sum((cbt,cbf), oilgrel(r,cbt,cbf)); display chk2;
+      chk1(r) = 0; chk1(r) = sum((cbt,cbf), gasnrel(r,cbt,cbf)); display chk1;
+      chk2(r) = 0; chk2(r) = sum((cbt,cbf), gasgrel(r,cbt,cbf)); display chk2;
+      chk1(r) = 0; chk1(r) = sum((cbt,cbf), elenrel(r,cbt,cbf)); display chk1;
+      chk2(r) = 0; chk2(r) = sum((cbt,cbf), elegrel(r,cbt,cbf)); display chk2;
+      chk1(r) = 0; chk1(r) = sum((cbt,cbf), colnrel(r,cbt,cbf)); display chk1;
+      chk2(r) = 0; chk2(r) = sum((cbt,cbf), colgrel(r,cbt,cbf)); display chk2;
+      chk1(r) = 0; chk1(r) = sum((cbt,cbf), bionrel(r,cbt,cbf)); display chk1;
+      chk2(r) = 0; chk2(r) = sum((cbt,cbf), biogrel(r,cbt,cbf)); display chk2;
+ 469   
+ 470  * ------ PHEV aggregation
+ 471  elephenrel(r,cbt,cbf)$fbun(r,cbt,cbf) = fbun(r,cbt,cbf)$(eles(cbf) or phe(cbf)) / sum((ccbt,ccbf)$(eles(ccbf) or phe(ccbf)), fbun(r,ccbt,ccbf)) ;
+ 472  elephegrel(r,cbt,cbf)$fbug(r,cbt,cbf) = fbug(r,cbt,cbf)$(eles(cbf) or phe(cbf)) / sum((ccbt,ccbf)$(eles(ccbf) or phe(ccbf)), fbug(r,ccbt,ccbf)) ;
+ 473  elephenrel(r,"sum","sum") = sum((cbt,cbf), elephenrel(r,cbt,cbf));
+ 474  elephegrel(r,"sum","sum") = sum((cbt,cbf), elephegrel(r,cbt,cbf));
+ 475   
+ 476  oilphenrel(r,cbt,cbf)$fbun(r,cbt,cbf) = fbun(r,cbt,cbf)$(oilc(cbf) or phe(cbf)) / sum((ccbt,ccbf)$(oilc(ccbf) or phe(ccbf)), fbun(r,ccbt,ccbf)) ;
+ 477  oilphegrel(r,cbt,cbf)$fbug(r,cbt,cbf) = fbug(r,cbt,cbf)$(oilc(cbf) or phe(cbf)) / sum((ccbt,ccbf)$(oilc(ccbf) or phe(ccbf)), fbug(r,ccbt,ccbf)) ;
+ 478  oilphenrel(r,"sum","sum") = sum((cbt,cbf), oilphenrel(r,cbt,cbf));
+ 479  oilphegrel(r,"sum","sum") = sum((cbt,cbf), oilphegrel(r,cbt,cbf));
+ 480   
+ 481  display twh, fbun, fbug, oilnrel, oilgrel, gasnrel, gasgrel, elenrel, elegrel, colnrel, colgrel, bionrel, biogrel, elephenrel, elephegrel, oilphenrel, oilphegrel;
+ 482   
+ 483  * ------ Calibrate oil purchases (net/gross) and taxes to GTAP values --> fuel0(r,cbf)
+ 484  fueln0(r,cbt,cbf)$(oilc(cbf) or phe(cbf))= oilphenrel(r,cbt,cbf) * c0("oil",r) ;
+ 485  fueln0(r,cbt,cbf)$(eles(cbf) or phe(cbf))= elephenrel(r,cbt,cbf) * c0("ele",r) + fueln0(r,cbt,cbf)$phe(cbf);
+ 486  fueln0(r,cbt,cbf)$(gass(cbf))            = gasnrel(r,cbt,cbf)    * c0("gas",r) ;
+ 487  fueln0(r,cbt,cbf)$(cols(cbf))            = colnrel(r,cbt,cbf)    * c0("col",r) ;
+ 488  fueln0(r,cbt,cbf)$(bios(cbf))            = fbun(r,cbt,cbf);
+ 489   
+ 490  fuelg0(r,cbt,cbf)$(oilc(cbf) or phe(cbf))= oilphegrel(r,cbt,cbf) * c0("oil",r)*(1+tc("oil",r)) ;
+ 491  fuelg0(r,cbt,cbf)$(eles(cbf) or phe(cbf))= elephegrel(r,cbt,cbf) * c0("ele",r)*(1+tc("ele",r)) + fuelg0(r,cbt,cbf)$phe(cbf) ;
+ 492  fuelg0(r,cbt,cbf)$(gass(cbf))            = gasgrel(r,cbt,cbf)    * c0("gas",r)*(1+tc("gas",r)) ;
+ 493  fuelg0(r,cbt,cbf)$(cols(cbf))            = colgrel(r,cbt,cbf)    * c0("col",r)*(1+tc("col",r)) ;
+ 494  fuelg0(r,cbt,cbf)$(bios(cbf))            = fbun(r,cbt,cbf) * (1+tc("agr",r)) ;
+ 495   
+ 496  fuel0(r,cbt,cbf)           = fueln0(r,cbt,cbf) ;
+ 497   
+ 498  * ------ Energy purchases c0_en = fuel0n = fuel0 = (c0_oil, etc.)
+ 499  c0_oil(r,"oil",cbt,cbf)        = oilphenrel(r,cbt,cbf) * c0("oil",r) ;
+ 500  c0_ele(r,"ele",cbt,cbf)$elephenrel(r,cbt,cbf)    = elephenrel(r,cbt,cbf) * c0("ele",r) ;
+ 501  c0_gas(r,"gas",cbt,cbf)$gasnrel(r,cbt,cbf)       = gasnrel(r,cbt,cbf) * c0("gas",r) ;
+ 502  c0_col(r,"col",cbt,cbf)$colnrel(r,cbt,cbf)       = colnrel(r,cbt,cbf) * c0("col",r) ;
+ 503  c0_agr(r,"agr",cbt,cbf)$fbun(r,cbt,cbf)          = fbun(r,cbt,cbf)$bios(cbf);
+ 504   
+ 505  c0_en(r,"oil",cbt,cbf) = c0_oil(r,"oil",cbt,cbf) ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 10
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 506  c0_en(r,"ele",cbt,cbf) = c0_ele(r,"ele",cbt,cbf) ;
+ 507  c0_en(r,"gas",cbt,cbf) = c0_gas(r,"gas",cbt,cbf) ;
+ 508  c0_en(r,"col",cbt,cbf) = c0_col(r,"col",cbt,cbf) ;
+ 509  c0_en(r,"agr",cbt,cbf) = c0_agr(r,"agr",cbt,cbf) ;
+ 510   
+ 511  c0_eg(r,"oil",cbt,cbf) = oilphegrel(r,cbt,cbf) * c0("oil",r)*(1+tc("oil",r)) ;
+ 512  c0_eg(r,"ele",cbt,cbf) = elephegrel(r,cbt,cbf) * c0("ele",r)*(1+tc("ele",r)) ;
+ 513  c0_eg(r,"gas",cbt,cbf) = gasgrel(r,cbt,cbf)    * c0("gas",r)*(1+tc("gas",r)) ;
+ 514  c0_eg(r,"col",cbt,cbf) = colgrel(r,cbt,cbf)    * c0("col",r)*(1+tc("col",r)) ;
+ 515  c0_eg(r,"agr",cbt,cbf) = fbun(r,cbt,cbf) * (1+tc("agr",r)) ;
+ 516   
+ 517  *display fuel0, fueln0, fuelg0, c0_en, c0_eg;
+ 518   
+ 519  * ------ Taxes calibration
+ 520  tfuel(r,cbt,cbf)$fueln0(r,cbt,cbf) = fuelg0(r,cbt,cbf) /fueln0(r,cbt,cbf)  - 1 ;
+ 521  tfueli(r,i,cbt,cbf)$c0_en(r,i,cbt,cbf)            = c0_eg(r,i,cbt,cbf)/c0_en(r,i,cbt,cbf) - 1 ;
+ 522  tcar(r,ct,cf)$cars(r,ct,cf,"new")= tc("mvh",r) ;
+ 523  tbui(r,new,bf)$houseqm(r,new,bf) = tc("bui",r) ;
+ 524   
+ 525  tcar0(r,ct,cf)           = tcar(r,ct,cf);
+ 526  tbui0(r,bt,bf)           = tbui(r,bt,bf);
+ 527  tfuel0(r,cbt,cbf)        = tfuel(r,cbt,cbf);
+ 528  tfueli0(r,i,cbt,cbf)     = tfueli(r,i,cbt,cbf);
+ 529  pfuel0(r,cbt,cbf)$tfuel(r,cbt,cbf)       = 1 + tfuel0(r,cbt,cbf) ;
+ 530  pfueli0(r,i,cbt,cbf)$tfueli(r,i,cbt,cbf) = 1 + tfueli0(r,i,cbt,cbf) ;
+ 531  pcar0(r,ct,cf)$tcar0(r,ct,cf)    = 1 + tcar0(r,ct,cf);
+ 532  pbui0(r,bt,bf)$tbui0(r,bt,bf)    = 1 + tbui0(r,bt,bf);
+ 533   
+ 534  display tc, tcar, tfuel, tfueli, tbui;
+ 535  display pc0, pcar0, pfuel0, pfueli0, pbui0;
+ 536   
+ 537  * ------ Assign total mvh demand to new ("mvh") and old car demand of stock activity
+ 538  *ssd0(r,ct,cf)            = HH_boup(r,ct,cf,"€/km(K)") * carkm(r,ct,cf)             * cars(r,ct,cf,"old") ;
+ 539  *snd0(r,"mvh",ct,cf)      = HH_boup(r,ct,cf,"€/km(K)") * carkm(r,ct,cf) * carfactor * cars(r,ct,cf,"new") ;
+ 540  ssd0(r,ct,cf)            = kmcostc(r,ct,cf) * carkm(r,ct,cf)             * cars(r,ct,cf,"old") ;
+ 541  snd0(r,"mvh",ct,cf)      = kmcostc(r,ct,cf) * carkm(r,ct,cf) * carfactor * cars(r,ct,cf,"new") ;
+ 542  sy0(r,ct,cf)             = ssd0(r,ct,cf) + snd0(r,"mvh",ct,cf)*pcar0(r,ct,cf) ;
+ 543   
+ 544   
+ 545  * ------ Buildings capital costs for purchases (new buildings) and rents (existing buildings)
+ 546  bnd0rel(r,bt,bf)$sum((bbt,bbf), housecostnew(r,bbt,bbf)) = housecostnew(r,bt,bf)/sum((bbt,bbf), housecostnew(r,bbt,bbf));
+ 547  bnd0rel(r,"sum","sum")   = sum((bt,bf), bnd0rel(r,bt,bf)) ;
+ 548  bnd0(r,"bui",bt,bf)$bnd0rel(r,bt,bf)=bnd0rel(r,bt,bf) * c0("bui",r) ;
+ 549  bsd0(r,bt,bf)$old(bt)    = houseqm(r,bt,bf) * qmcostc(r,bt,bf) ;
+ 550  *bsd0("DEU",bt,bf) = bsd0("DEU",bt,bf) + 1e-6 ;
+ 551  *bsd0(r,bt,bf)            = houseqm(r,bt,bf) * qmcostc(r,bt,bf) ;
+ 552  bnd0(r,"ser",bt,bf)$housecostnew(r,bt,bf)=housecostnew(r,bt,bf) - bnd0rel(r,bt,bf) * c0("bui",r) ;
+ 553  by0(r,bt,bf)             = bsd0(r,bt,bf) + bnd0(r,"bui",bt,bf)*(1+tc("bui",r)) + bnd0(r,"ser",bt,bf)*(1+tc("ser",r));
+ 554   
+ 555   
+ 556  * ------ 4.01.2016
+ 557  parameter ssd0price, snd0price, pc0_serbui;
+ 558  ssd0price(r,ct,cf) = kmcostc(r,ct,cf) * carkm(r,ct,cf) ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 11
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 559  snd0price(r,ct,cf) = kmcostc(r,ct,cf) * carkm(r,ct,cf) * carfactor ;
+ 560   
+ 561  pc0_serbui(r,bt,bf)$sum(i, bnd0(r,i,bt,bf)) = (sum(i, bnd0(r,i,bt,bf)*pc0(i,r))) / (sum(i, bnd0(r,i,bt,bf)))
+ 562   
+ 563  display snd0, ssd0, sy0, ssd0price, snd0price, qmcostc, pc0_serbui, pc0;
+ 564  *$exit
+ 565   
+ 566   
+ 567  *parameter chkbnd;
+ 568  *chkbnd(r) = sum((bt,bf), (bnd0(r,"bui",bt,bf)*(1+tc("bui",r)) + bnd0(r,"ser",bt,bf)*(1+tc("ser",r)))); display chkbnd;
+ 569  *chkbnd(r) = sum((bt,bf), (bnd0(r,"bui",bt,bf))); display chkbnd;
+ 570  *chkbnd(r) = sum((bt,bf), bnd0(r,"ser",bt,bf)); display chkbnd;
+ 571  *chkbnd(r) = sum((bt,bf), (bnd0(r,"ser",bt,bf)+bnd0(r,"bui",bt,bf))); display chkbnd;
+ 572   
+ 573  * ------ 17.02.2015
+ 574  sr0qm(r)$sum((bt,bf), houseqm(r,bt,bf))  = sum(bf, houseqm(r,"old_r",bf))/ sum((bt,bf)$oldxr(bt), houseqm(r,bt,bf)) * 100;
+ 575  sr0by(r)$sum((bt,bf), by0(r,bt,bf))      = sum(bf, by0(r,"old_r",bf))    / sum((bf,bt)$oldxr(bt), by0(r,bt,bf)) * 100;
+ 576   
+ 577  display bnd0rel, bnd0, bsd0, by0, c0, sr0qm, sr0by;
+ 578   
+ 579   
+ 580   
+ 581  * ------ 13.09.2015 Es wird ein zusätzliches Kapitelgut für die neuen Fahrzeuge definiert, dass auch ins Endowment einfließt, um es für die Dynamik kontinuierlich erhöhen zu können
+ 582  *parameter snd0c(r,ct,cf), sndc(r,ct,cf);
+ 583  *snd0c(r,ct,cf)$snd0(r,"mvh",ct,cf) = snd0(r,"mvh",ct,cf) ;
+ 584  *sndc(r,ct,cf)$snd0(r,"mvh",ct,cf)  = snd0(r,"mvh",ct,cf) ;
+ 585   
+ 586  *snd0c(r,ct,cf)$snd0(r,"mvh",ct,cf)= 1e-6 ;
+ 587  *sndc(r,ct,cf)$snd0(r,"mvh",ct,cf) = 1e-6 ;
+ 588   
+ 589  *ssd0(r,ct,cf)    = ssd0(r,ct,cf) - snd0c(r,ct,cf)*pcar0(r,ct,cf);
+ 590  *sy0(r,ct,cf)     = ssd0(r,ct,cf) + snd0(r,"mvh",ct,cf)*pcar0(r,ct,cf) + snd0c(r,ct,cf)*pcar0(r,ct,cf);
+ 591   
+ 592  *display snd0, snd0c, snd0c, ssd0, sy0, c0;
+ 593   
+ 594   
+ 595  * ------ CHECK c0_en
+ 596  parameter constrr(r);
+ 597  constrr(r)$sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)) = yes; display constrr;
+ 598   
+ 599  chk12(r) = 0; chk12(r)$constrr(r) = round(
+ 600  *                         + sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+ 601                           + sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)*(1+tfueli(r,i,cbt,cbf)))
+ 602                           - (c0("oil",r)*(1+tc("oil",r)))
+ 603                           - (c0("ele",r)*(1+tc("ele",r)))
+ 604                           - (c0("gas",r)*(1+tc("gas",r)))
+ 605                           - (c0("col",r)*(1+tc("col",r)))
+ 606                           - sum(cbt, fbun(r,cbt,"bio")*(1+tc("agr",r)))   ,12); display chk12;
+ 607   
+ 608  chk12(r) = 0; chk12(r)$constrr(r) = round(
+ 609                           + sum((i,cbt,cbf), c0_en(r,i,cbt,cbf))
+ 610                           - (c0("oil",r))
+ 611                           - (c0("ele",r))
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 12
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 612                           - (c0("gas",r))
+ 613                           - (c0("col",r))
+ 614                           - sum(cbt, fbun(r,cbt,"bio"))   ,12); display chk12;
+ 615   
+ 616  display chk12;
+ 617  display c0;
+ 618  * ------ Correct final demand for energy purchases and new assigned mvh, bui and ser demand
+ 619  c0("mvh",r)              = c0("mvh",r) - sum((ct,cf), snd0(r,"mvh",ct,cf));
+ 620  c0("bui",r)              = c0("bui",r) - sum((bt,bf), bnd0(r,"bui",bt,bf));
+ 621  c0("ser",r)              = c0("ser",r) - sum((bt,bf), bnd0(r,"ser",bt,bf));
+ 622   
+ 623  c0("oil",r)              = c0("oil",r) - sum((cbt,cbf), c0_oil(r,"oil",cbt,cbf)) ;
+ 624  c0("gas",r)              = c0("gas",r) - sum((cbt,cbf), c0_gas(r,"gas",cbt,cbf)) ;
+ 625  c0("ele",r)              = c0("ele",r) - sum((cbt,cbf), c0_ele(r,"ele",cbt,cbf)) ;
+ 626  c0("col",r)              = c0("col",r) - sum((cbt,cbf), c0_col(r,"col",cbt,cbf)) ;
+ 627  c0("agr",r)              = c0("agr",r) - sum((cbt,cbf), c0_agr(r,"agr",cbt,cbf)) ;
+ 628   
+ 629  * ------ Set values smaller than 1E-14 equal to zero! --------------------------
+ 630  c0(i,"deu")$(c0(i,"deu") lt 1e-14)  = 0;
+ 631  *c0(i,"baw")$(c0(i,"baw") lt 1e-14)  = 0;
+ 632  display c00, c0;
+ 633   
+ 634   
+ 635  * ------ CHECK assignment of c0 ------------------------------------------------
+ 636   
+ 637  chk3(r,cbt,cbf)  = round(fuelg0(r,cbt,cbf) - (fueln0(r,cbt,cbf) * (1+tfuel(r,cbt,cbf))),12) ; display chk3;
+ 638   
+ 639  chk12(r) = 0; chk12(r) = round(sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)) - sum((cbt,cbf), fuel0(r,cbt,cbf)),12) ; display chk12;
+ 640  chk12(r) = 0; chk12(r) = round(sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)) - sum((cbt,cbf), fueln0(r,cbt,cbf)),12) ; display chk12;
+ 641  chk12(r) = 0; chk12(r) = round(sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)*pfuel0(r,cbt,cbf)) - sum((cbt,cbf), fuelg0(r,cbt,cbf)),12) ; display chk12;
+ 642   
+ 643  chkc0(r)$constrr(r) = round(
+ 644                   + SUM(i, c00(i,r))
+ 645                   - sum(i, c0(i,r))
+ 646                   - sum((i,bt,bf), bnd0(r,i,bt,bf))
+ 647                   - sum((ct,cf), snd0(r,"mvh",ct,cf))
+ 648                   - sum((cbt,cbf), c0_oil(r,"oil",cbt,cbf))
+ 649                   - sum((cbt,cbf), c0_gas(r,"gas",cbt,cbf))
+ 650                   - sum((cbt,cbf), c0_ele(r,"ele",cbt,cbf))
+ 651                   - sum((cbt,cbf), c0_col(r,"col",cbt,cbf))
+ 652                   - sum((cbt,cbf), c0_agr(r,"agr",cbt,cbf)), 12) ;
+ 653   
+ 654  chkc0t(r)$constrr(r) = round(
+ 655                   + SUM(i, c00(i,r)*(1+tc(i,r)))
+ 656                   - sum(i, c0(i,r)*(1+tc(i,r)))
+ 657                   - sum((bt,bf),  bnd0(r,"bui",bt,bf)*(1+tc("bui",r)))
+ 658                   - sum((bt,bf),  bnd0(r,"ser",bt,bf)*(1+tc("ser",r)))
+ 659                   - sum((ct,cf),  snd0(r,"mvh",ct,cf)*(1+tc("mvh",r)))
+ 660                   - sum((cbt,cbf),c0_oil(r,"oil",cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+ 661                   - sum((cbt,cbf),c0_ele(r,"ele",cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+ 662                   - sum((cbt,cbf),c0_gas(r,"gas",cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+ 663                   - sum((cbt,cbf),c0_col(r,"col",cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+ 664                   - sum((cbt,cbf),c0_agr(r,"agr",cbt,cbf)*(1+tfuel(r,cbt,cbf)))
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 13
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 665  , 12) ;
+ 666   
+ 667  chkc0(r)$(not constrr(r))  = round(
+ 668                   + SUM(i, c00(i,r))
+ 669                   - sum(i, c0(i,r)), 12) ;
+ 670  chkc0t(r)$(not constrr(r)) = round(
+ 671                   + SUM(i, c00(i,r)*(1+tc(i,r)))
+ 672                   - sum(i, c0(i,r) *(1+tc(i,r))), 12)   ;
+ 673   
+ 674  chkstockc(r) = round(sum((ct,cf), sy0(r,ct,cf) - ssd0(r,ct,cf) - snd0(r,"mvh",ct,cf)*pcar0(r,ct,cf)),12);
+ 675  chkstockh(r) = round(sum((bt,bf), by0(r,bt,bf) - bsd0(r,bt,bf) - bnd0(r,"bui",bt,bf)*pc0("bui",r) - bnd0(r,"ser",bt,bf)*pc0("ser",r)),12);
+ 676   
+ 677  chkc(r)= round(vom("c",r) + vom("g",r) + sum((ct,cf), ssd0(r,ct,cf)) + sum((bt,bf), bsd0(r,bt,bf))
+ 678           - sum(i, c0(i,r) * pc0(i,r))
+ 679           - sum((ct,cf), sy0(r,ct,cf))
+ 680           - sum((bt,bf), by0(r,bt,bf))
+ 681           - sum((i,cbt,cbf), c0_en(r,i,cbt,cbf) * pfueli0(r,i,cbt,cbf))
+ 682  *         - sum((i,cbt,cbf), c0_en(r,i,cbt,cbf) * pfuel0(r,cbt,cbf))
+ 683  *         - sum((cbt,cbf), fuel0(r,cbt,cbf) * pfuel0(r,cbt,cbf))
+ 684  ,11);
+ 685   
+ 686  display chkc0, chkc0t, chkstockc, chkstockh, chkc;
+ 687   
+ 688  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 689   
+ 690  PARAMETER
+ 691           c0_trn(i,r)
+ 692           cartout(r,ct)
+ 693           heatout(r,bt)
+ 694           cartfout(r,ct,cf)
+ 695           heatfout(r,bt,bf)
+ 696           esdout(r)
+ 697           otherele(r)
+ 698           tothele0(r)
+ 699           pothele0(r)
+ 700           c0_fuels
+ 701  ;
+ 702   
+ 703  c0_trn(i,r)$(trn(i) and constrr(r))  = c0(i,r) ;
+ 704  c0(i,r)$(trn(i) and constrr(r))      = 0 ;
+ 705   
+ 706  cartfout(r,ct,cf) =      + sy0(r,ct,cf)
+ 707                           + c0_en(r,"ele",ct,cf)$eles(cf)*aeei("ele","c",r) * pfueli0(r,"ele","small","ele")
+ 708                           + c0_en(r,"ele",ct,cf)$phe(cf)*aeei("ele","c",r) * pfueli0(r,"ele","large","phe")
+ 709                           + c0_en(r,"gas",ct,cf)*aeei("gas","c",r)    * pc0("gas",r)
+ 710                           + c0_en(r,"oil",ct,cf)*aeei("oil","c",r)* pfueli0(r,"oil",ct,cf)       ;
+ 711   
+ 712  heatfout(r,bt,bf) =      + by0(r,bt,bf)
+ 713                           + c0_en(r,"ele",bt,bf)$eles(bf)*aeei("ele","c",r)*pfueli0(r,"ele","old_x","ele")
+ 714                           + c0_en(r,"gas",bt,bf)*aeei("gas","c",r)        * pc0("gas",r)
+ 715                           + c0_en(r,"col",bt,bf)*aeei("col","c",r)        * pc0("col",r)
+ 716                           + c0_en(r,"oil",bt,bf)*aeei("oil","c",r)        * pfueli0(r,"oil",bt,bf)
+ 717                           + c0_en(r,"agr",bt,bf)*aeei("agr","c",r)        * pfueli0(r,"agr",bt,bf) ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 14
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 718   
+ 719  cartout(r,ct)    =       sum(cf, cartfout(r,ct,cf)) ;
+ 720  heatout(r,bt)    =       sum(bf, heatfout(r,bt,bf)) ;
+ 721   
+ 722  otherele(r)      =       sum((cbt,cbf)$(eles(cbf) and other(cbt)), c0_en(r,"ele",cbt,cbf)) ;
+ 723  tothele0(r)      =       tfueli(r,"ele","other","ele") ;
+ 724  pothele0(r)      =       1 + tothele0(r);
+ 725   
+ 726  esdout(r)        =       + sum(ct, cartout(r,ct))
+ 727                           + sum(bt, heatout(r,bt))
+ 728                           + c0_trn("trn",r) * pc0("trn",r)
+ 729                           + otherele(r) * pothele0(r)
+ 730  ;
+ 731   
+ 732   
+ 733  c0_fuels(r,i,cbt,cbf)$fe(i) = c0_en(r,i,cbt,cbf);
+ 734   
+ 735  c0_fuels(r,i,cbt,cbf)$fe(i) = c0_en(r,i,cbt,cbf);
+ 736   
+ 737   
+ 738   
+ 739  *c0_fuels(r,i,cbt,cbf)$fe(i) = c0_en(r,i,cbt,cbf)*pfueli0(r,i,cbt,cbf) ;
+ 740   
+ 741  *c0_fuels(r,i,cbt,cbf)$oil(i) = c0_en(r,i,cbt,cbf)*pfueli0(r,i,cbt,cbf) ;
+ 742  *c0_fuels(r,i,cbt,cbf)$gas(i) = c0_en(r,i,cbt,cbf)*pfueli0(r,i,cbt,cbf) ;
+ 743  *c0_fuels(r,i,cbt,cbf)$col(i) = c0_en(r,i,cbt,cbf)*pfueli0(r,i,cbt,cbf) ;
+ 744   
+ 745  display sy0, c0_en, tfueli, pfueli0, pc0, cartfout, heatfout, cartout, heatout, c0, c0_trn, esdout, otherele, tothele0, pothele0, c0_fuels;
+ 746   
+ 747  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 748   
+ 749  * ------ 4.02.2015 CO2-Emissionen ----------------------------------------------
+ 750   
+ 751  parameter
+ 752           co2em_sum
+ 753           cbco2(r,cbt,cbf)        CO2-Emissions of households [Gt CO2]
+ 754  cbco2i
+ 755           cbco2_sum               CO2-Emissions of households - sums [Gt CO2]
+ 756  * ------ www.umweltbundesamt.de/sites/default/files/medien/377/dokumente/co2_faktoren_brennstoffe.xls:
+ 757           cecphys2(cbf)           Emissions coefficients [tCO2 per TJ = gCO2 per MJ]
+ 758                                   / ben 72, die 74, hoi 74, gas 56, col 103 /
+ 759  ;
+ 760   
+ 761  display co2em, cecphys, cecphys2, co2em_total, eco2;
+ 762   
+ 763   
+ 764  co2em_sum(r,"final")     = sum(i, co2em(i,"final",r)) ;
+ 765  co2em_sum(r,"ELE")       = sum(i, co2em(i,"ELE",r)) ;
+ 766  co2em_sum(r,"Y")         = sum((fe,i)$(not ele(i)), co2em(fe,i,r)) ;
+ 767  co2em_sum(r,"total")     = co2em_sum(r,"final") + co2em_sum(r,"ELE") + co2em_sum(r,"Y") ;
+ 768   
+ 769  display  co2em_sum;
+ 770   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 15
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 771  * ------ UGR_2010 - Teil_3.xls: CO2-Emissionen HH in Gesamt-DEU:        179,390 Mio.tCO2
+ 772  * ------ UGR_2010 - Teil_3.xls: Gesamt-CO2-Emissionen in Gesamt-DEU:    882,561 Mio.tCO2
+ 773   
+ 774  cbco2(r,cbt,cbf)         = cecphys2(cbf)                 * TWh(r,cbt,cbf)        * PJ_TWh / 1e6 ;
+ 775  cbco2(r,cbt,"phe")       = cecphys2("ben") * (1-phev_ele)* TWh(r,cbt,"phe")      * PJ_TWh / 1e6 ;
+ 776   
+ 777   
+ 778  cbco2i(r,i,cbt,cbf)$gas(i) = cbco2(r,cbt,cbf)$gass(cbf) ;
+ 779  cbco2i(r,i,cbt,cbf)$col(i) = cbco2(r,cbt,cbf)$cols(cbf) ;
+ 780  cbco2i(r,i,cbt,cbf)$oil(i) = cbco2(r,cbt,cbf)$(oilc(cbf) or phe(cbf)) ;
+ 781  display cbco2, cbco2i;
+ 782   
+ 783   
+ 784  cbco2_sum(r,co2cbf)      = sum(cbt, cbco2(r,cbt,co2cbf)) ;
+ 785  cbco2_sum(r,"TOTAL")     = sum((cbt,co2cbf), cbco2(r,cbt,co2cbf)) ;
+ 786   
+ 787  display cbco2, cbco2_sum ;
+ 788   
+ 789   
+ 790  * ------ ADJUST existing CO2-Emissions -----------------------------------------
+ 791  co2em(i,"final",r)$sum((cbt,cbf), cbco2(r,cbt,cbf)) = 0 ;
+ 792  * ------------------------------------------------------------------------------
+ 793   
+ 794  co2em_sum(r,"final")     = sum(i, co2em(i,"final",r)) ;
+ 795  co2em_sum(r,"ELE")       = sum(i, co2em(i,"ELE",r)) ;
+ 796  co2em_sum(r,"Y")         = sum((fe,i)$(not ele(i)), co2em(fe,i,r)) ;
+ 797  co2em_sum(r,"C+B")       = sum((cbt,co2cbf), cbco2(r,cbt,co2cbf));
+ 798  co2em_sum(r,"total")     = co2em_sum(r,"final") + co2em_sum(r,"ELE") + co2em_sum(r,"Y") + co2em_sum(r,"C+B") ;
+ 799   
+ 800   
+ 801  display co2em_sum, co2em;
+ 802   
+ 803   
+ 804  parameter chk, chk_c0fuels;
+ 805  chk(r,cbt,cbf) = sum(i, cbco2i(r,i,cbt,cbf)) -  cbco2(r,cbt,cbf);
+ 806  chk_c0fuels(r)$sum((fe,cbt,cbf), c0_fuels(r,fe,cbt,cbf)) = round(sum((fe,cbt,cbf), c0_fuels(r,fe,cbt,cbf)) - sum(fe, c00(fe,r)),9);
+ 807  display chk, chk_c0fuels;
+ 808   
+ 809   
+ 810  * ##############################################################################
+ 811   
+ 812  parameter
+ 813           gco2kwh
+ 814           houseco2 CO2 per m² [gCO2 per m²]
+ 815           tco2qm
+ 816           kwhqm
+ 817  ;
+ 818  * ------ gco2kwh(r,bt,bf): PJ/TWh = TJ/GWh --> tCO2/TJ * TJ/GWh = tCO2/GWh = gCO2/kWh
+ 819  kwhqm(r,bt,bf)   = housekwh(r,bt,bf) ;
+ 820  gco2kwh(cbf)     = cecphys2(cbf) * PJ_TWh ;
+ 821  tco2qm(r,bt,bf)  = gco2kwh(bf) * kwhqm(r,bt,bf) / 1e6;
+ 822  display gco2kwh, tco2qm, kwhqm, cecphys2, PJ_TWh;
+ 823   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 16
+Load technology specific car data
+C o m p i l a t i o n
+
+
+ 824   
+ 825  * ##############################################################################
+ 826  * ------ CO2-tax
+ 827   
+ 828  parameter
+ 829           c0_sum
+ 830           co2tax
+ 831           co2tax0
+ 832           co2price        CO2-Preis für Berechnung der CO2-Steuer [€ per tCO2 = Mrd. € per Mrd. tCO2]
+ 833                           / 30 /
+ 834           rev_price
+ 835           rev_price2
+ 836  ;
+ 837  c0_sum(r,"c0_en") = sum((i,cbt,cbf), c0_en(r,i,cbt,cbf)) ; display c0_sum;
+ 838  c0_sum(r,"c0_fuels") = sum((i,cbt,cbf), c0_fuels(r,i,cbt,cbf)) ; display c0_sum;
+ 839   
+ 840  *30€/tCO2 = 30 Mrd. €/Mrd. tCO2 --> 30 * 0.195 = 5.85 Mrd. € für 195 Mio. tCO2 bei 24.612 Mrd. € Fuel-Kosten --> tco2 = 24 %!
+ 841   
+ 842  rev_price(r,cbf)$sum(cbt, TWh(r,cbt,cbf)) = 1000 * sum((i,cbt), c0_en(r,i,cbt,cbf)) / sum(cbt, TWh(r,cbt,cbf)) ;
+ 843   
+ 844  * ----- 06.02.2015 Berechnung der CO2-Steuer als Wertsteuer unter Berücksichtigung der CO2-Intensität = CO2-Wert / Gesamtwert des Energieträgers
+ 845  co2tax(r,i,cbt,cbf) = 0;
+ 846  co2tax0(r,i,cbt,cbf)$c0_fuels(r,i,cbt,cbf) = cbco2i(r,i,cbt,cbf) * co2price / c0_fuels(r,i,cbt,cbf) ;
+ 847   
+ 848  rev_price2(r,cbf)$eprice_n(r,cbf) = rev_price(r,cbf) / eprice_n(r,cbf)  ;
+ 849   
+ 850  *display rev_price, eprice_n, rev_price2, fbun, twh, c0_fuels, cbco2i, co2tax0, c0_oil, c0_ele;
+ 851   
+ 852   
+ 853  *display tfuel, tfueli, pfuel0, pfueli0;
+ 854   
+ 855  *display eprice_n, eprice_g ;
+ 856   
+ 857  * ##############################################################################
+ 858  * ------ UNLOAD DATA
+ 859   
+ 860   
+ 861  execute_unload '..\data11\hh_data.gdx'
+ 862   
+EXIT C:\GAMS\NEWAGE_REEEM\NEWAGE\dataload_hhenergy_v88.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 17
+Load technology specific car data
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM\NEWAGE\dataload_hhenergy_v88.gms
+     2       24 IF EXIST       1      24  C:\GAMS\NEWAGE_REEEM\NEWAGE\temp_data.gdx
+     3       24 GDXIN          1      24  C:\GAMS\NEWAGE_REEEM\results\temp_data.gdx
+     4      152 CALL           1     152  gdxxrw ..\xcel_data\energy_data.xlsx @temp.tmp
+     5      153 GDXIN          1     153  C:\GAMS\NEWAGE_REEEM\NEWAGE\energy_data.gdx
+     6      863 EXIT           1     863  C:\GAMS\NEWAGE_REEEM\NEWAGE\dataload_hhenergy_v88.gms
+
+
+COMPILATION TIME     =        2.122 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 18
+Load technology specific car data
+E x e c u t i o n
+
+
+----    194 PARAMETER HH_boup  BoUp dataset on household energy oonsumption by technology
+
+INDEX 1 = DEU
+
+                Stock         New     Kkm/car     gCO2/km         ccm     l/100km      kWh/km         TWh          PJ      K€/car     €/MWh_n     €/MWh_b       K/E_b       K/E_n     €/km(K)      Mio_qm      kWh/m²     €/m²(K)
+
+small.gas      91.926       7.646      10.430      98.500    1198.500                   0.478       0.458       1.649      16.207      46.013      61.300       8.280      16.169       0.356
+small.ele       7.786       0.026      10.430                                           0.197       0.016       0.058      21.700     130.048     185.052      14.391      21.196       0.543
+small.ben   11678.740     405.197      10.430     137.369    1187.697       5.779       0.575      70.072     252.258      11.766      49.337     146.223       3.971      12.738       0.362
+small.die     247.399      18.030      10.430     124.000    1248.000       4.600       0.498       1.285       4.625      15.111      47.429     113.560       7.665      17.444       0.412
+middl.gas     117.825       7.061      14.960     131.000    1794.500                   0.589       1.038       3.735      24.881      46.013      61.300       8.342      16.303       0.442
+middl.ben   15798.310     518.500      14.960     174.691    1660.946       7.295       0.739     174.678     628.839      21.410      49.337     146.223       4.486      11.697       0.427
+middl.die    5315.873     358.304      14.960     134.426    1906.517       5.391       0.605      48.076     173.072      24.543      47.429     113.560       7.100      16.391       0.470
+middl.phe      46.414      11.021      14.960      49.000    1798.000       2.100       0.358       0.248       0.894      36.200      65.479     153.989       7.400      20.256       0.475
+large.ben    3290.722     145.160      17.567     223.128    2953.672       9.324       0.981      56.705     204.139      38.422      49.337     146.223       5.143      13.385       0.648
+large.die    2468.645     159.236      17.567     183.164    2595.225       6.919       0.801      34.717     124.979      40.159      47.429     113.560       7.224      15.142       0.575
+large.phe      27.875       7.395      17.567      61.500    2496.500       2.650       0.633       0.310       1.116      61.039      65.479     153.989       6.743      16.220       0.673
+old_x.gas                                                                                         251.230     904.430                  46.013      61.300                   7.813                1570.855     159.932      57.497
+old_x.ele                                                                                          89.408     321.868                 130.048     185.052                   2.764                 559.035     159.932      57.497
+old_x.COL                                                                                           5.295      19.063                   8.354       9.941                  43.035                  33.110     159.932      57.497
+old_x.bio                                                                                          15.406      55.462                  33.613      40.000                  10.695                  96.330     159.932      57.497
+old_x.hoi                                                                                         155.978     561.519                  42.095      59.179                   8.540                 975.272     159.932      57.497
+old_r.gas                                                                                           1.273       4.583                  46.013      61.300                  24.109                  19.586      65.000      72.105
+old_r.ele                                                                                           0.371       1.335                 130.048     185.052                   8.530                   5.705      65.000      72.105
+old_r.bio                                                                                           0.130       0.468                  33.613      40.000                  33.002                   1.999      65.000      72.105
+old_r.hoi                                                                                           0.136       0.488                  42.095      59.179                  26.352                   2.086      65.000      72.105
+new_e.gas                                                                                           0.843       3.033                  46.013      61.300                  26.992                  12.962      65.000      80.729
+new_e.ele                                                                                           0.245       0.884                 130.048     185.052                   9.550                   3.776      65.000      80.729
+new_e.bio                                                                                           0.086       0.310                  33.613      40.000                  36.949                   1.323      65.000      80.729
+new_e.hoi                                                                                           0.090       0.323                  42.095      59.179                  29.504                   1.381      65.000      80.729
+new_p.gas                                                                                           0.022       0.078                  46.013      61.300                 140.360                   1.440      15.000      96.875
+new_p.ele                                                                                           0.007       0.027                 130.048     185.052                  49.661                   0.496      15.000      96.875
+new_p.bio                                                                                           0.003       0.012                  33.613      40.000                 192.136                   0.224      15.000      96.875
+other.ele                                                                                          83.473     300.503                 130.048     185.052
+
+
+----    253 PARAMETER c00  
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490      33.830      12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868       5.015       4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      71.454      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033      19.619      12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026       0.144       0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 19
+Load technology specific car data
+E x e c u t i o n
+
+
+        253 PARAMETER c00  
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770       3.498       6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979      53.942      43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.774      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1218.083     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+
+----    321 PARAMETER kmcostc  Specific capital or rental costs per car technology and km [€ per km]
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.356       0.543       0.362       0.412
+DEU.middl       0.442                   0.427       0.470       0.475
+DEU.large                               0.648       0.575       0.673
+
+
+----    481 PARAMETER TWh  
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+DEU.small       0.458       0.016                  70.072       1.285
+DEU.middl       1.038                             174.678      48.076                               0.248
+DEU.large                                          56.705      34.717                               0.310
+DEU.old_x     251.230      89.408       5.295                              15.406     155.978
+DEU.old_r       1.273       0.371                                           0.130       0.136
+DEU.new_e       0.843       0.245                                           0.086       0.090
+DEU.new_p       0.022       0.007                                           0.003
+DEU.other                  83.473
+
+
+----    481 PARAMETER fbun  
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+DEU.small       0.021       0.002                   3.457       0.061
+DEU.middl       0.048                               8.618       2.280                               0.016
+DEU.large                                           2.798       1.647                               0.020
+DEU.old_x      11.560      11.627       0.044                               0.518       6.566
+DEU.old_r       0.059       0.048                                           0.004       0.006
+DEU.new_e       0.039       0.032                                           0.003       0.004
+DEU.new_p 9.940350E-4 9.680173E-4                                     1.127823E-4
+DEU.other                  10.856
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 20
+Load technology specific car data
+E x e c u t i o n
+
+
+----    481 PARAMETER fbug  
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+DEU.small       0.028       0.003                  10.246       0.146
+DEU.middl       0.064                              25.542       5.459                               0.038
+DEU.large                                           8.292       3.942                               0.048
+DEU.old_x      15.400      16.545       0.053                               0.616       9.231
+DEU.old_r       0.078       0.069                                           0.005       0.008
+DEU.new_e       0.052       0.045                                           0.003       0.005
+DEU.new_p       0.001       0.001                                     1.342109E-4
+DEU.other                  15.447
+
+
+----    481 PARAMETER oilnrel  
+
+                  ben         die         hoi
+
+DEU.small       0.136       0.002
+DEU.middl       0.339       0.090
+DEU.large       0.110       0.065
+DEU.old_x                               0.258
+DEU.old_r                         2.244343E-4
+DEU.new_e                         1.485344E-4
+
+
+----    481 PARAMETER oilgrel  
+
+                  ben         die         hoi
+
+DEU.small       0.163       0.002
+DEU.middl       0.406       0.087
+DEU.large       0.132       0.063
+DEU.old_x                               0.147
+DEU.old_r                         1.276495E-4
+DEU.new_e                         8.448063E-5
+
+
+----    481 PARAMETER gasnrel  
+
+                  gas
+
+DEU.small       0.002
+DEU.middl       0.004
+DEU.old_x       0.986
+DEU.old_r       0.005
+DEU.new_e       0.003
+DEU.new_p 8.476515E-5
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 21
+Load technology specific car data
+E x e c u t i o n
+
+
+----    481 PARAMETER gasgrel  
+
+                  gas
+
+DEU.small       0.002
+DEU.middl       0.004
+DEU.old_x       0.986
+DEU.old_r       0.005
+DEU.new_e       0.003
+DEU.new_p 8.476515E-5
+
+
+----    481 PARAMETER elenrel  
+
+                  ele
+
+DEU.small 9.219654E-5
+DEU.old_x       0.515
+DEU.old_r       0.002
+DEU.new_e       0.001
+DEU.new_p 4.289711E-5
+DEU.other       0.481
+
+
+----    481 PARAMETER elegrel  
+
+                  ele
+
+DEU.small 9.219654E-5
+DEU.old_x       0.515
+DEU.old_r       0.002
+DEU.new_e       0.001
+DEU.new_p 4.289711E-5
+DEU.other       0.481
+
+
+----    481 PARAMETER colnrel  
+
+                  COL
+
+DEU.old_x       1.000
+
+
+----    481 PARAMETER colgrel  
+
+                  COL
+
+DEU.old_x       1.000
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 22
+Load technology specific car data
+E x e c u t i o n
+
+
+----    481 PARAMETER bionrel  
+
+                  bio
+
+DEU.old_x       0.986
+DEU.old_r       0.008
+DEU.new_e       0.006
+DEU.new_p 2.147306E-4
+
+
+----    481 PARAMETER biogrel  
+
+                  bio
+
+DEU.old_x       0.986
+DEU.old_r       0.008
+DEU.new_e       0.006
+DEU.new_p 2.147306E-4
+
+
+----    481 PARAMETER elephenrel  
+
+                  ele         phe         SUM
+
+DEU.small 9.204736E-5
+DEU.middl             7.197257E-4
+DEU.large             8.982889E-4
+DEU.old_x       0.514
+DEU.old_r       0.002
+DEU.new_e       0.001
+DEU.new_p 4.282770E-5
+DEU.other       0.480
+DEU.SUM                                 1.000
+
+
+----    481 PARAMETER elephegrel  
+
+                  ele         phe         SUM
+
+DEU.small 9.195026E-5
+DEU.middl                   0.001
+DEU.large                   0.001
+DEU.old_x       0.514
+DEU.old_r       0.002
+DEU.new_e       0.001
+DEU.new_p 4.278252E-5
+DEU.other       0.480
+DEU.SUM                                 1.000
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 23
+Load technology specific car data
+E x e c u t i o n
+
+
+----    481 PARAMETER oilphenrel  
+
+                  ben         die         hoi         phe         SUM
+
+DEU.small       0.136       0.002
+DEU.middl       0.338       0.090             6.386377E-4
+DEU.large       0.110       0.065             7.970831E-4
+DEU.old_x                               0.258
+DEU.old_r                         2.241121E-4
+DEU.new_e                         1.483212E-4
+DEU.SUM                                                         1.000
+
+
+----    481 PARAMETER oilphegrel  
+
+                  ben         die         hoi         phe         SUM
+
+DEU.small       0.163       0.002
+DEU.middl       0.406       0.087             6.076656E-4
+DEU.large       0.132       0.063             7.584269E-4
+DEU.old_x                               0.147
+DEU.old_r                         1.274752E-4
+DEU.new_e                         8.436522E-5
+DEU.SUM                                                         1.000
+
+
+----    534 PARAMETER tc  Tax rate on final demand
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil       0.452       0.193       1.183       0.679       1.206       0.959       0.847       0.119       1.104       1.016       0.867       0.940       0.653       0.677       0.250       0.363       0.030       0.375
+gas      -0.032       0.024       0.500       0.766       1.035       0.495       0.455       0.002       0.126       1.059       1.403       0.371       0.239       0.450 3.897839E-4 -2.21986E-4       0.041       0.160
+ppp       0.050       0.048       0.174       0.113       0.152       0.140       0.131       0.125       0.130       0.159       0.281       0.196       0.108       0.088       0.084       0.073       0.035       0.071
+nmm       0.162       0.100       0.250       0.206       0.107       0.180       0.279       0.246       0.291       0.258       0.274       0.245       0.163       0.125       0.090       0.026       0.011       0.086
+nfm                   0.141       0.261                               0.268       0.269                   0.277       0.267       0.253       0.290       0.089                                          -0.013       0.051
+mvh       0.179       0.040       0.185       0.102       0.111       0.304       0.319       0.260       0.091       0.189       0.216       0.252       0.143       0.205       0.099       0.026       0.026       0.174
+ele      -0.113       0.031       0.464       1.102       0.378       0.339       0.287       0.022       0.060       0.409       0.784       0.288       0.105       0.214       0.090       0.050       0.012       0.108
+COL       0.040       0.058       0.235       0.398       0.252       0.509      -0.101       0.673       0.213       0.443       0.382       0.522       0.039                   0.272                               0.209
+CRU                                           0.247                                                                               0.325                   0.189                                           0.002       0.068
+CHM       0.112       0.061       0.206       0.146       0.118       0.178       0.137       0.304       0.151       0.232       0.221       0.208       0.104       0.223       0.108       0.043       0.022       0.087
+IRS                   0.084       0.260                               0.268       0.276       0.231       0.278       0.271       0.259       0.298       0.142                                           0.005       0.065
+MAC       0.079       0.093       0.285       0.258       0.152       0.279       0.282       0.259       0.293       0.273       0.282       0.250       0.100       0.241       0.079       0.078       0.023       0.104
+FOT       0.036       0.096       0.203       0.151       0.139       0.182       0.141       0.350       0.189       0.151       0.290       0.130       0.126       0.154       0.111       0.143       0.019       0.106
+ROI       0.041       0.103       0.222       0.123       0.141       0.259       0.154       0.123       0.155       0.149       0.262       0.202       0.137       0.140       0.054       0.037       0.025       0.083
+BUI      -0.001                   0.323       0.402       0.330       0.166       0.299                   0.368       0.432       0.351       0.298       0.056                   0.043             7.199070E-4       0.028
+TRN      -0.006 5.740058E-4      -0.038       0.074      -0.047       0.061       0.093       0.014       0.086       0.005       0.055       0.038       0.015       0.064       0.059      -0.002       0.007       0.036
+AGR      -0.015       0.047       0.019      -0.011      -0.003       0.048       0.035       0.042       0.041       0.051       0.045       0.008       0.032       0.074       0.007       0.043       0.004       0.022
+SER       0.005       0.005       0.050       0.040       0.048       0.025       0.032      -0.011       0.040       0.035       0.044       0.041       0.023       0.031       0.072       0.036       0.010       0.026
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 24
+Load technology specific car data
+E x e c u t i o n
+
+
+----    534 PARAMETER tcar  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.102       0.102       0.102       0.102
+DEU.middl       0.102                   0.102       0.102       0.102
+DEU.large                               0.102       0.102       0.102
+
+
+----    534 PARAMETER tfuel  
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+DEU.small       0.766       1.100                   1.013       0.626
+DEU.middl       0.766                               1.013       0.626                               1.338
+DEU.large                                           1.013       0.626                               1.338
+DEU.old_x       0.766       1.100       0.398                              -0.011      -0.045
+DEU.old_r       0.766       1.100                                          -0.011      -0.045
+DEU.new_e       0.766       1.100                                          -0.011      -0.045
+DEU.new_p       0.766       1.100                                          -0.011
+DEU.other                   1.100
+
+
+----    534 PARAMETER tfueli  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+oil.small                                           1.013       0.626
+oil.middl                                           1.013       0.626                               0.597
+oil.large                                           1.013       0.626                               0.597
+oil.old_x                                                                              -0.045
+oil.old_r                                                                              -0.045
+oil.new_e                                                                              -0.045
+gas.small       0.766
+gas.middl       0.766
+gas.old_x       0.766
+gas.old_r       0.766
+gas.new_e       0.766
+gas.new_p       0.766
+ele.small                   1.100
+ele.middl                                                                                           2.470
+ele.large                                                                                           2.470
+ele.old_x                   1.100
+ele.old_r                   1.100
+ele.new_e                   1.100
+ele.new_p                   1.100
+ele.other                   1.100
+COL.old_x                               0.398
+AGR.old_x                                                                  -0.011
+AGR.old_r                                                                  -0.011
+AGR.new_e                                                                  -0.011
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 25
+Load technology specific car data
+E x e c u t i o n
+
+
+        534 PARAMETER tfueli  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+AGR.new_p                                                                  -0.011
+
+
+----    534 PARAMETER tbui  
+
+                  gas         ele         bio         hoi
+
+DEU.old_r       0.402       0.402       0.402       0.402
+DEU.new_e       0.402       0.402       0.402       0.402
+DEU.new_p       0.402       0.402       0.402
+
+
+----    535 PARAMETER pc0  Reference price for private demand
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil       1.452       1.193       2.183       1.679       2.206       1.959       1.847       1.119       2.104       2.016       1.867       1.940       1.653       1.677       1.250       1.363       1.030       1.375
+gas       0.968       1.024       1.500       1.766       2.035       1.495       1.455       1.002       1.126       2.059       2.403       1.371       1.239       1.450       1.000       1.000       1.041       1.160
+ppp       1.050       1.048       1.174       1.113       1.152       1.140       1.131       1.125       1.130       1.159       1.281       1.196       1.108       1.088       1.084       1.073       1.035       1.071
+nmm       1.162       1.100       1.250       1.206       1.107       1.180       1.279       1.246       1.291       1.258       1.274       1.245       1.163       1.125       1.090       1.026       1.011       1.086
+nfm       1.000       1.141       1.261       1.000       1.000       1.268       1.269       1.000       1.277       1.267       1.253       1.290       1.089       1.000       1.000       1.000       0.987       1.051
+mvh       1.179       1.040       1.185       1.102       1.111       1.304       1.319       1.260       1.091       1.189       1.216       1.252       1.143       1.205       1.099       1.026       1.026       1.174
+ele       0.887       1.031       1.464       2.102       1.378       1.339       1.287       1.022       1.060       1.409       1.784       1.288       1.105       1.214       1.090       1.050       1.012       1.108
+COL       1.040       1.058       1.235       1.398       1.252       1.509       0.899       1.673       1.213       1.443       1.382       1.522       1.039       1.000       1.272       1.000       1.000       1.209
+CRU       1.000       1.000       1.000       1.247       1.000       1.000       1.000       1.000       1.000       1.000       1.325       1.000       1.189       1.000       1.000       1.000       1.002       1.068
+CHM       1.112       1.061       1.206       1.146       1.118       1.178       1.137       1.304       1.151       1.232       1.221       1.208       1.104       1.223       1.108       1.043       1.022       1.087
+IRS       1.000       1.084       1.260       1.000       1.000       1.268       1.276       1.231       1.278       1.271       1.259       1.298       1.142       1.000       1.000       1.000       1.005       1.065
+MAC       1.079       1.093       1.285       1.258       1.152       1.279       1.282       1.259       1.293       1.273       1.282       1.250       1.100       1.241       1.079       1.078       1.023       1.104
+FOT       1.036       1.096       1.203       1.151       1.139       1.182       1.141       1.350       1.189       1.151       1.290       1.130       1.126       1.154       1.111       1.143       1.019       1.106
+ROI       1.041       1.103       1.222       1.123       1.141       1.259       1.154       1.123       1.155       1.149       1.262       1.202       1.137       1.140       1.054       1.037       1.025       1.083
+BUI       0.999       1.000       1.323       1.402       1.330       1.166       1.299       1.000       1.368       1.432       1.351       1.298       1.056       1.000       1.043       1.000       1.001       1.028
+TRN       0.994       1.001       0.962       1.074       0.953       1.061       1.093       1.014       1.086       1.005       1.055       1.038       1.015       1.064       1.059       0.998       1.007       1.036
+AGR       0.985       1.047       1.019       0.989       0.997       1.048       1.035       1.042       1.041       1.051       1.045       1.008       1.032       1.074       1.007       1.043       1.004       1.022
+SER       1.005       1.005       1.050       1.040       1.048       1.025       1.032       0.989       1.040       1.035       1.044       1.041       1.023       1.031       1.072       1.036       1.010       1.026
+
+
+----    535 PARAMETER pcar0  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       1.102       1.102       1.102       1.102
+DEU.middl       1.102                   1.102       1.102       1.102
+DEU.large                               1.102       1.102       1.102
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 26
+Load technology specific car data
+E x e c u t i o n
+
+
+----    535 PARAMETER pfuel0  
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+DEU.small       1.766       2.100                   2.013       1.626
+DEU.middl       1.766                               2.013       1.626                               2.338
+DEU.large                                           2.013       1.626                               2.338
+DEU.old_x       1.766       2.100       1.398                               0.989       0.955
+DEU.old_r       1.766       2.100                                           0.989       0.955
+DEU.new_e       1.766       2.100                                           0.989       0.955
+DEU.new_p       1.766       2.100                                           0.989
+DEU.other                   2.100
+
+
+----    535 PARAMETER pfueli0  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+oil.small                                           2.013       1.626
+oil.middl                                           2.013       1.626                               1.597
+oil.large                                           2.013       1.626                               1.597
+oil.old_x                                                                               0.955
+oil.old_r                                                                               0.955
+oil.new_e                                                                               0.955
+gas.small       1.766
+gas.middl       1.766
+gas.old_x       1.766
+gas.old_r       1.766
+gas.new_e       1.766
+gas.new_p       1.766
+ele.small                   2.100
+ele.middl                                                                                           3.470
+ele.large                                                                                           3.470
+ele.old_x                   2.100
+ele.old_r                   2.100
+ele.new_e                   2.100
+ele.new_p                   2.100
+ele.other                   2.100
+COL.old_x                               1.398
+AGR.old_x                                                                   0.989
+AGR.old_r                                                                   0.989
+AGR.new_e                                                                   0.989
+AGR.new_p                                                                   0.989
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 27
+Load technology specific car data
+E x e c u t i o n
+
+
+----    535 PARAMETER pbui0  
+
+                  gas         ele         bio         hoi
+
+DEU.old_r       1.402       1.402       1.402       1.402
+DEU.new_e       1.402       1.402       1.402       1.402
+DEU.new_p       1.402       1.402       1.402
+
+
+----    563 PARAMETER snd0  
+
+INDEX 1 = DEU
+
+                  gas         ele         ben         die         phe
+
+mvh.small       0.088 4.580128E-4       4.736       0.240
+mvh.middl       0.145                  10.256       7.809       0.243
+mvh.large                               5.121       4.985       0.271
+
+
+----    563 PARAMETER ssd0  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.313       0.044      42.508       0.985
+DEU.middl       0.732                  97.496      34.855       0.251
+DEU.large                              35.795      23.324       0.242
+
+
+----    563 PARAMETER sy0  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.409       0.044      47.728       1.250
+DEU.middl       0.891                 108.799      43.461       0.519
+DEU.large                              41.438      28.818       0.540
+
+
+----    563 PARAMETER ssd0price  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       3.708       5.664       3.771       4.296
+DEU.middl       6.606                   6.381       7.031       7.100
+DEU.large                              11.380      10.099      11.814
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 28
+Load technology specific car data
+E x e c u t i o n
+
+
+----    563 PARAMETER snd0price  
+
+                  gas         ele         ben         die         phe
+
+DEU.small      11.495      17.558      11.689      13.318
+DEU.middl      20.479                  19.780      21.795      22.009
+DEU.large                              35.277      31.308      36.623
+
+
+----    563 PARAMETER qmcostc  Specific capital or rental costs per buildings technology and qm [€ per m²]
+
+                  gas         ele         COL         bio         hoi
+
+DEU.old_x      57.497      57.497      57.497      57.497      57.497
+DEU.old_r      72.105      72.105                  72.105      72.105
+DEU.new_e      80.729      80.729                  80.729      80.729
+DEU.new_p      96.875      96.875                  96.875
+
+
+----    563 PARAMETER pc0_serbui  
+
+                  gas         ele         bio         hoi
+
+DEU.old_r       1.365       1.365       1.365       1.365
+DEU.new_e       1.365       1.365       1.365       1.365
+DEU.new_p       1.365       1.365       1.365
+
+
+----    563 PARAMETER pc0  Reference price for private demand
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil       1.452       1.193       2.183       1.679       2.206       1.959       1.847       1.119       2.104       2.016       1.867       1.940       1.653       1.677       1.250       1.363       1.030       1.375
+gas       0.968       1.024       1.500       1.766       2.035       1.495       1.455       1.002       1.126       2.059       2.403       1.371       1.239       1.450       1.000       1.000       1.041       1.160
+ppp       1.050       1.048       1.174       1.113       1.152       1.140       1.131       1.125       1.130       1.159       1.281       1.196       1.108       1.088       1.084       1.073       1.035       1.071
+nmm       1.162       1.100       1.250       1.206       1.107       1.180       1.279       1.246       1.291       1.258       1.274       1.245       1.163       1.125       1.090       1.026       1.011       1.086
+nfm       1.000       1.141       1.261       1.000       1.000       1.268       1.269       1.000       1.277       1.267       1.253       1.290       1.089       1.000       1.000       1.000       0.987       1.051
+mvh       1.179       1.040       1.185       1.102       1.111       1.304       1.319       1.260       1.091       1.189       1.216       1.252       1.143       1.205       1.099       1.026       1.026       1.174
+ele       0.887       1.031       1.464       2.102       1.378       1.339       1.287       1.022       1.060       1.409       1.784       1.288       1.105       1.214       1.090       1.050       1.012       1.108
+COL       1.040       1.058       1.235       1.398       1.252       1.509       0.899       1.673       1.213       1.443       1.382       1.522       1.039       1.000       1.272       1.000       1.000       1.209
+CRU       1.000       1.000       1.000       1.247       1.000       1.000       1.000       1.000       1.000       1.000       1.325       1.000       1.189       1.000       1.000       1.000       1.002       1.068
+CHM       1.112       1.061       1.206       1.146       1.118       1.178       1.137       1.304       1.151       1.232       1.221       1.208       1.104       1.223       1.108       1.043       1.022       1.087
+IRS       1.000       1.084       1.260       1.000       1.000       1.268       1.276       1.231       1.278       1.271       1.259       1.298       1.142       1.000       1.000       1.000       1.005       1.065
+MAC       1.079       1.093       1.285       1.258       1.152       1.279       1.282       1.259       1.293       1.273       1.282       1.250       1.100       1.241       1.079       1.078       1.023       1.104
+FOT       1.036       1.096       1.203       1.151       1.139       1.182       1.141       1.350       1.189       1.151       1.290       1.130       1.126       1.154       1.111       1.143       1.019       1.106
+ROI       1.041       1.103       1.222       1.123       1.141       1.259       1.154       1.123       1.155       1.149       1.262       1.202       1.137       1.140       1.054       1.037       1.025       1.083
+BUI       0.999       1.000       1.323       1.402       1.330       1.166       1.299       1.000       1.368       1.432       1.351       1.298       1.056       1.000       1.043       1.000       1.001       1.028
+TRN       0.994       1.001       0.962       1.074       0.953       1.061       1.093       1.014       1.086       1.005       1.055       1.038       1.015       1.064       1.059       0.998       1.007       1.036
+AGR       0.985       1.047       1.019       0.989       0.997       1.048       1.035       1.042       1.041       1.051       1.045       1.008       1.032       1.074       1.007       1.043       1.004       1.022
+SER       1.005       1.005       1.050       1.040       1.048       1.025       1.032       0.989       1.040       1.035       1.044       1.041       1.023       1.031       1.072       1.036       1.010       1.026
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 29
+Load technology specific car data
+E x e c u t i o n
+
+
+----    577 PARAMETER bnd0rel  
+
+                  gas         ele         bio         hoi         SUM
+
+DEU.old_r       0.362       0.106       0.037       0.039
+DEU.new_e       0.269       0.078       0.027       0.029
+DEU.new_p       0.036       0.012       0.006
+DEU.SUM                                                         1.000
+
+
+----    577 PARAMETER bnd0  
+
+INDEX 1 = DEU
+
+                  gas         ele         bio         hoi
+
+BUI.old_r       1.268       0.369       0.129       0.135
+BUI.new_e       0.939       0.274       0.096       0.100
+BUI.new_p       0.125       0.043       0.019
+SER.old_r       0.145       0.042       0.015       0.015
+SER.new_e       0.107       0.031       0.011       0.011
+SER.new_p       0.014       0.005       0.002
+
+
+----    577 PARAMETER bsd0  
+
+                  gas         ele         COL         bio         hoi
+
+DEU.old_x      90.320      32.143       1.904       5.539      56.075
+
+
+----    577 PARAMETER by0  
+
+                  gas         ele         COL         bio         hoi
+
+DEU.old_x      90.320      32.143       1.904       5.539      56.075
+DEU.old_r       1.928       0.561                   0.197       0.205
+DEU.new_e       1.428       0.416                   0.146       0.152
+DEU.new_p       0.190       0.066                   0.030
+
+
+----    577 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490      33.830      12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868       5.015       4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      71.454      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033      19.619      12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026       0.144       0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 30
+Load technology specific car data
+E x e c u t i o n
+
+
+        577 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770       3.498       6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979      53.942      43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.774      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1218.083     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+
+----    577 PARAMETER sr0qm  
+
+DEU 0.900
+
+
+----    577 PARAMETER sr0by  
+
+DEU 1.531
+
+
+----    597 PARAMETER constrr  
+
+DEU 1.000
+
+
+----    606 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    614 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    616 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    617 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490      33.830      12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868       5.015       4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 31
+Load technology specific car data
+E x e c u t i o n
+
+
+        617 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      71.454      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033      19.619      12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026       0.144       0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770       3.498       6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979      53.942      43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.774      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1218.083     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+
+----    632 PARAMETER c00  
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490      33.830      12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868       5.015       4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      71.454      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033      19.619      12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026       0.144       0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770       3.498       6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979      53.942      43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.774      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1218.083     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+
+----    632 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490                  12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868                   4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 32
+Load technology specific car data
+E x e c u t i o n
+
+
+        632 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      37.559      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033                  12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026                   0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770                   6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979      53.942      43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.249      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1217.684     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+
+----    637 PARAMETER chk3  Check if tfuel connects fuelg0 and fuel0 correctly [= 0]
+
+                      ( ALL       0.000 )
+
+
+----    639 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    640 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    641 PARAMETER chk12  
+
+                      ( ALL       0.000 )
+
+
+----    686 PARAMETER chkc0  
+
+                      ( ALL       0.000 )
+
+
+----    686 PARAMETER chkc0t  
+
+                      ( ALL       0.000 )
+
+
+----    686 PARAMETER chkstockc  
+
+                      ( ALL       0.000 )
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 33
+Load technology specific car data
+E x e c u t i o n
+
+
+----    686 PARAMETER chkstockh  
+
+                      ( ALL       0.000 )
+
+
+----    686 PARAMETER chkc  
+
+                      ( ALL       0.000 )
+
+
+----    745 PARAMETER sy0  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.409       0.044      47.728       1.250
+DEU.middl       0.891                 108.799      43.461       0.519
+DEU.large                              41.438      28.818       0.540
+
+
+----    745 PARAMETER c0_en  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+oil.small                                           4.591       0.081
+oil.middl                                          11.446       3.028                               0.022
+oil.large                                           3.716       2.187                               0.027
+oil.old_x                                                                               8.720
+oil.old_r                                                                               0.008
+oil.new_e                                                                               0.005
+gas.small       0.009
+gas.middl       0.020
+gas.old_x       4.944
+gas.old_r       0.025
+gas.new_e       0.017
+gas.new_p 4.251177E-4
+ele.small                   0.002
+ele.middl                                                                                           0.014
+ele.large                                                                                           0.018
+ele.old_x                  10.092
+ele.old_r                   0.042
+ele.new_e                   0.028
+ele.new_p             8.402170E-4
+ele.other                   9.422
+COL.old_x                               0.144
+AGR.old_x                                                                   0.518
+AGR.old_r                                                                   0.004
+AGR.new_e                                                                   0.003
+AGR.new_p                                                             1.127823E-4
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 34
+Load technology specific car data
+E x e c u t i o n
+
+
+----    745 PARAMETER tfueli  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+oil.small                                           1.013       0.626
+oil.middl                                           1.013       0.626                               0.597
+oil.large                                           1.013       0.626                               0.597
+oil.old_x                                                                              -0.045
+oil.old_r                                                                              -0.045
+oil.new_e                                                                              -0.045
+gas.small       0.766
+gas.middl       0.766
+gas.old_x       0.766
+gas.old_r       0.766
+gas.new_e       0.766
+gas.new_p       0.766
+ele.small                   1.100
+ele.middl                                                                                           2.470
+ele.large                                                                                           2.470
+ele.old_x                   1.100
+ele.old_r                   1.100
+ele.new_e                   1.100
+ele.new_p                   1.100
+ele.other                   1.100
+COL.old_x                               0.398
+AGR.old_x                                                                  -0.011
+AGR.old_r                                                                  -0.011
+AGR.new_e                                                                  -0.011
+AGR.new_p                                                                  -0.011
+
+
+----    745 PARAMETER pfueli0  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+oil.small                                           2.013       1.626
+oil.middl                                           2.013       1.626                               1.597
+oil.large                                           2.013       1.626                               1.597
+oil.old_x                                                                               0.955
+oil.old_r                                                                               0.955
+oil.new_e                                                                               0.955
+gas.small       1.766
+gas.middl       1.766
+gas.old_x       1.766
+gas.old_r       1.766
+gas.new_e       1.766
+gas.new_p       1.766
+ele.small                   2.100
+ele.middl                                                                                           3.470
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 35
+Load technology specific car data
+E x e c u t i o n
+
+
+        745 PARAMETER pfueli0  
+
+INDEX 1 = DEU
+
+                  gas         ele         COL         ben         die         bio         hoi         phe
+
+ele.large                                                                                           3.470
+ele.old_x                   2.100
+ele.old_r                   2.100
+ele.new_e                   2.100
+ele.new_p                   2.100
+ele.other                   2.100
+COL.old_x                               1.398
+AGR.old_x                                                                   0.989
+AGR.old_r                                                                   0.989
+AGR.new_e                                                                   0.989
+AGR.new_p                                                                   0.989
+
+
+----    745 PARAMETER pc0  Reference price for private demand
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil       1.452       1.193       2.183       1.679       2.206       1.959       1.847       1.119       2.104       2.016       1.867       1.940       1.653       1.677       1.250       1.363       1.030       1.375
+gas       0.968       1.024       1.500       1.766       2.035       1.495       1.455       1.002       1.126       2.059       2.403       1.371       1.239       1.450       1.000       1.000       1.041       1.160
+ppp       1.050       1.048       1.174       1.113       1.152       1.140       1.131       1.125       1.130       1.159       1.281       1.196       1.108       1.088       1.084       1.073       1.035       1.071
+nmm       1.162       1.100       1.250       1.206       1.107       1.180       1.279       1.246       1.291       1.258       1.274       1.245       1.163       1.125       1.090       1.026       1.011       1.086
+nfm       1.000       1.141       1.261       1.000       1.000       1.268       1.269       1.000       1.277       1.267       1.253       1.290       1.089       1.000       1.000       1.000       0.987       1.051
+mvh       1.179       1.040       1.185       1.102       1.111       1.304       1.319       1.260       1.091       1.189       1.216       1.252       1.143       1.205       1.099       1.026       1.026       1.174
+ele       0.887       1.031       1.464       2.102       1.378       1.339       1.287       1.022       1.060       1.409       1.784       1.288       1.105       1.214       1.090       1.050       1.012       1.108
+COL       1.040       1.058       1.235       1.398       1.252       1.509       0.899       1.673       1.213       1.443       1.382       1.522       1.039       1.000       1.272       1.000       1.000       1.209
+CRU       1.000       1.000       1.000       1.247       1.000       1.000       1.000       1.000       1.000       1.000       1.325       1.000       1.189       1.000       1.000       1.000       1.002       1.068
+CHM       1.112       1.061       1.206       1.146       1.118       1.178       1.137       1.304       1.151       1.232       1.221       1.208       1.104       1.223       1.108       1.043       1.022       1.087
+IRS       1.000       1.084       1.260       1.000       1.000       1.268       1.276       1.231       1.278       1.271       1.259       1.298       1.142       1.000       1.000       1.000       1.005       1.065
+MAC       1.079       1.093       1.285       1.258       1.152       1.279       1.282       1.259       1.293       1.273       1.282       1.250       1.100       1.241       1.079       1.078       1.023       1.104
+FOT       1.036       1.096       1.203       1.151       1.139       1.182       1.141       1.350       1.189       1.151       1.290       1.130       1.126       1.154       1.111       1.143       1.019       1.106
+ROI       1.041       1.103       1.222       1.123       1.141       1.259       1.154       1.123       1.155       1.149       1.262       1.202       1.137       1.140       1.054       1.037       1.025       1.083
+BUI       0.999       1.000       1.323       1.402       1.330       1.166       1.299       1.000       1.368       1.432       1.351       1.298       1.056       1.000       1.043       1.000       1.001       1.028
+TRN       0.994       1.001       0.962       1.074       0.953       1.061       1.093       1.014       1.086       1.005       1.055       1.038       1.015       1.064       1.059       0.998       1.007       1.036
+AGR       0.985       1.047       1.019       0.989       0.997       1.048       1.035       1.042       1.041       1.051       1.045       1.008       1.032       1.074       1.007       1.043       1.004       1.022
+SER       1.005       1.005       1.050       1.040       1.048       1.025       1.032       0.989       1.040       1.035       1.044       1.041       1.023       1.031       1.072       1.036       1.010       1.026
+
+
+----    745 PARAMETER cartfout  
+
+                  gas         ele         ben         die         phe
+
+DEU.small       0.425       0.048      56.971       1.382
+DEU.middl       0.927                 131.841      48.386       0.602
+DEU.large                              48.919      32.374       0.645
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 36
+Load technology specific car data
+E x e c u t i o n
+
+
+----    745 PARAMETER heatfout  
+
+                  gas         ele         COL         bio         hoi
+
+DEU.old_x      99.048      53.333       2.104       6.051      64.403
+DEU.old_r       1.972       0.649                   0.201       0.213
+DEU.new_e       1.458       0.474                   0.149       0.157
+DEU.new_p       0.191       0.067                   0.030
+
+
+----    745 PARAMETER cartout  
+
+          small       middl       large
+
+DEU      58.827     181.756      81.937
+
+
+----    745 PARAMETER heatout  
+
+          old_x       old_r       new_e       new_p
+
+DEU     224.940       3.035       2.237       0.288
+
+
+----    745 PARAMETER c0  Final demand by commodity
+
+            IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil      29.768     140.511      17.490                  12.233       4.781      13.043      18.913      18.066       8.833      10.101      22.739      86.097      13.508      49.165       4.868      53.999      72.859
+gas       0.533      13.627       1.868                   4.645       0.850       0.690       8.106       5.293       2.788       0.378       2.852       6.954       0.051       0.060       0.003       3.974      13.154
+ppp       6.233      69.113      15.069      29.774      13.738       3.968       8.301       3.475      22.379       7.940       6.913       8.475      26.395      11.845      10.611       1.149      10.974      30.583
+nmm       1.291       6.438       3.316       5.638       4.319       1.874       0.546       1.532       2.225       1.658       1.285       3.328       8.198       0.901       3.568       0.367      10.006      10.408
+nfm       0.002       0.244       0.106       0.021       0.013       0.129       0.009       0.007       0.068       0.047       0.016       0.103       2.053       0.013       0.579 9.442268E-4       4.764       2.227
+mvh       5.732     191.510      59.083      37.559      31.797       6.373      17.554      23.382      46.419      21.776      24.671      16.539     125.507      27.489      38.537       5.720      63.063      61.940
+ele      16.364     102.830      15.033                  12.641       7.781      12.580      29.683      14.836       5.132      16.113      18.667      79.646      10.737      29.794       1.199      37.625      72.122
+COL       0.192       0.007       0.026                   0.005       0.609       0.006       0.128       0.096       0.016       0.089       0.111       0.047 3.432532E-4       2.917       0.114 3.218304E-4       1.335
+CRU 6.435225E-7 5.420121E-5 3.246397E-6       0.030 3.458114E-6 9.189019E-7 3.187111E-6 3.138637E-4 5.027106E-6 2.328771E-6 1.192809E-5 1.202243E-6       0.007 1.451826E-5 9.111757E-6 8.195421E-7       0.013       0.055
+CHM      20.235     178.034      36.223      64.029      30.303       9.255      23.682      18.204      34.565      12.853      12.907      20.260      87.237      40.451      41.920       7.181      62.555     106.798
+IRS       0.001       0.077       0.056       0.004       0.003       0.089       0.005       0.034       0.007       0.044       0.016       0.056       0.206       0.003       0.020 4.524171E-4       7.553       3.332
+MAC      16.847     208.270      43.056      54.225      36.512       5.575      12.384      17.401      28.727      14.630      17.186      22.001     124.192      29.281      92.350       3.337      70.350      95.020
+FOT     143.133     395.111      99.079     152.674      87.225      34.097      72.213      91.591     107.068      46.665      51.905      96.155     474.924     120.514     336.856      29.424     229.931     537.561
+ROI      53.588     331.145      66.513     114.580      94.304      13.379      54.914      35.367      84.300      33.074      26.696      47.987     150.044      59.485     166.217      17.986     115.238     238.641
+BUI       8.612       0.154       8.770                   6.977      10.992       2.778       3.894       5.478       0.641       0.637       2.791       3.063       0.020      14.591       0.003      12.003      15.703
+TRN      86.206     124.062      53.979                  43.557      11.772      23.212      55.055      47.322      25.360      28.659      48.959     298.608      58.009      84.961       6.738      86.753     203.961
+AGR     167.889      57.738      13.762      10.249      12.210       5.114      12.299      29.309      10.071       6.037       8.160      23.745      72.294      22.669     133.373       5.732     220.437     263.431
+SER     423.150    7662.067    1065.240    1217.684     819.352     163.502     679.037     539.766    1056.332     541.664     491.513     479.768    5110.453     942.320    1543.611     142.696     929.395    1987.132
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 37
+Load technology specific car data
+E x e c u t i o n
+
+
+----    745 PARAMETER c0_trn  
+
+            DEU
+
+TRN      53.942
+
+
+----    745 PARAMETER esdout  
+
+DEU 630.711
+
+
+----    745 PARAMETER otherele  
+
+DEU 9.422
+
+
+----    745 PARAMETER tothele0  
+
+DEU 1.100
+
+
+----    745 PARAMETER pothele0  
+
+IND 1.000,    USA 1.000,    FRA 1.000,    DEU 2.100,    ITA 1.000,    POL 1.000,    ESP 1.000,    RUS 1.000,    UKI 1.000,    BNL 1.000,    EUN 1.000,    EUS 1.000,    OEC 1.000,    BRZ 1.000,    CHI 1.000,    RSA 1.000,    OPA 1.000,    ROW 1.000
+
+
+----    745 PARAMETER c0_fuels  
+
+INDEX 1 = DEU
+
+                  gas         COL         ben         die         hoi         phe
+
+oil.small                               4.591       0.081
+oil.middl                              11.446       3.028                   0.022
+oil.large                               3.716       2.187                   0.027
+oil.old_x                                                       8.720
+oil.old_r                                                       0.008
+oil.new_e                                                       0.005
+gas.small       0.009
+gas.middl       0.020
+gas.old_x       4.944
+gas.old_r       0.025
+gas.new_e       0.017
+gas.new_p 4.251177E-4
+COL.old_x                   0.144
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 38
+Load technology specific car data
+E x e c u t i o n
+
+
+----    761 PARAMETER co2em  CO2 emissions (by energy carrier) [Mio. tCO2]
+
+                    IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil.oil           0.054       0.133       0.013       0.017       0.013       0.005       0.015       0.026       0.013       0.011       0.007       0.013       0.090       0.011       0.061       0.004       0.043       0.059
+oil.gas     1.348215E-4 4.399957E-4             7.392030E-6 1.695930E-5 1.868103E-5                   0.001       0.001 2.375931E-5 5.653453E-6 3.363657E-4       0.003 3.226770E-4             1.211416E-6       0.002       0.001
+oil.ppp     4.082786E-4       0.010 3.038393E-4 2.594851E-4 1.539053E-4 1.517251E-4 6.626993E-4 6.115363E-4 3.427819E-4 4.943569E-5       0.001 5.000509E-4       0.005       0.002       0.002 1.000381E-4       0.005       0.004
+oil.nmm           0.016       0.014       0.004       0.002       0.006 6.836883E-4       0.008       0.003       0.001 7.987347E-4       0.002       0.007       0.023       0.013       0.044 1.969208E-4       0.022       0.019
+oil.nfm     6.119173E-4       0.002 1.474488E-4 3.377645E-4 1.672775E-4 4.559750E-4 5.274030E-4 1.068661E-4 2.298922E-4 9.740891E-6 5.906226E-4       0.001       0.006       0.006       0.019 1.104934E-4       0.005       0.003
+oil.mvh     7.915496E-5       0.001 7.282279E-5 3.518392E-4 2.649139E-6 3.046776E-5 1.814322E-4 3.640029E-4 1.645608E-4 1.191105E-5 1.206965E-4 1.102634E-4       0.001 2.318929E-5       0.005 1.569007E-5 9.393195E-4 9.391844E-4
+oil.ele           0.023       0.026       0.004       0.005                                           0.058                               0.011       0.014       0.147       0.011       0.039 1.390665E-4                   0.217
+oil.COL     2.980112E-6 2.610947E-5             2.288543E-5             7.391794E-5                   0.003 2.254221E-6             5.766420E-5 6.160601E-5       0.005                   0.008 1.521056E-6 3.773261E-6 5.361643E-4
+oil.CRU     6.402071E-6 1.034656E-4                                                                   0.001 8.913129E-4             1.210857E-6 7.537753E-5       0.003       0.003       0.016                   0.006       0.003
+oil.CHM           0.014       0.024       0.007       0.005       0.002       0.002       0.002       0.015       0.002 7.645137E-4       0.001       0.003       0.041       0.008       0.087 4.093696E-4       0.040       0.038
+oil.IRS           0.013       0.012       0.003       0.003       0.005       0.001       0.002       0.011       0.002       0.001       0.003       0.004       0.048       0.009       0.178       0.001       0.009       0.030
+oil.MAC           0.002       0.004 4.673937E-4       0.001 6.937199E-4 1.076418E-4 5.400520E-4       0.001       0.001 8.931931E-5 4.817099E-4 4.581825E-4       0.007 3.392315E-4       0.033 1.020139E-4       0.009       0.009
+oil.FOT     7.950584E-4       0.010       0.001       0.001 5.657991E-4 4.285495E-4       0.001       0.001       0.002 2.064141E-4       0.001       0.002       0.009       0.002       0.005 1.181090E-4       0.013       0.017
+oil.ROI           0.009       0.013 9.658823E-4 9.362038E-4 6.471664E-4 4.195174E-4       0.001       0.005       0.002 1.311909E-4       0.001       0.001       0.026       0.005       0.032       0.003       0.030       0.032
+oil.BUI           0.003       0.012       0.002 1.604278E-4 2.146523E-4 3.647720E-4 9.097992E-4       0.001       0.002       0.001       0.002       0.004       0.023 2.104715E-4       0.020 6.531462E-4       0.014       0.016
+oil.TRN           0.153       0.991       0.140       0.137       0.104       0.034       0.116       0.137       0.120       0.099       0.097       0.182       0.586       0.132       0.492       0.033       0.377       0.608
+oil.AGR           0.026       0.043       0.010 1.011644E-7       0.006       0.005       0.005       0.015 8.801602E-4       0.003       0.005       0.009       0.042       0.017       0.043       0.003       0.028       0.069
+oil.SER           0.012       0.049       0.013       0.021       0.003       0.002       0.005       0.009       0.004       0.004       0.005       0.007       0.080       0.003       0.048       0.004       0.029       0.063
+oil.bOIL                                                                                                                                  0.001                   0.009                                                       0.009
+oil.mOIL                                                                                                                                              0.008       0.102                   0.002                               0.153
+oil.pOIL          0.023       0.026       0.004       0.005                                           0.058                               0.010       0.007       0.036       0.011       0.037 1.390665E-4                   0.055
+oil.final         0.116       0.693       0.057       0.090       0.042       0.015       0.040       0.076       0.048       0.030       0.029       0.080       0.342       0.074       0.234       0.020       0.296       0.316
+oil.j_sum         0.325       1.345       0.200       0.195       0.160       0.057       0.168       0.291       0.157       0.123       0.139       0.248       1.144       0.222       1.131       0.050       0.905       1.191
+oil.gen_sum       0.023       0.026       0.004       0.005                                           0.058                               0.011       0.014       0.147       0.011       0.039 1.390665E-4                   0.217
+gas.oil                       0.041       0.001       0.002 9.589256E-4       0.001       0.002 2.688072E-5 6.674879E-4       0.003 7.956884E-4       0.002       0.022       0.003       0.006                   0.061       0.038
+gas.gas           0.013       0.081             5.130943E-4       0.002 4.108995E-4                   0.018       0.009       0.001       0.001       0.002       0.066       0.004             2.422563E-5       0.085       0.080
+gas.ppp           0.001       0.019       0.002       0.005       0.002 2.718926E-4       0.002 6.164338E-4       0.002       0.001       0.001       0.002       0.009       0.002 1.638195E-4 1.542162E-4       0.008       0.007
+gas.nmm           0.003       0.020       0.004       0.006       0.006       0.002       0.005       0.022       0.003       0.002 6.443954E-4       0.005       0.010       0.003       0.003       0.001       0.028       0.023
+gas.nfm     7.591874E-4       0.009 9.171045E-4       0.002       0.001 3.782363E-4 6.255126E-4 1.923362E-5 5.077375E-4 5.434871E-4 5.640010E-4       0.001       0.009       0.002 9.213959E-4 3.097992E-4       0.006       0.006
+gas.mvh     2.904350E-4       0.006 8.003475E-4       0.002 1.046501E-5 1.170578E-4 5.161306E-4 9.214606E-4       0.001 2.482149E-4 3.363493E-5 8.694701E-4       0.002 9.803303E-5 2.087588E-4 5.095090E-5       0.002       0.002
+gas.ele           0.048       0.440       0.018       0.043                                           0.542                               0.020       0.033       0.317       0.006       0.016 5.166565E-6                   0.437
+gas.COL     3.423544E-7 1.130651E-4             1.121189E-6             2.385587E-5             6.151665E-6 1.763068E-5             7.619443E-9 1.484334E-5 2.097446E-4             2.450249E-7 6.676811E-7 1.226532E-7 8.549982E-6
+gas.CRU           0.007       0.028                                                                   0.008       0.005             7.787678E-4 2.544949E-4       0.038 3.889723E-4       0.004                   0.036       0.039
+gas.CHM           0.006       0.071       0.004       0.013       0.003 7.496370E-4       0.007       0.006       0.004       0.016 9.413873E-4       0.007       0.033       0.005       0.006       0.004       0.088       0.030
+gas.IRS           0.003       0.022       0.002       0.005       0.003 9.459056E-4       0.001       0.027       0.001       0.002 3.024161E-4       0.004       0.019       0.003       0.002       0.002       0.025       0.024
+gas.MAC           0.002       0.018 9.147460E-4       0.003       0.005 5.076804E-4       0.002       0.003       0.002 6.827788E-4 5.408257E-4       0.002       0.009 4.285910E-4 6.524810E-4 9.304873E-5       0.013       0.008
+gas.FOT           0.002       0.036       0.004       0.006       0.003       0.001       0.001       0.004       0.004       0.004       0.001       0.004       0.010       0.001 1.122611E-4 1.140440E-4       0.015       0.016
+gas.ROI           0.004       0.021       0.002       0.003       0.002 4.943674E-4       0.001       0.003       0.002       0.001 4.277724E-4       0.002       0.029       0.002 1.389512E-4 2.232873E-4       0.025       0.017
+gas.BUI     2.661057E-4       0.001 7.990382E-4 2.371844E-5 8.321945E-4 9.659149E-5 5.441723E-4 9.442798E-4 3.469685E-4 5.439849E-4 9.538738E-5 7.592297E-4       0.003 3.816971E-5 2.310432E-6 9.065377E-5       0.002       0.002
+gas.TRN           0.004       0.043 7.724720E-4       0.002       0.002 6.671969E-4 5.514341E-4       0.069 6.278355E-4 6.187924E-4 2.450997E-4       0.003       0.012       0.004       0.005 8.109152E-6       0.015       0.038
+gas.AGR     3.888908E-4       0.003 4.214801E-4 1.943301E-6 6.924677E-5 9.193623E-5 6.933528E-4       0.001 2.791417E-4       0.005 2.225018E-4 7.437152E-4       0.002 1.325801E-5 4.051009E-6 6.086566E-6       0.001       0.001
+gas.SER           0.002       0.162       0.017       0.020       0.019       0.004       0.007       0.007       0.015       0.016       0.002       0.013       0.078 7.192309E-4       0.002 1.318998E-4       0.030       0.046
+gas.final         0.006       0.264       0.016       0.040       0.033       0.007       0.006       0.100       0.058       0.022       0.003       0.021       0.077       0.001 7.170925E-4 2.487104E-5       0.102       0.146
+gas.j_sum         0.097       1.021       0.060       0.111       0.109       0.017       0.068       0.713       0.104       0.091       0.031       0.083       0.667       0.036       0.045       0.008       0.812       0.814
+gas.gen_sum       0.048       0.440       0.018       0.043                                           0.542                               0.020       0.033       0.317       0.006       0.016 5.166565E-6                   0.437
+gas.bGAS          0.003       0.079 9.647802E-4       0.029                                           0.301                               0.007       0.020       0.078             2.398531E-4                               0.322
+gas.mGAS          0.038       0.292       0.004       0.003                                           0.195                               0.011       0.012       0.161       0.005 6.228859E-4                               0.096
+gas.pGAS          0.007       0.069       0.013       0.011                                           0.046                               0.002       0.001       0.077 5.423414E-4       0.015 5.166565E-6                   0.018
+COL.oil     6.694034E-6                         9.545796E-4 1.753395E-4 1.586017E-5 1.092605E-8 1.673218E-4                         5.099491E-5 3.931971E-4 3.099958E-6                   0.031                         8.747802E-5
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 39
+Load technology specific car data
+E x e c u t i o n
+
+
+        761 PARAMETER co2em  CO2 emissions (by energy carrier) [Mio. tCO2]
+
+                    IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+COL.gas                                         5.787772E-7 1.527971E-8 8.743638E-7             2.076720E-6 2.817414E-7 1.154331E-8 1.962542E-8 2.884256E-7 4.442975E-7 7.05431E-10                         3.179792E-6 8.702830E-7
+COL.ppp           0.008       0.015 9.773410E-5       0.001                   0.001 4.203328E-8 3.002547E-4 2.884516E-4 6.235781E-5 8.311151E-4 6.256229E-4       0.006 3.060508E-6       0.046 4.191130E-4       0.002       0.006
+COL.nmm           0.077       0.020       0.002       0.006       0.001       0.004 5.368466E-4       0.004       0.003       0.001       0.002       0.002       0.031 2.888995E-4       0.522       0.007       0.021       0.115
+COL.nfm           0.004 8.219313E-5 1.260616E-5 8.910039E-5 1.211743E-5 4.661703E-5 6.936243E-7 3.520885E-6 6.042709E-5 3.019195E-6 6.733313E-5 5.143015E-4       0.004       0.001       0.033       0.003 6.913687E-4       0.007
+COL.mvh     2.215529E-4 2.554971E-4 1.267589E-7 5.262746E-7             7.568667E-5             6.656275E-5 9.828695E-5 3.841258E-8 2.806260E-8 3.234567E-5 1.763646E-5 2.573704E-7       0.008 6.647330E-5 5.169768E-7 2.453948E-4
+COL.ele           0.914       1.697       0.014       0.238                                           0.295                               0.036       0.162       0.686       0.006       4.001       0.230                   0.606
+COL.COL     8.346505E-4       0.001             7.031872E-5             3.182832E-4                   0.002 2.461334E-5             2.946770E-5 2.692461E-5 1.557949E-4                   0.153 7.948989E-6 4.092748E-4       0.002
+COL.CRU                 2.711829E-7                                                             7.047221E-6 7.214781E-8             1.201630E-6 3.288178E-8 6.070794E-6 1.200756E-8 1.351771E-4             4.368247E-8 1.952508E-5
+COL.CHM           0.026       0.016       0.001       0.002 4.673249E-6       0.005 3.373995E-4 5.568227E-4 2.614161E-4 1.480198E-5 6.529442E-5       0.004       0.009 6.461448E-5       0.169       0.002 4.977324E-4       0.032
+COL.IRS           0.132       0.003       0.002       0.004       0.001 4.672181E-4 4.415601E-4 5.188594E-4 4.778682E-4 3.679192E-4 4.055611E-4       0.003       0.017       0.008       0.237       0.010 1.359531E-4       0.038
+COL.MAC           0.002 6.805873E-4 4.957011E-6 2.906915E-5             2.331167E-4 1.942152E-7 2.444695E-4 6.889272E-5 7.330443E-6 7.060436E-7 4.479573E-5 1.546220E-4 2.664967E-6       0.030 3.099084E-4 2.600980E-5       0.005
+COL.FOT           0.004       0.015       0.001 7.953412E-4                   0.003 6.423016E-6 5.609349E-4 1.532079E-4 1.532619E-4 4.085053E-4 2.179747E-4       0.003 2.084977E-4       0.062 5.712692E-4 9.788667E-4       0.010
+COL.ROI           0.024 9.430521E-4 4.198094E-5 2.886312E-4             6.897507E-4 1.257923E-6 1.814133E-4 2.189501E-4 3.467801E-5 4.079598E-4 8.703024E-5       0.001 4.636033E-4       0.074       0.003 7.694441E-4       0.019
+COL.BUI           0.001 4.573665E-5 2.390929E-5 2.694679E-5             1.132169E-4 3.278695E-6 2.867708E-4 2.920171E-5 4.227256E-6 1.008113E-5 6.359844E-5 4.291965E-5 6.177510E-7       0.017 1.669424E-4 3.555969E-6       0.014
+COL.TRN     7.100855E-4 2.213571E-4 1.848359E-5 2.244665E-5 1.090561E-7 1.661810E-4 8.001611E-7 5.146393E-4 4.764026E-5 8.211468E-7 1.258770E-5 4.395984E-5 4.238289E-4 3.833534E-8       0.016 1.977484E-4 8.541229E-6 8.548922E-4
+COL.AGR     2.682869E-6 8.924651E-7 5.692942E-8 1.969915E-6                   0.004 1.023918E-7 3.435154E-4 3.529805E-6 1.279698E-6 4.061358E-4 9.281008E-5 2.211153E-4                   0.034 7.701642E-4 2.457143E-7       0.002
+COL.SER           0.023       0.006 5.942531E-4 4.735424E-4                   0.004 1.581325E-4       0.011 1.670333E-4 5.320855E-5 3.243137E-4 8.872373E-4       0.003 3.094277E-5       0.087       0.007 3.186921E-4       0.030
+COL.final         0.012 2.495513E-4 7.225970E-4       0.003 1.540844E-5       0.022 1.819433E-4       0.007       0.003 4.231046E-4       0.002       0.004       0.001 7.929408E-6       0.167       0.008 1.421337E-5       0.051
+COL.j_sum         1.215       1.775       0.020       0.254       0.044       0.171       0.040       0.316       0.102       0.022       0.041       0.174       0.762       0.017       5.519       0.265       0.125       0.887
+COL.gen_sum       0.914       1.697       0.014       0.238                                           0.295                               0.036       0.162       0.686       0.006       4.001       0.230                   0.606
+COL.bBC           0.028       0.255                   0.126                                           0.119                               0.002       0.044       0.040       0.006                                           0.143
+COL.bHC           0.663       1.165 5.499388E-4       0.021                                           0.108                               0.031       0.103       0.447                   2.745       0.159                   0.303
+COL.bCCS    7.082434E-5 4.729222E-4             2.974804E-4                                     2.469704E-4                         3.694993E-6 8.869845E-5 7.744647E-5 1.286423E-5                                     3.116689E-4
+COL.mHC           0.221       0.274       0.013       0.091                                           0.068                               0.004       0.015       0.197 9.610809E-5       1.248       0.071                   0.159
+COL.mCCS          0.002       0.002 2.774497E-5 2.240879E-4                                     3.527165E-4                         7.138328E-5 2.456971E-4       0.002 2.019322E-7       0.008 4.864807E-4                   0.001
+
+
+----    761 PARAMETER cecphys  Carbon emission coefficients for physical units [tCO2 per TJ = Mio. tCO2 per EJ]
+
+oil 0.075,    gas 0.056,    COL 0.103,    hc  0.094,    bc  0.112,    ccs 0.011
+
+
+----    761 PARAMETER cecphys2  Emissions coefficients [tCO2 per TJ = gCO2 per MJ]
+
+gas  56.000,    COL 103.000,    ben  72.000,    die  74.000,    hoi  74.000
+
+
+----    761 PARAMETER co2em_total  in Mrd. tCO2
+
+IND    1.771,    USA    5.098,    FRA    0.354,    DEU    0.693,    ITA    0.270,    POL    0.134,    ESP    0.236,    RUS    1.503,    UKI    0.318,    BNL    0.230,    EUN    0.245,    EUS    0.611,    OEC    2.993,    BRZ    0.349,    CHI    7.097
+RSA    0.351,    OPA    1.497,    ROW    3.405,    World 27.155
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 40
+Load technology specific car data
+E x e c u t i o n
+
+
+----    761 PARAMETER eco2  
+
+                IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil.oil       0.054       0.133       0.013       0.017       0.013       0.005       0.015       0.026       0.013       0.011       0.007       0.013       0.090       0.011       0.061       0.004       0.043       0.059
+oil.gas 1.348215E-4 4.399957E-4             7.392030E-6 1.695930E-5 1.868103E-5                   0.001       0.001 2.375931E-5 5.653453E-6 3.363657E-4       0.003 3.226770E-4             1.211416E-6       0.002       0.001
+oil.ppp 4.082786E-4       0.010 3.038393E-4 2.594851E-4 1.539053E-4 1.517251E-4 6.626993E-4 6.115363E-4 3.427819E-4 4.943569E-5       0.001 5.000509E-4       0.005       0.002       0.002 1.000381E-4       0.005       0.004
+oil.nmm       0.016       0.014       0.004       0.002       0.006 6.836883E-4       0.008       0.003       0.001 7.987347E-4       0.002       0.007       0.023       0.013       0.044 1.969208E-4       0.022       0.019
+oil.nfm 6.119173E-4       0.002 1.474488E-4 3.377645E-4 1.672775E-4 4.559750E-4 5.274030E-4 1.068661E-4 2.298922E-4 9.740891E-6 5.906226E-4       0.001       0.006       0.006       0.019 1.104934E-4       0.005       0.003
+oil.mvh 7.915496E-5       0.001 7.282279E-5 3.518392E-4 2.649139E-6 3.046776E-5 1.814322E-4 3.640029E-4 1.645608E-4 1.191105E-5 1.206965E-4 1.102634E-4       0.001 2.318929E-5       0.005 1.569007E-5 9.393195E-4 9.391844E-4
+oil.ele       0.023       0.026       0.004       0.005       0.018       0.003       0.010       0.058       0.003       0.002       0.011       0.014       0.147       0.011       0.039 1.390665E-4       0.273       0.217
+oil.c         0.116       0.693       0.057       0.090       0.042       0.015       0.040       0.076       0.048       0.030       0.029       0.080       0.342       0.074       0.234       0.020       0.296       0.316
+oil.g   3.175892E-6 3.254764E-7 8.205611E-8 5.573664E-8 5.292610E-8 1.137010E-8 3.221345E-8 1.455804E-7 4.699288E-8 3.694152E-8 3.302234E-8 2.535026E-8 2.053701E-7 6.623258E-8 1.230859E-7 7.834446E-9 1.746079E-5 8.381143E-6
+oil.COL 2.980112E-6 2.610947E-5             2.288543E-5             7.391794E-5                   0.003 2.254221E-6             5.766420E-5 6.160601E-5       0.005                   0.008 1.521056E-6 3.773261E-6 5.361643E-4
+oil.CRU 6.402071E-6 1.034656E-4                                                                   0.001 8.913129E-4             1.210857E-6 7.537753E-5       0.003       0.003       0.016                   0.006       0.003
+oil.CHM       0.014       0.024       0.007       0.005       0.002       0.002       0.002       0.015       0.002 7.645137E-4       0.001       0.003       0.041       0.008       0.087 4.093696E-4       0.040       0.038
+oil.IRS       0.013       0.012       0.003       0.003       0.005       0.001       0.002       0.011       0.002       0.001       0.003       0.004       0.048       0.009       0.178       0.001       0.009       0.030
+oil.MAC       0.002       0.004 4.673937E-4       0.001 6.937199E-4 1.076418E-4 5.400520E-4       0.001       0.001 8.931931E-5 4.817099E-4 4.581825E-4       0.007 3.392315E-4       0.033 1.020139E-4       0.009       0.009
+oil.FOT 7.950584E-4       0.010       0.001       0.001 5.657991E-4 4.285495E-4       0.001       0.001       0.002 2.064141E-4       0.001       0.002       0.009       0.002       0.005 1.181090E-4       0.013       0.017
+oil.ROI       0.009       0.013 9.658823E-4 9.362038E-4 6.471664E-4 4.195174E-4       0.001       0.005       0.002 1.311909E-4       0.001       0.001       0.026       0.005       0.032       0.003       0.030       0.032
+oil.BUI       0.003       0.012       0.002 1.604278E-4 2.146523E-4 3.647720E-4 9.097992E-4       0.001       0.002       0.001       0.002       0.004       0.023 2.104715E-4       0.020 6.531462E-4       0.014       0.016
+oil.TRN       0.153       0.991       0.140       0.137       0.104       0.034       0.116       0.137       0.120       0.099       0.097       0.182       0.586       0.132       0.492       0.033       0.377       0.608
+oil.AGR       0.026       0.043       0.010 1.011644E-7       0.006       0.005       0.005       0.015 8.801602E-4       0.003       0.005       0.009       0.042       0.017       0.043       0.003       0.028       0.069
+oil.SER       0.012       0.049       0.013       0.021       0.003       0.002       0.005       0.009       0.004       0.004       0.005       0.007       0.080       0.003       0.048       0.004       0.029       0.063
+gas.oil                   0.041       0.001       0.002 9.589256E-4       0.001       0.002 2.688072E-5 6.674879E-4       0.003 7.956884E-4       0.002       0.022       0.003       0.006                   0.061       0.038
+gas.gas       0.013       0.081             5.130943E-4       0.002 4.108995E-4                   0.018       0.009       0.001       0.001       0.002       0.066       0.004             2.422563E-5       0.085       0.080
+gas.ppp       0.001       0.019       0.002       0.005       0.002 2.718926E-4       0.002 6.164338E-4       0.002       0.001       0.001       0.002       0.009       0.002 1.638195E-4 1.542162E-4       0.008       0.007
+gas.nmm       0.003       0.020       0.004       0.006       0.006       0.002       0.005       0.022       0.003       0.002 6.443954E-4       0.005       0.010       0.003       0.003       0.001       0.028       0.023
+gas.nfm 7.591874E-4       0.009 9.171045E-4       0.002       0.001 3.782363E-4 6.255126E-4 1.923362E-5 5.077375E-4 5.434871E-4 5.640010E-4       0.001       0.009       0.002 9.213959E-4 3.097992E-4       0.006       0.006
+gas.mvh 2.904350E-4       0.006 8.003475E-4       0.002 1.046501E-5 1.170578E-4 5.161306E-4 9.214606E-4       0.001 2.482149E-4 3.363493E-5 8.694701E-4       0.002 9.803303E-5 2.087588E-4 5.095090E-5       0.002       0.002
+gas.ele       0.048       0.440       0.018       0.043       0.059       0.004       0.037       0.542       0.052       0.036       0.020       0.033       0.317       0.006       0.016 5.166565E-6       0.373       0.437
+gas.c         0.006       0.264       0.016       0.040       0.033       0.007       0.006       0.100       0.058       0.022       0.003       0.021       0.077       0.001 7.166914E-4 2.487104E-5       0.102       0.146
+gas.g   6.192240E-6                                                                                                             6.657547E-9 4.517167E-9                         4.011068E-7             6.949591E-7 6.075413E-6
+gas.COL 3.423544E-7 1.130651E-4             1.121189E-6             2.385587E-5             6.151665E-6 1.763068E-5             7.619443E-9 1.484334E-5 2.097446E-4             2.450249E-7 6.676811E-7 1.226532E-7 8.549982E-6
+gas.CRU       0.007       0.028                                                                   0.008       0.005             7.787678E-4 2.544949E-4       0.038 3.889723E-4       0.004                   0.036       0.039
+gas.CHM       0.006       0.071       0.004       0.013       0.003 7.496370E-4       0.007       0.006       0.004       0.016 9.413873E-4       0.007       0.033       0.005       0.006       0.004       0.088       0.030
+gas.IRS       0.003       0.022       0.002       0.005       0.003 9.459056E-4       0.001       0.027       0.001       0.002 3.024161E-4       0.004       0.019       0.003       0.002       0.002       0.025       0.024
+gas.MAC       0.002       0.018 9.147460E-4       0.003       0.005 5.076804E-4       0.002       0.003       0.002 6.827788E-4 5.408257E-4       0.002       0.009 4.285910E-4 6.524810E-4 9.304873E-5       0.013       0.008
+gas.FOT       0.002       0.036       0.004       0.006       0.003       0.001       0.001       0.004       0.004       0.004       0.001       0.004       0.010       0.001 1.122611E-4 1.140440E-4       0.015       0.016
+gas.ROI       0.004       0.021       0.002       0.003       0.002 4.943674E-4       0.001       0.003       0.002       0.001 4.277724E-4       0.002       0.029       0.002 1.389512E-4 2.232873E-4       0.025       0.017
+gas.BUI 2.661057E-4       0.001 7.990382E-4 2.371844E-5 8.321945E-4 9.659149E-5 5.441723E-4 9.442798E-4 3.469685E-4 5.439849E-4 9.538738E-5 7.592297E-4       0.003 3.816971E-5 2.310432E-6 9.065377E-5       0.002       0.002
+gas.TRN       0.004       0.043 7.724720E-4       0.002       0.002 6.671969E-4 5.514341E-4       0.069 6.278355E-4 6.187924E-4 2.450997E-4       0.003       0.012       0.004       0.005 8.109152E-6       0.015       0.038
+gas.AGR 3.888908E-4       0.003 4.214801E-4 1.943301E-6 6.924677E-5 9.193623E-5 6.933528E-4       0.001 2.791417E-4       0.005 2.225018E-4 7.437152E-4       0.002 1.325801E-5 4.051009E-6 6.086566E-6       0.001       0.001
+gas.SER       0.002       0.162       0.017       0.020       0.019       0.004       0.007       0.007       0.015       0.016       0.002       0.013       0.078 7.192309E-4       0.002 1.318998E-4       0.030       0.046
+COL.oil 6.694034E-6                         9.545796E-4 1.753395E-4 1.586017E-5 1.092605E-8 1.673218E-4                         5.099491E-5 3.931971E-4 3.099958E-6                   0.031                         8.747802E-5
+COL.gas                                     5.787772E-7 1.527971E-8 8.743638E-7             2.076720E-6 2.817414E-7 1.154331E-8 1.962542E-8 2.884256E-7 4.442975E-7 7.05431E-10                         3.179792E-6 8.702830E-7
+COL.ppp       0.008       0.015 9.773410E-5       0.001                   0.001 4.203328E-8 3.002547E-4 2.884516E-4 6.235781E-5 8.311151E-4 6.256229E-4       0.006 3.060508E-6       0.046 4.191130E-4       0.002       0.006
+COL.nmm       0.077       0.020       0.002       0.006       0.001       0.004 5.368466E-4       0.004       0.003       0.001       0.002       0.002       0.031 2.888995E-4       0.522       0.007       0.021       0.115
+COL.nfm       0.004 8.219313E-5 1.260616E-5 8.910039E-5 1.211743E-5 4.661703E-5 6.936243E-7 3.520885E-6 6.042709E-5 3.019195E-6 6.733313E-5 5.143015E-4       0.004       0.001       0.033       0.003 6.913687E-4       0.007
+COL.mvh 2.215529E-4 2.554971E-4 1.267589E-7 5.262746E-7             7.568667E-5             6.656275E-5 9.828695E-5 3.841258E-8 2.806260E-8 3.234567E-5 1.763646E-5 2.573704E-7       0.008 6.647330E-5 5.169768E-7 2.453948E-4
+COL.ele       0.914       1.697       0.014       0.238       0.041       0.149       0.039       0.295       0.097       0.020       0.036       0.162       0.686       0.006       4.001       0.230       0.099       0.606
+COL.c         0.012 2.466646E-4 7.225970E-4       0.003 1.540844E-5       0.022 1.819433E-4       0.007       0.003 4.231046E-4       0.002       0.004       0.001 7.929408E-6       0.167       0.008 1.412764E-5       0.051
+COL.g   1.620053E-6 2.886693E-6             4.594972E-7             1.258132E-7             2.208692E-6 3.789727E-7             5.935990E-8 1.619739E-7 1.241195E-6             3.212038E-6 1.824865E-7 8.573761E-8 5.315419E-6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 41
+Load technology specific car data
+E x e c u t i o n
+
+
+        761 PARAMETER eco2  
+
+                IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+COL.COL 8.346505E-4       0.001             7.031872E-5             3.182832E-4                   0.002 2.461334E-5             2.946770E-5 2.692461E-5 1.557949E-4                   0.153 7.948989E-6 4.092748E-4       0.002
+COL.CRU             2.711829E-7                                                             7.047221E-6 7.214781E-8             1.201630E-6 3.288178E-8 6.070794E-6 1.200756E-8 1.351771E-4             4.368247E-8 1.952508E-5
+COL.CHM       0.026       0.016       0.001       0.002 4.673249E-6       0.005 3.373995E-4 5.568227E-4 2.614161E-4 1.480198E-5 6.529442E-5       0.004       0.009 6.461448E-5       0.169       0.002 4.977324E-4       0.032
+COL.IRS       0.132       0.003       0.002       0.004       0.001 4.672181E-4 4.415601E-4 5.188594E-4 4.778682E-4 3.679192E-4 4.055611E-4       0.003       0.017       0.008       0.237       0.010 1.359531E-4       0.038
+COL.MAC       0.002 6.805873E-4 4.957011E-6 2.906915E-5             2.331167E-4 1.942152E-7 2.444695E-4 6.889272E-5 7.330443E-6 7.060436E-7 4.479573E-5 1.546220E-4 2.664967E-6       0.030 3.099084E-4 2.600980E-5       0.005
+COL.FOT       0.004       0.015       0.001 7.953412E-4                   0.003 6.423016E-6 5.609349E-4 1.532079E-4 1.532619E-4 4.085053E-4 2.179747E-4       0.003 2.084977E-4       0.062 5.712692E-4 9.788667E-4       0.010
+COL.ROI       0.024 9.430521E-4 4.198094E-5 2.886312E-4             6.897507E-4 1.257923E-6 1.814133E-4 2.189501E-4 3.467801E-5 4.079598E-4 8.703024E-5       0.001 4.636033E-4       0.074       0.003 7.694441E-4       0.019
+COL.BUI       0.001 4.573665E-5 2.390929E-5 2.694679E-5             1.132169E-4 3.278695E-6 2.867708E-4 2.920171E-5 4.227256E-6 1.008113E-5 6.359844E-5 4.291965E-5 6.177510E-7       0.017 1.669424E-4 3.555969E-6       0.014
+COL.TRN 7.100855E-4 2.213571E-4 1.848359E-5 2.244665E-5 1.090561E-7 1.661810E-4 8.001611E-7 5.146393E-4 4.764026E-5 8.211468E-7 1.258770E-5 4.395984E-5 4.238289E-4 3.833534E-8       0.016 1.977484E-4 8.541229E-6 8.548922E-4
+COL.AGR 2.682869E-6 8.924651E-7 5.692942E-8 1.969915E-6                   0.004 1.023918E-7 3.435154E-4 3.529805E-6 1.279698E-6 4.061358E-4 9.281008E-5 2.211153E-4                   0.034 7.701642E-4 2.457143E-7       0.002
+COL.SER       0.023       0.006 5.942531E-4 4.735424E-4                   0.004 1.581325E-4       0.011 1.670333E-4 5.320855E-5 3.243137E-4 8.872373E-4       0.003 3.094277E-5       0.087       0.007 3.186921E-4       0.030
+
+
+----    769 PARAMETER co2em_sum  
+
+            ele       final       total           Y
+
+IND       0.985       0.134       1.771       0.652
+USA       2.163       0.957       5.098       1.978
+FRA       0.037       0.074       0.354       0.243
+DEU       0.286       0.133       0.693       0.274
+ITA                   0.076       0.270       0.194
+POL                   0.045       0.134       0.090
+ESP                   0.046       0.236       0.190
+RUS       0.895       0.183       1.503       0.424
+UKI                   0.108       0.318       0.210
+BNL                   0.052       0.230       0.178
+EUN       0.067       0.034       0.245       0.144
+EUS       0.209       0.106       0.611       0.296
+OEC       1.149       0.421       2.993       1.423
+BRZ       0.022       0.075       0.349       0.252
+CHI       4.056       0.402       7.097       2.639
+RSA       0.231       0.028       0.351       0.092
+OPA                   0.399       1.497       1.098
+ROW       1.260       0.513       3.405       1.632
+
+
+----    781 PARAMETER cbco2  CO2-Emissions of households [Gt CO2]
+
+                  gas         COL         ben         die         hoi         phe
+
+DEU.small 9.236782E-5                   0.018 3.422323E-4
+DEU.middl 2.091806E-4                   0.045       0.013             5.151649E-5
+DEU.large                               0.015       0.009             6.429768E-5
+DEU.old_x       0.051       0.002                               0.042
+DEU.old_r 2.566505E-4                                     3.612766E-5
+DEU.new_e 1.698556E-4                                     2.390989E-5
+DEU.new_p 4.355273E-6
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 42
+Load technology specific car data
+E x e c u t i o n
+
+
+----    781 PARAMETER cbco2i  
+
+INDEX 1 = DEU
+
+                  gas         COL         ben         die         hoi         phe
+
+oil.small                               0.018 3.422323E-4
+oil.middl                               0.045       0.013             5.151649E-5
+oil.large                               0.015       0.009             6.429768E-5
+oil.old_x                                                       0.042
+oil.old_r                                                 3.612766E-5
+oil.new_e                                                 2.390989E-5
+gas.small 9.236782E-5
+gas.middl 2.091806E-4
+gas.old_x       0.051
+gas.old_r 2.566505E-4
+gas.new_e 1.698556E-4
+gas.new_p 4.355273E-6
+COL.old_x                   0.002
+
+
+----    787 PARAMETER cbco2  CO2-Emissions of households [Gt CO2]
+
+                  gas         COL         ben         die         hoi         phe
+
+DEU.small 9.236782E-5                   0.018 3.422323E-4
+DEU.middl 2.091806E-4                   0.045       0.013             5.151649E-5
+DEU.large                               0.015       0.009             6.429768E-5
+DEU.old_x       0.051       0.002                               0.042
+DEU.old_r 2.566505E-4                                     3.612766E-5
+DEU.new_e 1.698556E-4                                     2.390989E-5
+DEU.new_p 4.355273E-6
+
+
+----    787 PARAMETER cbco2_sum  CO2-Emissions of households - sums [Gt CO2]
+
+            gas         COL         ben         die         hoi         phe       total
+
+DEU       0.051       0.002       0.078       0.022       0.042 1.158142E-4       0.196
+
+
+----    801 PARAMETER co2em_sum  
+
+            ele       final       total           Y         C+B
+
+IND       0.985       0.134       1.771       0.652
+USA       2.163       0.957       5.098       1.978
+FRA       0.037       0.074       0.354       0.243
+DEU       0.286                   0.756       0.274       0.196
+ITA                   0.076       0.270       0.194
+POL                   0.045       0.134       0.090
+ESP                   0.046       0.236       0.190
+RUS       0.895       0.183       1.503       0.424
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 43
+Load technology specific car data
+E x e c u t i o n
+
+
+        801 PARAMETER co2em_sum  
+
+            ele       final       total           Y         C+B
+
+UKI                   0.108       0.318       0.210
+BNL                   0.052       0.230       0.178
+EUN       0.067       0.034       0.245       0.144
+EUS       0.209       0.106       0.611       0.296
+OEC       1.149       0.421       2.993       1.423
+BRZ       0.022       0.075       0.349       0.252
+CHI       4.056       0.402       7.097       2.639
+RSA       0.231       0.028       0.351       0.092
+OPA                   0.399       1.497       1.098
+ROW       1.260       0.513       3.405       1.632
+
+
+----    801 PARAMETER co2em  CO2 emissions (by energy carrier) [Mio. tCO2]
+
+                    IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+oil.oil           0.054       0.133       0.013       0.017       0.013       0.005       0.015       0.026       0.013       0.011       0.007       0.013       0.090       0.011       0.061       0.004       0.043       0.059
+oil.gas     1.348215E-4 4.399957E-4             7.392030E-6 1.695930E-5 1.868103E-5                   0.001       0.001 2.375931E-5 5.653453E-6 3.363657E-4       0.003 3.226770E-4             1.211416E-6       0.002       0.001
+oil.ppp     4.082786E-4       0.010 3.038393E-4 2.594851E-4 1.539053E-4 1.517251E-4 6.626993E-4 6.115363E-4 3.427819E-4 4.943569E-5       0.001 5.000509E-4       0.005       0.002       0.002 1.000381E-4       0.005       0.004
+oil.nmm           0.016       0.014       0.004       0.002       0.006 6.836883E-4       0.008       0.003       0.001 7.987347E-4       0.002       0.007       0.023       0.013       0.044 1.969208E-4       0.022       0.019
+oil.nfm     6.119173E-4       0.002 1.474488E-4 3.377645E-4 1.672775E-4 4.559750E-4 5.274030E-4 1.068661E-4 2.298922E-4 9.740891E-6 5.906226E-4       0.001       0.006       0.006       0.019 1.104934E-4       0.005       0.003
+oil.mvh     7.915496E-5       0.001 7.282279E-5 3.518392E-4 2.649139E-6 3.046776E-5 1.814322E-4 3.640029E-4 1.645608E-4 1.191105E-5 1.206965E-4 1.102634E-4       0.001 2.318929E-5       0.005 1.569007E-5 9.393195E-4 9.391844E-4
+oil.ele           0.023       0.026       0.004       0.005                                           0.058                               0.011       0.014       0.147       0.011       0.039 1.390665E-4                   0.217
+oil.COL     2.980112E-6 2.610947E-5             2.288543E-5             7.391794E-5                   0.003 2.254221E-6             5.766420E-5 6.160601E-5       0.005                   0.008 1.521056E-6 3.773261E-6 5.361643E-4
+oil.CRU     6.402071E-6 1.034656E-4                                                                   0.001 8.913129E-4             1.210857E-6 7.537753E-5       0.003       0.003       0.016                   0.006       0.003
+oil.CHM           0.014       0.024       0.007       0.005       0.002       0.002       0.002       0.015       0.002 7.645137E-4       0.001       0.003       0.041       0.008       0.087 4.093696E-4       0.040       0.038
+oil.IRS           0.013       0.012       0.003       0.003       0.005       0.001       0.002       0.011       0.002       0.001       0.003       0.004       0.048       0.009       0.178       0.001       0.009       0.030
+oil.MAC           0.002       0.004 4.673937E-4       0.001 6.937199E-4 1.076418E-4 5.400520E-4       0.001       0.001 8.931931E-5 4.817099E-4 4.581825E-4       0.007 3.392315E-4       0.033 1.020139E-4       0.009       0.009
+oil.FOT     7.950584E-4       0.010       0.001       0.001 5.657991E-4 4.285495E-4       0.001       0.001       0.002 2.064141E-4       0.001       0.002       0.009       0.002       0.005 1.181090E-4       0.013       0.017
+oil.ROI           0.009       0.013 9.658823E-4 9.362038E-4 6.471664E-4 4.195174E-4       0.001       0.005       0.002 1.311909E-4       0.001       0.001       0.026       0.005       0.032       0.003       0.030       0.032
+oil.BUI           0.003       0.012       0.002 1.604278E-4 2.146523E-4 3.647720E-4 9.097992E-4       0.001       0.002       0.001       0.002       0.004       0.023 2.104715E-4       0.020 6.531462E-4       0.014       0.016
+oil.TRN           0.153       0.991       0.140       0.137       0.104       0.034       0.116       0.137       0.120       0.099       0.097       0.182       0.586       0.132       0.492       0.033       0.377       0.608
+oil.AGR           0.026       0.043       0.010 1.011644E-7       0.006       0.005       0.005       0.015 8.801602E-4       0.003       0.005       0.009       0.042       0.017       0.043       0.003       0.028       0.069
+oil.SER           0.012       0.049       0.013       0.021       0.003       0.002       0.005       0.009       0.004       0.004       0.005       0.007       0.080       0.003       0.048       0.004       0.029       0.063
+oil.bOIL                                                                                                                                  0.001                   0.009                                                       0.009
+oil.mOIL                                                                                                                                              0.008       0.102                   0.002                               0.153
+oil.pOIL          0.023       0.026       0.004       0.005                                           0.058                               0.010       0.007       0.036       0.011       0.037 1.390665E-4                   0.055
+oil.final         0.116       0.693       0.057                   0.042       0.015       0.040       0.076       0.048       0.030       0.029       0.080       0.342       0.074       0.234       0.020       0.296       0.316
+oil.j_sum         0.325       1.345       0.200       0.195       0.160       0.057       0.168       0.291       0.157       0.123       0.139       0.248       1.144       0.222       1.131       0.050       0.905       1.191
+oil.gen_sum       0.023       0.026       0.004       0.005                                           0.058                               0.011       0.014       0.147       0.011       0.039 1.390665E-4                   0.217
+gas.oil                       0.041       0.001       0.002 9.589256E-4       0.001       0.002 2.688072E-5 6.674879E-4       0.003 7.956884E-4       0.002       0.022       0.003       0.006                   0.061       0.038
+gas.gas           0.013       0.081             5.130943E-4       0.002 4.108995E-4                   0.018       0.009       0.001       0.001       0.002       0.066       0.004             2.422563E-5       0.085       0.080
+gas.ppp           0.001       0.019       0.002       0.005       0.002 2.718926E-4       0.002 6.164338E-4       0.002       0.001       0.001       0.002       0.009       0.002 1.638195E-4 1.542162E-4       0.008       0.007
+gas.nmm           0.003       0.020       0.004       0.006       0.006       0.002       0.005       0.022       0.003       0.002 6.443954E-4       0.005       0.010       0.003       0.003       0.001       0.028       0.023
+gas.nfm     7.591874E-4       0.009 9.171045E-4       0.002       0.001 3.782363E-4 6.255126E-4 1.923362E-5 5.077375E-4 5.434871E-4 5.640010E-4       0.001       0.009       0.002 9.213959E-4 3.097992E-4       0.006       0.006
+gas.mvh     2.904350E-4       0.006 8.003475E-4       0.002 1.046501E-5 1.170578E-4 5.161306E-4 9.214606E-4       0.001 2.482149E-4 3.363493E-5 8.694701E-4       0.002 9.803303E-5 2.087588E-4 5.095090E-5       0.002       0.002
+gas.ele           0.048       0.440       0.018       0.043                                           0.542                               0.020       0.033       0.317       0.006       0.016 5.166565E-6                   0.437
+gas.COL     3.423544E-7 1.130651E-4             1.121189E-6             2.385587E-5             6.151665E-6 1.763068E-5             7.619443E-9 1.484334E-5 2.097446E-4             2.450249E-7 6.676811E-7 1.226532E-7 8.549982E-6
+gas.CRU           0.007       0.028                                                                   0.008       0.005             7.787678E-4 2.544949E-4       0.038 3.889723E-4       0.004                   0.036       0.039
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 44
+Load technology specific car data
+E x e c u t i o n
+
+
+        801 PARAMETER co2em  CO2 emissions (by energy carrier) [Mio. tCO2]
+
+                    IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
+
+gas.CHM           0.006       0.071       0.004       0.013       0.003 7.496370E-4       0.007       0.006       0.004       0.016 9.413873E-4       0.007       0.033       0.005       0.006       0.004       0.088       0.030
+gas.IRS           0.003       0.022       0.002       0.005       0.003 9.459056E-4       0.001       0.027       0.001       0.002 3.024161E-4       0.004       0.019       0.003       0.002       0.002       0.025       0.024
+gas.MAC           0.002       0.018 9.147460E-4       0.003       0.005 5.076804E-4       0.002       0.003       0.002 6.827788E-4 5.408257E-4       0.002       0.009 4.285910E-4 6.524810E-4 9.304873E-5       0.013       0.008
+gas.FOT           0.002       0.036       0.004       0.006       0.003       0.001       0.001       0.004       0.004       0.004       0.001       0.004       0.010       0.001 1.122611E-4 1.140440E-4       0.015       0.016
+gas.ROI           0.004       0.021       0.002       0.003       0.002 4.943674E-4       0.001       0.003       0.002       0.001 4.277724E-4       0.002       0.029       0.002 1.389512E-4 2.232873E-4       0.025       0.017
+gas.BUI     2.661057E-4       0.001 7.990382E-4 2.371844E-5 8.321945E-4 9.659149E-5 5.441723E-4 9.442798E-4 3.469685E-4 5.439849E-4 9.538738E-5 7.592297E-4       0.003 3.816971E-5 2.310432E-6 9.065377E-5       0.002       0.002
+gas.TRN           0.004       0.043 7.724720E-4       0.002       0.002 6.671969E-4 5.514341E-4       0.069 6.278355E-4 6.187924E-4 2.450997E-4       0.003       0.012       0.004       0.005 8.109152E-6       0.015       0.038
+gas.AGR     3.888908E-4       0.003 4.214801E-4 1.943301E-6 6.924677E-5 9.193623E-5 6.933528E-4       0.001 2.791417E-4       0.005 2.225018E-4 7.437152E-4       0.002 1.325801E-5 4.051009E-6 6.086566E-6       0.001       0.001
+gas.SER           0.002       0.162       0.017       0.020       0.019       0.004       0.007       0.007       0.015       0.016       0.002       0.013       0.078 7.192309E-4       0.002 1.318998E-4       0.030       0.046
+gas.final         0.006       0.264       0.016                   0.033       0.007       0.006       0.100       0.058       0.022       0.003       0.021       0.077       0.001 7.170925E-4 2.487104E-5       0.102       0.146
+gas.j_sum         0.097       1.021       0.060       0.111       0.109       0.017       0.068       0.713       0.104       0.091       0.031       0.083       0.667       0.036       0.045       0.008       0.812       0.814
+gas.gen_sum       0.048       0.440       0.018       0.043                                           0.542                               0.020       0.033       0.317       0.006       0.016 5.166565E-6                   0.437
+gas.bGAS          0.003       0.079 9.647802E-4       0.029                                           0.301                               0.007       0.020       0.078             2.398531E-4                               0.322
+gas.mGAS          0.038       0.292       0.004       0.003                                           0.195                               0.011       0.012       0.161       0.005 6.228859E-4                               0.096
+gas.pGAS          0.007       0.069       0.013       0.011                                           0.046                               0.002       0.001       0.077 5.423414E-4       0.015 5.166565E-6                   0.018
+COL.oil     6.694034E-6                         9.545796E-4 1.753395E-4 1.586017E-5 1.092605E-8 1.673218E-4                         5.099491E-5 3.931971E-4 3.099958E-6                   0.031                         8.747802E-5
+COL.gas                                         5.787772E-7 1.527971E-8 8.743638E-7             2.076720E-6 2.817414E-7 1.154331E-8 1.962542E-8 2.884256E-7 4.442975E-7 7.05431E-10                         3.179792E-6 8.702830E-7
+COL.ppp           0.008       0.015 9.773410E-5       0.001                   0.001 4.203328E-8 3.002547E-4 2.884516E-4 6.235781E-5 8.311151E-4 6.256229E-4       0.006 3.060508E-6       0.046 4.191130E-4       0.002       0.006
+COL.nmm           0.077       0.020       0.002       0.006       0.001       0.004 5.368466E-4       0.004       0.003       0.001       0.002       0.002       0.031 2.888995E-4       0.522       0.007       0.021       0.115
+COL.nfm           0.004 8.219313E-5 1.260616E-5 8.910039E-5 1.211743E-5 4.661703E-5 6.936243E-7 3.520885E-6 6.042709E-5 3.019195E-6 6.733313E-5 5.143015E-4       0.004       0.001       0.033       0.003 6.913687E-4       0.007
+COL.mvh     2.215529E-4 2.554971E-4 1.267589E-7 5.262746E-7             7.568667E-5             6.656275E-5 9.828695E-5 3.841258E-8 2.806260E-8 3.234567E-5 1.763646E-5 2.573704E-7       0.008 6.647330E-5 5.169768E-7 2.453948E-4
+COL.ele           0.914       1.697       0.014       0.238                                           0.295                               0.036       0.162       0.686       0.006       4.001       0.230                   0.606
+COL.COL     8.346505E-4       0.001             7.031872E-5             3.182832E-4                   0.002 2.461334E-5             2.946770E-5 2.692461E-5 1.557949E-4                   0.153 7.948989E-6 4.092748E-4       0.002
+COL.CRU                 2.711829E-7                                                             7.047221E-6 7.214781E-8             1.201630E-6 3.288178E-8 6.070794E-6 1.200756E-8 1.351771E-4             4.368247E-8 1.952508E-5
+COL.CHM           0.026       0.016       0.001       0.002 4.673249E-6       0.005 3.373995E-4 5.568227E-4 2.614161E-4 1.480198E-5 6.529442E-5       0.004       0.009 6.461448E-5       0.169       0.002 4.977324E-4       0.032
+COL.IRS           0.132       0.003       0.002       0.004       0.001 4.672181E-4 4.415601E-4 5.188594E-4 4.778682E-4 3.679192E-4 4.055611E-4       0.003       0.017       0.008       0.237       0.010 1.359531E-4       0.038
+COL.MAC           0.002 6.805873E-4 4.957011E-6 2.906915E-5             2.331167E-4 1.942152E-7 2.444695E-4 6.889272E-5 7.330443E-6 7.060436E-7 4.479573E-5 1.546220E-4 2.664967E-6       0.030 3.099084E-4 2.600980E-5       0.005
+COL.FOT           0.004       0.015       0.001 7.953412E-4                   0.003 6.423016E-6 5.609349E-4 1.532079E-4 1.532619E-4 4.085053E-4 2.179747E-4       0.003 2.084977E-4       0.062 5.712692E-4 9.788667E-4       0.010
+COL.ROI           0.024 9.430521E-4 4.198094E-5 2.886312E-4             6.897507E-4 1.257923E-6 1.814133E-4 2.189501E-4 3.467801E-5 4.079598E-4 8.703024E-5       0.001 4.636033E-4       0.074       0.003 7.694441E-4       0.019
+COL.BUI           0.001 4.573665E-5 2.390929E-5 2.694679E-5             1.132169E-4 3.278695E-6 2.867708E-4 2.920171E-5 4.227256E-6 1.008113E-5 6.359844E-5 4.291965E-5 6.177510E-7       0.017 1.669424E-4 3.555969E-6       0.014
+COL.TRN     7.100855E-4 2.213571E-4 1.848359E-5 2.244665E-5 1.090561E-7 1.661810E-4 8.001611E-7 5.146393E-4 4.764026E-5 8.211468E-7 1.258770E-5 4.395984E-5 4.238289E-4 3.833534E-8       0.016 1.977484E-4 8.541229E-6 8.548922E-4
+COL.AGR     2.682869E-6 8.924651E-7 5.692942E-8 1.969915E-6                   0.004 1.023918E-7 3.435154E-4 3.529805E-6 1.279698E-6 4.061358E-4 9.281008E-5 2.211153E-4                   0.034 7.701642E-4 2.457143E-7       0.002
+COL.SER           0.023       0.006 5.942531E-4 4.735424E-4                   0.004 1.581325E-4       0.011 1.670333E-4 5.320855E-5 3.243137E-4 8.872373E-4       0.003 3.094277E-5       0.087       0.007 3.186921E-4       0.030
+COL.final         0.012 2.495513E-4 7.225970E-4             1.540844E-5       0.022 1.819433E-4       0.007       0.003 4.231046E-4       0.002       0.004       0.001 7.929408E-6       0.167       0.008 1.421337E-5       0.051
+COL.j_sum         1.215       1.775       0.020       0.254       0.044       0.171       0.040       0.316       0.102       0.022       0.041       0.174       0.762       0.017       5.519       0.265       0.125       0.887
+COL.gen_sum       0.914       1.697       0.014       0.238                                           0.295                               0.036       0.162       0.686       0.006       4.001       0.230                   0.606
+COL.bBC           0.028       0.255                   0.126                                           0.119                               0.002       0.044       0.040       0.006                                           0.143
+COL.bHC           0.663       1.165 5.499388E-4       0.021                                           0.108                               0.031       0.103       0.447                   2.745       0.159                   0.303
+COL.bCCS    7.082434E-5 4.729222E-4             2.974804E-4                                     2.469704E-4                         3.694993E-6 8.869845E-5 7.744647E-5 1.286423E-5                                     3.116689E-4
+COL.mHC           0.221       0.274       0.013       0.091                                           0.068                               0.004       0.015       0.197 9.610809E-5       1.248       0.071                   0.159
+COL.mCCS          0.002       0.002 2.774497E-5 2.240879E-4                                     3.527165E-4                         7.138328E-5 2.456971E-4       0.002 2.019322E-7       0.008 4.864807E-4                   0.001
+
+
+----    807 PARAMETER chk  
+
+                      ( ALL       0.000 )
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 45
+Load technology specific car data
+E x e c u t i o n
+
+
+----    807 PARAMETER chk_c0fuels  
+
+                      ( ALL       0.000 )
+
+
+----    822 PARAMETER gco2kwh  
+
+gas 201.600,    COL 370.800,    ben 259.200,    die 266.400,    hoi 266.400
+
+
+----    822 PARAMETER tco2qm  
+
+                  gas         COL         hoi
+
+DEU.old_x       0.032       0.059       0.043
+DEU.old_r       0.013                   0.017
+DEU.new_e       0.013                   0.017
+DEU.new_p       0.003
+
+
+----    822 PARAMETER kwhqm  
+
+                  gas         ele         COL         bio         hoi
+
+DEU.old_x     159.932     159.932     159.932     159.932     159.932
+DEU.old_r      65.000      65.000                  65.000      65.000
+DEU.new_e      65.000      65.000                  65.000      65.000
+DEU.new_p      15.000      15.000                  15.000
+
+
+----    822 PARAMETER cecphys2  Emissions coefficients [tCO2 per TJ = gCO2 per MJ]
+
+gas  56.000,    COL 103.000,    ben  72.000,    die  74.000,    hoi  74.000
+
+
+----    822 PARAMETER PJ_TWh               =        3.600  PJ per TWh
+
+----    837 PARAMETER c0_sum  
+
+          c0_en
+
+DEU      59.133
+
+
+----    838 PARAMETER c0_sum  
+
+          c0_en    c0_fuels
+
+DEU      59.133      38.989
+
+
+
+EXECUTION TIME       =        0.031 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/28/16 17:03:09 Page 46
+Load technology specific car data
+E x e c u t i o n
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_REEEM\NEWAGE\dataload_hhenergy_v88.gms
+Output     C:\GAMS\NEWAGE_REEEM\NEWAGE\dataload_hhenergy_v88.lst

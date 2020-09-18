@@ -1,0 +1,4 @@
+par=ds2v6_yr           rng=CO2_data_2v6!A76:K94
+par=ds4v6_yr           rng=CO2_data_4v6!A76:K94
+par=ds2v4_yr           rng=CO2_data_2v4!A76:K94
+par=ds2v6_yr_50        rng=CO2_data_2v6!A124:K142

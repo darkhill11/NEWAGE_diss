@@ -1,0 +1,620 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 1
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+   2   
+   4   
+   5  OPTION decimals = 5;
+   6   
+   7  * eolcom // does not work correctly with xldump? (ele_calib_10.xls)
+  10   
+  11   
+  12  * ------ Read GTAP9 data set without BAW
+  13   
+  14  * ------ source must match target in gtapaggr.gms
+  17   
+  18  * ------ 15.04.2014
+  21  *$if not set yr           $set yr         11
+  22   
+  26   
+INCLUDE    C:\GAMS\NEWAGE_REEEM_v2\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 2
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  29   
+  31   
+  32  scalar nd       Number of decimals /0/;
+  33  abort$(nd<>round(nd)) "Number of decimals must be an integer";
+  34   
+  37   
+  40   
+  41  set     g(*)    Goods plus C and G;
+GDXIN   C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.gdx
+--- LOAD  g = 1:g
+  45   
+  46  set     i(g)    Goods
+  47          f(*)    Factors;
+--- LOAD  f = 3:f
+--- LOAD  i = 4:i
+  50  set r(*)        Regions;
+--- LOAD  r = 2:r
+  52   
+  53   
+  54  set     rnum(r) Numeraire region,
+  55          sf(f)   Sluggish primary factors (sector-specific),
+  56          mf(f)   Mobile primary factors;
+  57   
+  58  alias (r,s), (i,j);
+  59   
+  60  display r;
+  61   
+  62  Parameter vdep(r) Value of capital decpreciation;
+  63  Parameter vkb(r) Value of capital stock;
+  64  Parameter save(r) Savings;
+  65   
+--- LOAD  vdep = 28:vdep
+--- LOAD  vkb = 29:vkb
+--- LOAD  save = 30:save
+  67   
+  68  parameters
+  69          vfm(f,g,r)      Endowments - Firms  purchases at market prices,
+  70          vdfm(i,g,r)     Intermediates - firms  domestic purchases at market prices,
+  71          vifm(i,g,r)     Intermediates - firms  imports at market prices,
+  72          vxmd(i,r,s)     Trade - bilateral exports at market prices,
+  73          vst(i,r)        Trade - exports for international transportation
+  75          vtwr(i,j,r,s)   Trade - Margins for international transportation at world prices;
+  76   
+--- LOAD  vfm = 5:vfm
+--- LOAD  vdfm = 6:vdfm
+--- LOAD  vifm = 7:vifm
+--- LOAD  vxmd = 8:vxmd
+--- LOAD  vst = 9:vst
+--- LOAD  vtwr = 10:vtwr
+  79   
+  80  if (nd>0,
+  81          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
+  82          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 3
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  83          vifm(i,g,r) = vifm(i,g,r)$round(vifm(i,g,r),nd);
+  84          vxmd(i,r,s) = vxmd(i,r,s)$round(vxmd(i,r,s),nd);
+  85          vst(i,r) = vst(i,r)$round(vst(i,r),nd);
+  86          vtwr(i,j,r,s) = vtwr(i,j,r,s)$round(vtwr(i,j,r,s),nd);
+  88  );
+  89   
+  90  parameter
+  91          evt(i,r,r)      Volume of energy trade (mtoe),
+  92          evd(i,g,r)      Domestic energy use (mtoe),
+  93          evi(i,g,r)      Imported energy use (mtoe),
+  94          eco2d(i,g,r)    CO2 emissions in domestic fuels - Mt CO2,
+  95          eco2i(i,g,r)    CO2 emissions in foreign fuels - Mt CO2;
+  96   
+--- LOAD  evd = 17:evd
+--- LOAD  evi = 18:evi
+--- LOAD  evt = 19:evt
+--- LOAD  eco2d = 20:eco2d
+--- LOAD  eco2i = 21:eco2i
+  98  if (nd>0,
+  99          evt(i,r,s)  = evt(i,r,s)$round(evt(i,r,s), nd);
+ 100          evd(i,g,r) = evd(i,g,r)$round(evd(i,g,r), nd);
+ 101          evi(i,g,r) = evi(i,g,r)$round(evi(i,g,r), nd);
+ 102          eco2d(i,g,r) = eco2d(i,g,r)$round(eco2d(i,g,r), nd);
+ 103          eco2i(i,g,r) = eco2i(i,g,r)$round(eco2i(i,g,r), nd);
+ 104  );
+ 105   
+ 106  parameter
+ 107          rto(g,r)        Output (or income) subsidy rates
+ 108          rtf(f,g,r)      Primary factor and commodity rates taxes
+ 109          rtfd(i,g,r)     Firms domestic tax rates
+ 110          rtfi(i,g,r)     Firms  import tax rates
+ 111          rtxs(i,r,s)     Export subsidy rates
+ 113          rtms(i,r,s)     Import taxes rates;
+ 114   
+--- LOAD  rto = 11:rto
+--- LOAD  rtf = 12:rtf
+--- LOAD  rtfd = 13:rtfd
+--- LOAD  rtfi = 14:rtfi
+--- LOAD  rtxs = 15:rtxs
+--- LOAD  rtms = 16:rtms
+ 117   
+ 118  if (nd>0,
+ 119          rto(g,r) = rto(g,r)$round(rto(g,r),nd);
+ 120          rtf(f,g,r) = rtf(f,g,r)$round(rtf(f,g,r),nd);
+ 121          rtfd(i,g,r) = rtfd(i,g,r)$round(rtfd(i,g,r),nd);
+ 122          rtfi(i,g,r) = rtfi(i,g,r)$round(rtfi(i,g,r),nd);
+ 123          rtxs(i,r,s) = rtxs(i,r,s)$round(rtxs(i,r,s),nd);
+ 124          rtms(i,r,s) = rtms(i,r,s)$round(rtms(i,r,s),nd);
+ 126  );
+ 127  parameter
+ 128          esubd(i)        Elasticity of substitution (M versus D),
+ 129          esubva(g)       Elasticity of substitution between factors
+ 130          esubm(i)        Intra-import elasticity of substitution,
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 4
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 131          etrae(f)        Elasticity of transformation,
+ 132          eta(i,r)        Income elasticity of demand,
+ 133          epsilon(i,r)    Own-price elasticity of demand;
+ 134   
+--- LOAD  esubd = 22:esubd
+--- LOAD  esubva = 23:esubva
+--- LOAD  esubm = 24:esubm
+--- LOAD  etrae = 25:etrae
+--- LOAD  eta = 26:eta
+--- LOAD  epsilon = 27:epsilon
+ 136   
+ 137  *       Declare some intermediate arrays which are required to
+ 138  *       evaluate tax rates:
+ 139   
+ 140  parameter       vdm(g,r)        Aggregate demand for domestic output,
+ 141                  vom(g,r)        Total supply at market prices;
+ 142   
+ 143  vdm(i,r) = sum(g, vdfm(i,g,r));
+ 144  vom(i,r) = vdm(i,r) + sum(s, vxmd(i,r,s)) + vst(i,r);
+ 145   
+ 146  parameter
+ 147          rtf0(f,g,r)     Primary factor and commodity rates taxes
+ 148          rtfd0(i,g,r)    Firms domestic tax rates
+ 149          rtfi0(i,g,r)    Firms  import tax rates
+ 150          rtxs0(i,r,s)    Export subsidy rates
+ 151          rtms0(i,r,s)    Import taxes rates;
+ 152   
+ 153  rtf0(f,g,r) = rtf(f,g,r);
+ 154  rtfd0(i,g,r) = rtfd(i,g,r);
+ 155  rtfi0(i,g,r) = rtfi(i,g,r);
+ 156  rtxs0(i,r,s) = rtxs(i,r,s);
+ 157  rtms0(i,r,s) = rtms(i,r,s);
+ 158   
+ 159  parameter       pvxmd(i,s,r)    Import price (power of benchmark tariff)
+ 160                  pvtwr(i,s,r)    Import price for transport services;
+ 161   
+ 162  pvxmd(i,s,r) = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r));
+ 163  pvtwr(i,s,r) = 1+rtms0(i,s,r);
+ 164   
+ 165  parameter
+ 166          vtw(j)          Aggregate international transportation services,
+ 167          vpm(r)          Aggregate private demand,
+ 168          vgm(r)          Aggregate public demand,
+ 169          vim(i,r)        Aggregate imports,
+ 170          evom(f,r)       Aggregate factor endowment at market prices,
+ 171          vb(*)           Current account balance;
+ 172   
+ 173  vtw(j) = sum(r, vst(j,r));
+ 174  vom("c",r) = sum(i, vdfm(i,"c",r)*(1+rtfd0(i,"c",r)) + vifm(i,"c",r)*(1+rtfi0(i,"c",r)))/(1-rto("c",r));
+ 175  vom("g",r) = sum(i, vdfm(i,"g",r)*(1+rtfd0(i,"g",r)) + vifm(i,"g",r)*(1+rtfi0(i,"g",r)))/(1-rto("g",r));
+ 176  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
+ 177   
+ 178  vdm("c",r) = vom("c",r);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 5
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 179  vdm("g",r) = vom("g",r);
+ 180  vim(i,r) =  sum(g, vifm(i,g,r));
+ 181  evom(f,r) = sum(g, vfm(f,g,r));
+ 182  vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 183          - sum(f, evom(f,r))
+ 184          - sum(g,  vom(g,r)*rto(g,r))
+ 185          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+ 186          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 187          - sum((i,s), rtms(i,s,r) *  (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+ 188          + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+ 189   
+ 190  vb("chksum") = sum(r, vb(r));
+ 191  display vb;
+ 192   
+ 193  *       Determine which factors are sector-specific
+ 194   
+ 195  mf(f) = yes$(1/etrae(f)=0);
+ 196  sf(f) = yes$(1/etrae(f)>0);
+ 197  display mf,sf;
+ 198   
+ 199  parameter       mprofit Zero profit for m,
+ 200                  yprofit Zero profit for y;
+ 201   
+ 202  mprofit(i,r) = vim(i,r) - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j, vtwr(j,i,s,r))*pvtwr(i,s,r));
+ 203  mprofit(i,r) = round(mprofit(i,r),5);
+ 204  display mprofit;
+ 205   
+ 206  yprofit(g,r) = vom(g,r)*(1-rto(g,r))
+ 207          - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r))
+ 208                 + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+ 209          - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r)));
+ 210   
+ 211  yprofit(g,r) = round(yprofit(g,r),6)
+ 212  display yprofit;
+ 213   
+ 214  *       Define a numeraire region for denominating international
+ 215  *       transfers:
+ 216   
+ 217  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
+ 218  display rnum;
+ 219   
+EXIT C:\GAMS\NEWAGE_REEEM_v2\build\gtap9data_newage.gms
+ 221   
+ 222  display r, i, j, g, f, vfm, vdfm, vom, vifm, vxmd, vst, vtwr;
+ 223  *$exit
+ 224   
+ 225  alias(r,rr), (s,ss), (i,ii), (j,jj), (g,gg), (f,ff);
+ 226   
+ 227  SET      D       Submarkets for which import shares are differentiated /
+ 228           G       Public,
+ 229           C       Private Consumption,
+ 230           I       Intermediate input
+ 231           /;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 6
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 232   
+ 233  SET      gen     Stromerzeugungsarten /
+ 234                   bNUC, bBC, bBIO, bGEO, bHYDRO, bHC, bGAS, bOIL, bCCS,
+ 235                   mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS,
+ 236                   pOIL, pGAS, pHYDRO
+ 237  *                 HYDRO, SOLAR, WIND, BIO, GEO
+ 238                   / ;
+ 239   
+ 240  ALIAS (i,j), (f,ff), (r,s), (r,rr), (gen, gengen);
+ 241   
+ 242  display r, i, f, d, gen;
+ 243   
+ 244  * ------ 14.04.2014
+ 245  PARAMETER
+ 246           pf0(f,g,r)      Reference price of factor inputs
+ 247           vafm(i,g,r)     Intermediates - value of aggregate firms inputs at agents prices
+ 248           voa(g,r)        Intermediates - value of total output at input agents prices
+ 249  ;
+ 250   
+ 251   
+ 252  * ############################################################################ * GDXIN
+ 253   
+ 254  * ------ 18.07.2016
+GDXIN   C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.GDX
+ 256  *$LOAD pf0 vfm vafm voa vom
+ 257  *$LOAD vfm vifm vdfm vom rto rtf
+ 258   
+ 259  * ------ 14.04.2014
+ 260  display vfm, vifm, vdfm, vom, rto, rtf;
+ 261   
+ 262  pf0(f,g,r) = 1 + rtf(f,g,r);
+ 263  voa(g,r) = vom(g,r) * (1 - rto(g,r));
+ 264  vafm(i,g,r) = vdfm(i,g,r) + vifm(i,g,r) ;
+ 265   
+ 266  display voa, pf0;
+ 267   
+ 268  * ############################################################################ *
+ 269  * ------ Parameter declaration for calculated parameters -----------------------
+ 270   
+ 271  PARAMETER
+ 272   
+ 273  * ------ Derived from GTAP data
+ 274           skld0(i,r)              Base year labor demand skilled by sector
+ 275           uskd0(i,r)              Base year labor demand unskilled by sector
+ 276           kd0(i,r)                Base year capital earnings by sector
+ 277   
+ 278  * ------ Adjustment of GTAP data to 18 different electricity generation technologies
+ 279           vafm_input(i,*,r)       Extended parameter vafm value of aggregate firms inputs at market prices
+ 280           cap_input(*,r)          Extended parameter kd0 capital earnings
+ 281           usk_input(*,r)          Extended parameter uskd0 labor demand unskilled
+ 282           skl_input(*,r)          Extended parameter skld0 labor demand skilled
+ 283           lab_input(gen,r)        Sum of labor demand skilled and unskilled per generation technology
+ 284           vafm_ele(i,r)           Intermediate inputs in ELE
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 7
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 285   
+ 286  * ------ Data read in from EXCEL
+ 287           ele_prod(*,*)           Electricity generation [TWh]
+ 288           ele_prod_costs(*,*)     Electricity generation (unit) costs [USD per MWh]
+ 289           costshr(*,*,*)          Input cost shares of generation technologies (sum to 1)
+ 290   
+ 291  * ------ Further electricity generation parameters
+ 292           cost_gen(*,r)           Electricity generation (overall) costs per technology as of EXCEL data [Mio. USD2007]
+ 293           cost_gen_shr(*,r)       Cost shares of electricity generation technologies --> cost_gen(r) divided by cost_gen("total")
+ 294           cost_gen_gtap(*,r)      Electricity generation (overall) costs per technology applied for GTAP data voa("ele") [10 Bn. USD2004]
+ 295   
+ 296           cost_gen_input(r,*,*)   Derive input cost structure per technology [costshr*cost_gen_gtap] [10 Bn. USD2004]
+ 297           costshr_calib(*,*,r)    Calculates i- and f-inputs as a share of i- and f-input-sums (RK)
+ 298           costshr_calib2(r,gen,*) Equals costshr for technologies that produce electricity in the basee year (e.g. theres no DEU.bGEO)
+ 299   
+ 300  * ------ 4.03.2013: before, cost_gen_shr was gen_cost_shr; and cost_gen_input was gen_scale
+ 301   
+ 302  *         gen_cost(gen,r)         Electricity generation costs per technology via costshares
+ 303  *         gen_cost_test(gen,r)    Test if cost_gen_tot and gen_cost are equal
+ 304   
+ 305  * ------ Check parameters
+ 306           checkSKL                Check whether skl_input equals skld0("ele")
+ 307           checkUSK                Check whether usk_input equals uskd0("ele")
+ 308           checkCAP                Check whether cap_input equals kd0("ele")
+ 309           checkVAFM               Check whether vafm_input equals vafm("ele")
+ 310           checkGENSHR(r)          Check whether technology shares of electricity costs [cost_gen_shr] sum up to 100%
+ 311           checkCOSTSHR(r,gen)     Check whether input cost shares per technology [costshr] sum up to 100%
+ 312           checkCOSTGEN(r,gen)     Check whether total cost_gen_input equals cost_gen_gtap
+ 313           checkELEVOA(r)          Check whether voa("ele") equals calculated overal electricity costs
+ 314           checkCOSTSHRcal(*,*)    Check costshr_calib
+ 315           checkCOSTSHRcal2(*,*)   Check costshr_calib2 (row sums of costshr equal 1)
+ 316           checkCOSTSHRcal22(*,*,*) Check whether costshr_calib2 equals costshr in case of cost_gen
+ 317           checkGEN(gen,r)         Differences of own IEA-data (cost_gen) to GTAP data (cost_gen_gtap)
+ 318   
+ 319           vafm_test(*,r)          not yet defined...
+ 320   
+ 321  * ------ DEFINE rounding parameter rd ------------------------------------------
+ 322   
+ 323           rd              Number of decimals for rounding cut-off         / 12 /
+ 324  ;
+ 325   
+ 326  * ---------------------------------------------------------------------------- *
+ 327  * ------ Parameter definitions
+ 328   
+ 329  skld0(i,r) = vfm("SKL",i,r)*pf0("SKL",i,r) ;
+ 330  uskd0(i,r) = vfm("USK",i,r)*pf0("USK",i,r) ;
+ 331  kd0(i,r)   = vfm("cap",i,r)*pf0("cap",i,r) ;
+ 332   
+ 333  display skld0, uskd0, kd0;
+ 334   
+ 335  * ############################################################################## LIBINCLUDE
+ 336  * ------ READ in Electricity Generation Data (quantities, costs, shares) ------- Daten müssen auf 26 Regionen angepasst werden!!!!!
+ 337   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 8
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 338  * ------ GTAP 7: Electricity generation quantities in TWh (region specific, with CCS)
+ 339  *$libinclude xlimport     ele_prod        ele_data_10.xls                 ee_prod_10_2004!A1:K19
+ 340  * ------ GTAP 8: Gross Electricity Production, TWh, 2007 (IEA Data excl. peat, gases and waste)
+ 341  *$libinclude xlimport     ele_prod        ele_prod.xlsx           ele_prod!A2:AA20                # ohne BAW
+ 342  *$libinclude xlimport     ele_prod        %xcel_datadir%ele_prod.xlsx           ele_prod_bw!A2:AB20              // 26x18x4 mit BAW
+ 343  * ------ 23.04.2014
+ 344  *$libinclude xlimport     ele_prod        %xcel_datadir%ele_prod.xlsx           ele_prod_bw!A2:S20               // 17x18x4 mit BAW
+ 345  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 378   
+ 379  * ------ GTAP 7: Electricity generation costs (region specific, with IGCC)
+ 380  *$libinclude xlimport     ele_prod_costs  av_ele_cost_10reg.xls           e_cost_10!A1:K19
+ 381  * ------ GTAP 7: RK regionenspezifische Daten mit angepassten Kosten für Solar in allen und für Nuc in NEU
+ 382  *$LIBINCLUDE XLIMPORT ELE_PROD_COSTS   AV_ELE_COST_10REG.XLS              E_COST_10!A26:K44
+ 383  * ------ GTAP 8: Electricity generation costs [DUMMY DATA]
+ 384  *$libinclude xlimport     ele_prod_costs  ele_prod_costs.xlsx     ele_prod_costs!A2:AA20          # ohne BAW
+ 385  *$libinclude xlimport     ele_prod_costs  %xcel_datadir%ele_prod_costs.xlsx     ele_prod_costs_bw!A2:AB20        // 26x18x4 mit BAW
+ 386  * ------ 23.04.2014
+ 387  *$libinclude xlimport     ele_prod_costs  %xcel_datadir%ele_prod_costs.xlsx     ele_prod_costs_bw!A2:S20         // 17x18x4 mit BAW
+ 388  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 421   
+ 422  * ------ GTAP 7: Input cost shares (region specific)
+ 423  *$libinclude xlimport     costshr         av_ele_costshare_10reg.xls      cshr!A1:P161
+ 424  * ------ 4.03.2013 Corrected Excel sheet for column names (BUI for BUIL, IRS for I_S and ROI for Y)
+ 425  * ------ GTAP 8: Input cost shares
+ 426  * ------ 17.06.2013 costshr.xlsx angepasst und um Industrien (NFM, NMM, MVH, FOT, ROI, DWE) erweitert
+ 427  *$libinclude xlimport     costshr         costshr.xlsx            costshr!A3:W471
+ 428  *$libinclude xlimport     costshr         %xcel_datadir%costshr.xlsx            costshr_bw!A3:W489                // 26x18x4 mit BAW
+ 429  * ------ 23.04.2014
+ 430  *$libinclude xlimport     costshr         %xcel_datadir%costshr.xlsx            costshr_bw!A3:V327                // 17x18x4 mit BAW
+ 431  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 464  display ele_prod, ele_prod_costs, costshr;
+ 465   
+ 466   
+ 467  * ##############################################################################
+ 468   
+ 469   
+ 470  * ------ PARAMETER DEFINITIONS on electricity generation costs and shares ------
+ 471   
+ 472  * ------ Electricity generation costs [EXCEL: ele_prod, ele_prod_costs]
+ 473  *cost_gen(gen,r)          = (ele_prod_costs(gen,r) / 10000) * ele_prod(gen,r) ;
+ 474   
+ 475  * ------ 15.04.2014      let's say Mrd. USD/MWh
+ 476  * -----> ele_prod_costs is in [USD/MWh] + ele_prod is in [TWh]
+ 477  * -----> multiply ele_prod by 1,000,000 for having MWh and then divide by 1,000,000,000 for having Bn.USD/MWh --> divide by 1,000!
+ 478  cost_gen(gen,r)          = ele_prod_costs(gen,r) * ele_prod(gen,r) / 1000; display cost_gen;
+ 479   
+ 480  * ------ 23.08.2018 test times
+ 481  cost_gen(gen,r)$(ele_dev_switch(gen,r) and NOT ele_prod(gen,r)) = ele_prod_costs(gen,r)/ 1000;
+****                                $140
+**** LINE    195 INPUT       C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 01/30/19 16:21:49 Page 9
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+**** 140  Unknown symbol
+ 482   
+ 483  * ------ 4.03.2013: Here, cost_gen is in 10 Mio. USD2004, why?
+ 484  * ------ Multiply by 1000 [for $/TWh] and divide by 10.000.000.000 [for 10 bn. USD-2004] --> effectively divide by 10.000.000
+ 485  *cost_gen(gen,r)          = ele_prod_costs(gen,r) * ele_prod(gen,r) / 10000000 ;
+ 486  * ------ The unit doesn't matter here, because only relative numbers (gen divided by total) will be used subsequently
+ 487  cost_gen("total",r)      = sum(gen, cost_gen(gen,r)) ;
+ 488   
+ 489  * ------ Electricity generation technology shares
+ 490  cost_gen_shr(gen,r)$cost_gen("total",r) = cost_gen(gen,r) / cost_gen("total",r) ;
+ 491  cost_gen_shr("total",r)  = sum(gen, cost_gen_shr(gen,r)) ;
+ 492  * ------ Check whether technology shares of electricity costs [cost_gen_shr] sum up to 100%
+ 493  checkGENSHR(r)           = round( cost_gen_shr("total",r) - 1, rd);
+ 494   
+ 495  * ------ Apply calculated technology shares to GTAP data to obtain overall generation costs per technology [10 Bn. USD2004]
+ 496   
+ 497   
+ 498  * ------ ORIGINAL:                                                               // CHANGED 24.07.2013
+ 499  cost_gen_gtap(gen,r)     = cost_gen_shr(gen,r) * VOA("ele",r) ;
+ 500  * ------ 24.07.2013
+ 501  *cost_gen_gtap(gen,r)     = cost_gen_shr(gen,r) * VOM("ele",r) ;
+ 502   
+ 503  cost_gen_gtap("total",r) = sum(gen, cost_gen_gtap(gen,r)) ;  display cost_gen_gtap;
+ 504   
+ 505  * ------ 24.07.2013
+ 506  parameter chk; chk(r)= sum(gen, cost_gen_shr(gen,r)); display chk;
+ 507  *parameter cost_gen_gtap2(*,r);
+ 508  *cost_gen_gtap2(gen,r)     = cost_gen_shr(gen,r) * VOM("ele",r) ;
+ 509  *cost_gen_gtap2("total",r) = sum(gen, cost_gen_gtap2(gen,r)) ; display cost_gen_gtap2;
+ 510   
+ 511   
+ 512   
+ 513  * ------ Adjust labour input cost shares per technology [EXCEL: costshr]
+ 514  costshr(r,gen,"skl")     = costshr(r,gen,"lab") * (vfm("skl","ele",r) / (vfm("skl","ele",r) + vfm("usk","ele",r)));
+ 515  costshr(r,gen,"usk")     = costshr(r,gen,"lab") * (vfm("usk","ele",r) / (vfm("skl","ele",r) + vfm("usk","ele",r)));
+ 516  costshr(r,gen,"lab")     = costshr(r,gen,"lab") - costshr(r,gen,"skl") - costshr(r,gen,"usk") ;
+ 517  costshr(r,gen,"total")   = sum(i, costshr(r,gen,i)) + sum(f, costshr(r,gen,f)) ;
+ 518  * ------ Check whether input cost shares per technology [costshr] sum up to 100%
+ 519  checkCOSTSHR(r,gen)$costshr(r,gen,"total") = round( costshr(r,gen,"total") - 1, rd) ;
+ 520   
+ 521  * ------ Derive input costs per technology [costshr*cost_gen_gtap] [10 Bn. USD2004]
+ 522  * ------ 14.05.2014
+ 523  cost_gen_input(r,i,gen)          = costshr(r,gen,i)     * cost_gen_gtap(gen,r) ;
+ 524  *cost_gen_input(r,i,gen)          = costshr(r,i,gen)     * cost_gen_gtap(gen,r) ;
+ 525   
+ 526  cost_gen_input(r,"cap",gen)      = costshr(r,gen,"cap") * cost_gen_gtap(gen,r) ;
+ 527  cost_gen_input(r,"skl",gen)      = costshr(r,gen,"skl") * cost_gen_gtap(gen,r) ;
+ 528  cost_gen_input(r,"usk",gen)      = costshr(r,gen,"usk") * cost_gen_gtap(gen,r) ;
+ 529  cost_gen_input(r,"total",gen)    = sum(i,   cost_gen_input(r,i,gen)) + sum(f, cost_gen_input(r,f,gen)) ;
+ 530  * ------ Check whether sum of inputs (total cost_gen_input) equals overall electricity costs (cost_gen_gtap)
+ 531  checkCOSTGEN(r,gen)              = round(   cost_gen_input(r,"total",gen) - cost_gen_gtap(gen,r), rd) ;
+ 532  cost_gen_input(r,"cap","total")  = sum(gen, cost_gen_input(r,"cap",gen)) ;
+ 533  cost_gen_input(r,"skl","total")  = sum(gen, cost_gen_input(r,"skl",gen)) ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                01/30/19 16:21:49 Page 10
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 534  cost_gen_input(r,"usk","total")  = sum(gen, cost_gen_input(r,"usk",gen)) ;
+ 535  cost_gen_input(r,i,"total")      = sum(gen, cost_gen_input(r,i,gen)) ;
+ 536  cost_gen_input(r,"total","total")= sum(i,   cost_gen_input(r,i,"total")) + sum(f, cost_gen_input(r,f,"total")) ;
+ 537  * ------  Check whether voa("ele") equals calculated overal electricity costs
+ 538  checkELEVOA(r)                   = round(   cost_gen_input(r,"total","total") - voa("ele",r), rd) ;
+ 539  * ------ 24.07.2013
+ 540  *checkELEVOA(r)                   = round(   cost_gen_input(r,"total","total") - vom("ele",r), rd) ;
+ 541   
+ 542   
+ 543  * ------ Specify further paramters
+ 544  costshr_calib(i,gen,r)$cost_gen_input(r,i,"total") = cost_gen_input(r,i,gen) / cost_gen_input(r,i,"total") ;
+ 545  costshr_calib(f,gen,r)$cost_gen_input(r,f,"total") = cost_gen_input(r,f,gen) / cost_gen_input(r,f,"total") ;
+ 546  costshr_calib(i,"total",r)    = sum(gen, costshr_calib(i,gen,r)) ;
+ 547  costshr_calib(f,"total",r)    = sum(gen, costshr_calib(f,gen,r)) ;
+ 548  costshr_calib2(r,gen,i)$cost_gen_input(r,"total",gen) = cost_gen_input(r,i,gen) / cost_gen_input(r,"total",gen);
+ 549  costshr_calib2(r,gen,f)$cost_gen_input(r,"total",gen) = cost_gen_input(r,f,gen) / cost_gen_input(r,"total",gen);
+ 550  * ------ Sum over all i and f in costshr_calib2(*,gen,r) should eqal 1 (row sums of inputs = 1)
+ 551  checkCOSTSHRcal2(r,gen)$cost_gen_input(r,"total",gen) = round(
+ 552           sum(i, costshr_calib2(r,gen,i)) + sum(f, costshr_calib2(r,gen,f)) - 1, rd);
+ 553  * ------ costshr_calib2(r,gen,i) is equal to the original parameter costshr(r,gen,i) read in from EXCEL
+ 554  checkCOSTSHRcal22(r,gen,i)$cost_gen(gen,r) = round( costshr_calib2(r,gen,i) - costshr(r,gen,i), rd);
+ 555   
+ 556  * ------ Set cvalues for CRU equal to those for OIL
+ 557  costshr_calib("cru","pOil",r) = costshr_calib("oil","pOil",r) ;
+ 558  costshr_calib("cru","mOil",r) = costshr_calib("oil","mOil",r) ;
+ 559  costshr_calib("cru","bOil",r) = costshr_calib("oil","bOil",r) ;
+ 560  * ------ Sum over all gen in costshr_calib(*,gen,r) should eqal 1
+ 561  checkCOSTSHRcal(i,r)$costshr_calib(i,"total",r) = round( costshr_calib(i,"total",r) - 1, rd);
+ 562  checkCOSTSHRcal(f,r)$costshr_calib(f,"total",r) = round( costshr_calib(f,"total",r) - 1, rd);
+ 563   
+ 564  display
+ 565  cost_gen, cost_gen_shr, cost_gen_gtap, costshr, cost_gen_input, costshr_calib, costshr_calib2;
+ 566   
+ 567   
+ 568  * ------ Distribute GTAP data of intermediate inputs to 18 electricity generation technologies via costshr_calib(i,gen,r)
+ 569  vafm_input(i,gen,r) = costshr_calib(i,gen,r)  * vafm(i,"ele",r) ;
+ 570  cap_input(gen,r) = costshr_calib("cap",gen,r) * kd0("ele",r) ;
+ 571  skl_input(gen,r) = costshr_calib("skl",gen,r) * skld0("ele",r) ;
+ 572  usk_input(gen,r) = costshr_calib("usk",gen,r) * uskd0("ele",r) ;
+ 573  lab_input(gen,r) = skl_input(gen,r) + usk_input(gen,r) ;
+ 574  vafm_ele(i,r)  = vafm(i,"ele",r) ;
+ 575  * ------ Check whether generation specific inputs equal overall GTAP inputs:
+ 576  checkSKL(r)      = round( sum(gen, skl_input(gen,r)) - skld0("ele",r), rd) ;
+ 577  checkUSK(r)      = round( sum(gen, usk_input(gen,r)) - uskd0("ele",r), rd) ;
+ 578  checkCAP(r)      = round( sum(gen, cap_input(gen,r)) - kd0("ele",r), rd) ;
+ 579   
+ 580  * ------ Der Parameter costshr enthält keine Daten zu den Vorleistungen von den Industrien NFM, NMM und SER an ELE(gen)
+ 581  * ------ Daher enthält auch vafm_input keine Informationen zu diesen Industrien
+ 582  * ------ Der folgende Check-Parameter enthält für die Industrien daher Werte ungleich Null:
+ 583  checkVAFM(i,r)   = round( sum(gen, vafm_input(i,gen,r)) - vafm(i,"ele",r), rd) ; display checkVAFM;
+ 584  * ------ 17.06.2013 costshr.xlsx angepasst und um Industrien (NFM, NMM, MVH, FOT, ROI, DWE) erweitert
+ 585  * ------ In einer alten Version war der Check-Parameter nur gültig, wenn man die Elemente ausschloss, die keine Vorleistungen enthielten (NFM, NMM, MVH, FOT, ROI, DWE)
+ 586  *checkVAFM(i,r)$(sum(gen, vafm_input(i,gen,r)))  = round( sum(gen, vafm_input(i,gen,r)) - vafm(i,"ele",r), rd) ; display checkVAFM;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                01/30/19 16:21:49 Page 11
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 587   
+ 588   
+ 589   
+ 590  * ------ checkGEN zeigt die Unterschiede zwischen GTAP und IEA-Daten an:
+ 591  checkGEN(gen,r) = round( cost_gen_gtap(gen,r) - cost_gen(gen,r), rd) ;
+ 592  * ------ checkGEN ist kleiner oder gleich Null für RUS, OPE und ROW:
+ 593  *checkGEN(gen,r)$((cost_gen_gtap(gen,r) - cost_gen(gen,r)) le 0 ) = round( cost_gen_gtap(gen,r) - cost_gen(gen,r), rd) ;
+ 594   
+ 595   
+ 596  display
+ 597  vafm, vafm_input, vafm_ele, cap_input, skl_input, usk_input, lab_input,
+ 598  checkGENSHR, checkCOSTSHR, checkCOSTGEN, checkELEVOA,
+ 599  checkCOSTSHRcal, checkCOSTSHRcal2, checkCOSTSHRcal22,
+ 600  checkSKL, checkUSK, checkCAP, checkVAFM, checkGEN
+ 601  ;
+ 602   
+ 603   
+ 604  * ##############################################################################
+ 605  * ------ WRITE adjusted parameters to GDX file
+ 606   
+ 607  Execute_Unload '..\data11\18x18x4_gtap9_ELE_TIMES', vafm_input, cap_input, skl_input, usk_input, vafm_ele, costshr_calib, ele_prod, ele_prod_costs, costshr, cost_gen_gtap, cost_gen_shr,VOA, cost_gen, ele_dev_switch;
+****                                                                                                                                                                                                                       $572
+**** LINE    321 INPUT       C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+**** 572  Cannot GDX load/unload this type - only sets, parameters
+****         equations and variables can be used
+ 608   
+EXIT C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+
+**** 2 ERROR(S)   0 WARNING(S)
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                01/30/19 16:21:49 Page 12
+GAMS Code to Read a GTAP 9 Dataset
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+     2       27 INCLUDE        1      27  .C:\GAMS\NEWAGE_REEEM_v2\build\gtap9data_newage.gms
+     3       42 IF EXIST       2      15  .C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\18x18x4_gtap9.gdx
+     4       43 IF EXIST       2      16  .C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\18x18x4_gtap9.gdx
+     5       43 GDXIN          2      16  .C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.gdx
+     6      220 EXIT           2     193  .C:\GAMS\NEWAGE_REEEM_v2\build\gtap9data_newage.gms
+     7      255 GDXIN          1      62  C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.GDX
+     8      346 LIBINCLUDE     1     153  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+     9      353 IF EXIST       8       7  .C:\GAMS\NEWAGE_REEEM_v2\xcel_data\ele_prod.xlsx
+    10      371 CALL           8      49  .gdxxrw "..\xcel_data\ele_prod.xlsx" @xllink.txt log=xllink.log
+    11      375 GDXIN          8      53  .C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\xllink.gdx
+    12      389 LIBINCLUDE     1     165  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    13      396 IF EXIST      12       7  .C:\GAMS\NEWAGE_REEEM_v2\xcel_data\ele_prod_costs_TIMES.xlsx
+    14      414 CALL          12      49  .gdxxrw "..\xcel_data\ele_prod_costs_TIMES.xlsx" @xllink.txt log=xllink.log
+    15      418 GDXIN         12      53  .C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\xllink.gdx
+    16      432 LIBINCLUDE     1     177  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    17      439 IF EXIST      16       7  .C:\GAMS\NEWAGE_REEEM_v2\xcel_data\costshr.xlsx
+    18      457 CALL          16      49  .gdxxrw "..\xcel_data\costshr.xlsx" @xllink.txt log=xllink.log
+    19      461 GDXIN         16      53  .C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\xllink.gdx
+    20      609 EXIT           1     323  C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+
+
+COMPILATION TIME     =        3.182 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.gms
+Output     C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\ELEcalib_18x18x4_TIMES.lst
+
+**** USER ERROR(S) ENCOUNTERED

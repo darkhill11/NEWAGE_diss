@@ -1,0 +1,387 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 1
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+   2   
+   4   
+   5  OPTION decimals = 5;
+   6   
+   7  * eolcom // does not work correctly with xldump? (ele_calib_10.xls)
+  10   
+  11   
+  12  * ------ Read GTAP9 data set without BAW
+  13   
+  14  * ------ source must match target in gtapaggr.gms
+  17   
+  18  * ------ 15.04.2014
+  21  *$if not set yr           $set yr         11
+  22   
+  26   
+  27  *$include ..\build\gtap9data_newage
+  28   
+  29  *display r, i, j, g, f, vfm, vdfm, vom, vifm, vxmd, vst, vtwr;
+  30  *$exit
+  31   
+  32  *alias(r,rr), (s,ss), (i,ii), (j,jj), (g,gg), (f,ff);
+  33   
+  34  *SET      D       Submarkets for which import shares are differentiated /
+  35  *         G       Public,
+  36  *         C       Private Consumption,
+  37  *         I       Intermediate input
+  38  *         /;
+  39   
+  40  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  41  *    SET OF HOUSEHOLDS
+  42  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  43   
+  44  SET     hh      'household groups'
+  45          r       'regions'
+  46          i       'sectors';
+  47   
+  48   
+  49   
+  50  * ############################################################################ * GDXIN
+  51   
+  52  * ------ 18.07.2016
+GDXIN   C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.GDX
+  54  *$LOAD pf0 vfm vafm voa vom
+  55  *$LOAD vfm vifm vdfm vom rto rtf
+  56   
+  57  * ------ 14.04.2014
+  58   
+  59   
+  60  * ############################################################################ *
+  61  * ------ Parameter declaration for calculated parameters -----------------------
+  62   
+  63  PARAMETER
+  64   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 2
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+  65  * ------ From disaggregation output
+  66           hh_consumption(r,i,hh)        household consumption per sector and region
+  67           hh_income(r,*,hh)
+  68  * ------ for calculation
+  69           total_cons(r,i)                     Sum over households to get total sectoral consumption
+  70           hh_sector_share(r,i,hh)             share that each household consumes from each sector
+  71           hh_total_consumption_share(r,hh)    share that each houshold consumes from total consumption
+  72   
+  73           total_skl(r)
+  74           total_usk(r)
+  75           total_rkr(r)
+  76           total_rkx_ele(r)
+  77           total_tax_in(r)
+  78           total_tax_out(r)
+  79           total_savings(r)
+  80   
+  81           hh_skl_share(r,hh)
+  82           hh_usk_share(r,hh)
+  83           hh_rkr_share(r,hh)
+  84           hh_rkx_ele_share(r,hh)
+  85           hh_tax_in_share(r,hh)
+  86           hh_tax_out_share(r,hh)
+  87           hh_savings_share(r,hh)
+  88   
+  89  * ------ DEFINE rounding parameter rd ------------------------------------------
+  90   
+  91           rd              Number of decimals for rounding cut-off         / 12 /
+  92  ;
+  93   
+  94  * ---------------------------------------------------------------------------- *
+  95   
+GDXIN   C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9_consumption_diss.gdx
+--- LOAD  r = 2:Dim1
+--- LOAD  i = 3:Dim2
+--- LOAD  hh = 4:Dim3
+ 102   
+--- LOAD  hh_consumption = 1:hh_consumption
+ 105   
+ 106  display hh_consumption;
+ 107   
+GDXIN   C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9_consumption_diss.gdx
+ 111   
+--- LOAD  hh_income = 1:hh_income
+ 114   
+ 115   
+ 116  *hh_consumption(r,i,hh) = hh_consumption(r,i,hh)$round(hh_consumption(r,i,hh),5);
+ 117   
+ 118  total_cons(r,i) = sum(hh, hh_consumption(r,i,hh));
+ 119  hh_sector_share(r,i,hh)$(total_cons(r,i)) = hh_consumption(r,i,hh)/total_cons(r,i);
+ 120  *hh_sector_share(r,i,hh)$(NOT hh_consumption(r,i,hh)) = 0;
+ 121  hh_total_consumption_share(r,hh) = sum(i,hh_consumption(r,i,hh))/sum(i,total_cons(r,i));
+ 122   
+ 123  total_skl(r) = sum(hh, hh_income(r,"skl_labor",hh));
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 3
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+C o m p i l a t i o n
+
+
+ 124  total_usk(r) = sum(hh, hh_income(r,"usk_labor",hh));
+ 125  total_rkr(r) = sum(hh, hh_income(r,"rkr",hh));
+ 126  total_rkx_ele(r) = sum(hh, hh_income(r,"rkx_ele",hh));
+ 127  total_tax_in(r) = sum(hh, hh_income(r,"taxes income",hh));
+ 128  total_tax_out(r) = sum(hh, hh_income(r,"tax on income",hh));
+ 129  total_savings(r) = sum(hh, hh_income(r,"savings",hh));
+ 130   
+ 131  hh_skl_share(r,hh) = hh_income(r,"skl_labor",hh)/total_skl(r);
+ 132  hh_usk_share(r,hh) = hh_income(r,"usk_labor",hh)/total_usk(r);
+ 133  hh_rkr_share(r,hh) = hh_income(r,"rkr",hh)/total_rkr(r);
+ 134  hh_rkx_ele_share(r,hh) = hh_income(r,"rkx_ele",hh)/total_rkx_ele(r);
+ 135  hh_tax_in_share(r,hh) = hh_income(r,"taxes income",hh)/total_tax_in(r);
+ 136  hh_tax_out_share(r,hh) = hh_income(r,"tax on income",hh)/total_tax_out(r);
+ 137  hh_savings_share(r,hh) = hh_income(r,"savings",hh)/total_savings(r);
+ 138   
+ 139  *loop((i,r,hh),
+ 140  *   if(hh_consumption(r,i,hh) < 0.00001),
+ 141  *      hh_hh_consumption(r,i,hh) = 0)
+ 142   
+      hh_skl_share("EUS",hh) = 0.2;
+      hh_usk_share("EUS",hh) =  0.2;
+      hh_rkr_share("EUS",hh) =  0.2;
+      hh_rkx_ele_share("EUS",hh) =  0.2;
+      hh_tax_in_share("EUS",hh) =  0.2;
+      hh_tax_out_share("EUS",hh) =  0.2;
+      hh_savings_share("EUS",hh) =  0.2;
+      hh_total_consumption_share("EUS",hh) = 0.2;
+      hh_sector_share("EUS",i,hh) =0.2;
+ 154   
+ 155  Execute_Unload '..\data11\18x18x4_gtap9_consumption_diss', hh_consumption, total_cons, hh_sector_share, hh_total_consumption_share,
+ 156   hh_income, hh_skl_share, hh_usk_share, hh_rkr_share, hh_rkx_ele_share, hh_tax_in_share, hh_tax_out_share, hh_savings_share;
+ 157  *Execute_Unload '%datadir%%output%_consumption_diss', hh_tax_in_share, hh_tax_out_share, hh_savings_share;
+ 158   
+ 159   
+ 160  *display hh_consumption;
+EXIT C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\hh_disag_5hh.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 4
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\hh_disag_5hh.gms
+     2       53 GDXIN          1      53  C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9.GDX
+     3       96 CALL           1      96  csv2gdx ..\xcel_data\consumption_diss_out.csv output=..\data11\18x18x4_gtap9_consumption_diss.gdx id=hh_consumption fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
+     4       98 GDXIN          1      98  C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9_consumption_diss.gdx
+     5      108 CALL           1     108  csv2gdx ..\xcel_data\hh_income.csv output=..\data11\18x18x4_gtap9_consumption_diss.gdx id=hh_income fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
+     6      110 GDXIN          1     110  C:\GAMS\NEWAGE_REEEM_v2\data11\18x18x4_gtap9_consumption_diss.gdx
+     7      161 EXIT           1     161  C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\hh_disag_5hh.gms
+
+
+COMPILATION TIME     =        0.046 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 5
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+----    106 PARAMETER hh_consumption  household consumption per sector and region
+
+                hh1         hh2         hh3         hh4         hh5
+
+DEU.oil     6.27863     9.39541    11.64984    13.77110    15.70070
+DEU.gas     1.38465     1.57028     1.73391     1.87758     2.28811
+DEU.ppp     4.15546     5.25087     6.18930     7.35851    10.17566
+DEU.nmm     0.69683     1.07909     1.38423     1.57921     2.06008
+DEU.nfm     0.00190     0.00307     0.00464     0.00497     0.00639
+DEU.mvh     3.76061     7.97738    11.60532    17.31223    38.08792
+DEU.ele     7.73268     7.75224     8.07271     8.46734     9.21129
+DEU.COL     0.04065     0.03407     0.04009     0.04358     0.04227
+DEU.CRU     0.00530     0.00646     0.00739     0.00845     0.00984
+DEU.CHM     6.01409     7.96912     9.73070    11.53553    13.83140
+DEU.IRS     0.00036     0.00058     0.00088     0.00094     0.00121
+DEU.MAC     4.89578     8.42184    11.13738    15.13097    26.51514
+DEU.FOT    29.59700    32.86639    35.33208    37.68517    40.03091
+DEU.ROI    13.66898    19.15725    24.10634    29.94799    41.59309
+DEU.BUI     0.36601     0.61757     0.94402     1.18245     1.79322
+DEU.TRN     6.90514     7.66720     9.02210    11.10541    19.29253
+DEU.AGR     1.80487     2.01820     2.14512     2.26954     2.40802
+DEU.SER   103.90129   119.79879   139.45175   170.04650   260.08456
+FRA.oil     4.91848     6.48728     8.12538     8.53618    10.11000
+FRA.gas     0.44406     0.53152     0.56215     0.53525     0.72877
+FRA.ppp     2.14811     2.44542     2.99493     3.57698     6.51944
+FRA.nmm     0.33217     0.55906     0.78463     1.03362     1.43428
+FRA.nfm     0.00907     0.01760     0.02936     0.03481     0.04262
+FRA.mvh     4.47045    10.05962    13.52241    17.21618    24.75113
+FRA.ele     3.32552     3.88658     4.13335     4.59945     6.06183
+FRA.COL     0.00508     0.00620     0.00670     0.00786     0.00634
+FRA.CRU 4.870000E-7 6.430000E-7 6.840000E-7 5.380000E-7 8.940000E-7
+FRA.CHM     5.21104     7.24884     8.63591     9.99184    12.37957
+FRA.IRS     0.00479     0.00930     0.01552     0.01840     0.02253
+FRA.MAC     4.21131     8.14804    10.50743    13.27460    19.14102
+FRA.FOT    18.31993    21.87011    23.38822    25.07795    30.40356
+FRA.ROI    11.94435    12.12387    14.14403    16.87285    26.03011
+FRA.BUI     0.97238     1.50649     2.45126     2.84657     3.82404
+FRA.TRN     8.59826     6.60782     6.15353     9.51187    18.10217
+FRA.AGR     2.13655     2.58383     2.74901     2.99589     3.54196
+FRA.SER    81.38171   101.47041   116.76897   137.79522   195.12975
+ITA.oil     2.40072     4.05750     5.27460     6.59622     8.65944
+ITA.gas     1.02450     1.53848     1.88126     2.27722     2.73184
+ITA.ppp     0.83444     1.61038     2.79584     4.20082     6.38887
+ITA.nmm     0.21908     0.55811     0.70305     1.14750     2.15333
+ITA.nfm     0.00017     0.00064     0.00126     0.00224     0.00838
+ITA.mvh     0.18372     0.58300     1.35170     2.66992    30.52351
+ITA.ele     2.87129     3.17696     3.33780     3.72543     4.31031
+ITA.COL     0.00073     0.00114     0.00115     0.00126     0.00167
+ITA.CRU 2.451000E-7 4.470000E-7 6.830000E-7 9.450000E-7 1.137000E-6
+ITA.CHM     2.60864     4.36470     6.14302     8.08302    12.54626
+ITA.IRS     0.00003     0.00013     0.00026     0.00046     0.00172
+ITA.MAC     0.62541     1.78463     3.37662     6.30337    29.95772
+ITA.FOT    12.21043    16.63694    19.42376    22.60800    28.35972
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 6
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+        106 PARAMETER hh_consumption  household consumption per sector and region
+
+                hh1         hh2         hh3         hh4         hh5
+
+ITA.ROI     5.93899    12.34289    17.85615    26.09396    45.22085
+ITA.BUI     0.12308     0.46703     0.92425     1.64079     6.12185
+ITA.TRN     1.97292     3.50323     5.41381     8.38068    19.54845
+ITA.AGR     1.51655     2.05663     2.38426     2.74273     3.42496
+ITA.SER    44.43928    70.84388    93.99764   125.28742   198.72123
+POL.oil     0.79411     1.11999     1.58163     2.27134     3.60021
+POL.gas     0.15660     0.21319     0.24650     0.29263     0.36202
+POL.ppp     0.52294     0.65130     0.79473     1.02832     1.52713
+POL.nmm     0.25808     0.29632     0.41406     0.49787     0.74507
+POL.nfm     0.02029     0.02272     0.03107     0.03684     0.05278
+POL.mvh     0.45998     0.68976     1.00921     1.31747     4.83286
+POL.ele     1.58564     1.97849     2.15058     2.27906     2.42510
+POL.COL     0.14486     0.20384     0.21034     0.21126     0.14922
+POL.CRU 4.280000E-8 4.283000E-8 4.770000E-8 2.286000E-7 5.560000E-7
+POL.CHM     1.15585     1.50070     1.96186     2.42816     3.82606
+POL.IRS     0.01392     0.01559     0.02131     0.02527     0.03620
+POL.MAC     0.46049     0.63460     0.96955     1.32367     3.73702
+POL.FOT     6.37217     7.25850     8.03323     8.77546     9.85135
+POL.ROI     1.45962     1.97518     2.71357     3.81873     6.84746
+POL.BUI     1.50624     1.68076     2.38498     2.81859     4.42304
+POL.TRN     1.41301     1.76469     1.96847     2.30142     3.22768
+POL.AGR     0.87840     0.98998     1.07750     1.15754     1.25266
+POL.SER    11.86202    15.18474    18.06697    21.61012    32.05597
+UKI.oil     3.93145     5.56035     6.99030     9.87304    11.66544
+UKI.gas     0.93481     1.10521     1.19006     1.27375     1.45337
+UKI.ppp     3.22989     4.32902     4.54391     5.90086     7.28584
+UKI.nmm     0.29755     0.40659     0.54012     0.69075     0.93734
+UKI.nfm     0.01092     0.01125     0.01930     0.02007     0.02544
+UKI.mvh     3.33355     5.42740     7.21923    13.12646    21.55412
+UKI.ele     2.79461     2.96349     3.09744     3.19856     3.66728
+UKI.COL     0.03657     0.01664     0.01294     0.02388     0.02614
+UKI.CRU 6.790000E-7 7.510000E-7 9.450000E-7 1.160000E-6 1.491000E-6
+UKI.CHM     5.21694     6.41577     7.13440     9.13744    11.67103
+UKI.IRS     0.00116     0.00120     0.00205     0.00213     0.00270
+UKI.MAC     2.91165     4.76054     5.81212     9.21620    14.42693
+UKI.FOT    20.52873    23.04688    24.71112    27.59962    31.25997
+UKI.ROI    10.67889    13.02256    19.11546    23.00857    31.37118
+UKI.BUI     0.60736     0.91656     1.47977     1.59169     2.89989
+UKI.TRN     4.63613     7.83032     5.71688    11.33590    21.79876
+UKI.AGR     1.64056     1.92870     2.05290     2.28899     2.56158
+UKI.SER   116.29473   107.99854   117.02412   139.10970   210.30424
+ESP.oil     2.84176     3.79627     4.76042     5.75445     6.93465
+ESP.gas     0.15778     0.18047     0.17945     0.21334     0.27235
+ESP.ppp     1.01092     1.47339     1.72856     1.94738     3.22940
+ESP.nmm     0.09435     0.11219     0.13527     0.15709     0.19997
+ESP.nfm     0.00170     0.00206     0.00227     0.00277     0.00270
+ESP.mvh     1.53317     2.62728     3.99041     5.23980     9.76031
+ESP.ele     2.60937     3.01837     3.17816     3.42612     3.96370
+ESP.COL     0.00198     0.00143     0.00095     0.00071     0.00050
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 7
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+        106 PARAMETER hh_consumption  household consumption per sector and region
+
+                hh1         hh2         hh3         hh4         hh5
+
+ESP.CRU 3.230000E-7 5.790000E-7 6.480000E-7 6.810000E-7 9.560000E-7
+ESP.CHM     2.00099     2.61004     3.20788     3.73150     4.73101
+ESP.IRS     0.00088     0.00106     0.00117     0.00143     0.00139
+ESP.MAC     1.34134     2.01430     2.86865     3.85151     5.78693
+ESP.FOT    12.64636    15.20739    16.56025    18.68881    19.19077
+ESP.ROI     6.04883     9.24186    11.66815    14.86559    21.47972
+ESP.BUI     0.39184     0.57311     0.66743     0.80033     1.17718
+ESP.TRN     3.08601     3.73479     4.16559     5.34682     7.97798
+ESP.AGR     1.94771     2.36659     2.56024     2.87027     2.97149
+ESP.SER    51.00942    68.26974    79.72708   102.88971   148.13769
+BNL.oil     2.70237     3.03371     3.74776     3.89059     4.42928
+BNL.gas     1.09349     1.17081     1.12975     1.10714     1.23862
+BNL.ppp     1.18835     1.64027     1.74942     1.99034     2.63306
+BNL.nmm     0.32119     0.30540     0.38313     0.50978     0.56679
+BNL.nfm     0.00868     0.00840     0.01070     0.01578     0.01649
+BNL.mvh     4.43884     3.43956     5.36438     5.89932     6.74322
+BNL.ele     1.32256     1.47599     1.44679     1.41545     1.56827
+BNL.COL     0.00394     0.00711     0.00490     0.00475     0.00308
+BNL.CRU 4.220000E-7 4.260000E-7 4.660000E-7 4.790000E-7 5.370000E-7
+BNL.CHM     2.37072     2.43754     3.03285     3.53114     4.34960
+BNL.IRS     0.00801     0.00775     0.00987     0.01456     0.01521
+BNL.MAC     2.52582     2.55446     3.66188     4.40609     5.46605
+BNL.FOT     8.67480    10.13810    10.85089    11.36097    12.58016
+BNL.ROI     5.74082     5.34210     7.04602     8.63419    11.14846
+BNL.BUI     0.17003     0.12399     0.16030     0.22363     0.23985
+BNL.TRN     3.89267     2.74480     3.97427     4.97356     8.35408
+BNL.AGR     1.01977     1.19984     1.29162     1.34748     1.47934
+BNL.SER    46.79579    47.71667    55.65865    60.74839    72.33180
+EUN.oil     1.13209     2.86732     3.83626     4.95660     6.06404
+EUN.gas     0.10574     0.12570     0.11494     0.16312     0.39804
+EUN.ppp     0.42959     1.47716     1.89868     2.14480     2.90252
+EUN.nmm     0.12515     0.16516     0.25345     0.31635     0.77732
+EUN.nfm     0.00219     0.00187     0.00281     0.00366     0.00997
+EUN.mvh     0.67204     2.81881     5.67258     8.32547    12.50505
+EUN.ele     2.40828     4.55495     5.36303     6.26977    10.14414
+EUN.COL     0.02355     0.02100     0.01799     0.02250     0.03782
+EUN.CRU 2.123000E-7 3.170000E-6 3.300000E-6 3.500000E-6 5.610000E-6
+EUN.CHM     0.93901     2.18550     3.27400     3.81870     5.25190
+EUN.IRS     0.00211     0.00180     0.00271     0.00352     0.00960
+EUN.MAC     0.62189     2.19872     4.13654     5.93660     9.11889
+EUN.FOT     7.11407    11.86890    13.94001    15.80958    18.12063
+EUN.ROI     2.19955     4.62769     6.59264     8.16115    12.02819
+EUN.BUI     0.08682     0.09855     0.09935     0.13804     0.43693
+EUN.TRN     1.27550     3.10743     3.92561     5.04716     7.31842
+EUN.AGR     0.96431     1.51235     1.76484     1.95959     2.23338
+EUN.SER    12.80178    43.52482    55.05575    67.21679    87.17082
+EUS.oil     0.91005     2.34219     4.97331     9.98803    25.90026
+EUS.gas     0.32059     0.63799     1.15011     1.23749     0.56444
+EUS.ppp     0.38306     0.76088     1.49331     2.36543     5.12701
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 04/26/19 13:31:07 Page 8
+NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+E x e c u t i o n
+
+
+        106 PARAMETER hh_consumption  household consumption per sector and region
+
+                hh1         hh2         hh3         hh4         hh5
+
+EUS.nmm     0.14002     0.38194     0.68290     1.18828     1.75088
+EUS.nfm     0.00547     0.01478     0.02294     0.03944     0.05029
+EUS.mvh     0.20923     0.35993     1.32884     2.92947    15.87231
+EUS.ele     2.43461     3.74839     5.12209     5.91390     6.82288
+EUS.COL     0.02841     0.04507     0.03939     0.03201     0.02465
+EUS.CRU 5.050000E-9 9.340000E-9 4.270000E-8 2.288000E-7 9.170000E-7
+EUS.CHM     1.10217     2.07357     3.29275     5.54061    12.37337
+EUS.IRS     0.00301     0.00814     0.01264     0.02173     0.02770
+EUS.MAC     0.35213     0.78528     2.25510     4.83510    18.93056
+EUS.FOT    12.69641    15.75935    18.62026    24.34101    36.99949
+EUS.ROI     2.18592     3.83973     6.15610    11.60802    33.82087
+EUS.BUI     0.09583     0.24629     0.43867     0.85630     1.95949
+EUS.TRN     2.97290     4.87728     6.80998    10.15796    18.42397
+EUS.AGR     2.90603     3.49353     4.08380     5.34224     8.06469
+EUS.SER    15.47295    27.68523    42.93559    67.32833   163.21388
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\hh_disag_5hh.gms
+Output     C:\GAMS\NEWAGE_REEEM_v2\NEWAGE\hh_disag_5hh.lst

@@ -1,0 +1,1983 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 1
+NEWAGE-W
+C o m p i l a t i o n
+
+
+   3   
+   4  * ====================================================================== *
+   5  *                          N E W A G E - World                           *
+   6  * ====================================================================== *
+   7  *                                *                                       *
+   8  *                        GTAP-EG based CGE-Model                         *
+   9  *                        Database GTAP 9 (2011)                          *
+  10  *                        18 Regions - 18 Sectors - 4 Factors             *
+  11  *                                *                                       *
+  12  *                        CO2 emissions trading system                    *
+  13  *                        Imperfect Labor Markets                         *
+  14  *                        BoUp Electricity Sector                         *
+  15  *                        Autonomous Energy Efficiency Improvements       *
+  16  *                        Endogenous Savings                              *
+  17  *                        BoUP household energy demand                    *
+  18  *                        Recursive dynamic 2011-2050                     *
+  19  *                                *                                       *
+  20  *                        Version October 2016                            *
+  21  *                        Cunha Montenegro                                *
+  22  *                                *                                       *
+  23  * ====================================================================== *
+  24   
+  25  * ------ 10.04.2014 SOURCE
+  26  * ------ 18.10.2016 v2 and upper already with mapping 18x18x4 for REEM project
+  28   
+  29  * ------ 10.04.2014 OUTPUT
+  31  * ------ 10.04.2014 DataSet
+  32  * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
+  34  * ------ 26.07.2016 Folgende Zeile für GTAP8 einkommentieren
+  35  *$if not set ds           $set ds         %output%FINAL
+  36   
+  38  *$if not set yr           $set yr         11
+  39   
+  44   
+  45  * ------ 26.07.2016
+  46  * ------ 26.07.2016 Folgende Zeile für GTAP8 einkommentieren
+  47  *$include ..\build\gtap8data
+  48  * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
+INCLUDE    C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 2
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  51   
+  53   
+  54  scalar nd       Number of decimals /0/;
+  55  abort$(nd<>round(nd)) "Number of decimals must be an integer";
+  56   
+  59   
+  62   
+  63  set     g(*)    Goods plus C and G;
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9.gdx
+--- LOAD  g = 1:g
+  67   
+  68  set     i(g)    Goods
+  69          f(*)    Factors;
+--- LOAD  f = 3:f
+--- LOAD  i = 4:i
+  72  set r(*)        Regions;
+--- LOAD  r = 2:r
+  74   
+  75   
+  76  set     rnum(r) Numeraire region,
+  77          sf(f)   Sluggish primary factors (sector-specific),
+  78          mf(f)   Mobile primary factors;
+  79   
+  80  alias (r,s), (i,j);
+  81   
+  82  display r;
+  83   
+  84  Parameter vdep(r) Value of capital decpreciation;
+  85  Parameter vkb(r) Value of capital stock;
+  86  Parameter save(r) Savings;
+  87   
+--- LOAD  vdep = 28:vdep
+--- LOAD  vkb = 29:vkb
+--- LOAD  save = 30:save
+  89   
+  90  parameters
+  91          vfm(f,g,r)      Endowments - Firms  purchases at market prices,
+  92          vdfm(i,g,r)     Intermediates - firms  domestic purchases at market prices,
+  93          vifm(i,g,r)     Intermediates - firms  imports at market prices,
+  94          vxmd(i,r,s)     Trade - bilateral exports at market prices,
+  95          vst(i,r)        Trade - exports for international transportation
+  97          vtwr(i,j,r,s)   Trade - Margins for international transportation at world prices;
+  98   
+--- LOAD  vfm = 5:vfm
+--- LOAD  vdfm = 6:vdfm
+--- LOAD  vifm = 7:vifm
+--- LOAD  vxmd = 8:vxmd
+--- LOAD  vst = 9:vst
+--- LOAD  vtwr = 10:vtwr
+ 101   
+ 102  if (nd>0,
+ 103          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
+ 104          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 3
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 105          vifm(i,g,r) = vifm(i,g,r)$round(vifm(i,g,r),nd);
+ 106          vxmd(i,r,s) = vxmd(i,r,s)$round(vxmd(i,r,s),nd);
+ 107          vst(i,r) = vst(i,r)$round(vst(i,r),nd);
+ 108          vtwr(i,j,r,s) = vtwr(i,j,r,s)$round(vtwr(i,j,r,s),nd);
+ 110  );
+ 111   
+ 112  parameter
+ 113          evt(i,r,r)      Volume of energy trade (mtoe),
+ 114          evd(i,g,r)      Domestic energy use (mtoe),
+ 115          evi(i,g,r)      Imported energy use (mtoe),
+ 116          eco2d(i,g,r)    CO2 emissions in domestic fuels - Mt CO2,
+ 117          eco2i(i,g,r)    CO2 emissions in foreign fuels - Mt CO2;
+ 118   
+--- LOAD  evd = 17:evd
+--- LOAD  evi = 18:evi
+--- LOAD  evt = 19:evt
+--- LOAD  eco2d = 20:eco2d
+--- LOAD  eco2i = 21:eco2i
+ 120  if (nd>0,
+ 121          evt(i,r,s)  = evt(i,r,s)$round(evt(i,r,s), nd);
+ 122          evd(i,g,r) = evd(i,g,r)$round(evd(i,g,r), nd);
+ 123          evi(i,g,r) = evi(i,g,r)$round(evi(i,g,r), nd);
+ 124          eco2d(i,g,r) = eco2d(i,g,r)$round(eco2d(i,g,r), nd);
+ 125          eco2i(i,g,r) = eco2i(i,g,r)$round(eco2i(i,g,r), nd);
+ 126  );
+ 127   
+ 128  parameter
+ 129          rto(g,r)        Output (or income) subsidy rates
+ 130          rtf(f,g,r)      Primary factor and commodity rates taxes
+ 131          rtfd(i,g,r)     Firms domestic tax rates
+ 132          rtfi(i,g,r)     Firms  import tax rates
+ 133          rtxs(i,r,s)     Export subsidy rates
+ 135          rtms(i,r,s)     Import taxes rates;
+ 136   
+--- LOAD  rto = 11:rto
+--- LOAD  rtf = 12:rtf
+--- LOAD  rtfd = 13:rtfd
+--- LOAD  rtfi = 14:rtfi
+--- LOAD  rtxs = 15:rtxs
+--- LOAD  rtms = 16:rtms
+ 139   
+ 140  if (nd>0,
+ 141          rto(g,r) = rto(g,r)$round(rto(g,r),nd);
+ 142          rtf(f,g,r) = rtf(f,g,r)$round(rtf(f,g,r),nd);
+ 143          rtfd(i,g,r) = rtfd(i,g,r)$round(rtfd(i,g,r),nd);
+ 144          rtfi(i,g,r) = rtfi(i,g,r)$round(rtfi(i,g,r),nd);
+ 145          rtxs(i,r,s) = rtxs(i,r,s)$round(rtxs(i,r,s),nd);
+ 146          rtms(i,r,s) = rtms(i,r,s)$round(rtms(i,r,s),nd);
+ 148  );
+ 149  parameter
+ 150          esubd(i)        Elasticity of substitution (M versus D),
+ 151          esubva(g)       Elasticity of substitution between factors
+ 152          esubm(i)        Intra-import elasticity of substitution,
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 4
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 153          etrae(f)        Elasticity of transformation,
+ 154          eta(i,r)        Income elasticity of demand,
+ 155          epsilon(i,r)    Own-price elasticity of demand;
+ 156   
+--- LOAD  esubd = 22:esubd
+--- LOAD  esubva = 23:esubva
+--- LOAD  esubm = 24:esubm
+--- LOAD  etrae = 25:etrae
+--- LOAD  eta = 26:eta
+--- LOAD  epsilon = 27:epsilon
+ 158   
+ 159  *       Declare some intermediate arrays which are required to
+ 160  *       evaluate tax rates:
+ 161   
+ 162  parameter       vdm(g,r)        Aggregate demand for domestic output,
+ 163                  vom(g,r)        Total supply at market prices;
+ 164   
+ 165  vdm(i,r) = sum(g, vdfm(i,g,r));
+ 166  vom(i,r) = vdm(i,r) + sum(s, vxmd(i,r,s)) + vst(i,r);
+ 167   
+ 168  parameter
+ 169          rtf0(f,g,r)     Primary factor and commodity rates taxes
+ 170          rtfd0(i,g,r)    Firms domestic tax rates
+ 171          rtfi0(i,g,r)    Firms  import tax rates
+ 172          rtxs0(i,r,s)    Export subsidy rates
+ 173          rtms0(i,r,s)    Import taxes rates;
+ 174   
+ 175  rtf0(f,g,r) = rtf(f,g,r);
+ 176  rtfd0(i,g,r) = rtfd(i,g,r);
+ 177  rtfi0(i,g,r) = rtfi(i,g,r);
+ 178  rtxs0(i,r,s) = rtxs(i,r,s);
+ 179  rtms0(i,r,s) = rtms(i,r,s);
+ 180   
+ 181  parameter       pvxmd(i,s,r)    Import price (power of benchmark tariff)
+ 182                  pvtwr(i,s,r)    Import price for transport services;
+ 183   
+ 184  pvxmd(i,s,r) = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r));
+ 185  pvtwr(i,s,r) = 1+rtms0(i,s,r);
+ 186   
+ 187  parameter
+ 188          vtw(j)          Aggregate international transportation services,
+ 189          vpm(r)          Aggregate private demand,
+ 190          vgm(r)          Aggregate public demand,
+ 191          vim(i,r)        Aggregate imports,
+ 192          evom(f,r)       Aggregate factor endowment at market prices,
+ 193          vb(*)           Current account balance;
+ 194   
+ 195  vtw(j) = sum(r, vst(j,r));
+ 196  vom("c",r) = sum(i, vdfm(i,"c",r)*(1+rtfd0(i,"c",r)) + vifm(i,"c",r)*(1+rtfi0(i,"c",r)))/(1-rto("c",r));
+ 197  vom("g",r) = sum(i, vdfm(i,"g",r)*(1+rtfd0(i,"g",r)) + vifm(i,"g",r)*(1+rtfi0(i,"g",r)))/(1-rto("g",r));
+ 198  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
+ 199   
+ 200  vdm("c",r) = vom("c",r);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 5
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 201  vdm("g",r) = vom("g",r);
+ 202  vim(i,r) =  sum(g, vifm(i,g,r));
+ 203  evom(f,r) = sum(g, vfm(f,g,r));
+ 204  vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 205          - sum(f, evom(f,r))
+ 206          - sum(g,  vom(g,r)*rto(g,r))
+ 207          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+ 208          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 209          - sum((i,s), rtms(i,s,r) *  (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+ 210          + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+ 211   
+ 212  vb("chksum") = sum(r, vb(r));
+ 213  display vb;
+ 214   
+ 215  *       Determine which factors are sector-specific
+ 216   
+ 217  mf(f) = yes$(1/etrae(f)=0);
+ 218  sf(f) = yes$(1/etrae(f)>0);
+ 219  display mf,sf;
+ 220   
+ 221  parameter       mprofit Zero profit for m,
+ 222                  yprofit Zero profit for y;
+ 223   
+ 224  mprofit(i,r) = vim(i,r) - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j, vtwr(j,i,s,r))*pvtwr(i,s,r));
+ 225  mprofit(i,r) = round(mprofit(i,r),5);
+ 226  display mprofit;
+ 227   
+ 228  yprofit(g,r) = vom(g,r)*(1-rto(g,r))
+ 229          - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r))
+ 230                 + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+ 231          - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r)));
+ 232   
+ 233  yprofit(g,r) = round(yprofit(g,r),6)
+ 234  display yprofit;
+ 235   
+ 236  *       Define a numeraire region for denominating international
+ 237  *       transfers:
+ 238   
+ 239  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
+ 240  display rnum;
+ 241   
+EXIT C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+ 243   
+ 244  display s, j, g, f, vfm, vdfm, vom, vifm, vxmd, vst, vtwr, rto;
+ 245  *display vdep, vkb, save;
+ 246   
+ 247  parameter vom_total;
+ 248  vom_total(r) = sum(g, vom(g,r));
+ 249  *display vom_total;
+ 250   
+ 251  * ------ 18.07.2016
+ 252  parameter evd_sum2;
+ 253  evd_sum2(r)= sum((i,g), evd(i,g,r)); display evd_sum2;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 6
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 254  display evd;
+ 255   
+ 256  *$exit
+ 257   
+ 258  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 259  * ------------------------------------------------------------------------------
+ 260  * ------ (A) Initial definitions
+ 261  * ------------------------------------------------------------------------------
+ 262   
+ 263  * ------ Definiere den Lösungsalgorithmus (Solver) für das MCP-Problem und die Anzahl der Dezimalstellen
+ 264  OPTION   MCP = PATH ;
+ 265  OPTION   decimals = 3;
+ 266  alias (r,rr), (s,ss), (i,ii), (j,jj), (g,gg), (f,ff);
+ 269   
+ 270  SCALAR
+ 271  * ------ Flag: Define physical capital to be regionally mobile or immobile
+ 272           rsk     Flag for region-specific capital        / 1 /
+ 273           gk      Flag for global capital                 / 0 /
+ 274   
+ 275  * ------ Number of cut offs in decimals rounding
+ 276           rdd     Number of cut offs in decimals rounding for data                / 6 /
+ 277           rd      Number of cut offs in decimals rounding for check parameters    / 6 /
+ 278   
+ 279  * ------ Define scenario for REPORTING of RESULTS
+ 280           ref     / 1 /
+ 281           sc1     / 0 /
+ 282           sc2     / 0 /
+ 283           sc3     / 0 /
+ 284           sc4     / 0 /
+ 285           sc5     / 0 /
+ 286           sc6     / 0 /
+ 287  ;
+ 288   
+ 289  * ------ 15.04.2014 Create aggregated Intermediates (Armington)
+ 290  parameter
+ 291           vafm(i,g,r)     Sum of domestic and imported intermediates
+ 292           rtfa(i,g,r)     Tax rate of for vafm
+ 293           rtfa0(i,g,r)    Tax rate of for vafm [benchmark];
+ 294  vafm(i,g,r) = vifm(i,g,r) + vdfm(i,g,r);                                         // Summe über g entspricht a0(i,r) ohne "i"  ??
+ 295  rtfa(i,g,r)$vafm(i,g,r) = (vifm(i,g,r)*rtfi(i,g,r) + vdfm(i,g,r)*rtfd(i,g,r)) / vafm(i,g,r) ;
+ 296  rtfa0(i,g,r) = rtfa(i,g,r);
+ 297   
+ 298  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 299  * ------------------------------------------------------------------------------
+ 300  * ------ (B) Initial CHECKS
+ 301  * ------------------------------------------------------------------------------
+ 302   
+ 303  parameter chk_vxmd, chk_vtwr, chk_vifm, chk_vom_i, chk_vom_o, chk_vb;
+ 304   
+ 305  *display vafm, rtfa0, rtfi0, rtfd0;
+ 306   
+ 307  * ------ Sum of all VTWR must match sum of VST
+ 308  chk_vtwr = round(sum((j,i,r,s), vtwr(j,i,r,s)) - sum((i,r), vst(i,r)),10);  display chk_vtwr;           // must be zero
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 7
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 309   
+ 310  * ------ Zero profit check for imports and exports --> Summe über die Verwendungsseite (g)
+ 311  chk_vifm(i,r) = round(
+ 312  + sum(g, vifm(i,g,r))   // = vim(i,r)
+ 313  - sum(s, vxmd(i,s,r)      * [(1+rtms(i,s,r))*(1-rtxs(i,s,r))])
+ 314  - sum(s, vtwr("trn",i,s,r)*  (1+rtms(i,s,r))), 7);
+ 315  display chk_vifm;
+ 316   
+ 317  * ------ 15.04.2014
+ 318  * ------ Zero profit check for VOM market supply (input based) --> Summe über die Entstehungsseite (i,f)
+ 319  chk_vom_i(g,r) = round(
+ 320  + vom(g,r)*(1-rto(g,r))                 // for g=c,g,i there is no vfm(f,g,r)
+ 321  *- sum(j, vdfm(j,g,r)*(1+rtfd(j,g,r)))
+ 322  *- sum(j, vifm(j,g,r)*(1+rtfi(j,g,r)))
+ 323  - sum(j, vafm(j,g,r)*(1+rtfa(j,g,r)))
+ 324  - sum(f, vfm(f,g,r) *(1+rtf(f,g,r))), 7);
+ 325  display chk_vom_i;
+ 326   
+ 327  * ------ Zero profit check for VOM market supply (output based) --> Summe über die Verwendungsseite (g)
+ 328  chk_vom_o(i,r) = round(
+ 329  + vom(i,r)
+ 330  - sum(s, vxmd(i,r,s)) - vst(i,r)       // VST exports only for TRN
+ 331  - sum(g, vdfm(i,g,r)), 7);
+ 332  display chk_vom_o;
+ 333   
+ 334  * ------ Income Balance: Regional net transfers from abroad (sum must be zero)
+ 335  chk_vb(r) = 0;
+ 336  chk_vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 337          - sum((f,g), vfm(f,g,r))                      // = sum(f, evom(f,r))
+ 338          - sum(j,  vom(j,r)*rto(j,r))
+ 339          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+ 340          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 341          - sum((i,s), rtms(i,s,r) * (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+ 342          + sum((i,s), rtxs(i,r,s) *  vxmd(i,r,s));
+ 343   
+ 344  chk_vb("chksum") = sum(r, chk_vb(r));
+ 345  display chk_vb;
+ 346   
+ 347  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 348  * ------------------------------------------------------------------------------
+ 349  *        (C) Additional set (subset) definitions for REGIONS
+ 350  * ------------------------------------------------------------------------------
+ 351  * ------ 18.10.2014 18x18x4 Mapping
+ 352  SET
+ 353           DEU(r)     Germany                         / deu /
+ 354           FRA(r)     France                          / fra /
+ 355           ITA(r)     Italy                           / ita /
+ 356           POL(r)     Poland                          / pol /
+ 357           UKI(r)     United Kingdom                  / uki /
+ 358           ESP(r)     Espain and Portugal             / esp /
+ 359           BNL(r)     Benelux                         / bnl /
+ 360           EUN(r)     Northern and Baltic             / eun /
+ 361           EUS(r)     South-Eastern EU-28             / eus /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 8
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 362           USA(r)     United States of America        / usa /
+ 363           OEC(r)     Rest of OECD                    / oec /
+ 364           BRZ(r)     Brazil                          / brz /
+ 365           RUS(r)     Russia                          / rus /
+ 366           INDIA(r)     India                           / ind /
+ 367           CHI(r)     China and Hong Kong             / chi /
+ 368           RSA(r)     South Africa                    / rsa /
+ 369           OPA(r)     OPEC and Arabian World          / opa /
+ 370           ROW(r)     Rest of the world               / row /
+ 371   
+ 372           EU28(r)         EU28 (including the UK)
+ 373                           /       DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS /
+ 374  * ------ 18.10.2016 EU28
+ 375   
+ 376           notrad(r)       Dynamisches Set für Länderspezifische CO2-Vorgaben
+ 377           pco2w_r(r)      Dynamisches Set für PCO2W und worldtrade (alle außer notrad)
+ 378  *$ontext
+ 379           EU15(R)         EU15 = OEU
+ 380                           /      DEU, ITA, FRA, ESP, BNL, EUN       /
+ 381           NMS12(R)        NMS12 = NEU
+ 382                           / EUS /
+ 383           adreg(r)        Regions with exposed climate change risk and strong adaptation needs
+ 384                           / IND, ROW /
+ 385           OECD(r)         OECD
+ 386                           /       DEU, ITA, FRA, ESP, BNL, EUS, EUN, POL, UKI, OEC, USA /
+ 387           OECD2(r)        OECD without EU28
+ 388                           / OEC, USA /
+ 389           BRICS(r)        BRICS
+ 390                           / BRZ, RUS, IND, CHI, RSA /
+ 391           REST(r)         Rest of the world + ARB + OPE
+ 392                           / OPA, ROW /
+ 393           EMERGE(r)       Emerging markets with high growth but "low" unemployment growth and or high AEEI
+ 394                           / BRZ, RUS, IND, CHI, RSA, EUS, OPA /   // the URSK constraint works better (without REDEF) if RUS and ARB are in emerge
+ 395           Annexb_EU(r)    Annex B Ratifizierer mit EU Gemäß 666 ZEW aber ohne RUS!
+ 396                           /       DEU, ITA, BNL, ESP, FRA, UKI, EUS, EUN, OEC /
+ 397           Annexb(r)       Annex B Ratifizierer ohne EU gemäß 666 ZEW aber ohne RUS!
+ 398                           / OEC /
+ 399           Annexb_broad(r) Annex B Ratifizierer ohne EU gemäß 666 ZEW mit USA aber ohne RUS!
+ 400                           / OEC, USA /
+ 401           NUCPOT(R)       Länder mit begrenztem Nuclear-Zubau
+ 402                           / FRA, ITA, UKI, BNL, ESP, POL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW /
+ 403           NUCOUT(R)       Länder mit Nuclear phase-out
+ 404  *                         / DEU, BAW /
+ 405                           / DEU /
+ 406   
+ 407           groupA(r)       Adaptation group A - high vulnerability
+ 408                           / IND, ROW /
+ 409           groupB(r)       Adaptation group B - medium vulnerability
+ 410                           / ITA, FRA, EUS, OEC, RSA, BRZ, OPA /
+ 411           groupC(r)       Adaptation group C - low vulnerability
+ 412                           /       DEU, EUN, USA, RUS, CHI /
+ 413  * ------ 17.06.2013 Define additional sets for replacing "eab" and "rab"
+ 414           eab_s(r)        / OEC /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/02/16 16:27:19 Page 9
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 415           rab_s(r)        / OEC /
+ 416  * ------ 30.07.2013
+ 417  *         woBAW(r)        All without BAW / DEU, FRA, AUT, SWZ, EUN, EUS, EUE, USA, BRZ, RUS, IND, CHI, RSA, OEC, ARB, OPE, ROW /
+ 418  *         woIND(r)        All without IND / DEU, FRA, AUT, SWZ, EUN, EUS, EUE, USA, BRZ, RUS, BAW, CHI, RSA, OEC, ARB, OPE, ROW /
+ 419  *         woROW(r)        All without IND / DEU, FRA, AUT, SWZ, EUN, EUS, EUE, USA, BRZ, RUS, BAW, CHI, RSA, OEC, ARB, OPE, IND /
+ 420  *$offtext
+ 421           num(R)  Identifies the numeraire region
+ 422  ;
+ 423   
+ 424  * ------ Identify numeraire region
+ 425  *        ACHTUNG
+ 426  *         num(r)= YES$(ORD(r) EQ 1);                                             // 28.02.2013 überprüfen: Hier wäre das Ergebnis DEU!
+ 427           num(R)= USA(R);
+ 428  *display num;
+ 429   
+ 430  * ------ Detailed set definitions for ENERGY                                   *
+ 431  SET
+ 432           e(i)            energy markets    /
+ 433                           gas     natural gas works
+ 434                           ele     electricity and heat
+ 435                           oil     refined oil products
+ 436                           col     coal transformation
+ 437                           cru     crude oil /
+ 438           xe(i)           exhaustible energy      / cru, gas, col /
+ 439           xeoil(i)        exhaustible energy + refined oil  / cru, gas, col, oil /
+ 440           fe(i)           final energy            / oil, gas, col /
+ 441           ele(i)          electricity             / ele /
+ 442           eleg(g)         electricity             / ele /
+ 443           cru(i)          crude oil               / cru /
+ 444           oil(i)          refined oil             / oil /
+ 445           gas(i)          natural gas             / gas /
+ 446           col(i)          coal                    / col /
+ 447           chm(i)          Chemical industry       / chm /
+ 448           nfm(i)          NF-metalls industry     / nfm /
+ 449           trn(i)          Transport industry      / trn /
+ 450           mac(i)          Machinery               / mac /
+ 451           fot(i)          Food and tobacco        / fot /
+ 452           man(i)          Manufacturing           / OIL, PPP, IRS, NFM, NMM, CHM, mvh, mac, roi, fot /
+ 453           ets(i)          EU-ETS sectors
+ 454                           / ELE, OIL, PPP, IRS, NFM, NMM, CHM /
+ 455           eii(i)          EU-ETS energy intensive sectors without Electricity
+ 456                           /      OIL, PPP, IRS, NFM, NMM, CHM /
+ 457           ind(i)          Verarbeitendes Gewerbe - Manufacturing - Industrie
+ 458                           / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI /
+ 459           indE(i)         Energieintensive Industrie
+ 460                           / CHM, PPP, IRS, NFM, NMM /
+ 461           indEN(i)        Nicht-Energieintensive Industrie
+ 462                           / MAC, FOT, MVH, ROI /
+ 463           agr(i)          Agriculture sector
+ 464                           / agr /
+ 465           agrind(i)       Agriculture and industry
+ 466                           / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, agr /
+ 467  * ------ 13.09.2015 Diss
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 10
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 468           mvh(i)          Motor vehicles                  / mvh /
+ 469           bui(i)          Building and construction       / bui /
+ 470           ser(i)          Building and construction       / ser /
+ 471           buiser(i)       Building and construction       / bui, ser /
+ 472   
+ 473  * ------ 15.04.2014
+ 474           cg(g)           / c, g /;
+ 475  ;
+ 476  * ACHTUNG
+ 477  * ETS soll im szenario notrad(r) leer sein da sonst falsche report werte für carbon
+ 478  * SET      ETS(I) / /;
+ 479   
+ 480  SET      D       Submarkets for which import shares are differentiated /
+ 481                   G       Public,
+ 482                   C       Private Consumption,
+ 483                   I       Intermediate input
+ 484                   E                           /
+ 485           X(D)    Markets for EEI calculation / I, E, C / ;
+ 486   
+ 487  * ------------------------------------------------------------------------------
+ 488  *        SET and additional sets (SUBSETS) for technology BOUP
+ 489  *        in ELECTRICITY GENERATION
+ 490  * ------------------------------------------------------------------------------
+ 491  *        b = baseload, m = middleload, p = peakload
+ 492   
+ 493  SET      GEN             Stromerzeugungsarten
+ 494                           /  bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS,
+ 495                              mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS, pOIL, pGAS, pHYDRO /
+ 496           reg(gen)        EEG-geförderte Erneuerbare              / bGEO, bHYDRO, bBIO, mWIND, mSOLAR /
+ 497           bgeo(gen)       Geothermal                              / bGEO /
+ 498           bhydro(gen)     Hydropower (run of river)               / bHYDRO /
+ 499           hydro(gen)      Hydropower                              / bHYDRO, pHydro /
+ 500           bbio(gen)       Biomass                                 / bBIO /
+ 501           bgas(gen)       Base Gas                                / bGAS /
+ 502           mgas(gen)       Middle Gas                              / mGAS /
+ 503           bHC(gen)        Base Coal                               / bHC /
+ 504           mHC(gen)        Middle Coal                             / mHC /
+ 505           HC(gen)         Base and Middle                         / bHC, mHC /
+ 506           bccs(gen)       Baseload BK CCS                         / bCCS /
+ 507           mccs(gen)       Middleload SK CCS                       / mCCS /
+ 508           mwind(gen)      Wind                                    / mWIND /
+ 509           msolar(gen)     Solar                                   / mSOLAR /
+ 510           phydro(gen)     pump storage                            / phydro /
+ 511           poil(gen)       Peak Oil                                / pOIL /
+ 512           moil(gen)       Middle Oil                              / mOIL /
+ 513           boil(gen)       Base Oil                                / bOIL /
+ 514           notreg(gen)     Nicht EEG-geförderte Erneuerbare        / bNUC, bBC,  bHC,  bGAS, bOIL, bCCS,
+ 515                                                                     mHC, mGAS, mOIL, mCCS, pOIL, pGAS, pHYDRO /
+ 516           bNUC(gen)       Nuclear Power                           / bNUC /
+ 517           bBC(gen)        Lignite                                 / bBC /
+ 518           FOScoal(gen)    Stromerzeugung Kohle (+CCS)             / bHC, mHC, bBC, bCCS, mCCS /
+ 519           FOScoalh(gen)   Stromerzeugung Steinkohle               / bHC, mHC /
+ 520           FOScoalb(gen)   Stromerzeugung Braunkohle               / bBC /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 11
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 521           FOSoil(gen)     Stromerzeugung Öl                       / bOil, mOil, pOil /
+ 522           FOSgas(gen)     Stromerzeugung Gas                      / bGas, mGas, pGas /
+ 523           FOSccs(gen)     Stromerzeugung CCS                      / bccs, mccs /
+ 524           FOSrest(gen)    Stromerzeugung Nicht-Fossil             / bGEO, bHYDRO, bBIO, mWIND, mSOLAR, pHydro, bNUC /
+ 525           coalgasccs(gen) Stromerzeugung Kohle-Gas-CCS            / bGas, mGas, pGas, bHC, mHC, bBC, bCCS, mCCS /
+ 526  * ------ 05.08.2011: SETS für 4) Electricity Production im MPSGE-Block
+ 527           base(gen)       Baseload Technologies                   / bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS /
+ 528           middle(gen)     Middleload Technologies                 / mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS /
+ 529           og(gen)         Oil-Gas Peak Technologies               / pOIL, pGAS /
+ 530           peak(gen)       Peakload Technologies                   / pHYDRO /
+ 531           fosgen(gen)     Conventional technologies               / bNUC, bBC, bHC, bGAS, bOIL, mHC, mGAS, mOIL, pOIL, pGAS, pHYDRO, bCCS, mCCS /
+ 532           fosfosgen(gen)  Fossil technologies wo CCS              / bBC, bHC, bGAS, mHC, mGAS, bOIL, mOIL, pOIL, pGAS /
+ 533           fosccsgen(gen)  Fossil technologies w CCS               / bBC, bHC, bGAS, bOIL, mHC, mGAS, mOIL, pOIL, pGAS, bCCS, mCCS /
+ 534           fos(gen)                                                / bBC, bHC, bGAS, bOIL, mHC, mGAS, mOIL, pOIL, pGAS, bCCS, mCCS /
+ 535  * ------ 12.01.2012
+ 536           fosnuc(GEN)     Stromerzeugung Fossil plus Nuclear      / bNUC, bBC, bHC, bGAS, bOIL, mHC, mGAS, mOIL, pOIL, pGAS, bCCS, mCCS /
+ 537  * ------ 18.06.2014
+ 538           foslim(gen)     Generation technologies to be limited for ELEn.UP / bBC, bOIL, mOIL /
+ 539           reslim(gen)     Generation technologies to be limited for ELEn.UP / bHYDRO, bBIO, mWIND, pHYDRO /
+ 540  ;
+ 541  * ------------------------------------------------------------------------------
+ 542  * ------ Additional scenario specific sets or dynamic sets
+ 543  * ------------------------------------------------------------------------------
+ 544  SET
+ 545           nr(i,r)         Non-exhaustible energy production
+ 546           nr_ele(i,r)     Non-exhaustible energy production including ELE
+ 547           quota(gen,r)    Flag for technologies contributing to green quota
+ 548           constr(i,r)     Constrain calculations for specific sectors and regions
+ 549           nonEU28(r)      Non-EU28;
+ 550   
+ 551  * ------ Das Set NR (Non-exhaustible energy production) enthält alle Regionen und alle
+ 552  * ------ Sektoren aus VOM(i,r) außer CRU, GAS, COL, OIL und ELE. Aus der 17x10- wird eine 12x10-Matrix.
+ 553  nr(i,r)     = yes$(vom(i,r)$(not xe(i)) $(not ele(i)) $(not oil(i)))     ;
+ 554  nr_ele(i,r) = yes$(vom(i,r)$(not xe(i)) $(not oil(i)))                   ;
+ 555   
+ 556  quota(gen,r)     = no ; quota(fosgen,"deu") = no;
+ 557  noneu28(r)       = no ; noneu28(r) = yes$(not eu28(r));
+ 558  constr(i,r)      = yes;
+ 559  *constr(i,r)$ele(i) = no;
+ 560  *display nr, nr_ele, quota, constr, eu28, noneu28;
+ 561   
+ 562  notrad(r) = no;
+ 563  pco2w_r(r) = no;
+ 564   
+ 565   
+ 566  * ---------------------------------------------------------------------- *
+ 567  *        SET and additional sets (SUBSETS) for DYNAMIC MILESTONES
+ 568  * ---------------------------------------------------------------------- *
+ 569  * ------ 17.01.2012 ORIGINAL Zeithorizont bis 2050
+ 570  * ------ 24.10.2016 Time series for REEEM Project
+ 571  *$ontext
+ 572  SET      YR              MILESTONES
+ 573                           / 2011, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050    / ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 12
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 574  SET      BEFORE(YR)      / 2011                                          / ;
+ 575  SET      BEFORE2050(YR)  / 2011,  2015, 2020, 2025, 2030, 2035, 2040, 2045     / ;
+ 576  SET      BEFORE2045(YR)  / 2011,  2015, 2020, 2025, 2030, 2035, 2040     / ;
+ 577  SET      BEFORE2040(YR)  / 2011,  2015, 2020, 2025, 2030, 2035     / ;
+ 578  SET      BEFORE2035(YR)  / 2011,  2015, 2020, 2025, 2030    / ;
+ 579  SET      BEFORE2030(YR)  / 2011,  2015, 2020, 2025          / ;
+ 580  SET      BEFORE2025(YR)  / 2011,  2015, 2020                / ;
+ 581  SET      BEFORE2020(YR)  / 2011,  2015                      / ;
+ 582  SET      BEFORE2015(YR)  / 2011                             / ;
+ 583  SET      AFTER(YR)       /        2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050  / ;
+ 584  SET      AFTER2015(YR)   /              2020, 2025, 2030, 2035, 2040, 2045, 2050  / ;
+ 585  SET      AFTER2020(YR)   /                    2025, 2030, 2035, 2040, 2045, 2050  / ;
+ 586  SET      AFTER2025(YR)   /                          2030, 2035, 2040, 2045, 2050  / ;
+ 587  SET      AFTER2030(YR)   /                                2035, 2040, 2045, 2050  / ;
+ 588  SET      AFTER2035(YR)   /                                      2040, 2045, 2050  / ;
+ 589  SET      AFTER2040(YR)   /                                            2045, 2050  / ;
+ 590  SET      AFTER2045(YR)   /                                                  2050  / ;
+ 591  SET      KYOTO_OUT(YR)   /        2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050  / ;
+ 592  *$offtext
+ 593  * ------ 17.01.2012 ORIGINAL (kann bleiben)
+ 594  SET      YR2011(YR) / 2011 / ;
+ 595  SET      YR2015(YR) / 2015 / ;
+ 596  SET      YR2020(YR) / 2020 / ;
+ 597  SET      YR2025(YR) / 2025 / ;
+ 598  SET      YR2030(YR) / 2030 / ;
+ 599  SET      YR2035(YR) / 2035 / ;
+ 600  SET      YR2040(YR) / 2040 / ;
+ 601  SET      YR2045(YR) / 2045 / ;
+ 602  SET      YR2050(YR) / 2050 / ;
+ 603   
+ 604  * ------ 3.11.2014
+ 605  SET      YRx(yr)        Subset für 10-year-milestones Berechnungen
+ 606           / 2011, 2015, 2020, 2030, 2040, 2050 / ;
+ 607  SET      AFTERx(yr)        Subset für 10-year-milestones Berechnungen
+ 608           /       2015, 2020, 2030, 2040, 2050 / ;
+ 609  * ------ 3.11.2014 10-year-milestones (oben)
+ 610   
+ 611   
+ 612  * ------ Define ALIAS indices for interactions etc.
+ 613  alias (gen,gengen), (yr,yryr);
+ 614   
+ 615  * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 616  * ------------------------------------------------------------------------------
+ 617  *        (D) Specifying MAIN DATA (Static)
+ 618  * ------------------------------------------------------------------------------
+ 619  * ------ All Parameters explained in Rutherford & Paltsev (2000) --> GTAP-EG !
+ 620  PARAMETERS
+ 621  * ------ Taxes:
+ 622           ti(j,g,r)       Intermediate input tax
+ 623           ty(i,r)         Output tax
+ 624           tg(i,r)         Tax rates on government demand
+ 625           tp(i,r)         Tax rate on private demand
+ 626           tf(f,i,r)       Factor tax
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 13
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 627           tx(i,s,r)       Export tax rate (defined on a net basis)
+ 628           tm(i,s,r)       Import tariff rate
+ 629  * ------ Prices:
+ 630           pmx0(i,s,r)     Reference price of imports,
+ 631           pmt0(i,s,r)     Reference price of transport services,
+ 632           pc0(i,r)        Reference price for private demand,
+ 633           pai0(j,g,r)     Reference price for intermediate inputs,
+ 634           pf0(f,i,r)      Reference price for factor inputs
+ 635           py0(i,r)        Reference output price (domestic or export) --> not in GTAP-EG,
+ 636           pwm             Weltmarktpreise
+ 637  * ------ Adopt some notation which is different from the core GTAPinGAMS model (Aggregate data)
+ 638           a0(i,r)         Armington supply
+ 639           m0(i,r)         Aggregate import supply
+ 640           d0(i,r)         Aggregate domestic supply
+ 641           c0(i,r)         Final demand by commodity
+ 642           ct0(r)          Total final demand
+ 643           tc(i,r)         Tax rate on final demand
+ 644           pc0(i,r)        Reference price for final demand
+ 645           evoa(f,r)       Value of factor income
+ 646  * ------ 30.06.2014 export and import reporting
+ 647           vxm(i,r)        Trade - Value of export (gross excise tax)
+ 648           vim(i,r)        Trade - Total value of imports (gross tariff)
+ 649           vtwr1(i,r,s)    Trade - import\export wedge or value of transport services (viws - vxwd) (see vtwr1_chk)
+ 650  * ------ Other:
+ 651           dep(r)          Depreciation - Abschreibungssatz - es werden 4 % angenommen
+ 652           vi(r)           Total value of investment
+ 653           vg(r)           Total value of public expenditures
+ 654           vp(r)           Total value of private expenditures
+ 655  * ------ Define parameters for Keynes savings constraint
+ 656           welf(r)         GDP incl. current account
+ 657           savrate(r)      Scaling Factor for Savings Rate
+ 658  ;
+ 659   
+ 660  * ------ Taxes:
+ 661  ty(i,r)          = rto(i,r);
+ 662  ti(j,i,r)        = rtfa0(j,i,r);
+ 663  ti(j,"i",r)      = rtfa0(j,"i",r);              // Besteuerung von "i"?
+ 664  tg(i,r)          = rtfa0(i,"g",r);
+ 665  tp(i,r)          = rtfa0(i,"c",r);
+ 666  tf(f,i,r)        = rtf0(f,i,r);
+ 667  tx(i,s,r)        = rtxs0(i,s,r) * (-1);          // rtxs ist explizit als Subvention definiert
+ 668  tm(i,s,r)        = rtms0(i,s,r);
+ 669  * ------ Prices
+ 670  pmx0(i,s,r)      = pvxmd(i,s,r);                 // = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r))
+ 671  pmt0(i,s,r)      = pvtwr(i,s,r);                 // =  1+rtms0(i,s,r)
+ 672  pc0(i,r)         = 1 + rtfa0(i,"c",r);
+ 673  pai0(i,j,r)      = 1 + rtfa0(i,j,r);
+ 674  pai0(i,"i",r)    = 1 + rtfa0(i,"i",r);
+ 675  pf0(f,i,r)       = 1 + rtf0(f,i,r);
+ 676  py0(i,r)         = 1 - rto(i,r) ;
+ 677  pwm(i,r,s)       = 1 ;                           // Weltmarktpreise
+ 678   
+ 679  * ------ Adopt some notation which is different from the core GTAPinGAMS model (Aggregate data)
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 14
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 680  a0(i,r)  = sum(g, vafm(i,g,r));                                                          // Wie muss "i" behandelt werden? "i" bzw. cgd ist Teil von j in vdfm(i,j,r)
+ 681  d0(i,r)  = sum(g, vdfm(i,g,r));
+ 682  m0(i,r)  = sum(g, vifm(i,g,r));
+ 683  c0(i,r)  = sum(g$cg(g), vdfm(i,g,r) + vifm(i,g,r));
+ 684  tc(i,r)$c0(i,r) = (tp(i,r)*vafm(i,"c",r) + tg(i,r)*vafm(i,"g",r) ) / c0(i,r);
+ 685  ct0(r)   = sum(i, c0(i,r)*(1+tc(i,r)) ) ;
+ 686  pc0(i,r) = 1 + tc(i,r);
+ 687  vi(r)    = sum(i, vafm(i,"i",r) * (1 + ti(i,"i",r)));                        // Mit oder ohne Steuern?
+ 688  vg(r)    = sum(i, vafm(i,"g",r) * (1 + tg(i,r)));                            // Mit oder ohne Steuern?
+ 689  vp(r)    = sum(i, vafm(i,"c",r) * (1 + tp(i,r)));                            // Mit oder ohne Steuern?
+ 690  vxm(i,r) = sum(s, vxmd(i,r,s))+ vst(i,r) ;
+ 691  vim(i,r) = sum(g, vifm(i,g,r));
+ 692   
+ 693  * ------ 15.04.2014
+ 694  vtwr1(i,r,s) = vtwr("trn",i,r,s);
+ 695  * ------ DEP wird mit 4% angenommen (vgl. MRTdata_26_19_4.gms)
+ 696  dep(r) = 0.04;
+ 697  * ------ Define parameters for Keynes savings constraint
+ 698  * ------ GDP as sum of private and public expenditure and investment expenditures minus current account
+ 699  welf(r)     =   vp(r) + vg(r) + vi(r) - vb(r) ;
+ 700  * ------ 17.06.2013 Do not calculate savrate for BAW, because otherwise there is an error (division by zero!)
+ 701  savrate(r)  =   vi(r) / welf(r) ;
+ 702   
+ 703  *display c0;
+ 704  *display a0, d0, c0, tc, ti, tp, tg, vafm, pc0, ct0, vi, vg, vp, welf, savrate;
+ 705   
+ 706   
+ 707  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 708  * ------------------------------------------------------------------------------
+ 709  * ------ (E) Compute Benchmark factor inputs and factor incomes
+ 710  * ------------------------------------------------------------------------------
+ 711   
+ 712  PARAMETER
+ 713  * ------ Production factors
+ 714           skld0(i,r)      Base year skilled labor demand by sector
+ 715           uskd0(i,r)      Base year unskilled labor demand by sector
+ 716           kd0(i,r)        Base year capital earnings by sector
+ 717           rd0(i,r)        Resource inputs for fossil fuel production
+ 718   
+ 719  * ------ Other
+ 720           chkFAC(*,r)     Factor income test;
+ 721   
+ 722  * ------ Endowments at firms purchases at market prices (vfm) and the reference price (pf0) which includes factor taxes (tf)
+ 723  skld0(i,r) = vfm("skl",i,r) * pf0("skl",i,r) ;
+ 724  uskd0(i,r) = vfm("usk",i,r) * pf0("usk",i,r) ;
+ 725  kd0(i,r)   = vfm("cap",i,r) * pf0("cap",i,r) ;
+ 726  rd0(i,r)   = vfm("res",i,r) * pf0("res",i,r) ;
+ 727   
+ 728  * ------ Aggregate natural resources other than primary energy to capital
+ 729  kd0("agr",r) = kd0("agr",r) + rd0("agr",r) ;
+ 730  kd0("roi",r) = kd0("roi",r) + rd0("roi",r) ;
+ 731  rd0("roi",r) = 0 ;
+ 732  rd0("agr",r) = 0 ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 15
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 733   
+ 734  * ------ Factor income is sum of all sectoral factor inputs including tax
+ 735  evoa("skl",r) = sum(i, skld0(i,r)) ;
+ 736  evoa("usk",r) = sum(i, uskd0(i,r)) ;
+ 737  evoa("cap",r) = sum(i, kd0(i,r)) ;
+ 738  evoa("res",r) = sum(i, rd0(i,r)) ;
+ 739   
+ 740  parameter evoa_alt(r);
+ 741  evoa_alt(r) = evoa("cap",r);
+ 742   
+ 743  * ------ Checking Factor income
+ 744  chkFAC("skl",r) = sum(i, skld0(i,r)) - evoa("skl",r) ;
+ 745  chkFAC("usk",r) = sum(i, uskd0(i,r)) - evoa("usk",r) ;
+ 746  chkFAC("cap",r) = sum(i, kd0(i,r))   - evoa("cap",r) ;
+ 747  chkFAC("res",r) = sum(i, rd0(i,r))   - evoa("res",r) ;
+ 748   
+ 749  *display skld0, uskd0, kd0, rd0, evoa ;
+ 750  display chkFAC;
+ 751  *display pf0, tf, rtf, vfm, skld0, uskd0;
+ 752   
+ 753  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 754  * ------------------------------------------------------------------------------
+ 755  * ------ (F) BOUP: ELECTRICITY SPECIFICATIONS
+ 756  * ------------------------------------------------------------------------------
+ 757   
+ 758  * ------ READ calibrated electricity data                                       // GDX
+ 759  PARAMETERS
+ 760  * ------ Extension of GTAP data to 18 different electricity generation technologies
+ 761           vafm_input(i,*,r)       Extended parameter vafm value of aggregate firms inputs at market prices
+ 762           cap_input(*,r)          Extended parameter kd0 capital earnings
+ 763           usk_input(*,r)          Extended parameter uskd0 labor demand unskilled
+ 764           skl_input(*,r)          Extended parameter skld0 labor demand skilled
+ 765           skl_test
+ 766           usk_test
+ 767           cap_test
+ 768           vafm_test(i,r)
+ 769  * ------ Stored ELE values
+ 770           vafm_ele(i,r)           Intermediate inputs in ELE
+ 771           kd0_ele
+ 772           skld0_ele
+ 773           uskd0_ele
+ 774  * ------ Old/New Capital
+ 775           ks_n(gen,r)             New vintage capital
+ 776           ks_x(gen,r)             Extant capital
+ 777           ks_x0(gen,r)            Benchmark extant capital
+ 778           capgenX(R)              Sum of extant capital in generation technologies
+ 779           capgenNEW(R)            Sum of new capital in generation technologies
+ 780           chkXTANT(gen,r)
+ 781  * ------ Electricity generation per technology (13.01.2012: Vereinfachte SET-schreibweise)
+ 782           out_gen(gen,r)          Output electricity generation technologies
+ 783           out_gen_chk(gen,r)      Checkparameter für gen_out
+ 784           gen_out_chk(gen,r)      Checkparameter für gen_out
+ 785  * ------ Other
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 16
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 786           costshr_calib
+ 787           cap_input3(gen,r)
+ 788   
+ 789  SCALAR
+ 790  * ------ Extant production share
+ 791           thetax                  Extant production share / 0.985 /;
+ 792   
+ 793  ;
+ 794  * ##############################################################################
+ 795   
+ 796  * ------ GDX_IN
+ 797  * ------ 14.05.2014
+ 798  * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_ELE.gdx
+ 800  * ------ 26.07.2016 Folgende Zeile für GTAP8 einkommentieren
+ 801  *$GDXIN %datadir%%source%ELE.gdx
+ 802  * ------ LOAD
+--- LOAD  vafm_input = 1:vafm_input
+--- LOAD  cap_input = 2:cap_input
+--- LOAD  skl_input = 3:skl_input
+--- LOAD  usk_input = 4:usk_input
+--- LOAD  costshr_calib = 6:costshr_calib
+ 804  * ------ DISPLAY
+ 805  *display vafm_input, cap_input, skl_input, usk_input;
+ 806   
+ 807  * ------ Consistency checks for primary factor inputs in ele by gen
+ 808  skl_test(r)      = round( sum(gen, skl_input(gen,r))    - skld0("ele",r), rd) ;
+ 809  usk_test(r)      = round( sum(gen, usk_input(gen,r))    - uskd0("ele",r), rd) ;
+ 810  cap_test(r)      = round( sum(gen, cap_input(gen,r))    - kd0("ele",r), rd) ;
+ 811  vafm_test(i,r)   = round( sum(gen, vafm_input(i,gen,r)) - vafm(i,"ele",r), rd);
+ 812  display skl_test, usk_test, cap_test, vafm_test;
+ 813   
+ 814  * ------ Calculate output of generation technologies
+ 815  out_gen(gen,r)= sum(i,[  vafm_input(i,gen,r)*(1+(ti(i,"ele",r)))] ) + skl_input(gen,r) + usk_input(gen,r) + cap_input(gen,r);
+ 816   
+ 817  * ##############################################################################
+ 818   
+ 819  * ---------------------------------------------------------------------- *
+ 820  * Berechnung der Parameter für die Disaggregierung der Kapitalakkumulation
+ 821  * der Stromerzeugung
+ 822  * ---------------------------------------------------------------------- *
+ 823  ks_x(gen,r)      = cap_input(gen,r)      *  thetax;
+ 824  ks_n(gen,r)      = cap_input(gen,r)      * (1 - thetax) ;
+ 825   
+ 826  ks_x0(gen,r)     = ks_x(gen,r);
+ 827   
+ 828  capgenx(r)       = (sum(gen, ks_x(gen,r))) ;
+ 829  capgennew(r)     = (sum(gen, ks_n(gen,r))) ;
+ 830  * ------------------------------------------------------------------------------
+ 831  * Anpassung der capital factor income durch gen-spezifsiche kapitalstockveränderungen
+ 832  * Kapitaleinsatzes im Stromsektor wird abgezogen aus dem oben berechneten capital factor income
+ 833  * Fuer diesen Sektor gibt es technologiespezifische Kapitalausstattungen
+ 834  * evoa muss um extant capital in ele bereinigt werden, da extant capital ele in demand block im modell separat vorkommt
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 17
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 835  * take all kd0 including those for ele and take out extant ele as this is treated separately
+ 836  * ------------------------------------------------------------------------------
+ 837  evoa("cap",r)    = sum(i, kd0(i,r)) - capgenx(r)  ;
+ 838  * ------------------------------------------------------------------------------
+ 839  chkXTANT(gen,r)  = round( cap_input(gen,r) - ks_x(gen,r) - ks_n(gen,r), rd) ;
+ 840  chkfac("cap",r)  = round( sum(i, kd0(i,r)) - evoa("cap",r)- capgenx(r), rd) ;
+ 841  display chkFAC, chkXTANT;
+ 842  * ------------------------------------------------------------------------------
+ 843  * ------ setze inputs in ele gelich null, da nun vafm_input für die einzelnen Technologien relevant
+ 844  * ------ dies ist aber lediglich ein "sicherheitsschalter", denn vafm wäre nur gefragt in prod:y
+ 845  * ------ für prod:y ist der sektor ele aber über $-operator ausgenommen; selbiges gilt für primärfaktoren
+ 846  kd0_ele(r)       = kd0("ele",r);
+ 847  skld0_ele(r)     = skld0("ele",r);
+ 848  uskd0_ele(r)     = uskd0("ele",r);
+ 849  vafm_ele(i,r)    = vafm(i,"ele",r) ;
+ 850   
+ 851  skld0("ele",r) = 0 ;
+ 852  uskd0("ele",r) = 0 ;
+ 853  kd0("ele",r)   = 0 ;
+ 854  vafm(i,"ele",r)= 0 ;
+ 855   
+ 856  chkfac("skl",r) = round( sum(i, skld0(i,r)) + sum(gen, skl_input(gen,r)) - evoa("skl",r), rd) ;
+ 857  chkfac("usk",r) = round( sum(i, uskd0(i,r)) + sum(gen, usk_input(gen,r)) - evoa("usk",r), rd) ;
+ 858  chkfac("cap",r) = round( sum(i, kd0(i,r))   + sum(gen, cap_input(gen,r)) - evoa("cap",r) - capgenx(r), rd) ;
+ 859  display chkFAC;
+ 860  * ------------------------------------------------------------------------------
+ 861   
+ 862   
+ 863  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 864  * ------------------------------------------------------------------------------
+ 865  * ------ (G) Energy and fossil fuel specifications
+ 866  * ------------------------------------------------------------------------------
+ 867   
+ 868  PARAMETER
+ 869  * ------ Reading in ENERGY Parameters (GTAP Energy-Data)  --> 10_16_4
+ 870  *        EVF     =       Volume of (energy) input purchases by firms (Mtoe) --> 10_16_4_EnergyData.gdx
+ 871  *        EVH     =       Volume of (energy) purchases by households  (Mtoe) --> 10_16_4_EnergyData.gdx
+ 872  *        eind(*,*,r)     Energy input (cru oil gas col ele agr) into SPECIFIC SECTOR for this NEWAGE-model (16x16x10)
+ 873  *        evf(*,*,r)      Energy input into INDUSTRIES for every original GTAP energy class
+ 874  *        evh(*,r)        Energy input into FINAL DEMAND (HOUSEHOLDS) for every original GTAP energy class
+ 875           efd(*,r)        Energy input (cru oil gas col ele agr) into FINAL DEMAND for this NEWAGE-model (6x10)
+ 876           evd_sum1(i,r)    Total industry energy input (oil gas col cru ele und agr) for every region (6x10)
+ 877  * ------ Energy (13.09.2015 Diss)
+ 878           enrg            Energy use
+ 879           energyinp       Energy sector inputs (echo print)
+ 880           vshare(r,i)     Energy value shares for non-energy sectors
+ 881           ele_share
+ 882           ele_share_chk
+ 883           fos_input
+ 884           fos_input_chk
+ 885  * ------ Elasticities and value shares
+ 886           esub_es(i,r)    Elasticity of substitution in energy production
+ 887           eta_s(xe)       Elasticity of supply
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 18
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 888           thetar(i,r)     Value share of resource inputs in fossil supply
+ 889  * ------ Autonomous Energy Efficiency Index (AEEI)
+ 890           aeei(i,g,r)      Autonomous Energy Efficiency Index (AEEI)
+ 891           aeei_elex(gen,r) AEEI for electricity generation technologies
+ 892           aeei_elen(gen,r) AEEI for electricity generation technologies
+ 893  ;
+ 894   
+ 895  * ##############################################################################
+ 896  * ------ 26.07.2016 auskommentieren (GTAP 8 rep)
+ 897  *display evd, evi;
+ 898   
+ 899  * ------ 18.07.2016
+ 900  parameter evd_sum;
+ 901  evd_sum(r)       = sum((i,g), evd(i,g,r));
+ 902  evd_sum("all")   = sum(r, evd_sum(r)); display evd_sum;
+ 903   
+ 904  * ------ 26.07.2016 In filter.gms wird evd um die Werte bereinigt, die nicht in vdfm enthalten sind.
+ 905  *                   Die für NEWAGE relevante Berechnung von evd, die in NEWAGE auch evi (Importe) enthält --> evd = evd + evi,
+ 906  *                   darf daher erst hier vorgenommen werden, statt in flex2gdx.gms wie in GTAP8inGAMS
+ 907           evd(i,j,r)       = evd(i,j,r)   + evi(i,j,r);
+ 908           evd(i,"c",r)     = evd(i,"c",r) + evi(i,"c",r);
+ 909           evd(i,"g",r)     = evd(i,"g",r) + evi(i,"g",r);
+ 910  *display evd, evi;
+ 911   
+ 912  evd_sum(r) = 0;     evd_sum(r)       = sum((i,g), evd(i,g,r));
+ 913  evd_sum("all") = 0; evd_sum("all")   = sum(r, evd_sum(r)); display evd_sum;
+ 914   
+ 915  * ##############################################################################
+ 916   
+ 917  * ---------------------------------------------------------------------------- *
+ 918  * ------ Die Energieverbräuche werden von Mtoe in PJ umgerechnet (1 PJ = Billiarden J):
+ 919  *        1 Mtoe = 41868 TJ = 41.868 PJ = 0.041868 EJ
+ 920  *        1 toe = 1 Tonne Öläquivalent = 41.858 GJ  = 0.000041868 PJ
+ 921  *        1 GWh = 3.6 TJ = 0,000086 Mtoe (8.6*10**-5)
+ 922  *        Kilo: k = 10**3, Mega: = M = 10**6, Giga: = G = 10**9, Tera: = T = 10**12, Peta: = P = 10**15, Exa: = E = 10**18
+ 923  *        [http://www.uni-klu.ac.at/iff/ikn/downloads/Teil-04_Grundlagen_der_Energieversorgung.pdf]
+ 924  * ---------------------------------------------------------------------------- *
+ 925   
+ 926   
+ 927  * ------ 11.06.2014
+ 928  * ------ Die Energieverbräuche werden von Mtoe in EJ umgerechnet (1 PJ = Billiarden J):
+ 929  *        1 Mtoe = 41868 TJ = 41.868 PJ = 0.041868 EJ
+ 930  *        1 toe = 1 Tonne Öläquivalent = 41.858 GJ  = 0.000041868 PJ
+ 931  display evd, evt;
+ 932  evd(i,g,r)      = evd(i,g,r) * 0.041868  ;
+ 933  * ------ 26.07.2016 Folgende Zeile auskommentiert  (GTAP8 rep)
+ 934  evi(i,g,r)      = evi(i,g,r) * 0.041868  ;
+ 935  evt(i,r,s)      = evt(i,r,s) * 0.041868  ;
+ 936  display evd, evt;
+ 937   
+ 938  evd_sum(r) = 0;     evd_sum(r)       = sum((i,g), evd(i,g,r));
+ 939  evd_sum("all") = 0; evd_sum("all")   = sum(r, evd_sum(r)); display evd_sum;
+ 940   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 19
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 941  * ------ 03.07.2014 Weltweiter Energieverbrauch war 2011 nach EIA ca. 13620 mtoe = 570,25 EJ
+ 942   
+ 943  * ------ http://www.eia.gov/forecasts/aeo/data/browser/#/?id=1-IEO2016&sourcekey=0
+ 944   
+ 945  display evd;
+ 946  *evd(i,g,r) = 10000 * evd(i,g,r);         // Wichtige Skalierung   EJ bzw. Mio. tCO2
+ 947  * ------ 26.07.2016 auskommentiert
+ 948  * ------ 26.07.2016 Folgende Zeile wieder einkommentiert  (GTAP8 rep)
+ 949  *evd(i,g,r) = 10 * evd(i,g,r);            // Wichtige Skalierung   ZJ bzw. Mrd. tCO2
+ 950   
+ 951  evd_sum(r) = 0;     evd_sum(r)       = sum((i,g), evd(i,g,r));
+ 952  evd_sum("all") = 0; evd_sum("all")   = sum(r, evd_sum(r)); display evd_sum;
+ 953   
+ 954  * ------ 20.05.2015
+ 955  parameter evd_ele;
+ 956  evd_ele(i,r) = evd("ele",i,r) / sum(gg, evd("ele",gg,r));
+ 957  *display evd_ele;
+ 958   
+ 959   
+ 960  * ##############################################################################
+ 961   
+ 962  efd(i,r)        = evd(i,"c",r) + evd(i,"g",r);
+ 963  *evd(i,j,r)      = evd(i,j,r) * 41.868  ;         // Die Energieverbräuche werden von Mtoe in PJ umgerechnet
+ 964  *efd(i,r)        = efd(i,r)   * 41.868  ;         // Die Energieverbräuche werden von Mtoe in PJ umgerechnet
+ 965   
+ 966  *evd(i,j,r)      = evd(i,j,r) * 0.041868  ;       // Die Energieverbräuche werden von Mtoe in EJ umgerechnet
+ 967  *efd(i,r)        = efd(i,r)   * 0.041868  ;       // Die Energieverbräuche werden von Mtoe in EJ umgerechnet
+ 968  evd_sum1(i,r)    = sum(j, evd(i,j,r)) ;
+ 969   
+ 970  *display efd, evd, evd_sum1, evt;
+ 971   
+ 972  * ------ Elasticities of fossil fuel supply:
+ 973  eta_s("cru")  = 1;
+ 974  eta_s("gas")  = 1;
+ 975  eta_s("col")  = 1;
+ 976   
+ 977  * ------ Compute elasticity of resource production / extraction
+ 978  thetar(xe,r)$VOM(xe,R)           = rd0(xe,r) / (vom(xe,r) * (1-ty(xe,r)));
+ 979  esub_es(xe,R)$(1-thetar(xe,r))   = thetar(xe,r) * eta_s(xe) / (1-thetar(xe,r));
+ 980   
+ 981  * ------  (13.09.2015 Diss) Generate a report of energy use in physical units:
+ 982  enrg(r,i,j)       = round(evd(i,j,r), 1);                                    // NEWAGE-7: eind(i,j,r)
+ 983  enrg(r,i,"final") = round(efd(i,r), 1);                                       // NEWAGE-7: efd(fe,r)
+ 984   
+ 985  * ------ 21.05.2014
+ 986  *OPTION   energy:1:1:1;
+ 987   
+ 988  * ------ Energy value shares in non-energy production:
+ 989  vshare(r,i)$(vom(i,r) and (not e(i))) = round( 100 * sum(e, vafm(e,i,r)*(1+ti(e,i,r))) / vom(i,r), 1);
+ 990   
+ 991  * ------ Echo print inputs into energy sectors
+ 992  energyinp(e,j,r)$vom(e,r)        = vafm(j,e,r)   / vom(e,r);
+ 993  energyinp(e,"skl",r)$vom(e,r)    = skld0(e,r)    / vom(e,r);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 20
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 994  energyinp(e,"usk",r)$vom(e,r)    = uskd0(e,r)    / vom(e,r);
+ 995  energyinp(e,"k",r)$vom(e,r)      = kd0(e,r)      / vom(e,r);
+ 996  energyinp(e,"r",r)$vom(e,r)      = rd0(e,r)      / vom(e,r);
+ 997  *display eta_s, thetar, esub_es, vshare, energy, energyinp;
+ 998   
+ 999  * ------ 7.03.2013: Weiter vereinfachte SET-schreibweise
+1000  * ------ All input that COL/GAS/OIL delivers to ELE must equal the sum of all COL/GAS/OIL inputs in coal/gas/oil technologies
+1001  * ------ COL does not deliver to OIL and GAS etc.
+1002  * ------ Why does not CRU deliver to oil technologies?
+1003  fos_input(i,r)$col(i) = sum(gen$foscoal(gen), vafm_input(i,gen,r)) ;
+1004  fos_input(i,r)$gas(i) = sum(gen$fosgas(gen),  vafm_input(i,gen,r)) ;
+1005  fos_input(i,r)$oil(i) = sum(gen$fosoil(gen),  vafm_input(i,gen,r)) ;
+1006  fos_input_chk(i,r)$fos_input(i,r) = round( vafm(i,"ele",r) - fos_input(i,r), rd) ;
+1007  *display vafm_ele, fos_input, fos_input_chk ;
+1008   
+1009  * ------ 7.03.2013: Weiter vereinfachte SET-schreibweise
+1010  ele_share(i,gen,R)$(fos_input(i,r) and foscoal(gen))=  vafm_input(i,gen,r) / fos_input(i,r) ;
+1011  ele_share(i,gen,R)$(fos_input(i,r) and fosgas(gen)) =  vafm_input(i,gen,r) / fos_input(i,r) ;
+1012  ele_share(i,gen,R)$(fos_input(i,r) and fosoil(gen)) =  vafm_input(i,gen,r) / fos_input(i,r) ;
+1013  ele_share(i,"TOTAL",R) = sum(gen, ele_share(i,gen,r)) ;
+1014  ele_share_chk(i,r)$ele_share(i,"TOTAL",R) = round( ele_share(i,"TOTAL",R) - 1, rd) ;
+1015  display ele_share, ele_share_chk;
+1016   
+1017   
+1018  * ------ 18.06.2014: Set AEEI to 1 in Benchmark case
+1019  aeei(i,g,r)      = 1 ;
+1020  aeei_elex(gen,r) = 1 ;
+1021  aeei_elen(gen,r) = 1 ;
+1022  *display aeei, aeei_elen, aeei_elex;
+1023   
+1024   
+1025  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1026  * ------------------------------------------------------------------------------
+1027  * ------ (H) CO2-Emissions
+1028  * ------------------------------------------------------------------------------
+1029  * Generate base year carbon emissions by sector and then echo-print some
+1030  * benchmark statistics:
+1031  * co2em bmk emissions (vorher carbon97) are needed for definition of co2pfad
+1032  * total emissions over all carriers and all indutsries plus final demand are also reported by carbon_bmk
+1033  * ---------------------------------------------------------------------- *
+1034   
+1035  *OPTION   decimals = 6;
+1036   
+1037  PARAMETER
+1038  * ------ cecphys(*) ist kalibriert auf 901 t in 2001 DEU (04.06.) mischung stadt- und erdgas und auf über 30 Gt welt                     // NEWAGE7 ORIGINAL
+1039  *         cecphys(*)              Carbon emission coefficients for physical units [Mio. tC per PJ]  [C=Kohlenstoff]                           // NEWAGE7 ORIGINAL
+1040  *                                                        / col 0.024, gas 0.0135, oil 0.0183, hc 0.0227, bc 0.0267, ccs 0.002951 /       // NEWAGE7 ORIGINAL
+1041   
+1042  * --->>> Vgl. Küster (2009) Diss., S. 106   [Mio. tCO2/PJ]    / col 0.090, gas 0.0495, oil 0.0671, hc 0.0832, bc 0.0972, ccs 0.0110 /
+1043  * --->>> Impliziter Umrechnungsfaktor: tCO2/tC = 3.7 --> ccs 0.002951 Mio. tC/PJ * 3.7 Mio. tCO2/tC = 0.0110
+1044   
+1045  * ------ 10.06.2014
+1046  * UBA: http://www.umweltbundesamt.de/themen/klima-energie/klimaschutz-energiepolitik-in-deutschland/treibhausgas-emissionen
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 21
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1047  * UBA: http://www.umweltbundesamt.de/sites/default/files/medien/377/dokumente/co2_faktoren_brennstoffe.xls
+1048  * --->>> Braunkohle [BC]:       112 t CO2/TJ öffentliche Fernheizwerke + Industrie, Kleinverbrauch Deutschland
+1049  * --->>> Steinkohle [HC]:        94 t CO2/TJ Steinkohle roh (Kraftwerke, Industrie)
+1050  * --->>> Mineralöl [OIL]:        75 t CO2/TJ Durchschnitt über alle Mineralölprodukte
+1051  * --->>> Erdgas [GAS]:           56 t CO2/TJ Erdgas Deutschland
+1052  * --->>> Kohle [COL]:           103 t CO2/TJ Durchschnitt BC und HC
+1053  * --->>> CCS [CCS]:          ca. 11 t CO2/TJ Durchschnitt BC und HC --> Impliziter Umrechnungsfaktor Küster Diss, S. 106: tCO2/tC = 3.7 --> ccs 0.002951 tC/PJ * 3.7 tCO2/tC = 0.0110
+1054           cecphys(*)              Carbon emission coefficients for physical units [tCO2 per TJ = Mio. tCO2 per EJ]
+1055                                   / hc 94, bc 112, col 103, gas 56, oil 75, ccs 11 /              // Quelle: UBA s.o.
+1056  *                                / col 0.024, gas 0.0135, oil 0.0183, hc 0.0227, bc 0.0267, ccs 0.002951 /       // NEWAGE7 ORIGINAL
+1057           co2em(i,*,r)            CO2 emissions (by energy carrier) [Mio. tCO2]
+1058           co2em_ele               CO2 emissions from ELE
+1059           co2em_coal_chk(r)
+1060           co2em_gas_chk(r)
+1061           co2em_oil_chk(r)
+1062           carblim(r)              Carbon emission limit
+1063           carblim_ets(r)          Carbon emission limit for sectors ets
+1064           carblim0(r)             Carbon emission limit (benchmark)
+1065           carblim0_world          Carbon emission limit as world sum (benchmark)
+1066           carblim_ets0(r)         Carbon emission limit for sectors ets (benchmark)
+1067           carbshare               Relative share of a specific sector in total emissions
+1068           carbon_bmk(r,*)         2001 Carbon Emissions (IEA) GT Kohlenstoff (GT C)
+1069           carbon_ETS_bmk(r,*)     2001 Carbon Emissions (IEA) GT Kohlenstoff (GT C) in ETS sectors
+1070  ;
+1071   
+1072  * ------ 26.07.2016 Mrd. tCO2 statt Mio. tCO2  [change unit from "Million tCO2 per EJ" to "Billion tCO2 per EJ"]
+1073  * ------ 26.07.2016 Folgender Block GTAP8 rep auskommentiert
+1074  *$ontext
+1075  cecphys("hc") = cecphys("hc") / 1000 ;
+1076  cecphys("bc") = cecphys("bc") / 1000 ;
+1077  cecphys("col") = cecphys("col") / 1000 ;
+1078  cecphys("gas") = cecphys("gas") / 1000 ;
+1079  cecphys("oil") = cecphys("oil") / 1000 ;
+1080  cecphys("ccs") = cecphys("ccs") / 1000 ;
+1081  display cecphys;
+1082   
+1083  *$offtext
+1084   
+1085  * ------ General specification
+1086  *co2em(fe,i,r)            = cecphys(fe) * evd(fe,i,r);           // tCO2/TJ * EJ         = Mio. tCO2 // NEWAGE-7: eind(i,j,r)
+1087  *co2em(fe,"final",r)      = cecphys(fe) * efd(fe,r) ;            // tCO2/TJ * EJ         = Mio. tCO2 //(carbcoef = co2em); NEWAGE-7: efd(fe,r)
+1088  *co2em(fe,i,r)            = cecphys(fe) * evd(fe,i,r) / 1000;     // tCO2/TJ * PJ * 1000  = Mio. tCO2 // NEWAGE-7: eind(i,j,r)
+1089  *co2em(fe,"final",r)      = cecphys(fe) * efd(fe,r)   / 1000;     // tCO2/TJ * PJ * 1000  = Mio. tCO2 //(carbcoef = co2em); NEWAGE-7: efd(fe,r)
+1090   
+1091  * ------ 11.06.2014 evtl. adjust cecphys
+1092  *cecphys(fe)      = cecphys(fe)   / 41868; // umrechnen von tCO2/TJ in tCO2/mtoe
+1093  *cecphys("hc")    = cecphys("hc") / 41868; // umrechnen von tCO2/TJ in tCO2/mtoe
+1094  *cecphys("bc")    = cecphys("bc") / 41868; // umrechnen von tCO2/TJ in tCO2/mtoe
+1095  *cecphys("ccs")   = cecphys("ccs")/ 41868; // umrechnen von tCO2/TJ in tCO2/mtoe
+1096   
+1097  * ------ 02.07.2014
+1098  * Remember: efd(i,r) = evd(i,"c",r) + evd(i,"g",r);
+1099  *cecphys(fe) = cecphys(fe) * 1000;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 22
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1100   
+1101  * ------ 11.06.2014
+1102  *co2em(fe,i,r)            = cecphys(fe) * evd(fe,i,r) ;           // Mio. tCO2/EJ * EJ = Mio. tCO2 // NEWAGE-7: eind(i,j,r)
+1103  *co2em(fe,"final",r)      = cecphys(fe) * efd(fe,r) ;             // Mio. tCO2/EJ * EJ = Mio. tCO2 //(carbcoef = co2em); NEWAGE-7: efd(fe,r)
+1104   
+1105  * ------ 27.02.2015 Die CO2-Emissionen fallen nur dort an, wo es auch wirklich Nachfrage gibt (z.B. gas.gas.FRA --> kein Eintrag in vafm aber es wäre einer in co2em)
+1106  * ------ 26.07.2016 Folgende zwei Zeilen einkommentiert (GTAP8 rep)
+1107  co2em(fe,i,r)$vafm(fe,i,r)  = cecphys(fe) * evd(fe,i,r) ;           // Mio. tCO2/EJ * EJ = Mio. tCO2 // NEWAGE-7: eind(i,j,r)
+1108  co2em(fe,"final",r)$c0(fe,r)= cecphys(fe) * efd(fe,r) ;             // Mio. tCO2/EJ * EJ = Mio. tCO2 //(carbcoef = co2em); NEWAGE-7: efd(fe,r)
+1109  display co2em;
+1110   
+1111  * ------ 26.07.2016 Hinzugefügt bzw. CO2-Emissionen neu definiert
+1112  * ------ 26.07.2016 Folgender Block auskommentiert (GTAP8 rep)
+      parameter efi(i,r);
+      efi(i,r)        = evi(i,"c",r) + evi(i,"g",r);
+      co2em(fe,i,r)$vafm(fe,i,r)  = cecphys(fe) * (evd(fe,i,r) + evi(fe,i,r));           // Mio. tCO2/EJ * EJ = Mio. tCO2 // NEWAGE-7: eind(i,j,r)
+      co2em(fe,"final",r)$c0(fe,r)= cecphys(fe) * (efd(fe,r) + efi(fe,r)) ;             // Mio. tCO2/EJ * EJ = Mio. tCO2 //(carbcoef = co2em); NEWAGE-7: efd(fe,r)
+      display co2em, efd, efi, evd;
+      *$exit
+1121   
+1122  * ------ Electricity (NEWAGE8 calculation routine)
+1123  co2em(i,gen,r)$(col(i) and foscoalb(gen))= cecphys("bc") * ele_share(i,gen,r) * evd(i,"ele",r) ;   // NEWAGE-7: eind(i,j,r)
+1124  co2em(i,gen,r)$(col(i) and foscoalh(gen))= cecphys("hc") * ele_share(i,gen,r) * evd(i,"ele",r) ;    // NEWAGE-7: eind(i,j,r)
+1125  co2em(i,gen,r)$(col(i) and fosccs(gen))  = cecphys("CCS")* ele_share(i,gen,r) * evd(i,"ele",r) ;    // NEWAGE-7: eind(i,j,r)
+1126  co2em(i,gen,r)$(gas(i) and fosgas(gen))  = cecphys("gas")* ele_share(i,gen,r) * evd(i,"ele",r) ;    // NEWAGE-7: eind(i,j,r)
+1127  co2em(i,gen,r)$(oil(i) and fosoil(gen))  = cecphys("oil")* ele_share(i,gen,r) * evd(i,"ele",r) ;    // NEWAGE-7: eind(i,j,r)
+1128  co2em(i,"sumGEN",r)       = sum(gen, co2em(i,gen,r));
+1129  co2em(i,"ele",r)         = co2em(i,"sumGEN",r);
+1130  co2em_ele(fe,r)          = co2em(fe,"ele",r);
+1131  co2em_ele("all",r)       = sum(fe, co2em(fe,"ele",r));
+1132  co2em_ele("all","all")   = sum(r, co2em_ele("all",r));
+1133  display co2em, co2em_ele;
+1134   
+1135  *$exit
+1136  *co2em(i,"TOTAL",r)       = 0;
+1137  * ------ Benchmark
+1138  carbon_bmk(r,fe)         = co2em(fe,"final",r) + sum(i, co2em(fe,i,r));          // neu
+1139  carbon_bmk(r,"total")    = sum(fe, carbon_bmk(r,fe));                            // neu
+1140  carbon_ETS_BMK(r,fe)     = sum(i$ETS(I), co2em(fe,i,r));                         // neu
+1141  carbon_ETS_BMK(r,"total")= sum(fe, carbon_ETS_bmk(r,fe));                        // neu
+1142  * ------ Other
+1143  carbshare(r,"final")     = sum(fe, co2em(fe,"final",r)) / carbon_bmk(r,"total"); // neu
+1144  carbshare(r,i)           = sum(fe, co2em(fe,i,r)) / carbon_bmk(r,"total");       // neu
+1145  co2em_coal_chk(r)        = co2em("col","total",r) - co2em("col","ele",r) ;
+1146  co2em_gas_chk(r)         = co2em("gas","total",r) - co2em("gas","ele",r) ;
+1147  co2em_oil_chk(r)         = co2em("oil","total",r) - co2em("oil","ele",r) ;
+1148  display co2em_coal_chk, co2em_gas_chk, co2em_oil_chk;
+1149   
+1150  display co2em, co2em_ele, cecphys, evd, efd;
+1151   
+1152  * ------ 03.07.2014 Weltweiter Energieverbrauch war 2011 nach EIA ca. 13620 mtoe = 570,25 EJ
+1153  * ------ http://www.eia.gov/forecasts/aeo/data/browser/#/?id=1-IEO2016&sourcekey=0
+1154  parameter evd_total in ZJ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 23
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1155  evd_total(r) = sum((i,g), evd(i,g,r)); display evd_total;
+1156  evd_total("World") = sum(r, evd_total(r)); display evd_total;
+1157   
+1158  * ------ 26.07.2016  Umrechnung von Mio. tCO2 in Mrd. tCO2 bzw. Gt CO2
+1159  *co2em(fe,i,r) = co2em(fe,i,r) / 1000 ;
+1160  *co2em(i,gen,r)= co2em(i,gen,r) / 1000 ;
+1161  *co2em(i,"sumGEN",r) = co2em(i,"sumGEN",r) / 1000;
+1162  *co2em(i,"ele",r) = co2em(i,"ele",r) / 1000;
+1163  *co2em(i,"ele",r) = co2em(i,"ele",r) / 1000;
+1164  *co2em_ele(fe,r) = co2em_ele(fe,r) / 1000;
+1165  *co2em(fe,"final",r) = co2em(fe,"final",r) / 1000 ;
+1166   
+1167   
+1168  * ------ http://de.wikipedia.org/wiki/Liste_der_gr%C3%B6%C3%9Ften_Kohlenstoffdioxidemittenten
+1169  parameter co2em_total in Mrd. tCO2;
+1170  co2em_total(r) = sum((i,j), co2em(i,j,r)) + sum(fe, co2em(fe,"final",r));
+1171  co2em_total("World") = sum(r, co2em_total(r)); display co2em_total;
+1172  display co2em_total;
+1173   
+1174  * ------ 1.08.2016
+1175  parameter co2em_final; co2em_final("final",r) = sum(fe, co2em(fe,"final",r)) ;
+1176  display co2em_final;
+1177   
+1178   
+1179  parameter coco;
+1180  coco(r) = sum(fe, co2em(fe,"final",r));
+1181  *display coco;
+1182   
+1183  * ##############################################################################
+1184  * ------ 25.07.2016 CO2-Emissionen aus GTPA9 entnehmen und nicht bottom-up über evd und cecphys herleiten!
+1185  *$ontext
+1186  parameter eco2, eco2_all, eco2d_all, eco2i_all, evd_all, evi_all, eco2_cru_diff;
+1187   
+1188  * ------ 08.08.2016 Store eco2d original values
+1189  Parameter
+1190           eco2d0          Store eco2d GTAP9 original values
+1191           eco2i0          Store eco2i GTAP9 original values
+1192           CHK_eco2        Check eco2 parameter (should be zero)
+1193           co2em_ele_share Technologies CO2 emissions share per fuel
+1194           chk_co2em_ele   Check co2-emissions in ELE (should be zero)
+1195  ;
+1196   
+1197  * ------ 1.08.2016 Define eco2d0 and eco2i0 and scale eco2d and eco2i to Billion t CO2 instead of Mt CO2
+1198  eco2d0(i,g,r) = eco2d(i,g,r);
+1199  eco2i0(i,g,r) = eco2i(i,g,r);
+1200  eco2d(i,g,r) = eco2d(i,g,r) / 1000;
+1201  eco2i(i,g,r) = eco2i(i,g,r) / 1000;
+1202   
+1203  * ------ 1.08.2016 eco2 is the sum of domestic plus imported co2-emissions
+1204  eco2(i,g,r) = eco2d(i,g,r) + eco2i(i,g,r); display eco2;
+1205  * ------ Check eco2
+1206  CHK_eco2 = sum((r), eco2d("cru","ele",r) + eco2i("cru","ele",r) + eco2d("oil","ele",r) + eco2i("oil","ele",r)) - sum((r), eco2("cru","ele",r) + eco2("oil","ele",r)); display CHK_eco2;
+1207   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 24
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1208  * ------ 8.08.2016 Move CO2 emissions from CRU to OIL (because NEWAGE is defined to only have emissions from OIL not from CRU)
+1209  eco2("oil",g,r) = eco2("oil",g,r) + eco2("cru",g,r);
+1210  eco2("cru",g,r) = 0;
+1211  * ------ Check eco2
+1212  CHK_eco2 = sum((r), eco2d("cru","ele",r) + eco2i("cru","ele",r) + eco2d("oil","ele",r) + eco2i("oil","ele",r)) - sum((r), eco2("cru","ele",r) + eco2("oil","ele",r)); display CHK_eco2;
+1213   
+1214  * ------ 8.08.2016 calculate difference of "new" and "old" CO2-emissions from OIL
+1215  eco2_cru_diff(r) = (sum(g, eco2("oil",g,r)) - sum(g, eco2d("oil",g,r) + eco2i("oil",g,r))) * 1000; // in Mio. t instead of Bn. t CO2
+1216   
+1217  * ------ 8.08.2016 Calculate sums
+1218  eco2d_all(g,r)           = sum(i,        eco2d(i,g,r));
+1219  eco2d_all("all",r)       = sum((i,g),    eco2d(i,g,r));
+1220  eco2d_all("all","all")   = sum((i,g,r),  eco2d(i,g,r));
+1221  eco2i_all(g,r)           = sum(i,        eco2i(i,g,r));
+1222  eco2i_all("all",r)       = sum((i,g),    eco2i(i,g,r));
+1223  eco2i_all("all","all")   = sum((i,g,r),  eco2i(i,g,r));
+1224  eco2_all(g,r)            = sum(i,        eco2(i,g,r));
+1225  eco2_all("all",r)        = sum((i,g),    eco2(i,g,r));
+1226  eco2_all("all","all")    = sum((i,g,r),  eco2(i,g,r));
+1227  evd_all(g,r)             = sum(i,        evd(i,g,r));
+1228  evd_all("all",r)         = sum((i,g),    evd(i,g,r));
+1229  evi_all(g,r)             = sum(i,        evi(i,g,r));
+1230  evi_all("all",r)         = sum((i,g),    evi(i,g,r));
+1231  display eco2d, eco2i, eco2, eco2_all, eco2d_all, eco2i_all, evd_all, evi_all, eco2_cru_diff;
+1232   
+1233  * ------ 8.08.2016 Calculate CO2 emissions for the electricity technologies based on NEWAGE8 co2em bottom-up routine (s. above)
+1234  co2em_ele_share(i,gen,r)$co2em(i,gen,r) = co2em(i,gen,r) / sum(gengen, co2em(i,gengen,r)) ;
+1235  co2em_ele_share(i,"not_balanced",r)$sum(gen, co2em_ele_share(i,gen,r)) = round(sum(gen, co2em_ele_share(i,gen,r)) - 1, 10); // if balanced, there is no entry in "not_balanced"
+1236  display co2em_ele_share;
+1237   
+1238  * ------ 1.08.2016 Adjust CO2 Emissions to GTAP9 data source eco2d + eco2i
+1239  * ------ 8.08.2016 Reset co2em to zero
+1240  co2em(i,j,r)       = 0;
+1241  co2em(i,"final",r) = 0;
+1242  co2em(i,gen,r)     = 0;
+1243  co2em(i,"sumGEN",r)= 0;
+1244  co2em_total(r) = 0;
+1245  display co2em, co2em_total;
+1246   
+1247  * ------ 1.08.2016 Industries j
+1248  co2em(i,j,r)     = eco2(i,j,r);
+1249  * ------ 1.08.2016 Final demand
+1250  co2em(i,"final",r) = eco2(i,"g",r) + eco2(i,"c",r) ;
+1251   
+1252  * ------ 8.08.2016 Apply co2em_ele_share(i,gen,r) to the sum of eco2d(i,"ele",r) and eco2i(i,"ele",r) per fuel
+1253  co2em(i,gen,r)     = co2em_ele_share(i,gen,r) * (eco2(i,"ele",r)) ;
+1254   
+1255  * ------ 8.08.2016 Check co2em (should be zero)
+1256  chk_co2em_ele(r) = 0; chk_co2em_ele(r) = round(sum((i,gen), co2em(i,gen,r)) - sum(i, eco2(i,"ele",r)) ,8); display chk_co2em_ele;
+1257  chk_co2em_ele(r) = 0; chk_co2em_ele(r) = round(sum((i,gen), co2em(i,gen,r)) - (sum(i, (eco2d(i,"ele",r) + eco2i(i,"ele",r)))),8); display chk_co2em_ele;
+1258  chk_co2em_ele("all") = sum(r, chk_co2em_ele(r)); display chk_co2em_ele;
+1259  chk_co2em_ele(r) = 0; chk_co2em_ele(r) = round(sum((i,gen), co2em(i,gen,r)) - sum(i, (eco2d0(i,"ele",r) + eco2i0(i,"ele",r))/1000) ,8); display chk_co2em_ele;
+1260   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 25
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1261  * ------ 8.08.2016 Calculate co2em sum over gen and calculate co2em_ele
+1262  co2em(i,"j_sum",r)       = sum(j,   co2em(i,j,r));
+1263  co2em(i,"gen_sum",r)     = sum(gen, co2em(i,gen,r));
+1264  co2em(i,"ele",r)         = co2em(i,"gen_sum",r);
+1265  co2em_ele(fe,r)          = co2em(fe,"ele",r);
+1266  co2em_ele("all",r)       = sum(fe, co2em_ele(fe,r));
+1267  co2em_ele("all","all")   = sum(r,  co2em_ele("all",r));
+1268  * ------ 8.08.2016 Total CO2 emissions
+1269  co2em_total(r) = sum((i,j), co2em(i,j,r)) + sum(fe, co2em(fe,"final",r));
+1270  co2em_total("World") = sum(r, co2em_total(r));
+1271   
+1272  display co2em_ele_share, eco2d, eco2i, co2em, co2em_ele, co2em_total;
+1273   
+1274   
+1275  *$exit
+1276  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1277  * ------------------------------------------------------------------------------
+1278  * ------ (I) Additional parameters from EXCEL
+1279  * ----->>>>  Labour, CO2, ELE costs + potentials + decommissioning, AEEI, pricetargets
+1280  * ------------------------------------------------------------------------------
+1281   
+1282  PARAMETER
+1283           size_usk(*,*)                   Wachstumsparameter für unskilled labor (lfhc_usk + tfp)
+1284           size_skl(*,*)                   Wachstumsparameter für skilled labor (lfhc_skl + tfp)
+1285  * ------ 15.07.2014 Energy productivity and total factor productivity development (BASELINE Database)
+1286           lfhc_usk(r,yr)                  Labor force and human capital development for unskilled labor (BASELINE Database)
+1287           lfhc_skl(r,yr)                  Labor force and human capital development for   skilled labor (BASELINE Database)
+1288           ep(yr,r)                        Energy productivity development (BASELINE Database)
+1289           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
+1290   
+1291           ele_prod(gen,r)                 Benchmark electricity production [TWh]
+1292           ele_prod_costs
+1293           ressize(r,gen,yr)               Growth rates for renewable energy sources
+1294           co2pfad(r,yr)                   CO2-growth
+1295           co2pfad_ets(r,yr)               CO2-growth in the EU-ETS (regional)
+1296           co2pfad_ets_eu(*,yr)            CO2-growth in the whole EU-ETS
+1297           co2pfad_nets(r,yr)              CO2-growth in the EU non-ETS-sectors (regional)
+1298   
+1299           urun0(r)                        Initial unemployment rate among unskilled
+1300           ursk0(r)                        Initial unemployment rate among skilled
+1301           un_numb0(r)                     Initial employment supply (potential) absolute unskilled
+1302           sk_numb0(r)                     Initial employment supply (potential) absolute skilled
+1303           labsize(r,yr)                   Changes in economically active population based ilo from 2020 onward constant
+1304           ur_miss(r)                      Average unemployment rate for missing countries
+1305   
+1306           diffcost(gen,r)                 Differenzkosten
+1307           cost_red(gen,yr)                Renewable energies cost reduction
+1308           abschreibung(r,gen,yr)          Decommissioning geg. vorperiode
+1309           abschreibung_z(r,gen,yr)        Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+1310           abschreibung_bmk(r,gen,yr)      Decommissioning geg. basis-bmk
+1311           abschreibung_bmk_z(r,gen,yr)    Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+1312   
+1313           AEEI_exo(yr)                    AEEI exogen
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 26
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1314           AEEI_exo_emerge(yr)             AEEI exogen emerge
+1315           AEEI_exo_deu(yr)                AEEI exogen deu
+1316           AEEI_exo_neu(yr)                AEEI exogen neu
+1317           AEEI_exo_ele_c(yr)              AEEI exogen ele_c
+1318           AEEI_exogen(yr)                 AEEI exogen für deutschland
+1319           AEEI_exogen_after2020(yr)       AEEI exogen für deutschland nach erreichen von mckinsey
+1320           AEEI_exogen_after2025(yr)       AEEI exogen für deutschland nach erreichen von mckinsey II
+1321           AEEI_exogen_gen_yr(yr)          AEEI exogen für den einstaz von fe in stromerzeugung in deu!
+1322           AEEI_exogen_gen_yr_after2020(yr) AEEI exogen electricity generation nach erreichen von mckinsey
+1323           AEEI_exogen_gen_yr_after2025(yr) AEEI exogen electricity generation nach erreichen von mckinsey II
+1324           AEEI_exogen_ele(yr)             AEEI exogen für deutschland stromverbrauch
+1325           AEEI_exogen_ele_after2020(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
+1326           AEEI_exogen_ele_after2025(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
+1327           AEEI_exogen_trn(yr)             AEEI exogen für deutschland TRN
+1328           AEEI_exogen_trn_after2020(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey
+1329           AEEI_exogen_trn_after2025(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey II
+1330           AEEI_exogen_hh(yr)              AEEI exogen für deutschland HH
+1331           AEEI_exogen_hh_after2020(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey
+1332           AEEI_exogen_hh_after2025(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey II
+1333   
+1334           wg0(gen,r)                      Wirkungsgrad im bmk
+1335           wg_yr(gen,yr)                   Wirkungsgrad nach jahren jeweils bat
+1336           nucsize(r,yr)                   Ausbau- bzw. Rückbaupfad Kernenergie
+1337           diffcost_exogen(r,gen)
+1338           pytarget_yr(r,i,yr)             Exogenous price paths for resources
+1339   
+1340           savrt
+1341  ;
+1342   
+1343  * ##############################################################################
+1344  * ------ READING DATA ----------------------------------------------------------
+1345   
+1346  * ------ GDX_IN --- 19.05.2014
+1347  * ------ 26.07.2016 Folgende Zeile für GTAP8 einkommentieren
+1348  *$GDXIN   %datadir%xlsdata_%output%.gdx                                    //GDXin
+1349  * ------ 18.07.2016
+1350  * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_XCEL.gdx
+1352   
+1353  *$GDXIN   %datadir%newage_dataload_26x19x4.gdx                                    //GDXin
+1354  * ------ LOAD
+--- LOAD  ressize = 60:ressize
+--- LOAD  co2pfad_ets = 62:co2pfad_ets
+--- LOAD  co2pfad = 61:co2pfad
+--- LOAD  co2pfad_ets_eu = 102:co2pfad_ets_eu
+--- LOAD  urun0 = 65:urun0
+--- LOAD  ursk0 = 66:ursk0
+1358  *$LOAD    un_numb0  sk_numb0  labsize
+--- LOAD  diffcost = 67:diffcost
+--- LOAD  cost_red = 69:cost_red
+--- LOAD  abschreibung = 73:abschreibung
+--- LOAD  abschreibung_bmk = 75:abschreibung_bmk
+--- LOAD  abschreibung_z = 74:abschreibung_z
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 27
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+--- LOAD  abschreibung_bmk_z = 76:abschreibung_bmk_z
+--- LOAD  AEEI_exogen_gen_yr = 86:AEEI_exogen_gen_yr
+--- LOAD  AEEI_exogen_gen_yr_after2020 = 87:AEEI_exogen_gen_yr_after2020
+--- LOAD  AEEI_exogen_gen_yr_after2025 = 88:AEEI_exogen_gen_yr_after2025
+--- LOAD  AEEI_exogen = 83:AEEI_exogen
+--- LOAD  AEEI_exogen_after2020 = 84:AEEI_exogen_after2020
+--- LOAD  AEEI_exogen_after2025 = 85:AEEI_exogen_after2025
+--- LOAD  AEEI_exogen_ele = 89:AEEI_exogen_ele
+--- LOAD  AEEI_exogen_ele_after2020 = 90:AEEI_exogen_ele_after2020
+--- LOAD  AEEI_exogen_ele_after2025 = 91:AEEI_exogen_ele_after2025
+--- LOAD  AEEI_exogen_trn = 92:AEEI_exogen_trn
+--- LOAD  AEEI_exogen_trn_after2020 = 93:AEEI_exogen_trn_after2020
+--- LOAD  AEEI_exogen_trn_after2025 = 94:AEEI_exogen_trn_after2025
+--- LOAD  AEEI_exogen_hh = 95:AEEI_exogen_hh
+--- LOAD  AEEI_exogen_hh_after2020 = 96:AEEI_exogen_hh_after2020
+--- LOAD  AEEI_exogen_hh_after2025 = 97:AEEI_exogen_hh_after2025
+--- LOAD  AEEI_exo = 78:AEEI_exo
+--- LOAD  AEEI_exo_emerge = 79:AEEI_exo_emerge
+--- LOAD  AEEI_exo_deu = 80:AEEI_exo_deu
+--- LOAD  AEEI_exo_neu = 81:AEEI_exo_neu
+--- LOAD  AEEI_exo_ele_c = 82:AEEI_exo_ele_c
+--- LOAD  wg0 = 70:wg0
+--- LOAD  wg_yr = 71:wg_yr
+--- LOAD  nucsize = 72:nucsize
+--- LOAD  pytarget_yr = 63:pytarget_yr
+--- LOAD  diffcost_exogen = 68:diffcost_exogen
+1371   
+1372  * ------ 15.07.2014
+--- LOAD  lfhc_usk = 98:lfhc_usk
+--- LOAD  lfhc_skl = 99:lfhc_skl
+--- LOAD  ep = 100:ep
+--- LOAD  tfp = 101:tfp
+1375   
+1376  * ------ 26.07.2016 Folgende Zeile für GTAP8 einkommentieren
+1377  *$GDXIN   %datadir%%output%ELE.gdx                                    //GDXin
+1378  * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\18x18x4_gtap9_ELE.gdx
+1380   
+--- LOAD  ele_prod = 7:ele_prod
+--- LOAD  ele_prod_costs = 8:ele_prod_costs
+1382   
+1383  *display lfhc_usk, lfhc_skl, nucsize, ressize, co2pfad, co2pfad_ets, co2pfad_ets_eu, cost_red, abschreibung, abschreibung_z, abschreibung_bmk, abschreibung_bmk_z, wg_yr, pytarget_yr;
+1384  *display AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c, AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025,
+1385  *AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025, AEEI_exogen_ele, AEEI_exogen_ele_after2020,
+1386  *AEEI_exogen_ele_after2025, AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025, AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025;
+1387  *display urun0, ursk0;
+1388  *display pytarget_yr, save, vdep, vi, vom, vb, ele_prod, ele_prod_costs;
+1389  display ep, tfp;
+1390  *display diffcost;
+1391   
+1392  savrt(r) = save(r) / sum(g$(not i(g)), vom(g,r)); display savrt;
+1393   
+1394  * ------ 24.06.2014
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 28
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1395  *size_skl(baw,yr) = 1;
+1396   
+1397  * ------ 15.07.2014 Set BAW equal to DEU (for TFP and EP)
+1398  *tfp(yr,"baw")    = tfp(yr,"deu");
+1399  *ep(yr,"baw")     = ep(yr,"deu") ;
+1400  * ------ 17.07.2014
+1401  *ep("2050","aut") = ep("2045","aut") ;
+1402  *ep("2050","chi") = ep("2045","chi") ;
+1403  * ------ 15.07.2014 Add tfp growth to lfhc_usk and lfhc_skl
+1404  size_usk(r,yr)   = lfhc_usk(r,yr) + (tfp(yr,r) - 1);
+1405  size_skl(r,yr)   = lfhc_skl(r,yr) + (tfp(yr,r) - 1);
+1406  * ------ 5.02.2016 lfhc_usk und lfhc_skl mit newage_dataload_17x18x4_v34.gms neu eingelesen
+1407  * ------ 5.02.2016 >>> in order to increase economic growth in Germany from 1% p.a. (2007-2030) to 1,3% p.a.
+1408  * ------ 5.02.2016 es wurden size_17x18x4.xlsx und ep+tfp.xlsx (sheet ep_newage) geändert!
+1409   
+1410   
+1411   
+1412  *display lfhc_usk, lfhc_skl, size_usk, size_skl, tfp, ep;
+1413   
+1414   
+1415  * ##############################################################################
+1416  * ------ Specifying parameters -------------------------------------------------
+1417   
+1418  * ------ Initial benchmark prices for wage curve formulation:
+1419  parameter
+1420           psklbmk(r)
+1421           puskbmk(r)
+1422           pcbmk(r);
+1423   
+1424  * ------ 23.04.2014 Calculate average for missing countries ARB, OEC, OPE and ROW
+1425  *ur_miss(r)$(not urun0(r) or not ursk0(r)) = 1;
+1426  *urun0(r)$ur_miss(r) = sum(rr, urun0(rr)) / 14;
+1427  *ursk0(r)$ur_miss(r) = sum(rr, ursk0(rr)) / 14;
+1428  *display ur_miss, urun0, ursk0;
+1429   
+1430  * ------ 15.04.2014
+1431  *size_usk(r,"2010") = (size_usk(r,"2007") + size_usk(r,"2015")) / 2 ;
+1432  *size_skl(r,"2010") = (size_skl(r,"2007") + size_skl(r,"2015")) / 2  ;
+1433   
+1434  * ------ hierdurch verschwindet das Jahr 2004, weil dort alle Werte auf 1 waren --> (4x10x10)
+1435  ressize(r,gen,yr)$ressize(r,gen,yr) = ressize(r,gen,yr) - 1 ;
+1436   
+1437  * ------ Nucsize specification
+1438  nucsize(r,yr)$(nucpot(r)) = nucsize(r,yr) - 1;
+1439  * ------ Nucout in DEU and BAW
+1440  nucsize(r,yr)$(nucout(r) and after(yr)) = 0;
+1441   
+1442  * ------ Define abschreibung for decomissioning curves for other regions than EU28
+1443  abschreibung(r,gen,yr)$(NOT EU28(r))     = abschreibung_z(r,gen,yr);
+1444  abschreibung_BMK(r,gen,yr)$(NOT EU28(r)) = abschreibung_BMK_Z(r,gen,yr);
+1445  abschreibung(r,"bCCS",yr)                = 0;
+1446  abschreibung(r,"mCCS",yr)                = 0;
+1447  abschreibung_BMK(r,"bCCS",yr)            = 1;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 29
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1448  abschreibung_BMK(r,"mCCS",yr)            = 1;
+1449   
+1450  * ------ 14.10.2014
+1451  parameter abschr_pfad(r,gen,yr), ks_x_yr2;
+1452   
+1453  abschr_pfad(r,gen,"2011") = 1;
+1454   
+1455  loop(yr$after(yr),abschr_pfad(r,gen,yr) = abschr_pfad(r,gen,yr-1) * (1 - abschreibung(r,gen,yr)););
+1456   
+1457  ks_x_yr2(r,gen,"2011") = ks_x0(gen,r);
+1458   
+1459  loop(yr$after(yr), ks_x_yr2(r,gen,yr) = ks_x0(gen,r) * abschr_pfad(r,gen,yr));
+1460   
+1461  *display abschreibung, abschr_pfad, ks_x_yr2, ks_x0;
+1462   
+1463  * ------ 16.02.2015 Define CRU-Price in 2050 same as 2045:
+1464  pytarget_yr(r,i,"2050") = 0.9 * pytarget_yr(r,i,"2045") ;
+1465  * ------ TEXTMARKE RWE
+1466   
+1467  *display nucsize, ressize, co2pfad, co2pfad_ets, cost_red, abschreibung, abschreibung_z, abschreibung_bmk, abschreibung_bmk_z, wg_yr, pytarget_yr;
+1468  *display AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c, AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025,
+1469  *AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025, AEEI_exogen_ele, AEEI_exogen_ele_after2020,
+1470  *AEEI_exogen_ele_after2025, AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025, AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025;
+1471  *display size_usk, abschreibung;
+1472   
+1473   
+1474  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1475  * ------------------------------------------------------------------------------
+1476  * ------ (J) SZENARIO SCHALTER [Quotas/Flags/Shares]
+1477  * ------------------------------------------------------------------------------
+1478  SCALARS
+1479           EUPOL   EU unilateral carbon policy     / 1 /
+1480   
+1481   
+1482  * ------ Quotas/Flags/Shares in electricty generation and ETS allowances
+1483           notrade         Defines carbon regime as regional permit price PCO2 in the EU28                 / 0 /   // notrade
+1484           worldtrade      Defines carbon regime as international  permit price PCO2W                      / 0 /
+1485           worldtrade2     Defines carbon regime as international  permit price PCO2W (set if ets + nets)  / 0 /
+1486           eutrade         Defines carbon regime as international  permit price PCO2W for EU28             / 0 /   // EUtrade
+1487           etstrade        Defines carbon regime as EU-28 ETS      permit price PCO2_ETS                   / 1 /   // ETStrade
+1488           netstrade       Defines carbon regime as EU-28 Non-ETS  permit price PCO2_NETS                  / 0 /
+1489           netstrade_r     Defines carbon regime as regional Non-ETS permit price PCO2_NETSr(r)            / 0 /
+1490           hhets           Defines carbon regime as including Households into ETS permit price PCO2_ETS    / 0 /
+1491           bawnets         Defines carbon regime as BAW Non-ETS  permit price PCO2_NETS                    / 0 /
+1492           trade           Schalter für Emissionsreduktion mit  Handel                                     / 0 /
+1493           sectrade        Schalter für Emissionsreduktion mit  Handel zwischen ausgewählten Sektoren      / 0 /
+1494           septrade        Schalter für Emissionsreduktion mit  Handel zwischen ausgewählten Sektoren und Regionen / 0 /   // BAU on
+1495   
+1496  * ------ Rebating scalars
+1497           rebate_co2                              / 0 /
+1498           rebate_ind_scal Industries schalter     / 0 /
+1499           rebate_oil                              / 0 /
+1500           rebate_reg                              / 0 /
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 30
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1501           rebate_notreg                           / 0 /
+1502   
+1503  * ------ Other
+1504           euquota                                                                                         / 0 /
+1505           aeei_variante   Schalter für Einstaz der McKinsey AEEI sektoral u. zeitlich spezifiziert        / 0 /
+1506  ;
+1507   
+1508  * ------ 2.02.2016
+1509  notrad(r)$(eu28(r) and notrade) = yes ;
+1510   
+1511  * ------ 24.07.2014 Switch on BAW Non-Ets Carbon reduction if SC2 = 1
+1512  *bawnets$sc2 = 1;
+1513   
+1514  *#flag #schalter
+1515  PARAMETERS
+1516  * ------ ETS policies:
+1517           sectrade_yr(yr)
+1518           septrade_yr(yr)
+1519           trade_yr(yr)
+1520  * ------ Price policies
+1521           carbtax(r)
+1522           pricetarget(i,r) Flag for exogenous price path for fossil fuels
+1523           pytarget(i,r)   Exogenous price path for fossil fuels
+1524  * ------ RES Policies:
+1525           eegon(r)        Schalter für res subvention
+1526           rebateon(r)     Schalter für überwälzung eegon-subvention auf ele-preis
+1527           eegout(r)       Schalter für res regulator
+1528           capsub(r)       Schalter für capital subsidy for reg
+1529  * ------ Limiting technologies
+1530           biolimit(r)     schalter für limitierung von biomasse in strom in EU28 (zusätzlich zu bio_pot)
+1531           bhydrolimit(r)  schalter für limitierung von grundlast-wasserkraft in strom in EU28 ?
+1532           phydrolimit(r)  schalter für limitierung von spitzenlast-pumpspeicher in strom in EU28 ?
+1533           mwindlimit(r)   schalter für limitierung von mittellast-windkraft in strom in EU28 ?
+1534  * ------ AEEI-Faktoren
+1535  *         aeei(*,*,*)
+1536           aeei_trn(*,*,*)
+1537           aeei_hh(*,*,*)
+1538           aeei_ele(gen,r)
+1539           aeei_ele_x(gen,r)
+1540           aeei_ele_n(gen,r)
+1541  * ------ Other share and path parameters:
+1542           share(r)
+1543           res_share(yr,r)
+1544           rebate_ind(i)   These industries get auctioning revenues
+1545  * ------ Other parameters:
+1546           ele_import
+1547           kalib(r)                Kalibierungstuning für strombverbrauch um gesamtstrommenge an mb anzupassen
+1548           redu(r)
+1549           redu_ets(r)
+1550           alpha(i,r)              Share of auction rebated
+1551           gskl(i,r)               Labor productivity growth
+1552           gusk(i,r)               Labor productivity growth
+1553           gpoil(r)                Oil price growth exogenous
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 31
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1554           qendow(gen,r)
+1555  ;
+1556   
+1557  * ------ Carbon Regimes
+1558  co2pfad_ets(r,yr)$trade  = 0 ;
+1559  seCtrade_yr("2011")      = 0 ;
+1560  seCtrade_yr(yr)$after(yr)= 0 ;
+1561  sePtrade_yr("2011")      = 0 ;           // BAU on
+1562  sePtrade_yr(yr)$after(yr)= 0 ;           // BAU on
+1563  trade_yr("2011")         = 0 ;
+1564  trade_yr(yr)$after(yr)   = 0 ;
+1565  * ------ RES Policies:
+1566  eegon(r)                 = 0 ;
+1567  rebateon(r)              = 0 ;
+1568  eegout(r)                = 0 ;
+1569  capsub(r)                = 0 ;
+1570  * ------ Limiting technologies
+1571  biolimit(r)              = 1 ;           // BAU on
+1572  bhydrolimit(r)           = 1 ;           // BAU on
+1573  phydrolimit(r)           = 1 ;           // BAU on
+1574  mwindlimit(r)            = 1 ;           // BAU on
+1575  * ------ AEEI-Faktoren (Initial Definition)
+1576  *aeei(e,d,r)              = 1 ;
+1577  aeei_trn(e,d,r)          = 1 ;
+1578  aeei_hh(e,d,r)           = 1 ;
+1579  aeei_ele(gen,r)          = 1 ;
+1580  aeei_ele_x(gen,r)        = 1 ;
+1581  aeei_ele_n(gen,r)        = 1 ;
+1582   
+1583  * ------ Price targets
+1584  pricetarget(i,r)                 = 0 ;
+1585  pricetarget("cru",r)             = 1 ;   // BAU on
+1586  * ------ 9.01.2015
+1587  *pricetarget("cru",r)             = 0 ;   // Textmarke RWE
+1588  * ------ 11.06.2014
+1589  pytarget(i,r)$pricetarget(i,r)   = 1;    // BAU on
+1590  * ------ 12.06.2014
+1591  *rd0("cru",r)$(not rd0("cru",r)) = 1e-8; display rd0;
+1592  *pytarget(i,r)$(rd0(i,r) and pricetarget(i,r))   = 1;    // BAU on
+1593  *display pricetarget, pytarget, rd0;
+1594   
+1595  * ------ Rebating --> Which industries should revenues accrue to?
+1596  rebate_ind(i)$(ets(i)$rebate_ind_scal) = 0;
+1597  rebate_ind("ele") = 0;
+1598  *#flag #schalter
+1599  * ------ Other specific scenarios
+1600  * 1.) fix carbon price
+1601  carbtax(r) = 0 ;
+1602  * 2.) taxation of energy resources
+1603  * parameter restax(i,r);
+1604  * restax(i,r) = 0 ;
+1605  * 3.) direct capital subsidies
+1606  * parameter eeg(r,gen);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 32
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1607  * eeg(r,gen)=0;
+1608  * schalter
+1609  *$offtext
+1610   
+1611  * ------ ???
+1612  Qendow(FOSGEN,"DEU")$(card(quota)) = 10.0 ;
+1613  Qendow(FOSGEN,nms12)$(card(quota)) = 10.0 ;
+1614  Qendow(FOSGEN,eu15)$(card(quota))  = 10.0 ;
+1615   
+1616  * ------ ???
+1617  share(r)         = 0 ;
+1618  ele_import       = 1 ;
+1619  kalib (r)        = 1 ;
+1620  redu(r)          = 1 ;
+1621  redu_ets(r)      = 1 ;
+1622  alpha(i,r)       = 1 ;
+1623  gskl(i,r)        = 1 ;
+1624  gusk(i,r)        = 1 ;
+1625  gpoil(r)         = 1 ;
+1626   
+1627   
+1628  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1629  * ------------------------------------------------------------------------------
+1630  * ------ (K) ZPF Checks and value shares
+1631  * ------------------------------------------------------------------------------
+1632  parameter
+1633           zpf_c(r)        ZPF condition for final consumption in the model
+1634           zpf_c_bmk(r)    ZPF condition for final consumption in the benchmark data
+1635           zpf_y(i,r)      ZPF condition for Y production in the model
+1636           zpf_a(i,r)
+1637           zpf_y_bmk(i,r)  ZPF condition for Y production in the benchmark data
+1638           zpf_ele(i,r)    ZPF condition for ELE benchmark production
+1639           zpf_genx(gen,r) ZPF condition for ELEx (REG) benchmark production
+1640           zpf_genn(gen,r) ZPF condition for ELEn (REG) benchmark production
+1641           sharec_bmk(i,r) Final consumption value shares (benchmark data)
+1642           sharect_bmk(r)  Final consumption value shares (benchmark data) check parameter
+1643           sharey_bmk(*,i,r) Y production input value shares (benchmark data)
+1644           shareyt_bmk(i,r)  Y production input value shares (benchmark data) check parameter
+1645           sharec          Final consumption value shares
+1646           sharect         Final consumption value shares check parameter
+1647           sharey          Y production input value shares
+1648           shareyt         Y production input value shares check parameter
+1649  ;
+1650  * ------ ZPF consumption in benchmark data
+1651  zpf_c_bmk(r) = round( ct0(r) - sum(i, c0(i,r)*(1+tc(i,r)))   , rd);
+1652  * ------ ZPF production in benchmark data
+1653  zpf_y_bmk(i,r)$(not ele(i)) = round(
+1654           + vom(i,r)*(1-ty(i,r))
+1655           - sum(j, vafm(j,i,r)*(1+ti(j,i,r))) - skld0(i,r) - uskd0(i,r) - kd0(i,r) - rd0(i,r), rd);
+1656  * ------ ZPF production of ELE
+1657  zpf_ele(i,r)$ele(i) = round(             vom(i,r)*(1-ty(i,r)) - sum(gen, out_gen(gen,r)), rd);
+1658  *zpf_ele(i,r)$ele(i) = round((vdm(i,r)+vxm(i,r))  *(1-ty(i,r)) - sum(gen, out_gen(gen,r)), rd);
+1659   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 33
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1660  * ------ ZPF production of ELE GENn
+1661  zpf_genn(gen,r) = round(
+1662           + out_gen(gen,r)
+1663           - (sum(i, [vafm_input(i,gen,r)*(1+(ti(i,"ele",r)))] ) + skl_input(gen,r) + usk_input(gen,r) + cap_input(gen,r)), rd);
+1664  * ------ this one, too [incl. diffcost]:
+1665  zpf_genn(gen,r) = round(
+1666           + out_gen(gen,r)*(1-(1-diffcost(gen,r)))
+1667           - (sum(i, [vafm_input(i,gen,r)*(1+(ti(i,"ele",r)))]) + skl_input(gen,r) + usk_input(gen,r) + cap_input(gen,r))*diffcost(gen,r), rd);
+1668  * ------ ZPF production of ELE GENn
+1669  zpf_genx(gen,r) = round(
+1670           + out_gen(gen,r)
+1671           - (sum(i, [vafm_input(i,gen,r)*(1+(ti(i,"ele",r)))] ) + skl_input(gen,r) + usk_input(gen,r) + cap_input(gen,r)), rd);
+1672   
+1673  display zpf_c_bmk, zpf_y_bmk, zpf_ele, zpf_genn, zpf_genx;
+1674   
+1675  * ------ ZPF benchmark shares in C
+1676  sharec_bmk(i,r)      = c0(i,r)*(1+tc(i,r))/ct0(r);
+1677  sharect_bmk(r)       = sum(i, sharec_bmk(i,r));
+1678  * ------ ZPF benchmark shares in Y
+1679  sharey_bmk(j,i,r)$vom(i,r)        = vafm(j,i,r)*(1+ti(j,i,r)) / (vom(i,r)*(1-ty(i,r)));
+1680  sharey_bmk("SKL",i,r)$vom(i,r)    = skld0(i,r) / (vom(i,r)*(1-ty(i,r)));
+1681  sharey_bmk("USK",i,r)$vom(i,r)    = uskd0(i,r) / (vom(i,r)*(1-ty(i,r)));
+1682  sharey_bmk("CAP",i,r)$vom(i,r)    = kd0(i,r)   / (vom(i,r)*(1-ty(i,r)));
+1683  sharey_bmk("RES",i,r)$vom(i,r)    = rd0(I,r)   / (vom(i,r)*(1-ty(i,r)));
+1684  shareyt_bmk(i,r)  = sum(j, sharey_bmk(j,i,r)) + sharey_bmk("SKL",i,r) + sharey_bmk("USK",i,r)
+1685                   + sharey_bmk("CAP",i,r) + sharey_bmk("RES",i,r);
+1686  display sharec_bmk, sharect_bmk, shareyt_bmk,sharey_bmk;
+1687   
+1688   
+1689  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1690  * ------------------------------------------------------------------------------
+1691  * ------ (L) ELE Differenzkosten
+1692  * ------------------------------------------------------------------------------
+1693  PARAMETER
+1694  * ------ Differenzkosten / Schalter für diffcostsubvention
+1695           diffsub(gen,r)
+1696           diffsub_x(gen,r)
+1697           diffrebate(r)
+1698           epa_on          Schalter für diffcost-Korrektur in E:PA... im BMK auf 1 /1/ // Muss im BMK 1 sein, damit balance. Später auf 0 damit E:pa... über rebate_diff umgelegt wird.
+1699           deltadiff(r)
+1700           diffcost0
+1701           diffcost2(gen,r)
+1702           tdiff(gen,r)
+1703           tyd(i,r)
+1704           rebate_par
+1705  ;
+1706  * ------ Differenzkosten / Schalter für Diffcostsubvention
+1707  diffsub_x(gen,r)         = 0 ;
+1708  diffsub(gen,r)           = 0 ;
+1709  diffrebate(r)            = 0 ;
+1710  * ------ 09.07.2014 in BMK case set diffrebate = 0 and epa_on = 1
+1711  *diffrebate(bawdeu)       = 0 ;
+1712  diffrebate("deu")        = 0 ;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 34
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1713  epa_on                   = 1 ;
+1714   
+1715  deltadiff(r)             = 0 ;
+1716  diffcost(gen,r)$diffcost(gen,r) = diffcost(gen,r) / (1+deltadiff(r));
+1717  * ------ [Diffcost-Schalter]
+1718  diffcost0(gen,r) = diffcost(gen,r);
+1719  diffcost(gen,r) = 1;
+1720  diffcost(reg,r) = diffcost0(reg,r) ;
+1721   
+1722  *diffcost("msolar",r)$bawdeu(r) = 8;
+1723  diffcost("msolar",r)$deu(r) = 8;
+1724   
+1725  diffcost2(gen,r) = diffcost0(gen,r);
+1726  diffcost2(reg,eu28) = 2;
+1727  *diffcost(reg,eu28) = 5;
+1728   
+1729  *display diffcost, diffcost0, diffcost_exogen;
+1730   
+1731  * ------ 24.04.2014 Calculate different taxes for specifying initial value of REBATE_DIFF.L
+1732  tdiff(gen,r) = 0;
+1733  tdiff(gen,r) = ((-1)*(1-diffcost2(gen,r)) * out_gen(gen,r) * (1-thetax)) / vom("ele",r);
+1734  tyd("ele",r) = ty("ele",r) - sum(reg, (-1)*(1-diffcost2(reg,r)) * out_gen(reg,r) * (1-thetax)) / vom("ele",r);
+1735  * ------ Calculate ingredients of rebate_diff auxiliary constraint
+1736  rebate_par("rebate_diff",r) = sum(gen$reg(gen), (-1)*(1-diffcost(gen,r)) * (out_gen(gen,r) * (1-thetax))) / vom("ele",r);
+1737  rebate_par("zähler",r) = sum(gen$reg(gen), (-1)*(1-diffcost(gen,r)) * (out_gen(gen,r) * (1-thetax)));
+1738  rebate_par("nenner",r) = vom("ele",r);
+1739   
+1740  *display diffcost0, tdiff, tyd, rebate_par ;
+1741   
+1742  * ------------------------------------------------------------------------------
+1743  * Erhöhe Faktorausstattungen um die Differenzkosten damit Kalibrierung gegeben
+1744  * hier vorerst nur Faktorausstattung neues Kapital
+1745  * ------------------------------------------------------------------------------
+1746  evoa("cap",r) = evoa("cap",r) - sum(reg, cap_input(reg,r)*(1-thetax) * (1 - diffcost(reg,r)))  ;
+1747  evoa("skl",r) = evoa("skl",r) - sum(reg, skl_input(reg,r)*(1-thetax) * (1 - diffcost(reg,r)))  ;
+1748  evoa("usk",r) = evoa("usk",r) - sum(reg, usk_input(reg,r)*(1-thetax) * (1 - diffcost(reg,r)))  ;
+1749   
+1750   
+1751  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1752  * ------------------------------------------------------------------------------
+1753  * ------ (M) E-mail Rutherford 5.08.2013: Ensure Benchmark consistency
+1754  * ------------------------------------------------------------------------------
+1755  parameter vtw, evom;
+1756  vtw(j) = sum(r, vst(j,r));
+1757  vim(i,r) =  sum(g, vifm(i,g,r));
+1758  evom(f,r) = sum(g, vfm(f,g,r));
+1759  * ------ The final calculation determines consistency of the current account for the globe (net savings must be zero).
+1760  vb(r) = 0; vb(r) =
+1761           vom("c",r) + vom("g",r) + vom("i",r)
+1762           - sum(f, evom(f,r))
+1763           - sum(g,  vom(g,r)*rto(g,r))
+1764           - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+1765           - sum(g,  sum(f, vfm(f,g,r)* rtf(f,g,r)))
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/02/16 16:27:19 Page 35
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1766           - sum((i,s), rtms(i,s,r) *(vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+1767           + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+1768  vb("chksum") = sum(r, vb(r)); display vb;
+1769  * ------ The final set of calculations checks consistency between domestic supply and demand for traded goods:
+1770  mprofit(i,r) = 0; mprofit(i,r) = round(
+1771           + vim(i,r)
+1772           - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j,vtwr(j,i,s,r))*pvtwr(i,s,r)), 7); display mprofit;
+1773  yprofit(g,r) = 0; yprofit(g,r) = round(
+1774           vom(g,r)*(1-rto(g,r))
+1775           - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r)) + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+1776           - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r))), 7); display yprofit;
+1777   
+1778   
+1779  * ###### 5.02.2016 Textmarke Comment out Diss (unten)
+1780  *$ontext
+1781  * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+1782  * ------ 13.10.2014 Store data until here temporarily in GDX-file, which will be used to create BoUp data in dataload_hhenergy_v88.gms
+1783  execute_unload "..\results\temp_data.gdx"
+1784   
+1785  * ------ 13

@@ -1,0 +1,6 @@
+"0","# sum every two decile columns to form the values for quintiles"
+"0","pf2$hh1 <- pf2$D1 + pf2$D2"
+"0","pf2$hh2 <- pf2$D3 + pf2$D4"
+"0","pf2$hh3 <- pf2$D5 + pf2$D6"
+"0","pf2$hh4 <- pf2$D7 + pf2$D8"
+"0","pf2$hh5 <- pf2$D9 + pf2$D10"

@@ -1,0 +1,2 @@
+"0","# drop deciles columns"
+"0","pf2 <- pf2 %>% select (-c(D1,D2,D3,D4,D5,D6,D7,D8,D9,D10))"

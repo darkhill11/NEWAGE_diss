@@ -1,0 +1,30 @@
+
+--- Job flex2gdx_newage.gms Start 08/17/16 16:54:29 24.7.3 r58181 WEX-WEI x86 64bit/MS Windows
+GAMS 24.7.3   Copyright (C) 1987-2016 GAMS Development. All rights reserved
+Licensee: IER                                            S151125:0513AO-WIN
+          Universitaet Stuttgart                                      DC848
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- flex2gdx_newage.gms(54) 2 Mb
+--- call gams setx gdx=setx
+--- flex2gdx_newage.gms(57) 2 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\build\setx.gdx
+--- flex2gdx_newage.gms(60) 3 Mb
+--- call del /q setx.*
+--- flex2gdx_newage.gms(337) 3 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsdset.gdx
+--- flex2gdx_newage.gms(394) 3 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsddat.gdx
+--- flex2gdx_newage.gms(410) 260 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsdpar.gdx
+--- flex2gdx_newage.gms(421) 260 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsdemiss.gdx
+--- flex2gdx_newage.gms(547) 263 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\gsdvole.gdx
+--- flex2gdx_newage.gms(735) 270 Mb
+--- Starting execution: elapsed 0:00:02.289
+--- flex2gdx_newage.gms(691) 444 Mb
+--- GDX File C:\GAMS\NEWAGE_REEEM\data11\gsd.gdx
+--- flex2gdx_newage.gms(710) 459 Mb
+*** Status: Normal completion
+--- Job flex2gdx_newage.gms Stop 08/17/16 16:54:38 elapsed 0:00:08.561

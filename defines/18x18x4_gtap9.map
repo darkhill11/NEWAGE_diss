@@ -1,0 +1,294 @@
+$TITLE   GTAP Mapping which Relabels to Match GAMS Identifiers
+
+*	See GTAP resource 7088.pdf by Walmsley and Carrico for a description of
+*	labor categories.
+
+*       Roland Cunha Montnegro: Map for the REEEM Project at IER 10.2016
+*       SKL = ILO ISCO-88 groups 1-3, USK = ILO ISCO-88 groups 4-9
+
+* ----- Factors (4) ----------------------------------------------------------
+
+set 	ff  Factors in the NEWAGE aggregation /
+
+        USK	Unskilled labor
+        SKL     Skilled labor
+        cAP     Capital
+        RES     Resources /;
+
+set mapf(*,*) Mapping of GTAP9 Factors (from-to) /
+
+	off_mgr_pros.SKL	Officials and Mangers legislators (ISCO-88 Major Groups 1-2), 
+	tech_aspros.SKL		Technicians technicians and associate professionals (Major Group 3)
+	clerks.USK		Clerks (Major Group 4)
+	service_shop.USK	Service and market sales workers (Major Group 5)
+	ag_othlowsk.USK		Agricultural and unskilled workers (Major Groups 6-9)
+	Capital.CAP		Capital, 
+	Land.RES		Land,    
+	NatlRes.RES		Natural resources/;
+
+* ----- Sectors (18) ----------------------------------------------------------
+
+set	ii	Commodites in the NEWAGE aggregation /
+
+	COL	Coal,
+	CRU	Crude oil,
+	GAS	Gas and gas distribution,
+	OIL	Refining petroleum and coke,
+	ELE	Electricity,
+	CHM	Chemical products,
+	IRS	Iron and steel,
+	NFM	Non-ferrous metals,
+	NMM	Non-metallic minerals,
+	PPP	Paper-pulp-print,
+	MAC	Machinery production,
+	MVH	Motor vehicles and parts,
+	FOT	Food and tobacco industry,
+	ROI	Rest of manufacturing,
+	BUI	Building and construction,
+	TRN	Transport,
+	AGR	Agriculture,
+	SER	Services/;
+
+$eolcom !
+
+*	The following names changes for single sectors are those which conform to the
+*	GTAPinGAMS conventions for energy goods:
+*		COA.COL	! "Coal",
+*		OIL.CRU	! "Crude Oil",
+*		P_C.OIL	! "Petroleum, coal products",
+*		ELY.ELE	! "Electricity",
+*		ELE.EEQ	! "Electronic equipment",
+
+*	The following names changes for single sectors are those which conform to the
+*	standard NEWAGE conventions:
+*		CRP.CHM ! "Chemical products",
+*		I_S.IRS ! "Iron and steel",
+*		CNS.BUI ! "Building and construction",
+
+SET mapi(i,ii) 	Mapping of GTAP9 Sectors and Goods (from-to) /
+
+	COA.COL								Coal,
+	OIL.CRU								Crude oil,
+	(GAS,GDT).GAS							Gas and gas distribution,
+	P_C.OIL								Refining petroleum and coke,
+	ELY.ELE								Electricity,
+	CRP.CHM								Chemical products,
+	I_S.IRS								Iron and steel,
+	NFM.NFM								Non-ferrous metals,
+	NMM.NMM								Non-metallic minerals,
+	PPP.PPP								Paper-pulp-print,
+	(OTN,ELE,OME).MAC						Machinery production,
+	MVH.MVH								Motor vehicles and parts,
+	(CMT,OMT,VOL,MIL,PCR,SGR,OFD,B_T).FOT				Food and tobacco industry,
+	(OMN,OMF,TEX,WAP,LEA,LUM,FMP).ROI				Rest of manufacturing,
+	CNS.BUI								Building and construction,
+	(OTP,WTP,ATP).TRN						Transport,
+	(PDR,WHT,GRO,V_F,OSD,C_B,PFB,OCR,CTL,OAP,RMK,WOL,FRS,FSH).AGR	Agriculture,
+	(WTR,TRD,CMN,OFI,ISR,OBS,ROS,OSG,DWE).SER			Services /;
+
+
+* ----- Regions (17) ----------------------------------------------------------
+
+set     rr      Regions in the NEWAGE aggregation /
+
+        DEU     Germany
+        FRA     France
+        ITA     Italy
+        POL     Poland
+        UKI     United Kingdom
+        ESP     Espain and Portugal
+        BNL     Benelux
+        EUN     Northern and Baltic EU-28
+        EUS     South-Eastern EU-28
+        USA     United States of America
+        OEC     Rest of OECD
+        BRZ     Brazil
+        RUS     Russia
+        IND     India
+        CHI     China and Hong Kong
+        RSA     South Africa
+        OPA     OPEC and Arabian World
+        ROW     Rest of the world
+        
+        /;
+
+SET mapr (r,rr) Mapping of GTAP9 Regions (from-to) /
+
+        DEU.DEU	Germany
+        FRA.FRA France
+        ITA.ITA Italy
+        POL.POL Poland
+        GBR.UKI United Kingdom
+        USA.USA USA
+        BRA.BRZ Brazil
+        RUS.RUS Russia
+        IND.IND India
+        ZAF.RSA South Africa
+
+
+* ----- Chapter 3_ What's New in GTAP 9.pdf: Following are the eleven new primary regions in GTAP 9 Data Base, compared to GTAP 8 Data Base: 
+*	Benin, Burkina Faso, Guinea, Togo and Rwanda (***new in GTAP 8.1); 
+*	Brunei Darassalam, Jordan, Dominican Republic, Jamaica, Trinidad and Tobago and Puerto Rico (**new in version 9).
+
+        (       ! Spain and Portugal
+                ESP     !       Spain
+                PRT     !       Portugal
+
+        ).ESP
+
+        (       ! Benelux
+                BEL     !       Belgium
+                LUX     !       Luxembourg
+                NLD     !       Netherlands
+
+        ).BNL
+
+        (       ! Northern/Baltic EU-28
+                IRL     !       Ireland
+                DNK     !       Denmark
+                EST     !       Estonia
+                FIN     !       Finland
+                LVA     !       Latvia
+                LTU     !       Lithuania
+                SWE     !       Sweden
+
+        ).EUN,
+
+        (       ! South-Eastern EU-28
+                AUT     !       Austria
+                CYP     !       Cyprus
+                CZE     !       Czech Republic
+                GRC     !       Greece
+                HUN     !       Hungary
+                MLT     !       Malta
+                SVK     !       Slovakia
+                SVN     !       Slovenia
+                BGR     !       Bulgaria
+                HRV     !       Croatia
+                ROU     !       Romania
+
+        ).EUS,
+
+        (       ! Rest of OECD (EFT + NAF + OCE)
+                AUS     !       Australia
+                NZL     !       New Zealand
+                JPN     !       Japan
+                KOR     !       Korea (South)
+                CAN     !       Canada
+                MEX     !       Mexico
+                CHE     !       Switzerland
+                NOR     !       Norway
+                XEF     !       Rest of EFTA
+
+        ).OEC,
+
+
+        (       ! China + Hong Kong
+                CHN     !       China
+                HKG     !       Hong Kong
+        ).CHI,
+
+        (       ! Arabian World (NOA + MEA)
+                IDN     !       Indonesia
+                ECU     !       Ecuador
+                VEN     !       Venezuela
+                EGY     !       Egypt
+                MAR     !       Morocco
+                OMN     !       Omam
+                XNF     !       Rest of North Africa_ Algeria Libya West Sahara
+                TUN     !       Tunisia
+                IRN     !       Iran Islamic Republic of
+                QAT     !       Qatar
+                SAU     !       Saudi Arabia
+                ARE     !       United Arab Emirates
+                BHR     !       Bahrain
+                KWT     !       Kuwait
+                NGA     !       Nigeria
+        ).OPA,
+
+        (       ! Rest of the World (incl. XOC + XNA)
+                XOC     !       Rest of Oceania
+                MNG     !       Mongolia
+                TWN     !       Taiwan
+                XEA     !       Rest of East Asia
+                KHM     !       Cambodia
+                LAO     !       Lao Peoples Democratic Republic
+                MYS     !       Malaysia
+                PHL     !       Philippines
+                SGP     !       Singapore
+                THA     !       Thailand
+                VNM     !       Viet Nam
+                XSE     !       Rest of Southeast Asia
+                BGD     !       Bangladesh
+                NPL     !       Nepal
+                PAK     !       Pakistan
+                LKA     !       Sri Lanka
+                XSA     !       Rest of South Asia
+                XNA     !       Rest of North America
+                ARG     !       Argentina
+                BOL     !       Bolivia
+                CHL     !       Chile
+                COL     !       Colombia
+                PRY     !       Paraguay
+                PER     !       Peru
+                URY     !       Uruguay
+                XSM     !       Rest of South America
+                CRI     !       Costa Rica
+                GTM     !       Guatemala
+                HND     !       Honduras
+                NIC     !       Nicaragua
+                PAN     !       Panama
+                SLV     !       El Salvador
+                XCA     !       Rest of Central America
+                XCB     !       Caribbean
+                ALB     !       Albania
+                BLR     !       Belarus
+                UKR     !       Ukraine
+                XEE     !       Rest of Eastern Europe
+                XER     !       Rest of Europe
+                KAZ     !       Kazakhstan
+                KGZ     !       Kyrgyzstan
+                XSU     !       Rest of Former Soviet Union
+                ARM     !       Armenia
+                AZE     !       Azerbaijan
+                GEO     !       Georgia
+                ISR     !       Israel
+                TUR     !       Turkey
+                XWS     !       Rest of Western Asia
+                CMR     !       Cameroon
+                CIV     !       Cote dIvoire
+                GHA     !       Ghana
+                SEN     !       Senegal
+                XWF     !       Rest of Western Africa
+                XCF     !       Central Africa
+                XAC     !       South Central Africa
+                ETH     !       Ethiopia
+                KEN     !       Kenya
+                MDG     !       Madagascar
+                MWI     !       Malawi
+                MUS     !       Mauritius
+                MOZ     !       Mozambique
+                TZA     !       Tanzania United Republic of
+                UGA     !       Uganda
+                ZMB     !       Zambia
+                ZWE     !       Zimbabwe
+                XEC     !       Rest of Eastern Africa
+                BWA     !       Botswana
+                NAM     !       Namibia
+                XSC     !       Rest of South African Customs Union
+                XTW     !       Rest of the World
+                BRN     !       Brunei Darussalam
+                DOM     !       Dominican Republic
+                JAM     !       Jamaica
+                PRI     !       Puerto Rico
+                TTO     !       Trinidad and Tobago
+                JOR     !       Jordan
+                BEN     !       Benin
+                BFA     !       Burkina Faso
+                GIN     !       Guinea
+                TGO     !       Togo
+                RWA     !       Rwanda
+        ).ROW
+
+        /;
+

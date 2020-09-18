@@ -1,0 +1,55 @@
+
+--- Job mrtmge_17x18x4.gms Start 08/17/16 17:47:14 24.7.3 r58181 WEX-WEI x86 64bit/MS Windows
+GAMS 24.7.3   Copyright (C) 1987-2016 GAMS Development. All rights reserved
+Licensee: IER                                            S151125:0513AO-WIN
+          Universitaet Stuttgart                                      DC848
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- mrtmge_17x18x4.gms(5) 2 Mb
+--- .gtap9data_newage.gms(15) 2 Mb
+--- GDXin=C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9.gdx
+--- .gtap9data_newage.gms(192) 57 Mb
+--- mrtmge_17x18x4.gms(56) 57 Mb
+--- Running the MPSGE preprocessor ...
+--- .mpsgeset(19) 57 Mb
+--- call gmsge_nx "C:\GAMS\NEWAGE_REEEM\model\225a\gamscge.dat"
+--- .mpsgeset(20) 57 Mb
+--- ..gamsgeh.dat(172) 57 Mb
+--- .mpsgeset(22) 57 Mb
+--- mrtmge_17x18x4.gms(60) 57 Mb
+--- .gtap9.gen(207) 57 Mb
+--- mrtmge_17x18x4.gms(63) 57 Mb
+--- Starting execution: elapsed 0:00:00.456
+--- mrtmge_17x18x4.gms(495) 247 Mb  7 secs
+--- mrtmge_17x18x4.gms(567) 247 Mb  15 secs
+--- mrtmge_17x18x4.gms(652) 247 Mb
+--- Generating MCP model GTAP9
+--- mrtmge_17x18x4.gms(654) 249 Mb
+---   1 rows  31,801 columns  31,801 non-zeroes
+---   0 nl-code  0 nl-non-zeroes
+--- mrtmge_17x18x4.gms(654) 247 Mb
+--- Executing MPSGE: elapsed 0:00:25.894
+
+
+*** MPSGE program error
+
+
+Last scalar input record ******
+*** Function storage overflow - +memory.
+
+Reading function:
+
+
+M.otn.AUS
+
+Last record processed:
+
+
+$PROD:M.otn.NZL
+ Exiting with solve status: 13, model status: 13
+--- Restarting execution
+--- mrtmge_17x18x4.gms(654) 144 Mb
+--- Reading solution for model GTAP9
+--- Putfile MPS C:\GAMS\NEWAGE_REEEM\model\225a\gamscge.dat
+*** Status: Normal completion
+--- Job mrtmge_17x18x4.gms Stop 08/17/16 17:48:11 elapsed 0:00:57.145

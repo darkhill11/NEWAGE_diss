@@ -1,0 +1,3 @@
+"0","pf_NEWAGE <- pf_NEWAGE %>% rename(r = Region)"
+"0","pf_NEWAGE <- pf_NEWAGE %>% rename(i = Sector)"
+"0","pf_NEWAGE <- pf_NEWAGE %>% rename(hh = Quintile)"

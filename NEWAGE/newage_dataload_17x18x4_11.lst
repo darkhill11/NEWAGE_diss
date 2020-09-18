@@ -1,0 +1,2328 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 1
+Satellite code to transform LIBINCLUDE Data from Excel to GDX
+C o m p i l a t i o n
+
+
+   3   
+   6  * if you want a comment in brackets, like: y = 2 ; { this is also a comment } z = 3 ; type:
+   7  *$inlinecom {}
+   8  * --------------------------------------------------------------------- *
+   9   
+  10  * ------ Definiere den Lösungsalgorithmus (Solver) für das MCP-Problem
+  11  OPTION   MCP = PATH ;
+  12   
+  13   
+  16   
+  17  * ------ 10.04.2014 DataSe
+  19  *$if not set yr           $set yr         07
+  21   
+  24   
+  26   
+INCLUDE    C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 2
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  29   
+  31   
+  32  scalar nd       Number of decimals /0/;
+  33  abort$(nd<>round(nd)) "Number of decimals must be an integer";
+  34   
+  37   
+  40   
+  41  set     g(*)    Goods plus C and G;
+GDXIN   C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9.gdx
+--- LOAD  g = 1:g
+  45   
+  46  set     i(g)    Goods
+  47          f(*)    Factors;
+--- LOAD  f = 3:f
+--- LOAD  i = 4:i
+  50  set r(*)        Regions;
+--- LOAD  r = 2:r
+  52   
+  53   
+  54  set     rnum(r) Numeraire region,
+  55          sf(f)   Sluggish primary factors (sector-specific),
+  56          mf(f)   Mobile primary factors;
+  57   
+  58  alias (r,s), (i,j);
+  59   
+  60  display r;
+  61   
+  62  Parameter vdep(r) Value of capital decpreciation;
+  63  Parameter vkb(r) Value of capital stock;
+  64  Parameter save(r) Savings;
+  65   
+--- LOAD  vdep = 28:vdep
+--- LOAD  vkb = 29:vkb
+--- LOAD  save = 30:save
+  67   
+  68  parameters
+  69          vfm(f,g,r)      Endowments - Firms  purchases at market prices,
+  70          vdfm(i,g,r)     Intermediates - firms  domestic purchases at market prices,
+  71          vifm(i,g,r)     Intermediates - firms  imports at market prices,
+  72          vxmd(i,r,s)     Trade - bilateral exports at market prices,
+  73          vst(i,r)        Trade - exports for international transportation
+  75          vtwr(i,j,r,s)   Trade - Margins for international transportation at world prices;
+  76   
+--- LOAD  vfm = 5:vfm
+--- LOAD  vdfm = 6:vdfm
+--- LOAD  vifm = 7:vifm
+--- LOAD  vxmd = 8:vxmd
+--- LOAD  vst = 9:vst
+--- LOAD  vtwr = 10:vtwr
+  79   
+  80  if (nd>0,
+  81          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
+  82          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 3
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+  83          vifm(i,g,r) = vifm(i,g,r)$round(vifm(i,g,r),nd);
+  84          vxmd(i,r,s) = vxmd(i,r,s)$round(vxmd(i,r,s),nd);
+  85          vst(i,r) = vst(i,r)$round(vst(i,r),nd);
+  86          vtwr(i,j,r,s) = vtwr(i,j,r,s)$round(vtwr(i,j,r,s),nd);
+  88  );
+  89   
+  90  parameter
+  91          evt(i,r,r)      Volume of energy trade (mtoe),
+  92          evd(i,g,r)      Domestic energy use (mtoe),
+  93          evi(i,g,r)      Imported energy use (mtoe),
+  94          eco2d(i,g,r)    CO2 emissions in domestic fuels - Mt CO2,
+  95          eco2i(i,g,r)    CO2 emissions in foreign fuels - Mt CO2;
+  96   
+--- LOAD  evd = 17:evd
+--- LOAD  evi = 18:evi
+--- LOAD  evt = 19:evt
+--- LOAD  eco2d = 20:eco2d
+--- LOAD  eco2i = 21:eco2i
+  98  if (nd>0,
+  99          evt(i,r,s)  = evt(i,r,s)$round(evt(i,r,s), nd);
+ 100          evd(i,g,r) = evd(i,g,r)$round(evd(i,g,r), nd);
+ 101          evi(i,g,r) = evi(i,g,r)$round(evi(i,g,r), nd);
+ 102          eco2d(i,g,r) = eco2d(i,g,r)$round(eco2d(i,g,r), nd);
+ 103          eco2i(i,g,r) = eco2i(i,g,r)$round(eco2i(i,g,r), nd);
+ 104  );
+ 105   
+ 106  parameter
+ 107          rto(g,r)        Output (or income) subsidy rates
+ 108          rtf(f,g,r)      Primary factor and commodity rates taxes
+ 109          rtfd(i,g,r)     Firms domestic tax rates
+ 110          rtfi(i,g,r)     Firms  import tax rates
+ 111          rtxs(i,r,s)     Export subsidy rates
+ 113          rtms(i,r,s)     Import taxes rates;
+ 114   
+--- LOAD  rto = 11:rto
+--- LOAD  rtf = 12:rtf
+--- LOAD  rtfd = 13:rtfd
+--- LOAD  rtfi = 14:rtfi
+--- LOAD  rtxs = 15:rtxs
+--- LOAD  rtms = 16:rtms
+ 117   
+ 118  if (nd>0,
+ 119          rto(g,r) = rto(g,r)$round(rto(g,r),nd);
+ 120          rtf(f,g,r) = rtf(f,g,r)$round(rtf(f,g,r),nd);
+ 121          rtfd(i,g,r) = rtfd(i,g,r)$round(rtfd(i,g,r),nd);
+ 122          rtfi(i,g,r) = rtfi(i,g,r)$round(rtfi(i,g,r),nd);
+ 123          rtxs(i,r,s) = rtxs(i,r,s)$round(rtxs(i,r,s),nd);
+ 124          rtms(i,r,s) = rtms(i,r,s)$round(rtms(i,r,s),nd);
+ 126  );
+ 127  parameter
+ 128          esubd(i)        Elasticity of substitution (M versus D),
+ 129          esubva(g)       Elasticity of substitution between factors
+ 130          esubm(i)        Intra-import elasticity of substitution,
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 4
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 131          etrae(f)        Elasticity of transformation,
+ 132          eta(i,r)        Income elasticity of demand,
+ 133          epsilon(i,r)    Own-price elasticity of demand;
+ 134   
+--- LOAD  esubd = 22:esubd
+--- LOAD  esubva = 23:esubva
+--- LOAD  esubm = 24:esubm
+--- LOAD  etrae = 25:etrae
+--- LOAD  eta = 26:eta
+--- LOAD  epsilon = 27:epsilon
+ 136   
+ 137  *       Declare some intermediate arrays which are required to
+ 138  *       evaluate tax rates:
+ 139   
+ 140  parameter       vdm(g,r)        Aggregate demand for domestic output,
+ 141                  vom(g,r)        Total supply at market prices;
+ 142   
+ 143  vdm(i,r) = sum(g, vdfm(i,g,r));
+ 144  vom(i,r) = vdm(i,r) + sum(s, vxmd(i,r,s)) + vst(i,r);
+ 145   
+ 146  parameter
+ 147          rtf0(f,g,r)     Primary factor and commodity rates taxes
+ 148          rtfd0(i,g,r)    Firms domestic tax rates
+ 149          rtfi0(i,g,r)    Firms  import tax rates
+ 150          rtxs0(i,r,s)    Export subsidy rates
+ 151          rtms0(i,r,s)    Import taxes rates;
+ 152   
+ 153  rtf0(f,g,r) = rtf(f,g,r);
+ 154  rtfd0(i,g,r) = rtfd(i,g,r);
+ 155  rtfi0(i,g,r) = rtfi(i,g,r);
+ 156  rtxs0(i,r,s) = rtxs(i,r,s);
+ 157  rtms0(i,r,s) = rtms(i,r,s);
+ 158   
+ 159  parameter       pvxmd(i,s,r)    Import price (power of benchmark tariff)
+ 160                  pvtwr(i,s,r)    Import price for transport services;
+ 161   
+ 162  pvxmd(i,s,r) = (1+rtms0(i,s,r)) * (1-rtxs0(i,s,r));
+ 163  pvtwr(i,s,r) = 1+rtms0(i,s,r);
+ 164   
+ 165  parameter
+ 166          vtw(j)          Aggregate international transportation services,
+ 167          vpm(r)          Aggregate private demand,
+ 168          vgm(r)          Aggregate public demand,
+ 169          vim(i,r)        Aggregate imports,
+ 170          evom(f,r)       Aggregate factor endowment at market prices,
+ 171          vb(*)           Current account balance;
+ 172   
+ 173  vtw(j) = sum(r, vst(j,r));
+ 174  vom("c",r) = sum(i, vdfm(i,"c",r)*(1+rtfd0(i,"c",r)) + vifm(i,"c",r)*(1+rtfi0(i,"c",r)))/(1-rto("c",r));
+ 175  vom("g",r) = sum(i, vdfm(i,"g",r)*(1+rtfd0(i,"g",r)) + vifm(i,"g",r)*(1+rtfi0(i,"g",r)))/(1-rto("g",r));
+ 176  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
+ 177   
+ 178  vdm("c",r) = vom("c",r);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 5
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 179  vdm("g",r) = vom("g",r);
+ 180  vim(i,r) =  sum(g, vifm(i,g,r));
+ 181  evom(f,r) = sum(g, vfm(f,g,r));
+ 182  vb(r) = vom("c",r) + vom("g",r) + vom("i",r)
+ 183          - sum(f, evom(f,r))
+ 184          - sum(g,  vom(g,r)*rto(g,r))
+ 185          - sum(g,  sum(i, vdfm(i,g,r)*rtfd(i,g,r) + vifm(i,g,r)*rtfi(i,g,r)))
+ 186          - sum(g,  sum(f, vfm(f,g,r)*rtf(f,g,r)))
+ 187          - sum((i,s), rtms(i,s,r) *  (vxmd(i,s,r) * (1-rtxs(i,s,r)) + sum(j,vtwr(j,i,s,r))))
+ 188          + sum((i,s), rtxs(i,r,s) * vxmd(i,r,s));
+ 189   
+ 190  vb("chksum") = sum(r, vb(r));
+ 191  display vb;
+ 192   
+ 193  *       Determine which factors are sector-specific
+ 194   
+ 195  mf(f) = yes$(1/etrae(f)=0);
+ 196  sf(f) = yes$(1/etrae(f)>0);
+ 197  display mf,sf;
+ 198   
+ 199  parameter       mprofit Zero profit for m,
+ 200                  yprofit Zero profit for y;
+ 201   
+ 202  mprofit(i,r) = vim(i,r) - sum(s, pvxmd(i,s,r)*vxmd(i,s,r)+sum(j, vtwr(j,i,s,r))*pvtwr(i,s,r));
+ 203  mprofit(i,r) = round(mprofit(i,r),5);
+ 204  display mprofit;
+ 205   
+ 206  yprofit(g,r) = vom(g,r)*(1-rto(g,r))
+ 207          - sum(i, vdfm(i,g,r)*(1+rtfd0(i,g,r))
+ 208                 + vifm(i,g,r)*(1+rtfi0(i,g,r)))
+ 209          - sum(f, vfm(f,g,r)*(1+rtf0(f,g,r)));
+ 210   
+ 211  yprofit(g,r) = round(yprofit(g,r),6)
+ 212  display yprofit;
+ 213   
+ 214  *       Define a numeraire region for denominating international
+ 215  *       transfers:
+ 216   
+ 217  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
+ 218  display rnum;
+ 219   
+EXIT C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+ 221   
+ 222   
+ 223  * ---------------------------------------------------------------------- *
+ 224  *        SET and additional sets (SUBSETS) for technology BOUP
+ 225  *        in ELECTRICITY GENERATION
+ 226  * ---------------------------------------------------------------------- *
+ 227  *        b = baseload, m = middleload, p = peakload
+ 228   
+ 229  SET      GEN             Stromerzeugungsarten /  bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS,
+ 230                                                   mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS, pOIL, pGAS, pHYDRO,
+ 231                                                   HYDRO, GEO, BIO, SOLAR, WIND /;
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 6
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 232   
+ 233  * ---------------------------------------------------------------------------- *
+ 234  *        SET and additional sets (SUBSETS) for DYNAMIC MILESTONES
+ 235  * ---------------------------------------------------------------------------- *
+ 236   
+ 237  * ------ 17.01.2012 ORIGINAL Zeithorizont bis 2050
+ 238  *$ontext
+ 239  SET      YR MILESTONES  / 2011, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050    / ;
+ 240   
+ 241  * ---------------------------------------------------------------------------- *
+ 242  *        Define ALIAS indices for interactions etc.
+ 243  * ---------------------------------------------------------------------------- *
+ 244  ALIAS    (i,j), (r,s), (r,rr), (gen,gengen), (yr,yryr);
+ 245   
+ 246   
+ 247  * ##############################################################################
+ 248  * ---------------------------------------------------------------------------- *
+ 249  * ------ Parameter declaration for exogenous data ---------------------------- *
+ 250  * ---------------------------------------------------------------------------- *
+ 251   
+ 252  PARAMETER
+ 253           ele_prod(gen,r)                 Benchmark electricity production [TWh]
+ 254           ressize(r,gen,yr)               Growth rates for renewable energy sources
+ 255           co2pfad(r,yr)                   CO2-growth
+ 256           co2pfad_ets(r,yr)               CO2-growth in the EU-ETS
+ 257           pytarget_yr(r,i,yr)             Exogenous price paths for resources
+ 258   
+ 259  * ------ 10.06.2013: Zusammenfassung aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+ 260           ur_read(r,*)                    Einlesen aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+ 261           urun0(*)                        Initial unemployment rate among unskilled
+ 262           ursk0(*)                        Initial unemployment rate among skilled
+ 263           diffcost(gen,r)                 Differenzkosten
+ 264           diffcost_exogen(gen,r)          Differenzkosten
+ 265           cost_red(gen,yr)                Renewable energies cost reduction
+ 266           wg0(gen,r)                      Wirkungsgrad im bmk
+ 267           wg_yr(gen,yr)                   Wirkungsgrad nach jahren jeweils bat
+ 268           nucsize(r,yr)                   Ausbau- bzw. Rückbaupfad Kernenergie
+ 269  *         un_numb0(r)                     Initial employment supply (potential) absolute unskilled
+ 270  *         sk_numb0(r)                     Initial employment supply (potential) absolute skilled
+ 271  *         labsize(r,yr)                   Changes in economically active population based ilo from 2020 onward constant
+ 272   
+ 273  * ------ 10.06.2013:
+ 274  *        --> Die Parameter abschreibung_z und abschreibung_bmk_z sind nun auch über das set r definiert
+ 275  *        --> der Einfachheit sollten diese beiden Parameter aber im NEWAGE Code entfernt werden
+ 276  *        --> auch mit bCCS und mCCS aufpassen --> werden in Epro Ra nicht mit eingelesen sondern erst im Code definiert
+ 277           abschreibung(r,gen,yr)          Decommissioning geg. vorperiode
+ 278           abschreibung_z(r,gen,yr)        Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+ 279           abschreibung_bmk(r,gen,yr)      Decommissioning geg. basis-bmk
+ 280           abschreibung_bmk_z(r,gen,yr)    Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+ 281   
+ 282  * ------ 10.06.2013: Zusammenfassung aller AEEI-Pfade in Tabelle aeei.xlsx
+ 283           aeei_read(*,yr)                 Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
+ 284   
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 7
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 285           AEEI_exo(yr)                    AEEI exogen
+ 286           AEEI_exo_emerge(yr)             AEEI exogen emerge
+ 287           AEEI_exo_deu(yr)                AEEI exogen deu
+ 288           AEEI_exo_neu(yr)                AEEI exogen neu
+ 289           AEEI_exo_ele_c(yr)              AEEI exogen ele_c
+ 290           AEEI_exogen(yr)                 AEEI exogen für deutschland
+ 291           AEEI_exogen_after2020(yr)       AEEI exogen für deutschland nach erreichen von mckinsey
+ 292           AEEI_exogen_after2025(yr)       AEEI exogen für deutschland nach erreichen von mckinsey II
+ 293           AEEI_exogen_gen_yr(yr)          AEEI exogen für den einstaz von fe in stromerzeugung in deu!
+ 294           AEEI_exogen_gen_yr_after2020(yr) AEEI exogen electricity generation nach erreichen von mckinsey
+ 295           AEEI_exogen_gen_yr_after2025(yr) AEEI exogen electricity generation nach erreichen von mckinsey II
+ 296           AEEI_exogen_ele(yr)             AEEI exogen für deutschland stromverbrauch
+ 297           AEEI_exogen_ele_after2020(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
+ 298           AEEI_exogen_ele_after2025(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
+ 299           AEEI_exogen_trn(yr)             AEEI exogen für deutschland TRN
+ 300           AEEI_exogen_trn_after2020(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey
+ 301           AEEI_exogen_trn_after2025(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey II
+ 302           AEEI_exogen_hh(yr)              AEEI exogen für deutschland HH
+ 303           AEEI_exogen_hh_after2020(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey
+ 304           AEEI_exogen_hh_after2025(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey II
+ 305   
+ 306   
+ 307  * ------ 15.07.2014 Reading in Energy productivity and total factor productivity from the BASELINE Database
+ 308           lfhc_usk(r,yr)                  Labor force and human capital development for unskilled labor (BASELINE Database)
+ 309           lfhc_skl(r,yr)                  Labor force and human capital development for   skilled labor (BASELINE Database)
+ 310   
+ 311           ep(yr,r)                        Energy productivity development (BASELINE Database)
+ 312           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
+ 313   
+ 314  * ------ 28.05.2015
+ 315           co2pfad_ets_eu(*,yr)
+ 316  ;
+ 317   
+ 318  *$ontext
+ 319  * ---------------------------------------------------------------------------- *
+ 320  *        READ AEEI
+ 321  * ---------------------------------------------------------------------------- *
+ 322  * ###### AEEI ##################################################################
+ 323  * Modellparameter AEEI basiert auf AEEI_yr, welches im Wesentlichen auf AEEI_EXO beruht.(AEEI_EXOGEN... = AEEI_Variante)
+ 324  * REF: AEEI = AEEI_HH = AEEI_TRN
+ 325   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 358   
+ 359  aeei_exo(yr)                     = aeei_read("aeei_exo",yr);
+ 360  aeei_exo_ele_c(yr)               = aeei_read("aeei_exo_ele_c",yr);
+ 361  aeei_exo_deu(yr)                 = aeei_read("aeei_exo_deu",yr);
+ 362  aeei_exo_neu(yr)                 = aeei_read("aeei_exo_neu",yr);
+ 363  aeei_exo_emerge(yr)              = aeei_read("aeei_exo_emerge",yr);
+ 364  aeei_exogen(yr)                  = aeei_read("aeei_exogen",yr);
+ 365   
+ 366  aeei_exogen_after2020(yr)        = aeei_read("aeei_exogen_after2020",yr);
+ 367  aeei_exogen_after2025(yr)        = aeei_read("aeei_exogen_after2025",yr);
+ 368  aeei_exogen_ele(yr)              = aeei_read("aeei_exogen_ele",yr);
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 8
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 369  aeei_exogen_ele_after2020(yr)    = aeei_read("aeei_exogen_ele_after2020",yr);
+ 370  aeei_exogen_ele_after2025(yr)    = aeei_read("aeei_exogen_ele_after2025",yr);
+ 371  aeei_exogen_gen_yr(yr)           = aeei_read("aeei_exogen_gen_yr",yr);
+ 372  aeei_exogen_gen_yr_after2020(yr) = aeei_read("aeei_exogen_gen_yr_after2020",yr);
+ 373  aeei_exogen_gen_yr_after2025(yr) = aeei_read("aeei_exogen_gen_yr_after2025",yr);
+ 374  aeei_exogen_hh(yr)               = aeei_read("aeei_exogen_hh",yr);
+ 375  aeei_exogen_hh_after2020(yr)     = aeei_read("aeei_exogen_hh_after2020",yr);
+ 376  aeei_exogen_hh_after2025(yr)     = aeei_read("aeei_exogen_hh_after2025",yr);
+ 377  aeei_exogen_trn(yr)              = aeei_read("aeei_exogen_trn",yr);
+ 378  aeei_exogen_trn_after2020(yr)    = aeei_read("aeei_exogen_trn_after2020",yr);
+ 379  aeei_exogen_trn_after2025(yr)    = aeei_read("aeei_exogen_trn_after2025",yr);
+ 380   
+ 381  display
+ 382  aeei_read
+ 383  AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c,
+ 384  AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025
+ 385  AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025
+ 386  AEEI_exogen_ele, AEEI_exogen_ele_after2020, AEEI_exogen_ele_after2025
+ 387  AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025
+ 388  AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025
+ 389  ;
+ 390  *$exit
+ 391  * ---------------------------------------------------------------------------- *
+ 392  *        READ Decommissioning (Sterbelinien)
+ 393  * ---------------------------------------------------------------------------- *
+ 394  * ###### abschreibung ##########################################################
+ 395  * ------ include abschreibung for decommissioning curves for all regions (basically already includes abschreibung_z and abschreibung_bmk_z)
+ 396  *$libinclude      xlimport        abschreibung            %xcel_datadir%abschreibung.xlsx       abschreibung!A3:L327       // mit BAW
+ 397  *$libinclude      xlimport        abschreibung_bmk        %xcel_datadir%abschreibung.xlsx       abschreibung_bmk!A3:L327   // mit BAW
+ 398  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 463   
+ 464  * ###### abschreibung_z ########################################################
+ 465  * ------ include abschreibung for decommissioning curves for others
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 530  display abschreibung, abschreibung_bmk, abschreibung_z, abschreibung_bmk_z;
+ 531   
+ 532  * ---------------------------------------------------------------------------- *
+ 533  *        READ co2-growth / co2-schalter
+ 534  * ---------------------------------------------------------------------------- *
+ 535  * ###### co2pfad_ets, co2pfad ##################################################
+ 536  * ------ 12.05.2015 Einlesen der DEHst-Szenarien
+ 537  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B90:k96       # DEHst Szenario 1 - Status Quo
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 570   
+ 571  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B41:l42          # REF EU28-Cap
+ 572  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B77:k78          # Szenario 2 - KOM     [FC2 EU28-Pfad]
+ 573  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B81:k82          # Szenario 4 - BMWi    [FC2 EU28-Pfad]
+ 574  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B73:k74          # Szenario 1 - Status-Quo  [FC1 EU28-Pfad]
+ 575  * ------ 1.04.2016
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 08/23/16 14:27:26 Page 9
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+ 608   
+ 609  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B81:k87      # DEHst Szenario 4 - ETS ambitioniert
+ 610  *$libinclude      xlimport        co2pfad                 %xcel_datadir%150730_co2pfad_BMWi.xlsx         co2pfad_nonets!B22:k40   # bleibt vorerst gleich [ORIGINAL]   // mit BAW
+ 611  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 644   
+ 645   
+ 646  * ------ 28.11.2014 (A) Sinkender Differenzbetrag (% vom Vorjahr, konstante Belastung)
+ 647  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_80.xlsx      co2pfad_ets!A21:K27           # ETS-80-Ziel Version (A) [ORIGINAL]
+ 648  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_80.xlsx      co2pfad_nonets!B2:L20         # bleibt vorerst gleich   [ORIGINAL]
+ 649   
+ 650  * ------ 28.11.2014 Vergleich ETS60 mit ETS75
+ 651  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_70.xlsx   co2pfad_ets!A21:K27             # ETS-70 Ziel Version (A)
+ 652  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_70.xlsx   co2pfad_nonets!B2:L20           # bleibt vorerst gleich
+ 653   
+ 654   
+ 655   
+ 656  * ------ 10.07.2014 (B) Konstanter Differenzbetrag (% von 2013, steigende Belastung)
+ 657  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad.xlsx      co2pfad_ets!A50:K56             # ETS-60 Ziel Version (B)
+ 658  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad.xlsx      co2pfad_nonets!B2:L20           # bleibt vorerst gleich
+ 659  display co2pfad, co2pfad_ets, co2pfad_ets_eu;
+ 660   
+ 661  * ---------------------------------------------------------------------------- *
+ 662  *        READ renewable energies cost reduction
+ 663  * ---------------------------------------------------------------------------- *
+ 664  * ###### cost_red ##############################################################
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 697  display cost_red;
+ 698   
+ 699  * ---------------------------------------------------------------------------- *
+ 700  *        READ Differenzkosten / schalter für diffcostsubvention
+ 701  * ---------------------------------------------------------------------------- *
+ 702  * ###### diffcost und difccost_exogen ##########################################
+ 703  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b2:g20
+ 704  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b2:g20
+ 705   
+ 706  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b25:t30
+ 707  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b25:t30
+ 708  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 773   
+ 774   
+ 775  display diffcost, diffcost_exogen;
+ 776   
+ 777  *diffcost(gen,r)=diffcost_exogen(gen,r);
+ 778   
+ 779  * ---------------------------------------------------------------------------- *
+ 780  *        READ nucsize (scenario specific parameter declaration and definition)
+ 781  * ---------------------------------------------------------------------------- *
+ 782  * ###### nucsize ###############################################################
+ 783  *$libinclude      xlimport        nucsize         %xcel_datadir%nucsize.xlsx      nucsize!B22:k39
+ 784  * ------ 3.02.2016 BAW entfernen
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 10
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 817  display nucsize;
+ 818   
+ 819  * ---------------------------------------------------------------------------- *
+ 820  *        READ Rohölpreise (pytarget_yr)                                         // ÄNDERUNG 13.02.2013
+ 821  * ---------------------------------------------------------------------------- *
+ 822  * ###### pytarget_yr ###########################################################
+ 823  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget!B2:l20
+ 824  * ------ 16.02.2015 RWE-Projekt
+ 825  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget_RWE!B2:l19
+ 826  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 859  display  pytarget_yr;
+ 860   
+ 861  * ---------------------------------------------------------------------------- *
+ 862  *        READ growth rates for renewable energy sources
+ 863  * ---------------------------------------------------------------------------- *
+ 864  * ###### ressize ###############################################################
+ 865  *$libinclude      xlimport        ressize         %xcel_datadir%ressize.xlsx      ressize!B2:M74
+ 866  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 899  display  ressize ;
+ 900   
+ 901  * ---------------------------------------------------------------------------- *
+ 902  *        READ gdp-growth rate / labor-growth rate
+ 903  * ---------------------------------------------------------------------------- *
+ 904  * ###### lfhc_usk, lfhc_skl ####################################################
+ 905  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:Q39
+ 906  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
+ 907  * ------ 3.02.2016 BAW entfernen
+ 908  * ------ 5.02.2016 size_17x18x4.xlsx verändert um Wirtschaftswachstum in DEU zu erhöhen!
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 973  *------- 23.08.2016 command line to get data for new mapping
+ 974  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:P39
+ 975  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
+ 976  display lfhc_usk, lfhc_skl;
+ 977   
+ 978  * ---------------------------------------------------------------------------- *
+ 979  *        READ specifiactions for unemployment and labor market modeling
+ 980  * ---------------------------------------------------------------------------- *
+ 981  * ###### urun0, ursk0 ##########################################################
+ 982  *$libinclude      xlimport        ur_read         %xcel_datadir%ursk0+urun0.xlsx  ur!b2:d20
+ 983  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1016  display ur_read;
+1017   
+1018   
+1019   
+1020  ursk0(r) = ur_read(r,"ursk0"); display ursk0;
+1021  urun0(r) = ur_read(r,"urun0"); display urun0;
+1022   
+1023  * ---------------------------------------------------------------------------- *
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 11
+GAMS Code to Read a GTAP 9 Dataset
+C o m p i l a t i o n
+
+
+1024  *        READ Wirkungsgradsteigerungen
+1025  * ---------------------------------------------------------------------------- *
+1026  * ###### wg0, wg_yr ########################################################## *
+1027  *$libinclude      xlimport        wg0             %xcel_datadir%wg.xlsx           wg0!a2:s20
+1028  *$libinclude      xlimport        wg_yr           %xcel_datadir%wg.xlsx           wg_yr!a2:k20
+1029  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1094   
+1095  display wg0, wg_yr;
+1096   
+1097   
+1098  * ---------------------------------------------------------------------------- *
+1099  *        Energy productivity and total factor productivity from the BASELINE Database
+1100  * ---------------------------------------------------------------------------- *
+1101   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1134   
+1135  * ------ 16.07.2014 ORIGINAL
+1136  *$libinclude      xlimport         ep     %xcel_datadir%ep+tfp.xlsx        ep_newage!A30:R40
+1137  * ------ 16.07.2014 Halber Zuwachs
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1170   
+1171   
+1172  display ep, tfp;
+1173   
+1174  * ############################################################################ *
+1175   
+1176  EXECUTE_UNLOAD '..\data11\17x18x4_gtap9_XCEL.gdx'
+1177   
+1178  display diffcost;
+1179   
+1180  * ############################################################################ *
+1181  *$offtext
+1182   
+EXIT C:\GAMS\NEWAGE_REEEM\NEWAGE\newage_dataload_17x18x4_11.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 12
+GAMS Code to Read a GTAP 9 Dataset
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM\NEWAGE\newage_dataload_17x18x4_11.gms
+     2       27 INCLUDE        1      27  .C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+     3       42 IF EXIST       2      15  .C:\GAMS\NEWAGE_REEEM\NEWAGE\17x18x4_gtap9.gdx
+     4       43 IF EXIST       2      16  .C:\GAMS\NEWAGE_REEEM\NEWAGE\17x18x4_gtap9.gdx
+     5       43 GDXIN          2      16  .C:\GAMS\NEWAGE_REEEM\data11\17x18x4_gtap9.gdx
+     6      220 EXIT           2     193  .C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
+     7      326 LIBINCLUDE     1     133  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+     8      333 IF EXIST       7       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\aeei.xlsx
+     9      351 CALL           7      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    10      355 GDXIN          7      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    11      399 LIBINCLUDE     1     175  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    12      406 IF EXIST      11       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\abschreibung.xlsx
+    13      424 CALL          11      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    14      428 GDXIN         11      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    15      431 LIBINCLUDE     1     176  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    16      438 IF EXIST      15       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\abschreibung.xlsx
+    17      456 CALL          15      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    18      460 GDXIN         15      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    19      466 LIBINCLUDE     1     180  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    20      473 IF EXIST      19       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\abschreibung.xlsx
+    21      491 CALL          19      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    22      495 GDXIN         19      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    23      498 LIBINCLUDE     1     181  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    24      505 IF EXIST      23       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\abschreibung.xlsx
+    25      523 CALL          23      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    26      527 GDXIN         23      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    27      538 LIBINCLUDE     1     190  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    28      545 IF EXIST      27       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\150730_co2pfad_BMWi.xlsx
+    29      563 CALL          27      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
+    30      567 GDXIN         27      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    31      576 LIBINCLUDE     1     197  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    32      583 IF EXIST      31       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\160330_co2pfad.xlsx
+    33      601 CALL          31      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+    34      605 GDXIN         31      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    35      612 LIBINCLUDE     1     202  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    36      619 IF EXIST      35       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\150730_co2pfad_BMWi.xlsx
+    37      637 CALL          35      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
+    38      641 GDXIN         35      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    39      665 LIBINCLUDE     1     224  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    40      672 IF EXIST      39       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\cost_red.xlsx
+    41      690 CALL          39      49  .gdxxrw "..\xcel_data\cost_red.xlsx" @xllink.txt log=xllink.log
+    42      694 GDXIN         39      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    43      709 LIBINCLUDE     1     237  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    44      716 IF EXIST      43       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\diffcost.xlsx
+    45      734 CALL          43      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
+    46      738 GDXIN         43      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    47      741 LIBINCLUDE     1     238  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    48      748 IF EXIST      47       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\diffcost.xlsx
+    49      766 CALL          47      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
+    50      770 GDXIN         47      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    51      785 LIBINCLUDE     1     251  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 13
+GAMS Code to Read a GTAP 9 Dataset
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+    52      792 IF EXIST      51       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\nucsize.xlsx
+    53      810 CALL          51      49  .gdxxrw "..\xcel_data\nucsize.xlsx" @xllink.txt log=xllink.log
+    54      814 GDXIN         51      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    55      827 LIBINCLUDE     1     262  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    56      834 IF EXIST      55       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\pytarget.xlsx
+    57      852 CALL          55      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
+    58      856 GDXIN         55      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    59      867 LIBINCLUDE     1     271  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    60      874 IF EXIST      59       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\ressize.xlsx
+    61      892 CALL          59      49  .gdxxrw "..\xcel_data\ressize.xlsx" @xllink.txt log=xllink.log
+    62      896 GDXIN         59      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    63      909 LIBINCLUDE     1     282  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    64      916 IF EXIST      63       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\size_18x18x4.xlsx
+    65      934 CALL          63      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
+    66      938 GDXIN         63      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    67      941 LIBINCLUDE     1     283  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    68      948 IF EXIST      67       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\size_18x18x4.xlsx
+    69      966 CALL          67      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
+    70      970 GDXIN         67      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    71      984 LIBINCLUDE     1     295  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    72      991 IF EXIST      71       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\ursk0+urun0.xlsx
+    73     1009 CALL          71      49  .gdxxrw "..\xcel_data\ursk0+urun0.xlsx" @xllink.txt log=xllink.log
+    74     1013 GDXIN         71      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    75     1030 LIBINCLUDE     1     310  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    76     1037 IF EXIST      75       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\wg.xlsx
+    77     1055 CALL          75      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
+    78     1059 GDXIN         75      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    79     1062 LIBINCLUDE     1     311  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    80     1069 IF EXIST      79       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\wg.xlsx
+    81     1087 CALL          79      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
+    82     1091 GDXIN         79      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    83     1102 LIBINCLUDE     1     320  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    84     1109 IF EXIST      83       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\ep+tfp.xlsx
+    85     1127 CALL          83      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
+    86     1131 GDXIN         83      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    87     1138 LIBINCLUDE     1     325  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    88     1145 IF EXIST      87       7  .C:\GAMS\NEWAGE_REEEM\xcel_data\ep+tfp.xlsx
+    89     1163 CALL          87      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
+    90     1167 GDXIN         87      53  .C:\GAMS\NEWAGE_REEEM\NEWAGE\xllink.gdx
+    91     1183 EXIT           1     339  C:\GAMS\NEWAGE_REEEM\NEWAGE\newage_dataload_17x18x4_11.gms
+
+
+COMPILATION TIME     =       14.180 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 14
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----     60 SET r  Regions
+
+IND,    USA,    AUT,    FRA,    DEU,    RUS,    SWZ,    EUN,    EUS,    EUE,    OEC,    BRZ,    CHI,    RSA,    ARB,    OPE,    ROW
+
+
+----    191 PARAMETER vb  Current account balance
+
+IND        108.584,    USA        568.013,    AUT         -7.050,    FRA         61.027,    DEU       -110.239,    RUS       -137.361,    SWZ        -36.668,    EUN         11.464,    EUS        133.599,    EUE         22.722,    OEC        -96.756
+BRZ         -3.845,    CHI       -222.418,    RSA          5.628,    ARB       -282.249,    OPE        -41.767,    ROW         27.316,    chksum -1.57150E-8
+
+
+----    197 SET mf  Mobile primary factors
+
+USK,    SKL,    cAP
+
+
+----    197 SET sf  Sluggish primary factors (sector-specific)
+
+RES
+
+
+----    204 PARAMETER mprofit  Zero profit for m
+
+                      ( ALL       0.000 )
+
+
+----    212 PARAMETER yprofit  Zero profit for y
+
+                      ( ALL       0.000 )
+
+
+----    218 SET rnum  Numeraire region
+
+USA
+
+
+----    382 PARAMETER aeei_read  Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
+
+                                    2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+AEEI_EXO                           1.000       0.973       0.946       0.921       0.896       0.868       0.827       0.775       0.672
+AEEI_EXO_ELE_C                     1.000       0.998       0.995       0.993       0.990       0.988       0.977       0.966       0.955
+AEEI_EXO_DEU                       1.000       0.980       0.961       0.942       0.923       0.923       0.922       1.024       1.024
+AEEI_EXO_NEU                       1.000       0.946       0.895       0.847       0.802       0.758       0.718       0.679       0.642
+AEEI_EXO_EMERGE                    1.000       0.932       0.868       0.809       0.754       0.703       0.655       0.611       0.569
+AEEI_EXOGEN                        1.000       0.824       0.679       0.559       0.461       0.380       0.313       0.258       0.212
+AEEI_EXOGEN_AFTER2020              1.000       0.850       0.722       0.614       0.522       0.443       0.377       0.320       0.272
+AEEI_EXOGEN_AFTER2025              1.000       0.864       0.746       0.645       0.557       0.481       0.416       0.359       0.310
+AEEI_EXOGEN_ELE                    1.000       0.899       0.809       0.727       0.654       0.647       0.591       0.539       0.493
+AEEI_EXOGEN_ELE_AFTER2020          1.000       0.913       0.834       0.762       0.695       0.635       0.580       0.530       0.484
+AEEI_EXOGEN_ELE_AFTER2025          1.000       0.913       0.834       0.762       0.695       0.635       0.580       0.530       0.484
+AEEI_EXOGEN_GEN_YR                 1.000       0.953       0.909       0.867       0.826       0.788       0.751       0.716       0.683
+AEEI_EXOGEN_GEN_YR_AFTER2020       1.000       0.961       0.923       0.886       0.852       0.818       0.786       0.755       0.725
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 15
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        382 PARAMETER aeei_read  Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
+
+                                    2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+AEEI_EXOGEN_GEN_YR_AFTER2025       1.000       0.970       0.942       0.914       0.887       0.860       0.835       0.810       0.786
+AEEI_EXOGEN_HH                     1.000       0.848       0.719       0.609       0.516       0.438       0.371       0.315       0.267
+AEEI_EXOGEN_HH_AFTER2020           1.000       0.865       0.749       0.648       0.561       0.485       0.420       0.363       0.315
+AEEI_EXOGEN_HH_AFTER2025           1.000       0.870       0.757       0.658       0.573       0.498       0.433       0.377       0.328
+AEEI_EXOGEN_TRN                    1.000       0.862       0.744       0.641       0.553       0.477       0.411       0.354       0.306
+AEEI_EXOGEN_TRN_AFTER2020          1.000       0.870       0.757       0.658       0.573       0.498       0.433       0.377       0.328
+AEEI_EXOGEN_TRN_AFTER2025          1.000       0.879       0.772       0.679       0.597       0.524       0.461       0.405       0.356
+
+
+----    382 PARAMETER AEEI_exo  AEEI exogen
+
+2011 1.000,    2015 0.973,    2020 0.946,    2025 0.921,    2030 0.896,    2035 0.868,    2040 0.827,    2045 0.775,    2050 0.672
+
+
+----    382 PARAMETER AEEI_exo_emerge  AEEI exogen emerge
+
+2011 1.000,    2015 0.932,    2020 0.868,    2025 0.809,    2030 0.754,    2035 0.703,    2040 0.655,    2045 0.611,    2050 0.569
+
+
+----    382 PARAMETER AEEI_exo_deu  AEEI exogen deu
+
+2011 1.000,    2015 0.980,    2020 0.961,    2025 0.942,    2030 0.923,    2035 0.923,    2040 0.922,    2045 1.024,    2050 1.024
+
+
+----    382 PARAMETER AEEI_exo_neu  AEEI exogen neu
+
+2011 1.000,    2015 0.946,    2020 0.895,    2025 0.847,    2030 0.802,    2035 0.758,    2040 0.718,    2045 0.679,    2050 0.642
+
+
+----    382 PARAMETER AEEI_exo_ele_c  AEEI exogen ele_c
+
+2011 1.000,    2015 0.998,    2020 0.995,    2025 0.993,    2030 0.990,    2035 0.988,    2040 0.977,    2045 0.966,    2050 0.955
+
+
+----    382 PARAMETER AEEI_exogen_gen_yr  AEEI exogen für den einstaz von fe in stromerzeugung in deu!
+
+2011 1.000,    2015 0.953,    2020 0.909,    2025 0.867,    2030 0.826,    2035 0.788,    2040 0.751,    2045 0.716,    2050 0.683
+
+
+----    382 PARAMETER AEEI_exogen_gen_yr_after2020  AEEI exogen electricity generation nach erreichen von mckinsey
+
+2011 1.000,    2015 0.961,    2020 0.923,    2025 0.886,    2030 0.852,    2035 0.818,    2040 0.786,    2045 0.755,    2050 0.725
+
+
+----    382 PARAMETER AEEI_exogen_gen_yr_after2025  AEEI exogen electricity generation nach erreichen von mckinsey II
+
+2011 1.000,    2015 0.970,    2020 0.942,    2025 0.914,    2030 0.887,    2035 0.860,    2040 0.835,    2045 0.810,    2050 0.786
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 16
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----    382 PARAMETER AEEI_exogen  AEEI exogen für deutschland
+
+2011 1.000,    2015 0.824,    2020 0.679,    2025 0.559,    2030 0.461,    2035 0.380,    2040 0.313,    2045 0.258,    2050 0.212
+
+
+----    382 PARAMETER AEEI_exogen_after2020  AEEI exogen für deutschland nach erreichen von mckinsey
+
+2011 1.000,    2015 0.850,    2020 0.722,    2025 0.614,    2030 0.522,    2035 0.443,    2040 0.377,    2045 0.320,    2050 0.272
+
+
+----    382 PARAMETER AEEI_exogen_after2025  AEEI exogen für deutschland nach erreichen von mckinsey II
+
+2011 1.000,    2015 0.864,    2020 0.746,    2025 0.645,    2030 0.557,    2035 0.481,    2040 0.416,    2045 0.359,    2050 0.310
+
+
+----    382 PARAMETER AEEI_exogen_ele  AEEI exogen für deutschland stromverbrauch
+
+2011 1.000,    2015 0.899,    2020 0.809,    2025 0.727,    2030 0.654,    2035 0.647,    2040 0.591,    2045 0.539,    2050 0.493
+
+
+----    382 PARAMETER AEEI_exogen_ele_after2020  AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
+
+2011 1.000,    2015 0.913,    2020 0.834,    2025 0.762,    2030 0.695,    2035 0.635,    2040 0.580,    2045 0.530,    2050 0.484
+
+
+----    382 PARAMETER AEEI_exogen_ele_after2025  AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
+
+2011 1.000,    2015 0.913,    2020 0.834,    2025 0.762,    2030 0.695,    2035 0.635,    2040 0.580,    2045 0.530,    2050 0.484
+
+
+----    382 PARAMETER AEEI_exogen_trn  AEEI exogen für deutschland TRN
+
+2011 1.000,    2015 0.862,    2020 0.744,    2025 0.641,    2030 0.553,    2035 0.477,    2040 0.411,    2045 0.354,    2050 0.306
+
+
+----    382 PARAMETER AEEI_exogen_trn_after2020  AEEI exogen für deutschland TRN nach erreichen von mckinsey
+
+2011 1.000,    2015 0.870,    2020 0.757,    2025 0.658,    2030 0.573,    2035 0.498,    2040 0.433,    2045 0.377,    2050 0.328
+
+
+----    382 PARAMETER AEEI_exogen_trn_after2025  AEEI exogen für deutschland TRN nach erreichen von mckinsey II
+
+2011 1.000,    2015 0.879,    2020 0.772,    2025 0.679,    2030 0.597,    2035 0.524,    2040 0.461,    2045 0.405,    2050 0.356
+
+
+----    382 PARAMETER AEEI_exogen_hh  AEEI exogen für deutschland HH
+
+2011 1.000,    2015 0.848,    2020 0.719,    2025 0.609,    2030 0.516,    2035 0.438,    2040 0.371,    2045 0.315,    2050 0.267
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 17
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----    382 PARAMETER AEEI_exogen_hh_after2020  AEEI exogen für deutschland HH nach erreichen von mckinsey
+
+2011 1.000,    2015 0.865,    2020 0.749,    2025 0.648,    2030 0.561,    2035 0.485,    2040 0.420,    2045 0.363,    2050 0.315
+
+
+----    382 PARAMETER AEEI_exogen_hh_after2025  AEEI exogen für deutschland HH nach erreichen von mckinsey II
+
+2011 1.000,    2015 0.870,    2020 0.757,    2025 0.658,    2030 0.573,    2035 0.498,    2040 0.433,    2045 0.377,    2050 0.328
+
+
+----    530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+AUT.bNUC         0.026       0.107       0.427       0.828       0.828       0.828       0.828       0.828
+AUT.bBC          0.411       0.264       0.539       1.000
+AUT.bBIO         0.036       0.365       0.654       1.000
+AUT.bGEO         0.797       0.997       1.000       1.000
+AUT.bHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+AUT.bHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+AUT.bGAS         0.125       0.121       0.284       1.000
+AUT.bOIL         0.345       0.366       0.744       1.000
+AUT.mHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 18
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+AUT.mGAS         0.125       0.121       0.284       1.000
+AUT.mWIND        0.999       1.000
+AUT.mSOLAR       0.202       0.922       0.545       1.000
+AUT.mOIL         0.345       0.366       0.744       1.000
+AUT.pOIL         0.345       0.366       0.744       1.000
+AUT.pGAS         0.125       0.121       0.284       1.000
+AUT.pHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+FRA.bNUC         0.026       0.107       0.427       0.828       0.828       0.828       0.828       0.828
+FRA.bBC          0.411       0.264       0.539       1.000
+FRA.bBIO         0.036       0.365       0.654       1.000
+FRA.bGEO         0.797       0.997       1.000       1.000
+FRA.bHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+FRA.bHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+FRA.bGAS         0.125       0.121       0.284       1.000
+FRA.bOIL         0.345       0.366       0.744       1.000
+FRA.mHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+FRA.mGAS         0.125       0.121       0.284       1.000
+FRA.mWIND        0.999       1.000
+FRA.mSOLAR       0.202       0.922       0.545       1.000
+FRA.mOIL         0.345       0.366       0.744       1.000
+FRA.pOIL         0.345       0.366       0.744       1.000
+FRA.pGAS         0.125       0.121       0.284       1.000
+FRA.pHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+DEU.bNUC         0.388       0.775       1.000
+DEU.bBC          0.179       0.005       0.081       0.211       0.460       0.035       0.121       0.568
+DEU.bBIO         0.200       0.250       0.333       0.500       0.500       1.000
+DEU.bGEO         0.990       1.000
+DEU.bHC          0.599       0.608       0.888       1.000
+DEU.bGAS         0.531       0.504       0.324       0.658       0.658       0.658       0.658       1.000
+DEU.bOIL         0.856       0.664       1.000
+DEU.mHC          0.599       0.376       0.600       0.500       0.960       1.000
+DEU.mGAS         0.531       0.504       0.324       0.658       0.658       0.658       0.658       1.000
+DEU.mWIND        0.800       1.000
+DEU.mSOLAR       0.202       0.749       0.859       1.000
+DEU.mOIL         0.856       0.664       1.000
+DEU.pOIL         0.856       0.664       1.000
+DEU.pGAS         0.531       0.504       0.324       0.658       0.658       0.658       0.658       1.000
+RUS.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 19
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+RUS.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+EUN.bNUC         0.028       0.097       0.423       0.792       0.792       0.792       0.792       0.792
+EUN.bBC          0.417       0.300       0.580       1.000
+EUN.bBIO         0.032       0.339       0.689       0.900
+EUN.bGEO         0.717       0.898       0.900       0.900
+EUN.bHYDRO       0.001       0.002       0.003       0.005       0.005       0.005       0.005       0.005
+EUN.bHC          0.349       0.405       0.587       0.777       0.777       0.777       0.777       0.777
+EUN.bGAS         0.143       0.150       0.347       1.000
+EUN.bOIL         0.379       0.425       0.750       1.000
+EUN.mHC          0.349       0.405       0.587       0.777       0.777       0.777       0.777       0.777
+EUN.mGAS         0.143       0.150       0.347       1.000
+EUN.mWIND        0.899       0.900
+EUN.mSOLAR       0.182       0.830       0.474       1.000
+EUN.mOIL         0.379       0.425       0.750       1.000
+EUN.pOIL         0.379       0.425       0.750       1.000
+EUN.pGAS         0.143       0.150       0.347       1.000
+EUN.pHYDRO       0.001       0.002       0.003       0.005       0.005       0.005       0.005       0.005
+EUS.bNUC         0.026       0.107       0.427       0.828       0.828       0.828       0.828       0.828
+EUS.bBC          0.411       0.264       0.539       1.000
+EUS.bBIO         0.036       0.365       0.654       1.000
+EUS.bGEO         0.797       0.997       1.000       1.000
+EUS.bHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+EUS.bHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+EUS.bGAS         0.125       0.121       0.284       1.000
+EUS.bOIL         0.345       0.366       0.744       1.000
+EUS.mHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
+EUS.mGAS         0.125       0.121       0.284       1.000
+EUS.mWIND        0.999       1.000
+EUS.mSOLAR       0.202       0.922       0.545       1.000
+EUS.mOIL         0.345       0.366       0.744       1.000
+EUS.pOIL         0.345       0.366       0.744       1.000
+EUS.pGAS         0.125       0.121       0.284       1.000
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 20
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+EUS.pHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
+EUE.bNUC         0.044                   0.390       0.460       0.460       0.460       0.460       0.460
+EUE.bBC          0.468       0.625       0.950       0.998
+EUE.bBIO   -3.47927E-4       0.106       0.999
+EUE.bHYDRO -2.04146E-5 -2.04142E-5 -1.02069E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5
+EUE.bHC          0.525       0.515       0.273       0.153       0.153       0.153       0.153       0.153
+EUE.bGAS         0.304       0.405       0.921       1.000
+EUE.bOIL         0.683       0.957       0.808       1.000
+EUE.mHC          0.525       0.515       0.273       0.153       0.153       0.153       0.153       0.153
+EUE.mGAS         0.304       0.405       0.921       1.000
+EUE.mSOLAR                              -0.167       1.000
+EUE.mOIL         0.683       0.957       0.808       1.000
+EUE.pOIL         0.683       0.957       0.808       1.000
+EUE.pGAS         0.304       0.405       0.921       1.000
+EUE.pHYDRO -2.04146E-5 -2.04142E-5 -1.02069E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5 -1.02068E-5
+OEC.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 21
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+CHI.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 22
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+OPE.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+
+
+----    530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+IND.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 23
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+USA.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+USA.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+AUT.bNUC         1.000       0.955       0.853       0.489       0.084       0.014       0.002
+AUT.bBC          1.000       0.551       0.406       0.187
+AUT.bBIO         1.000       0.800       0.600       0.400       0.200       0.100
+AUT.bGEO         1.000       0.203
+AUT.bHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+AUT.bHC          1.000       0.395       0.240       0.091       0.014       0.002
+AUT.bGAS         1.000       0.799       0.702       0.503
+AUT.bOIL         1.000       0.399       0.253       0.065
+AUT.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+AUT.mHC          1.000       0.395       0.250       0.100       0.050       0.002
+AUT.mGAS         1.000       0.799       0.702       0.503
+AUT.mWIND        1.000       0.200
+AUT.mSOLAR       1.000       0.798       0.200       0.028
+AUT.mOIL         1.000       0.399       0.253       0.065
+AUT.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+AUT.pOIL         1.000       0.399       0.253       0.065
+AUT.pGAS         1.000       0.799       0.702       0.503
+AUT.pHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+FRA.bNUC         1.000       0.955       0.853       0.489       0.084       0.014       0.002
+FRA.bBC          1.000       0.551       0.406       0.187
+FRA.bBIO         1.000       0.800       0.600       0.400       0.200       0.100
+FRA.bGEO         1.000       0.203
+FRA.bHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+FRA.bHC          1.000       0.395       0.240       0.091       0.014       0.002
+FRA.bGAS         1.000       0.799       0.702       0.503
+FRA.bOIL         1.000       0.399       0.253       0.065
+FRA.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+FRA.mHC          1.000       0.315       0.250       0.100       0.050       0.002
+FRA.mGAS         1.000       0.799       0.702       0.503
+FRA.mWIND        1.000       0.200
+FRA.mSOLAR       1.000       0.798       0.200       0.028
+FRA.mOIL         1.000       0.399       0.253       0.065
+FRA.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+FRA.pOIL         1.000       0.399       0.253       0.065
+FRA.pGAS         1.000       0.799       0.702       0.503
+FRA.pHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+DEU.bNUC         1.000       0.612       0.138
+DEU.bBC          1.000       0.821       0.817       0.750       0.592       0.320       0.309       0.271       0.117
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 24
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+DEU.bBIO         1.000       0.800       0.600       0.400       0.200       0.100
+DEU.bGEO         1.000       0.010
+DEU.bHYDRO       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+DEU.bHC          1.000       0.401       0.157       0.018
+DEU.bGAS         1.000       0.469       0.233       0.157       0.054       0.018       0.006       0.002
+DEU.bOIL         1.000       0.144       0.049
+DEU.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+DEU.mHC          1.000       0.401       0.250       0.100       0.050       0.002
+DEU.mGAS         1.000       0.469       0.233       0.157       0.054       0.018       0.006       0.002
+DEU.mWIND        1.000       0.200
+DEU.mSOLAR       1.000       0.798       0.200       0.028
+DEU.mOIL         1.000       0.144       0.049
+DEU.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+DEU.pOIL         1.000       0.144       0.049
+DEU.pGAS         1.000       0.469       0.233       0.157       0.054       0.018       0.006       0.002
+DEU.pHYDRO       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+RUS.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RUS.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+SWZ.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+EUN.bNUC         1.000       0.928       0.836       0.481       0.098       0.025       0.009       0.004       0.002
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 25
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+EUN.bBC          1.000       0.526       0.377       0.169
+EUN.bBIO                    -0.200      -0.400      -0.600      -0.800      -0.900
+EUN.bGEO         1.000       0.283       0.009       0.010
+EUN.bHYDRO       1.000       0.996       0.994       0.991       0.986       0.980       0.975       0.970       0.965
+EUN.bHC          1.000       0.387       0.231       0.093       0.022       0.010       0.007       0.006       0.005
+EUN.bGAS         1.000       0.771       0.663       0.455
+EUN.bOIL         1.000       0.384       0.228       0.058
+EUN.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUN.mHC          1.000       0.387       0.231       0.093       0.022       0.010       0.007       0.006       0.005
+EUN.mGAS         1.000       0.771       0.663       0.455
+EUN.mWIND        1.000       0.200       0.009       0.010
+EUN.mSOLAR       1.000       0.818       0.200       0.035
+EUN.mOIL         1.000       0.384       0.228       0.058
+EUN.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUN.pOIL         1.000       0.384       0.228       0.058
+EUN.pGAS         1.000       0.771       0.663       0.455
+EUN.pHYDRO       1.000       0.996       0.994       0.991       0.986       0.980       0.975       0.970       0.965
+EUS.bNUC         1.000       0.955       0.853       0.489       0.084       0.014       0.002
+EUS.bBC          1.000       0.551       0.406       0.187
+EUS.bBIO                    -0.200      -0.400      -0.600      -0.800      -0.900
+EUS.bGEO         1.000       0.203
+EUS.bHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+EUS.bHC          1.000       0.395       0.240       0.091       0.014       0.002
+EUS.bGAS         1.000       0.799       0.702       0.503
+EUS.bOIL         1.000       0.399       0.253       0.065
+EUS.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUS.mHC          1.000       0.395       0.240       0.091       0.014       0.002
+EUS.mGAS         1.000       0.799       0.702       0.503
+EUS.mWIND        1.000       0.200
+EUS.mSOLAR       1.000       0.798       0.200       0.028
+EUS.mOIL         1.000       0.399       0.253       0.065
+EUS.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUS.pOIL         1.000       0.399       0.253       0.065
+EUS.pGAS         1.000       0.799       0.702       0.503
+EUS.pHYDRO       1.000       0.996       0.994       0.991       0.985       0.979       0.973       0.968       0.962
+EUE.bNUC         1.000       0.683       0.683       0.416       0.225       0.121       0.065       0.035       0.019
+EUE.bBC          1.000       0.301       0.113       0.006
+EUE.bBIO                    -0.200      -0.400      -0.600      -0.800      -0.900
+EUE.bGEO         1.000       1.000       0.086       0.100
+EUE.bHYDRO       1.000       0.991       0.991       0.991       0.991       0.991       0.991       0.991       0.991
+EUE.bHC          1.000       0.315       0.153       0.111       0.094       0.080       0.067       0.057       0.048
+EUE.bGAS         1.000       0.528       0.314       0.025
+EUE.bOIL         1.000       0.252       0.011       0.002
+EUE.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUE.mHC          1.000       0.315       0.153       0.111       0.094       0.080       0.067       0.057       0.048
+EUE.mGAS         1.000       0.528       0.314       0.025
+EUE.mWIND        1.000       1.000       0.086       0.100
+EUE.mSOLAR       1.000       1.000       0.086       0.100
+EUE.mOIL         1.000       0.252       0.011       0.002
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 26
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+EUE.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+EUE.pOIL         1.000       0.252       0.011       0.002
+EUE.pGAS         1.000       0.528       0.314       0.025
+EUE.pHYDRO       1.000       0.991       0.991       0.991       0.991       0.991       0.991       0.991       0.991
+OEC.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OEC.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+BRZ.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 27
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+CHI.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+CHI.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+RSA.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ARB.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 28
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+OPE.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+OPE.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bNUC         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bBC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bBIO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bGEO         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.bOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.mHC          1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.mGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.mWIND        1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.mSOLAR       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.mOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.pOIL         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.pGAS         1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+ROW.pHYDRO       1.000       0.638       0.520       0.424       0.346       0.282       0.230       0.188       0.153
+
+
+----    530 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+IND.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 29
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+USA.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+USA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RUS.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+SWZ.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OEC.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 30
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+OEC.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+BRZ.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+CHI.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+RSA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 31
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
+ARB.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ARB.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+OPE.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+ROW.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 32
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----    530 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+IND.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+USA.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RUS.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 33
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+SWZ.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+SWZ.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OEC.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+BRZ.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 34
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+CHI.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+CHI.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+RSA.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ARB.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 35
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        530 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+OPE.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+OPE.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.bOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.mHC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+ROW.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+
+
+----    659 PARAMETER co2pfad  CO2-growth
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+USA       1.000       0.957       0.914       0.873       0.833       0.796       0.760       0.726       0.693
+AUT       1.000       1.031       1.010       1.002       1.008       1.013       1.018       1.008       0.998
+FRA       1.000       1.031       1.010       1.002       1.008       1.013       1.018       1.008       0.998
+DEU       1.000       0.999       0.959       0.927       0.915       0.892       0.869       0.841       0.813
+RUS       1.000       1.263       1.263       1.263       1.263       1.263       1.263       1.263       1.263
+SWZ       1.000       1.031       1.010       1.002       1.008       1.013       1.018       1.008       0.998
+EUN       1.000       1.031       1.010       1.002       1.008       1.013       1.018       1.008       0.998
+EUS       1.000       1.031       1.010       1.002       1.008       1.013       1.018       1.008       0.998
+EUE       1.000       1.073       1.083       1.126       1.193       1.229       1.265       1.277       1.288
+OEC       1.000       0.949       0.898       0.853       0.808       0.766       0.726       0.687       0.651
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 36
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----    659 PARAMETER co2pfad_ets  CO2-growth in the EU-ETS
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+AUT       1.000       0.942       0.857       0.749       0.642       0.535       0.427       0.320       0.213
+FRA       1.000       0.938       0.854       0.747       0.640       0.533       0.426       0.319       0.212
+DEU       1.000       1.031       0.938       0.820       0.703       0.585       0.468       0.351       0.233
+EUN       1.000       0.985       0.897       0.784       0.672       0.560       0.447       0.335       0.223
+EUS       1.000       0.899       0.818       0.715       0.613       0.511       0.408       0.306       0.203
+EUE       1.000       0.910       0.828       0.724       0.621       0.517       0.413       0.309       0.206
+
+
+----    659 PARAMETER co2pfad_ets_eu  
+
+            2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+EU28       1.000       0.940       0.884       0.761       0.638       0.528       0.418       0.308       0.198
+
+
+----    697 PARAMETER cost_red  Renewable energies cost reduction
+
+              2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+bBIO         1.000       0.944       0.880       0.865       0.850       0.846       0.842       0.838       0.835
+bGEO         1.000       0.886       0.772       0.673       0.573       0.532       0.490       0.452       0.417
+mWIND        1.000       0.944       0.880       0.865       0.850       0.846       0.842       0.838       0.835
+mSOLAR       1.000       0.886       0.772       0.673       0.573       0.532       0.490       0.452       0.417
+
+
+----    775 PARAMETER diffcost  Differenzkosten
+
+               IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+bBIO         2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156
+bGEO         3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333
+bHYDRO       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626
+mWIND        2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004
+mSOLAR      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287
+
+
+----    775 PARAMETER diffcost_exogen  Differenzkosten
+
+               IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+bBIO         2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257       2.257
+bGEO         2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271       2.271
+bHYDRO       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614       1.614
+mWIND        2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443       2.443
+mSOLAR      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 37
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----    817 PARAMETER nucsize  Ausbau- bzw. Rückbaupfad Kernenergie
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND       1.000       1.557       2.115       2.672       3.229       3.903       4.717       5.701       6.890
+USA       1.000       1.080       1.161       1.241       1.322       1.408       1.499       1.596       1.699
+AUT       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+FRA       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+DEU       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+RUS       1.000       1.159       1.318       1.477       1.636       1.812       2.007       2.223       2.462
+SWZ       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+EUN       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+EUS       1.000       1.055       1.109       1.164       1.218       1.275       1.335       1.398       1.464
+EUE       1.000       1.202       1.403       1.605       1.806       2.033       2.288       2.576       2.899
+OEC       1.000       1.121       1.242       1.363       1.484       1.615       1.759       1.915       2.085
+BRZ       1.000       1.487       1.973       2.460       2.947       3.530       4.228       5.064       6.066
+CHI       1.000       1.557       2.115       2.672       3.229       3.903       4.717       5.701       6.890
+RSA       1.000       1.487       1.973       2.460       2.947       3.530       4.228       5.064       6.066
+ARB       1.000       1.557       2.115       2.672       3.229       3.903       4.717       5.701       6.890
+OPE       1.000       1.652       2.305       2.957       3.609       4.405       5.377       6.563       8.011
+ROW       1.000       1.487       1.973       2.460       2.947       3.530       4.228       5.064       6.066
+
+
+----    859 PARAMETER pytarget_yr  Exogenous price paths for resources
+
+               2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+USA.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+AUT.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+FRA.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+DEU.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+RUS.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+SWZ.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+EUN.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+EUS.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+EUE.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+OEC.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+BRZ.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+CHI.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+RSA.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+ARB.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+OPE.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+ROW.CRU       1.000       1.181       1.362       1.425       1.488       1.542       1.596       1.673       1.749
+
+
+----    899 PARAMETER ressize  Growth rates for renewable energy sources
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND.bBIO         1.000       8.845      16.690      30.735      44.780      65.243      95.057     138.495     201.784
+IND.bHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
+IND.pHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 38
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        899 PARAMETER ressize  Growth rates for renewable energy sources
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+USA.bBIO         1.000       1.994       2.987       4.168       5.350       6.865       8.811      11.308      14.512
+USA.bHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
+USA.pHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
+AUT.bBIO         1.000       1.405       1.811       2.050       2.290       2.558       2.856       3.190       3.563
+AUT.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+AUT.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
+AUT.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+FRA.bBIO         1.000       1.405       1.811       2.050       2.290       2.558       2.856       3.190       3.563
+FRA.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+FRA.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
+FRA.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+DEU.bBIO         1.000       1.303       1.605       1.767       1.930       2.107       2.300       2.511       2.741
+DEU.bHYDRO       1.000       1.068       1.076       1.085       1.093       1.102       1.278       1.483       1.721
+DEU.mWIND        1.000       1.339       1.715       2.407       2.687       2.999       3.348       3.737       4.171
+DEU.pHYDRO       1.000       1.031       1.062       1.083       1.103       1.123       1.144       1.165       1.187
+RUS.bBIO         1.000       7.536      14.073      25.775      37.478      54.493      79.234     115.208     167.514
+RUS.bHYDRO       1.000       1.537       2.074       2.630       3.187       3.862       4.679       5.669       6.869
+RUS.pHYDRO       1.000       1.537       2.074       2.630       3.187       3.862       4.679       5.669       6.869
+SWZ.bBIO         1.000       1.405       1.811       2.050       2.290       2.558       2.856       3.190       3.563
+SWZ.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+SWZ.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
+SWZ.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+EUN.bBIO         1.000       1.405       1.811       2.050       2.290       2.558       2.856       3.190       3.563
+EUN.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+EUN.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
+EUN.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+EUS.bBIO         1.000       1.405       1.811       2.050       2.290       2.558       2.856       3.190       3.563
+EUS.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+EUS.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
+EUS.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
+EUE.bBIO         1.000       4.766       8.900      16.301      23.702      34.463      50.110      72.860     105.940
+EUE.bHYDRO       1.000       1.086       1.223       1.262       1.371       1.491       1.620       1.761       1.914
+EUE.mWIND        1.000       1.840       2.655       3.407       4.182       5.134       6.303       7.737       9.498
+EUE.pHYDRO       1.000       1.029       1.223       1.262       1.371       1.491       1.620       1.761       1.914
+OEC.bBIO         1.000       1.994       2.987       4.168       5.350       6.865       8.811      11.308      14.512
+OEC.bHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
+OEC.pHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
+BRZ.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
+BRZ.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+BRZ.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+CHI.bBIO         1.000       8.845      16.690      30.735      44.780      65.243      95.057     138.495     201.784
+CHI.bHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
+CHI.pHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
+RSA.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
+RSA.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+RSA.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+ARB.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
+ARB.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+ARB.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 39
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        899 PARAMETER ressize  Growth rates for renewable energy sources
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+OPE.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
+OPE.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+OPE.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+ROW.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
+ROW.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+ROW.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
+
+
+----    976 PARAMETER lfhc_usk  Labor force and human capital development for unskilled labor (BASELINE Database)
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND       1.000       1.082       1.162       1.233       1.293       1.337       1.363       1.370       1.359
+USA       1.000       0.989       0.978       0.955       0.920       0.882       0.838       0.788       0.729
+AUT       1.000       0.953       0.903       0.840       0.768       0.698       0.629       0.568       0.504
+FRA       1.000       0.947       0.887       0.826       0.762       0.701       0.636       0.585       0.538
+DEU       1.000       0.946       0.892       0.835       0.767       0.711       0.665       0.620       0.568
+RUS       1.000       0.948       0.892       0.838       0.783       0.725       0.658       0.583       0.510
+SWZ       1.000       0.976       0.958       0.919       0.864       0.803       0.750       0.693       0.620
+EUN       1.000       0.951       0.903       0.847       0.784       0.718       0.653       0.596       0.542
+EUS       1.000       0.952       0.906       0.853       0.788       0.721       0.651       0.591       0.537
+EUE       1.000       0.990       0.940       0.879       0.808       0.729       0.649       0.572       0.492
+OEC       1.000       0.977       0.949       0.916       0.877       0.830       0.776       0.723       0.674
+BRZ       1.000       1.026       1.063       1.078       1.074       1.055       1.019       0.970       0.907
+CHI       1.000       1.019       1.004       0.972       0.928       0.876       0.818       0.759       0.699
+RSA       1.000       1.028       1.070       1.114       1.152       1.182       1.201       1.205       1.195
+ARB       1.000       1.055       1.100       1.128       1.138       1.133       1.108       1.062       1.001
+OPE       1.000       1.072       1.165       1.259       1.352       1.441       1.525       1.598       1.668
+ROW       1.000       1.073       1.170       1.266       1.362       1.454       1.541       1.618       1.686
+
+
+----    976 PARAMETER lfhc_skl  Labor force and human capital development for   skilled labor (BASELINE Database)
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+IND       1.000       1.228       1.546       1.922       2.371       2.884       3.462       4.090       4.750
+USA       1.000       1.059       1.112       1.173       1.254       1.348       1.449       1.551       1.659
+AUT       1.000       1.113       1.265       1.403       1.559       1.740       1.953       2.182       2.413
+FRA       1.000       1.116       1.294       1.481       1.692       1.903       2.128       2.338       2.541
+DEU       1.000       0.952       0.936       0.922       0.918       0.949       1.028       1.136       1.293
+RUS       1.000       1.001       0.975       0.952       0.946       0.948       0.946       0.941       0.950
+SWZ       1.000       1.000       1.034       1.069       1.109       1.160       1.252       1.405       1.654
+EUN       1.000       1.110       1.263       1.424       1.603       1.802       2.014       2.204       2.365
+EUS       1.000       1.055       1.159       1.258       1.371       1.477       1.591       1.709       1.881
+EUE       1.000       1.101       1.208       1.334       1.506       1.684       1.882       2.089       2.401
+OEC       1.000       1.095       1.214       1.331       1.430       1.534       1.632       1.736       1.818
+BRZ       1.000       1.163       1.450       1.780       2.115       2.501       2.912       3.355       3.838
+CHI       1.000       1.156       1.327       1.497       1.660       1.815       1.996       2.170       2.288
+RSA       1.000       1.067       1.171       1.319       1.482       1.671       1.869       2.087       2.336
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 40
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        976 PARAMETER lfhc_skl  Labor force and human capital development for   skilled labor (BASELINE Database)
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+ARB       1.000       1.225       1.504       1.813       2.172       2.560       2.951       3.319       3.667
+OPE       1.000       1.141       1.371       1.654       2.008       2.445       2.980       3.591       4.358
+ROW       1.000       1.156       1.377       1.634       1.942       2.296       2.691       3.117       3.587
+
+
+----   1016 PARAMETER ur_read  Einlesen aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+
+          URSK0       URUN0
+
+IND       0.021       0.051
+USA       0.023       0.059
+AUT       0.026       0.054
+FRA       0.044       0.102
+DEU       0.049       0.121
+RUS       0.031       0.080
+SWZ       0.024       0.046
+EUN       0.026       0.070
+EUS       0.034       0.092
+EUE       0.036       0.098
+OEC       0.027       0.039
+BRZ       0.058       0.087
+CHI       0.005       0.013
+RSA       0.077       0.265
+ARB       0.066       0.095
+OPE       0.181       0.077
+ROW       0.040       0.058
+
+
+----   1020 PARAMETER ursk0  Initial unemployment rate among skilled
+
+IND 0.021,    USA 0.023,    AUT 0.026,    FRA 0.044,    DEU 0.049,    RUS 0.031,    SWZ 0.024,    EUN 0.026,    EUS 0.034,    EUE 0.036,    OEC 0.027,    BRZ 0.058,    CHI 0.005,    RSA 0.077,    ARB 0.066,    OPE 0.181,    ROW 0.040
+
+
+----   1021 PARAMETER urun0  Initial unemployment rate among unskilled
+
+IND 0.051,    USA 0.059,    AUT 0.054,    FRA 0.102,    DEU 0.121,    RUS 0.080,    SWZ 0.046,    EUN 0.070,    EUS 0.092,    EUE 0.098,    OEC 0.039,    BRZ 0.087,    CHI 0.013,    RSA 0.265,    ARB 0.095,    OPE 0.077,    ROW 0.058
+
+
+----   1095 PARAMETER wg0  Wirkungsgrad im bmk
+
+             IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+bNUC       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330       0.330
+bBC        0.337       0.308       0.308       0.308       0.354       0.337       0.308       0.308       0.308       0.337       0.308       0.337       0.337       0.337       0.337       0.337       0.337
+bHC        0.382       0.383       0.383       0.383       0.393       0.382       0.383       0.383       0.383       0.382       0.383       0.382       0.382       0.382       0.382       0.382       0.382
+bGAS       0.421       0.455       0.455       0.455       0.490       0.421       0.455       0.455       0.455       0.421       0.455       0.421       0.421       0.421       0.421       0.421       0.421
+bOIL       0.355       0.353       0.353       0.353       0.260       0.355       0.353       0.353       0.353       0.355       0.353       0.355       0.355       0.355       0.355       0.355       0.355
+mHC        0.382       0.383       0.383       0.383       0.393       0.382       0.383       0.383       0.383       0.382       0.383       0.382       0.382       0.382       0.382       0.382       0.382
+mGAS       0.421       0.455       0.455       0.455       0.490       0.421       0.455       0.455       0.455       0.421       0.455       0.421       0.421       0.421       0.421       0.421       0.421
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 41
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1095 PARAMETER wg0  Wirkungsgrad im bmk
+
+             IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+mOIL       0.355       0.353       0.353       0.353       0.260       0.355       0.353       0.353       0.353       0.355       0.353       0.355       0.355       0.355       0.355       0.355       0.355
+pOIL       0.355       0.353       0.353       0.353       0.260       0.355       0.353       0.353       0.353       0.355       0.353       0.355       0.355       0.355       0.355       0.355       0.355
+pGAS       0.421       0.455       0.455       0.455       0.490       0.421       0.455       0.455       0.455       0.421       0.455       0.421       0.421       0.421       0.421       0.421       0.421
+
+
+----   1095 PARAMETER wg_yr  Wirkungsgrad nach jahren jeweils bat
+
+            2011        2015        2020        2025        2030        2035        2040        2045        2050
+
+bNUC       0.360       0.360       0.360       0.360       0.360       0.360       0.360       0.360       0.360
+bBC        0.430       0.455       0.480       0.485       0.490       0.515       0.540       0.565       0.590
+bHC        0.450       0.470       0.490       0.495       0.500       0.525       0.550       0.575       0.600
+bGAS       0.600       0.600       0.600       0.610       0.620       0.645       0.670       0.695       0.695
+bOIL       0.428       0.428       0.456       0.456       0.474       0.499       0.524       0.549       0.574
+mHC        0.450       0.470       0.490       0.495       0.500       0.525       0.550       0.575       0.600
+mGAS       0.600       0.600       0.600       0.610       0.620       0.645       0.670       0.695       0.720
+mOIL       0.428       0.428       0.456       0.456       0.474       0.499       0.524       0.549       0.574
+pOIL       0.428       0.428       0.456       0.456       0.474       0.499       0.524       0.549       0.574
+pGAS       0.600       0.600       0.600       0.610       0.620       0.645       0.670       0.695       0.695
+
+
+----   1172 PARAMETER ep  Energy productivity development (BASELINE Database)
+
+             IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+2011       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+2015       0.874       0.950       0.995       0.983       0.983       0.842       1.001       0.964       0.989       0.907       0.963       0.946       0.819       0.883       0.912       0.909       0.943
+2020       0.776       0.901       0.980       0.959       0.959       0.740       0.990       0.926       0.969       0.824       0.926       0.908       0.668       0.798       0.856       0.860       0.901
+2025       0.705       0.853       0.955       0.928       0.928       0.678       0.968       0.886       0.940       0.752       0.888       0.882       0.556       0.740       0.825       0.835       0.870
+2030       0.650       0.804       0.921       0.892       0.891       0.632       0.937       0.843       0.904       0.686       0.846       0.863       0.469       0.697       0.801       0.818       0.845
+2035       0.604       0.755       0.881       0.850       0.849       0.595       0.899       0.796       0.863       0.625       0.801       0.846       0.397       0.664       0.781       0.805       0.824
+2040       0.563       0.705       0.836       0.804       0.803       0.564       0.854       0.747       0.816       0.568       0.754       0.832       0.338       0.637       0.764       0.794       0.805
+2045       0.526       0.654       0.786       0.754       0.753       0.535       0.805       0.696       0.765       0.514       0.705       0.819       0.286       0.613       0.749       0.784       0.787
+2050       0.492       0.603       0.733       0.702       0.701       0.509       0.752       0.643       0.711       0.462       0.654       0.807       0.239       0.591       0.735       0.774       0.770
+
+
+----   1172 PARAMETER tfp  Total factor productivity development (BASELINE Database)
+
+             IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+2011       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
+2015       1.211       1.044       1.086       1.066       1.085       1.242       1.065       1.091       1.039       1.143       1.086       1.092       1.298       1.100       1.073       1.125       1.118
+2020       1.431       1.097       1.157       1.138       1.142       1.518       1.118       1.179       1.127       1.324       1.180       1.181       1.618       1.207       1.131       1.213       1.242
+2025       1.680       1.151       1.234       1.214       1.204       1.818       1.174       1.273       1.226       1.523       1.281       1.279       1.989       1.321       1.183       1.301       1.384
+2030       1.963       1.209       1.314       1.292       1.271       2.158       1.233       1.374       1.339       1.744       1.388       1.389       2.414       1.442       1.250       1.404       1.544
+2035       2.283       1.270       1.397       1.371       1.345       2.542       1.295       1.484       1.469       1.991       1.498       1.513       2.897       1.572       1.334       1.523       1.726
+2040       2.643       1.333       1.481       1.449       1.429       2.976       1.360       1.602       1.616       2.272       1.609       1.652       3.439       1.711       1.433       1.660       1.932
+2045       3.048       1.400       1.565       1.527       1.526       3.468       1.428       1.729       1.781       2.596       1.718       1.810       4.048       1.859       1.547       1.816       2.162
+2050       3.501       1.470       1.650       1.606       1.635       4.024       1.499       1.844       1.955       2.973       1.825       1.989       4.730       2.017       1.675       1.993       2.418
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                08/23/16 14:27:26 Page 42
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+----   1178 PARAMETER diffcost  Differenzkosten
+
+               IND         USA         AUT         FRA         DEU         RUS         SWZ         EUN         EUS         EUE         OEC         BRZ         CHI         RSA         ARB         OPE         ROW
+
+bBIO         2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156
+bGEO         3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333
+bHYDRO       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626
+mWIND        2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004       2.004
+mSOLAR      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287
+
+
+
+EXECUTION TIME       =        0.032 SECONDS      7 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_REEEM\NEWAGE\newage_dataload_17x18x4_11.gms
+Output     C:\GAMS\NEWAGE_REEEM\NEWAGE\newage_dataload_17x18x4_11.lst

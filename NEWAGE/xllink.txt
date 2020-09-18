@@ -1,0 +1,3 @@
+o=xllink.gdx par=ep
+rng=ep_newage!A91:s100
+dim=2
