@@ -3,7 +3,7 @@ $TITLE   GTAP Mapping which Relabels to Match GAMS Identifiers
 *	See GTAP resource 7088.pdf by Walmsley and Carrico for a description of
 *	labor categories.
 
-*       Roland Cunha Montnegro: Map for the REEEM Project at IER 10.2016
+*       Roland Cunha Montnegro: Map for Doctor Dissertation 19.09.2020
 *       SKL = ILO ISCO-88 groups 1-3, USK = ILO ISCO-88 groups 4-9
 
 * ----- Factors (4) ----------------------------------------------------------
@@ -178,7 +178,10 @@ SET mapr (r,rr) Mapping of GTAP9 Regions (from-to) /
                 MEX     !       Mexico
                 CHE     !       Switzerland
                 NOR     !       Norway
+                TUR     !       Turkey
                 XEF     !       Rest of EFTA
+                CHL     !       Chile
+                COL     !       Colombia
 
         ).OEC,
 
@@ -227,8 +230,6 @@ SET mapr (r,rr) Mapping of GTAP9 Regions (from-to) /
                 XNA     !       Rest of North America
                 ARG     !       Argentina
                 BOL     !       Bolivia
-                CHL     !       Chile
-                COL     !       Colombia
                 PRY     !       Paraguay
                 PER     !       Peru
                 URY     !       Uruguay
@@ -253,7 +254,6 @@ SET mapr (r,rr) Mapping of GTAP9 Regions (from-to) /
                 AZE     !       Azerbaijan
                 GEO     !       Georgia
                 ISR     !       Israel
-                TUR     !       Turkey
                 XWS     !       Rest of Western Asia
                 CMR     !       Cameroon
                 CIV     !       Cote dIvoire

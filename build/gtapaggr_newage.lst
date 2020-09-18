@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 1
 Aggregation Program for the GTAP9 Database
 C o m p i l a t i o n
 
@@ -10,8 +10,8 @@ C o m p i l a t i o n
    8   
    9   
   13   
-INCLUDE    C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 2
+INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 2
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -24,7 +24,7 @@ C o m p i l a t i o n
   25   
   28   
   29  set     g(*)    Goods plus C and G;
-GDXIN   C:\GAMS\NEWAGE_REEEM\data11\gsd_01.gdx
+GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\gsd_01.gdx
 --- LOAD  g = 3:g
   33   
   34  set     i(g)    Goods
@@ -69,7 +69,7 @@ GDXIN   C:\GAMS\NEWAGE_REEEM\data11\gsd_01.gdx
   68  if (nd>0,
   69          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
   70          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 3
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -127,7 +127,7 @@ C o m p i l a t i o n
  116          esubd(i)        Elasticity of substitution (M versus D),
  117          esubva(g)       Elasticity of substitution between factors
  118          esubm(i)        Intra-import elasticity of substitution,
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 4
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 4
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -185,7 +185,7 @@ C o m p i l a t i o n
  164  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
  165   
  166  vdm("c",r) = vom("c",r);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 5
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 5
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -231,9 +231,9 @@ C o m p i l a t i o n
  205  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
  206  display rnum;
  207   
-EXIT C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
-INCLUDE    C:\GAMS\NEWAGE_REEEM\defines\18x18x4_gtap9.map
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 6
+EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\defines\18x18x4_gtap9.map
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 6
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -242,7 +242,7 @@ C o m p i l a t i o n
  212  *       See GTAP resource 7088.pdf by Walmsley and Carrico for a description of
  213  *       labor categories.
  214   
- 215  *       Roland Cunha Montnegro: Map for the REEEM Project at IER 10.2016
+ 215  *       Roland Cunha Montnegro: Map for Doctor Dissertation 19.09.2020
  216  *       SKL = ILO ISCO-88 groups 1-3, USK = ILO ISCO-88 groups 4-9
  217   
  218  * ----- Factors (4) ----------------------------------------------------------
@@ -291,7 +291,7 @@ C o m p i l a t i o n
  262   
  263  *       The following names changes for single sectors are those which conform to the
  264  *       GTAPinGAMS conventions for energy goods:
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 7
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -349,7 +349,7 @@ C o m p i l a t i o n
  315          RUS     Russia
  316          IND     India
  317          CHI     China and Hong Kong
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 8
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 8
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -407,7 +407,7 @@ C o m p i l a t i o n
  368                  CYP     !       Cyprus
  369                  CZE     !       Czech Republic
  370                  GRC     !       Greece
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/17/16 18:08:58 Page 9
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:18:31 Page 9
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -431,87 +431,87 @@ C o m p i l a t i o n
  387                  MEX     !       Mexico
  388                  CHE     !       Switzerland
  389                  NOR     !       Norway
- 390                  XEF     !       Rest of EFTA
- 391   
- 392          ).OEC,
- 393   
+ 390                  TUR     !       Turkey
+ 391                  XEF     !       Rest of EFTA
+ 392                  CHL     !       Chile
+ 393                  COL     !       Colombia
  394   
- 395          (       ! China + Hong Kong
- 396                  CHN     !       China
- 397                  HKG     !       Hong Kong
- 398          ).CHI,
- 399   
- 400          (       ! Arabian World (NOA + MEA)
- 401                  IDN     !       Indonesia
- 402                  ECU     !       Ecuador
- 403                  VEN     !       Venezuela
- 404                  EGY     !       Egypt
- 405                  MAR     !       Morocco
- 406                  OMN     !       Omam
- 407                  XNF     !       Rest of North Africa_ Algeria Libya West Sahara
- 408                  TUN     !       Tunisia
- 409                  IRN     !       Iran Islamic Republic of
- 410                  QAT     !       Qatar
- 411                  SAU     !       Saudi Arabia
- 412                  ARE     !       United Arab Emirates
- 413                  BHR     !       Bahrain
- 414                  KWT     !       Kuwait
- 415                  NGA     !       Nigeria
- 416          ).OPA,
- 417   
- 418          (       ! Rest of the World (incl. XOC + XNA)
- 419                  XOC     !       Rest of Oceania
- 420                  MNG     !       Mongolia
- 421                  TWN     !       Taiwan
- 422                  XEA     !       Rest of East Asia
- 423                  KHM     !       Cambodia
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 10
+ 395          ).OEC,
+ 396   
+ 397   
+ 398          (       ! China + Hong Kong
+ 399                  CHN     !       China
+ 400                  HKG     !       Hong Kong
+ 401          ).CHI,
+ 402   
+ 403          (       ! Arabian World (NOA + MEA)
+ 404                  IDN     !       Indonesia
+ 405                  ECU     !       Ecuador
+ 406                  VEN     !       Venezuela
+ 407                  EGY     !       Egypt
+ 408                  MAR     !       Morocco
+ 409                  OMN     !       Omam
+ 410                  XNF     !       Rest of North Africa_ Algeria Libya West Sahara
+ 411                  TUN     !       Tunisia
+ 412                  IRN     !       Iran Islamic Republic of
+ 413                  QAT     !       Qatar
+ 414                  SAU     !       Saudi Arabia
+ 415                  ARE     !       United Arab Emirates
+ 416                  BHR     !       Bahrain
+ 417                  KWT     !       Kuwait
+ 418                  NGA     !       Nigeria
+ 419          ).OPA,
+ 420   
+ 421          (       ! Rest of the World (incl. XOC + XNA)
+ 422                  XOC     !       Rest of Oceania
+ 423                  MNG     !       Mongolia
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 10
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
 
- 424                  LAO     !       Lao Peoples Democratic Republic
- 425                  MYS     !       Malaysia
- 426                  PHL     !       Philippines
- 427                  SGP     !       Singapore
- 428                  THA     !       Thailand
- 429                  VNM     !       Viet Nam
- 430                  XSE     !       Rest of Southeast Asia
- 431                  BGD     !       Bangladesh
- 432                  NPL     !       Nepal
- 433                  PAK     !       Pakistan
- 434                  LKA     !       Sri Lanka
- 435                  XSA     !       Rest of South Asia
- 436                  XNA     !       Rest of North America
- 437                  ARG     !       Argentina
- 438                  BOL     !       Bolivia
- 439                  CHL     !       Chile
- 440                  COL     !       Colombia
- 441                  PRY     !       Paraguay
- 442                  PER     !       Peru
- 443                  URY     !       Uruguay
- 444                  XSM     !       Rest of South America
- 445                  CRI     !       Costa Rica
- 446                  GTM     !       Guatemala
- 447                  HND     !       Honduras
- 448                  NIC     !       Nicaragua
- 449                  PAN     !       Panama
- 450                  SLV     !       El Salvador
- 451                  XCA     !       Rest of Central America
- 452                  XCB     !       Caribbean
- 453                  ALB     !       Albania
- 454                  BLR     !       Belarus
- 455                  UKR     !       Ukraine
- 456                  XEE     !       Rest of Eastern Europe
- 457                  XER     !       Rest of Europe
- 458                  KAZ     !       Kazakhstan
- 459                  KGZ     !       Kyrgyzstan
- 460                  XSU     !       Rest of Former Soviet Union
- 461                  ARM     !       Armenia
- 462                  AZE     !       Azerbaijan
- 463                  GEO     !       Georgia
- 464                  ISR     !       Israel
- 465                  TUR     !       Turkey
+ 424                  TWN     !       Taiwan
+ 425                  XEA     !       Rest of East Asia
+ 426                  KHM     !       Cambodia
+ 427                  LAO     !       Lao Peoples Democratic Republic
+ 428                  MYS     !       Malaysia
+ 429                  PHL     !       Philippines
+ 430                  SGP     !       Singapore
+ 431                  THA     !       Thailand
+ 432                  VNM     !       Viet Nam
+ 433                  XSE     !       Rest of Southeast Asia
+ 434                  BGD     !       Bangladesh
+ 435                  NPL     !       Nepal
+ 436                  PAK     !       Pakistan
+ 437                  LKA     !       Sri Lanka
+ 438                  XSA     !       Rest of South Asia
+ 439                  XNA     !       Rest of North America
+ 440                  ARG     !       Argentina
+ 441                  BOL     !       Bolivia
+ 442                  PRY     !       Paraguay
+ 443                  PER     !       Peru
+ 444                  URY     !       Uruguay
+ 445                  XSM     !       Rest of South America
+ 446                  CRI     !       Costa Rica
+ 447                  GTM     !       Guatemala
+ 448                  HND     !       Honduras
+ 449                  NIC     !       Nicaragua
+ 450                  PAN     !       Panama
+ 451                  SLV     !       El Salvador
+ 452                  XCA     !       Rest of Central America
+ 453                  XCB     !       Caribbean
+ 454                  ALB     !       Albania
+ 455                  BLR     !       Belarus
+ 456                  UKR     !       Ukraine
+ 457                  XEE     !       Rest of Eastern Europe
+ 458                  XER     !       Rest of Europe
+ 459                  KAZ     !       Kazakhstan
+ 460                  KGZ     !       Kyrgyzstan
+ 461                  XSU     !       Rest of Former Soviet Union
+ 462                  ARM     !       Armenia
+ 463                  AZE     !       Azerbaijan
+ 464                  GEO     !       Georgia
+ 465                  ISR     !       Israel
  466                  XWS     !       Rest of Western Asia
  467                  CMR     !       Cameroon
  468                  CIV     !       Cote dIvoire
@@ -523,7 +523,7 @@ C o m p i l a t i o n
  474                  ETH     !       Ethiopia
  475                  KEN     !       Kenya
  476                  MDG     !       Madagascar
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 11
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 11
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -581,7 +581,7 @@ C o m p i l a t i o n
  527          eco2d_(ii,*,rr) CO2 emissions in domestic fuels - Mt CO2,
  528          eco2i_(ii,*,rr) CO2 emissions in foreign fuels - Mt CO2,
  529   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 12
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 12
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -616,42 +616,42 @@ C o m p i l a t i o n
  557  file ktitle; put ktitle;
  558   
  559  put_utility 'title' /"Aggregating vdep.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
  755  put_utility 'title' /"Aggregating vkb.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
  933  put_utility 'title' /"Aggregating save.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 1111   
 1112   
 1113  put_utility 'title' /"Aggregating vst.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 1340  put_utility 'title' /"Aggregating vom.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 1567  put_utility 'title' /"Aggregating vfm.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 1845  put_utility 'title' /"Aggregating vdfm.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 2123  put_utility 'title' /"Aggregating vifm.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 2401  put_utility 'title' /"Aggregating vxmd.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 2679  put_utility 'title' /"Aggregating evd.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 2957  put_utility 'title' /"Aggregating evi.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 13
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 13
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
 
 3235  put_utility 'title' /"Aggregating evt.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 3513  put_utility 'title' /"Aggregating eco2d.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 3791  put_utility 'title' /"Aggregating eco2i.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 4069  put_utility 'title' /"Aggregating vtwr.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 4393   
 4394  *       First, convert tax rates into tax payments:
 4395   
@@ -666,17 +666,17 @@ BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
 4404  *       Aggregate:
 4405   
 4406  put_utility 'title' /"Aggregating rto.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 4633  put_utility 'title' /"Aggregating rtf.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 4911  put_utility 'title' /"Aggregating rtfd.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 5189  put_utility 'title' /"Aggregating rtfi.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 5467  put_utility 'title' /"Aggregating rtxs.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 5745  put_utility 'title' /"Aggregating rtms.";
-BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
+BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 6023   
 6024  parameter profit;
 6025  profit(gg,rr) = vom_(gg,rr)
@@ -697,7 +697,7 @@ BATINCLUDE C:\GAMS\NEWAGE_REEEM\build\aggr.gms
 6040  rtfd_(ii,gg,rr)$ vdfm_(ii,gg,rr) = rtfd_(ii,gg,rr) / vdfm_(ii,gg,rr);
 6041  rtfi_(ii,gg,rr)$ vifm_(ii,gg,rr) = rtfi_(ii,gg,rr) / vifm_(ii,gg,rr);
 6042  rtxs_(ii,rr,ss)$ vxmd_(ii,rr,ss) = rtxs_(ii,rr,ss) / vxmd_(ii,rr,ss);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 14
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 14
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -741,290 +741,290 @@ C o m p i l a t i o n
 6080          vdep_=vdep, vkb_=vkb, save_=save;
 6081   
 6082  put_utility 'title' /"All done with aggregation.";
-EXIT C:\GAMS\NEWAGE_REEEM\build\gtapaggr_newage.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 15
+EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 15
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\GAMS\NEWAGE_REEEM\build\gtapaggr_newage.gms
-     2       15 INCLUDE        1      15  .C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
-     3       30 IF EXIST       2      15  .C:\GAMS\NEWAGE_REEEM\build\gsd_01.gdx
-     4       31 IF EXIST       2      16  .C:\GAMS\NEWAGE_REEEM\build\gsd_01.gdx
-     5       31 GDXIN          2      16  .C:\GAMS\NEWAGE_REEEM\data11\gsd_01.gdx
-     6      208 EXIT           2     193  .C:\GAMS\NEWAGE_REEEM\build\gtap9data_newage.gms
-     7      209 INCLUDE        1      16  .C:\GAMS\NEWAGE_REEEM\defines\18x18x4_gtap9.map
-     8      560 BATINCLUDE     1      73  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-     9      637 BATINCLUDE     8     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    10      675 EXIT           9      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    11      690 BATINCLUDE     8     140  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    12      734 EXIT          11      52  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    13      740 BATINCLUDE     8     146  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    14      748 EXIT          13      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    15      754 EXIT           8     152  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    16      756 BATINCLUDE     1      75  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    17      815 BATINCLUDE    16     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    18      853 EXIT          17      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    19      868 BATINCLUDE    16     140  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    20      912 EXIT          19      52  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    21      918 BATINCLUDE    16     146  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    22      926 EXIT          21      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    23      932 EXIT          16     152  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    24      934 BATINCLUDE     1      77  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    25      993 BATINCLUDE    24     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    26     1031 EXIT          25      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    27     1046 BATINCLUDE    24     140  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    28     1090 EXIT          27      52  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    29     1096 BATINCLUDE    24     146  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    30     1104 EXIT          29      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    31     1110 EXIT          24     152  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    32     1114 BATINCLUDE     1      81  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    33     1174 BATINCLUDE    32     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    34     1212 EXIT          33      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    35     1221 BATINCLUDE    32     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    36     1259 EXIT          35      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    37     1273 BATINCLUDE    32     172  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    38     1318 EXIT          37      63  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    39     1325 BATINCLUDE    32     179  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    40     1333 EXIT          39      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    41     1339 EXIT          32     185  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    42     1341 BATINCLUDE     1      83  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    43     1401 BATINCLUDE    42     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    44     1439 EXIT          43      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    45     1448 BATINCLUDE    42     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    46     1486 EXIT          45      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    47     1500 BATINCLUDE    42     172  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    48     1545 EXIT          47      63  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    49     1552 BATINCLUDE    42     179  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    50     1560 EXIT          49      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    51     1566 EXIT          42     185  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 16
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_newage.gms
+     2       15 INCLUDE        1      15  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+     3       30 IF EXIST       2      15  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gsd_01.gdx
+     4       31 IF EXIST       2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gsd_01.gdx
+     5       31 GDXIN          2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\gsd_01.gdx
+     6      208 EXIT           2     193  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+     7      209 INCLUDE        1      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\defines\18x18x4_gtap9.map
+     8      560 BATINCLUDE     1      73  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+     9      637 BATINCLUDE     8     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    10      675 EXIT           9      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    11      690 BATINCLUDE     8     140  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    12      734 EXIT          11      52  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    13      740 BATINCLUDE     8     146  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    14      748 EXIT          13      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    15      754 EXIT           8     152  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    16      756 BATINCLUDE     1      75  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    17      815 BATINCLUDE    16     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    18      853 EXIT          17      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    19      868 BATINCLUDE    16     140  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    20      912 EXIT          19      52  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    21      918 BATINCLUDE    16     146  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    22      926 EXIT          21      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    23      932 EXIT          16     152  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    24      934 BATINCLUDE     1      77  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    25      993 BATINCLUDE    24     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    26     1031 EXIT          25      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    27     1046 BATINCLUDE    24     140  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    28     1090 EXIT          27      52  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    29     1096 BATINCLUDE    24     146  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    30     1104 EXIT          29      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    31     1110 EXIT          24     152  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    32     1114 BATINCLUDE     1      81  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    33     1174 BATINCLUDE    32     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    34     1212 EXIT          33      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    35     1221 BATINCLUDE    32     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    36     1259 EXIT          35      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    37     1273 BATINCLUDE    32     172  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    38     1318 EXIT          37      63  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    39     1325 BATINCLUDE    32     179  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    40     1333 EXIT          39      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    41     1339 EXIT          32     185  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    42     1341 BATINCLUDE     1      83  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    43     1401 BATINCLUDE    42     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    44     1439 EXIT          43      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    45     1448 BATINCLUDE    42     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    46     1486 EXIT          45      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    47     1500 BATINCLUDE    42     172  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    48     1545 EXIT          47      63  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    49     1552 BATINCLUDE    42     179  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    50     1560 EXIT          49      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    51     1566 EXIT          42     185  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 16
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-    52     1568 BATINCLUDE     1      85  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    53     1629 BATINCLUDE    52     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    54     1667 EXIT          53      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    55     1676 BATINCLUDE    52     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    56     1714 EXIT          55      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    57     1723 BATINCLUDE    52     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    58     1761 EXIT          57      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    59     1775 BATINCLUDE    52     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    60     1821 EXIT          59      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    61     1828 BATINCLUDE    52     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    62     1836 EXIT          61      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    63     1844 EXIT          52     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    64     1846 BATINCLUDE     1      87  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    65     1907 BATINCLUDE    64     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    66     1945 EXIT          65      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    67     1954 BATINCLUDE    64     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    68     1992 EXIT          67      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    69     2001 BATINCLUDE    64     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    70     2039 EXIT          69      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    71     2053 BATINCLUDE    64     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    72     2099 EXIT          71      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    73     2106 BATINCLUDE    64     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    74     2114 EXIT          73      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    75     2122 EXIT          64     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    76     2124 BATINCLUDE     1      89  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    77     2185 BATINCLUDE    76     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    78     2223 EXIT          77      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    79     2232 BATINCLUDE    76     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    80     2270 EXIT          79      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    81     2279 BATINCLUDE    76     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    82     2317 EXIT          81      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    83     2331 BATINCLUDE    76     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    84     2377 EXIT          83      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    85     2384 BATINCLUDE    76     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    86     2392 EXIT          85      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    87     2400 EXIT          76     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    88     2402 BATINCLUDE     1      91  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-    89     2463 BATINCLUDE    88     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    90     2501 EXIT          89      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    91     2510 BATINCLUDE    88     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    92     2548 EXIT          91      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    93     2557 BATINCLUDE    88     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    94     2595 EXIT          93      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-    95     2609 BATINCLUDE    88     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    96     2655 EXIT          95      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-    97     2662 BATINCLUDE    88     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    98     2670 EXIT          97      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-    99     2678 EXIT          88     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   100     2680 BATINCLUDE     1      93  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   101     2741 BATINCLUDE   100     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   102     2779 EXIT         101      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 17
+    52     1568 BATINCLUDE     1      85  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    53     1629 BATINCLUDE    52     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    54     1667 EXIT          53      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    55     1676 BATINCLUDE    52     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    56     1714 EXIT          55      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    57     1723 BATINCLUDE    52     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    58     1761 EXIT          57      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    59     1775 BATINCLUDE    52     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    60     1821 EXIT          59      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    61     1828 BATINCLUDE    52     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    62     1836 EXIT          61      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    63     1844 EXIT          52     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    64     1846 BATINCLUDE     1      87  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    65     1907 BATINCLUDE    64     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    66     1945 EXIT          65      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    67     1954 BATINCLUDE    64     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    68     1992 EXIT          67      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    69     2001 BATINCLUDE    64     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    70     2039 EXIT          69      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    71     2053 BATINCLUDE    64     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    72     2099 EXIT          71      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    73     2106 BATINCLUDE    64     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    74     2114 EXIT          73      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    75     2122 EXIT          64     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    76     2124 BATINCLUDE     1      89  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    77     2185 BATINCLUDE    76     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    78     2223 EXIT          77      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    79     2232 BATINCLUDE    76     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    80     2270 EXIT          79      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    81     2279 BATINCLUDE    76     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    82     2317 EXIT          81      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    83     2331 BATINCLUDE    76     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    84     2377 EXIT          83      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    85     2384 BATINCLUDE    76     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    86     2392 EXIT          85      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    87     2400 EXIT          76     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    88     2402 BATINCLUDE     1      91  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+    89     2463 BATINCLUDE    88     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    90     2501 EXIT          89      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    91     2510 BATINCLUDE    88     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    92     2548 EXIT          91      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    93     2557 BATINCLUDE    88     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    94     2595 EXIT          93      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+    95     2609 BATINCLUDE    88     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    96     2655 EXIT          95      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+    97     2662 BATINCLUDE    88     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    98     2670 EXIT          97      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+    99     2678 EXIT          88     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   100     2680 BATINCLUDE     1      93  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   101     2741 BATINCLUDE   100     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   102     2779 EXIT         101      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 17
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   103     2788 BATINCLUDE   100     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   104     2826 EXIT         103      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   105     2835 BATINCLUDE   100     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   106     2873 EXIT         105      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   107     2887 BATINCLUDE   100     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   108     2933 EXIT         107      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   109     2940 BATINCLUDE   100     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   110     2948 EXIT         109      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   111     2956 EXIT         100     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   112     2958 BATINCLUDE     1      95  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   113     3019 BATINCLUDE   112     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   114     3057 EXIT         113      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   115     3066 BATINCLUDE   112     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   116     3104 EXIT         115      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   117     3113 BATINCLUDE   112     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   118     3151 EXIT         117      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   119     3165 BATINCLUDE   112     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   120     3211 EXIT         119      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   121     3218 BATINCLUDE   112     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   122     3226 EXIT         121      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   123     3234 EXIT         112     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   124     3236 BATINCLUDE     1      97  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   125     3297 BATINCLUDE   124     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   126     3335 EXIT         125      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   127     3344 BATINCLUDE   124     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   128     3382 EXIT         127      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   129     3391 BATINCLUDE   124     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   130     3429 EXIT         129      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   131     3443 BATINCLUDE   124     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   132     3489 EXIT         131      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   133     3496 BATINCLUDE   124     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   134     3504 EXIT         133      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   135     3512 EXIT         124     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   136     3514 BATINCLUDE     1      99  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   137     3575 BATINCLUDE   136     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   138     3613 EXIT         137      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   139     3622 BATINCLUDE   136     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   140     3660 EXIT         139      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   141     3669 BATINCLUDE   136     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   142     3707 EXIT         141      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   143     3721 BATINCLUDE   136     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   144     3767 EXIT         143      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   145     3774 BATINCLUDE   136     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   146     3782 EXIT         145      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   147     3790 EXIT         136     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   148     3792 BATINCLUDE     1     101  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   149     3853 BATINCLUDE   148     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   150     3891 EXIT         149      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   151     3900 BATINCLUDE   148     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   152     3938 EXIT         151      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   153     3947 BATINCLUDE   148     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 18
+   103     2788 BATINCLUDE   100     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   104     2826 EXIT         103      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   105     2835 BATINCLUDE   100     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   106     2873 EXIT         105      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   107     2887 BATINCLUDE   100     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   108     2933 EXIT         107      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   109     2940 BATINCLUDE   100     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   110     2948 EXIT         109      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   111     2956 EXIT         100     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   112     2958 BATINCLUDE     1      95  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   113     3019 BATINCLUDE   112     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   114     3057 EXIT         113      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   115     3066 BATINCLUDE   112     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   116     3104 EXIT         115      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   117     3113 BATINCLUDE   112     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   118     3151 EXIT         117      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   119     3165 BATINCLUDE   112     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   120     3211 EXIT         119      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   121     3218 BATINCLUDE   112     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   122     3226 EXIT         121      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   123     3234 EXIT         112     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   124     3236 BATINCLUDE     1      97  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   125     3297 BATINCLUDE   124     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   126     3335 EXIT         125      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   127     3344 BATINCLUDE   124     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   128     3382 EXIT         127      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   129     3391 BATINCLUDE   124     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   130     3429 EXIT         129      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   131     3443 BATINCLUDE   124     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   132     3489 EXIT         131      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   133     3496 BATINCLUDE   124     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   134     3504 EXIT         133      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   135     3512 EXIT         124     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   136     3514 BATINCLUDE     1      99  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   137     3575 BATINCLUDE   136     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   138     3613 EXIT         137      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   139     3622 BATINCLUDE   136     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   140     3660 EXIT         139      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   141     3669 BATINCLUDE   136     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   142     3707 EXIT         141      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   143     3721 BATINCLUDE   136     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   144     3767 EXIT         143      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   145     3774 BATINCLUDE   136     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   146     3782 EXIT         145      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   147     3790 EXIT         136     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   148     3792 BATINCLUDE     1     101  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   149     3853 BATINCLUDE   148     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   150     3891 EXIT         149      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   151     3900 BATINCLUDE   148     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   152     3938 EXIT         151      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   153     3947 BATINCLUDE   148     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 18
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   154     3985 EXIT         153      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   155     3999 BATINCLUDE   148     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   156     4045 EXIT         155      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   157     4052 BATINCLUDE   148     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   158     4060 EXIT         157      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   159     4068 EXIT         148     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   160     4070 BATINCLUDE     1     103  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   161     4132 BATINCLUDE   160     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   162     4170 EXIT         161      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   163     4179 BATINCLUDE   160     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   164     4217 EXIT         163      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   165     4226 BATINCLUDE   160     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   166     4264 EXIT         165      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   167     4272 BATINCLUDE   160     225  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   168     4310 EXIT         167      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   169     4322 BATINCLUDE   160     237  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   170     4369 EXIT         169      85  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   171     4376 BATINCLUDE   160     244  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   172     4384 EXIT         171      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   173     4392 EXIT         160     252  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   174     4407 BATINCLUDE     1     118  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   175     4467 BATINCLUDE   174     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   176     4505 EXIT         175      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   177     4514 BATINCLUDE   174     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   178     4552 EXIT         177      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   179     4566 BATINCLUDE   174     172  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   180     4611 EXIT         179      63  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   181     4618 BATINCLUDE   174     179  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   182     4626 EXIT         181      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   183     4632 EXIT         174     185  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   184     4634 BATINCLUDE     1     120  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   185     4695 BATINCLUDE   184     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   186     4733 EXIT         185      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   187     4742 BATINCLUDE   184     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   188     4780 EXIT         187      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   189     4789 BATINCLUDE   184     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   190     4827 EXIT         189      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   191     4841 BATINCLUDE   184     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   192     4887 EXIT         191      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   193     4894 BATINCLUDE   184     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   194     4902 EXIT         193      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   195     4910 EXIT         184     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   196     4912 BATINCLUDE     1     122  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   197     4973 BATINCLUDE   196     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   198     5011 EXIT         197      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   199     5020 BATINCLUDE   196     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   200     5058 EXIT         199      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   201     5067 BATINCLUDE   196     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   202     5105 EXIT         201      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   203     5119 BATINCLUDE   196     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   204     5165 EXIT         203      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 19
+   154     3985 EXIT         153      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   155     3999 BATINCLUDE   148     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   156     4045 EXIT         155      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   157     4052 BATINCLUDE   148     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   158     4060 EXIT         157      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   159     4068 EXIT         148     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   160     4070 BATINCLUDE     1     103  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   161     4132 BATINCLUDE   160     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   162     4170 EXIT         161      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   163     4179 BATINCLUDE   160     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   164     4217 EXIT         163      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   165     4226 BATINCLUDE   160     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   166     4264 EXIT         165      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   167     4272 BATINCLUDE   160     225  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   168     4310 EXIT         167      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   169     4322 BATINCLUDE   160     237  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   170     4369 EXIT         169      85  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   171     4376 BATINCLUDE   160     244  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   172     4384 EXIT         171      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   173     4392 EXIT         160     252  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   174     4407 BATINCLUDE     1     118  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   175     4467 BATINCLUDE   174     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   176     4505 EXIT         175      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   177     4514 BATINCLUDE   174     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   178     4552 EXIT         177      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   179     4566 BATINCLUDE   174     172  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   180     4611 EXIT         179      63  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   181     4618 BATINCLUDE   174     179  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   182     4626 EXIT         181      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   183     4632 EXIT         174     185  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   184     4634 BATINCLUDE     1     120  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   185     4695 BATINCLUDE   184     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   186     4733 EXIT         185      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   187     4742 BATINCLUDE   184     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   188     4780 EXIT         187      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   189     4789 BATINCLUDE   184     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   190     4827 EXIT         189      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   191     4841 BATINCLUDE   184     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   192     4887 EXIT         191      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   193     4894 BATINCLUDE   184     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   194     4902 EXIT         193      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   195     4910 EXIT         184     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   196     4912 BATINCLUDE     1     122  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   197     4973 BATINCLUDE   196     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   198     5011 EXIT         197      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   199     5020 BATINCLUDE   196     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   200     5058 EXIT         199      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   201     5067 BATINCLUDE   196     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   202     5105 EXIT         201      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   203     5119 BATINCLUDE   196     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   204     5165 EXIT         203      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 19
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   205     5172 BATINCLUDE   196     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   206     5180 EXIT         205      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   207     5188 EXIT         196     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   208     5190 BATINCLUDE     1     124  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   209     5251 BATINCLUDE   208     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   210     5289 EXIT         209      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   211     5298 BATINCLUDE   208     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   212     5336 EXIT         211      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   213     5345 BATINCLUDE   208     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   214     5383 EXIT         213      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   215     5397 BATINCLUDE   208     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   216     5443 EXIT         215      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   217     5450 BATINCLUDE   208     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   218     5458 EXIT         217      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   219     5466 EXIT         208     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   220     5468 BATINCLUDE     1     126  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   221     5529 BATINCLUDE   220     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   222     5567 EXIT         221      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   223     5576 BATINCLUDE   220     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   224     5614 EXIT         223      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   225     5623 BATINCLUDE   220     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   226     5661 EXIT         225      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   227     5675 BATINCLUDE   220     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   228     5721 EXIT         227      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   229     5728 BATINCLUDE   220     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   230     5736 EXIT         229      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   231     5744 EXIT         220     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   232     5746 BATINCLUDE     1     128  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   233     5807 BATINCLUDE   232     125  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   234     5845 EXIT         233      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   235     5854 BATINCLUDE   232     158  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   236     5892 EXIT         235      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   237     5901 BATINCLUDE   232     191  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   238     5939 EXIT         237      82  ..C:\GAMS\NEWAGE_REEEM\build\checkset.gms
-   239     5953 BATINCLUDE   232     205  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   240     5999 EXIT         239      74  ..C:\GAMS\NEWAGE_REEEM\build\domain.gms
-   241     6006 BATINCLUDE   232     212  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   242     6014 EXIT         241      18  ..C:\GAMS\NEWAGE_REEEM\build\chktarget.gms
-   243     6022 EXIT         232     220  .C:\GAMS\NEWAGE_REEEM\build\aggr.gms
-   244     6083 EXIT           1     189  C:\GAMS\NEWAGE_REEEM\build\gtapaggr_newage.gms
+   205     5172 BATINCLUDE   196     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   206     5180 EXIT         205      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   207     5188 EXIT         196     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   208     5190 BATINCLUDE     1     124  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   209     5251 BATINCLUDE   208     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   210     5289 EXIT         209      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   211     5298 BATINCLUDE   208     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   212     5336 EXIT         211      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   213     5345 BATINCLUDE   208     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   214     5383 EXIT         213      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   215     5397 BATINCLUDE   208     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   216     5443 EXIT         215      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   217     5450 BATINCLUDE   208     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   218     5458 EXIT         217      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   219     5466 EXIT         208     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   220     5468 BATINCLUDE     1     126  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   221     5529 BATINCLUDE   220     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   222     5567 EXIT         221      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   223     5576 BATINCLUDE   220     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   224     5614 EXIT         223      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   225     5623 BATINCLUDE   220     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   226     5661 EXIT         225      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   227     5675 BATINCLUDE   220     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   228     5721 EXIT         227      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   229     5728 BATINCLUDE   220     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   230     5736 EXIT         229      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   231     5744 EXIT         220     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   232     5746 BATINCLUDE     1     128  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   233     5807 BATINCLUDE   232     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   234     5845 EXIT         233      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   235     5854 BATINCLUDE   232     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   236     5892 EXIT         235      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   237     5901 BATINCLUDE   232     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   238     5939 EXIT         237      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
+   239     5953 BATINCLUDE   232     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   240     5999 EXIT         239      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
+   241     6006 BATINCLUDE   232     212  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   242     6014 EXIT         241      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
+   243     6022 EXIT         232     220  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
+   244     6083 EXIT           1     189  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_newage.gms
 
 
 COMPILATION TIME     =        0.234 SECONDS     59 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 20
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 20
 GTAP Mapping which Relabels to Match GAMS Identifiers
 E x e c u t i o n
 
@@ -1079,7 +1079,7 @@ Land   ,    NatlRes
 
 USA
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/17/16 18:08:58 Page 21
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:18:31 Page 21
 GTAP Mapping which Relabels to Match GAMS Identifiers
 E x e c u t i o n
 
@@ -1088,35 +1088,35 @@ E x e c u t i o n
 
             IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
-oil -1.5987E-13 1.88294E-13 4.04121E-14 1.19904E-14 -1.1546E-14 2.88658E-14 -3.9968E-15 -2.8599E-13 -1.0658E-14 -7.9936E-15             5.55112E-14 -5.3291E-14             -3.1974E-13 8.88178E-16 -7.1054E-15 4.26326E-14
-gas 4.44089E-15                         -4.6629E-15             1.11022E-16             -5.6843E-14 8.88178E-16 5.32907E-15 2.22045E-16 3.99680E-15 3.889276E-9 2.77556E-16             8.32667E-17 1.27898E-13 7.489994E-9
-ppp -8.8818E-15 1.13687E-13 1.77636E-14 1.13687E-13             1.77636E-15 3.55271E-15 -2.6645E-15 -3.1974E-14 7.10543E-15 -3.5527E-15 5.28079E-10 -2.8422E-14 7.10543E-15 -3.5527E-14 5.32907E-15 7.10543E-15 9.412943E-9
-nmm                         -7.1054E-15 -7.1054E-15 7.10543E-15 -6.2172E-15 -1.0658E-14 -1.4591E-10 3.55271E-15 -2.1316E-14 3.55271E-15 -4.2633E-14 7.10543E-15 -7.1054E-15 2.55795E-13 -1.9984E-14 2.13163E-14 -5.2580E-13
-nfm 1.77636E-15 5.68434E-14             -3.5527E-15 1.24345E-14 4.88498E-15 3.55271E-15 1.08500E-11 -1.7764E-15 2.66454E-15 -8.8818E-16 -9.7700E-15 4.26326E-14 -6.6613E-15 6.39488E-14 -6.7502E-14 -3.5527E-15 -7.5453E-11
-mvh 9.76996E-15 -1.4211E-14 -5.3291E-14 -5.6843E-14 -1.0658E-14 1.77636E-15 -3.5527E-15 -5.3291E-15 1.06581E-14 -1.0658E-14 -3.5527E-15 -4.2633E-14 7.029229E-9 7.10543E-15 -2.7001E-13 4.35207E-14 -1.4211E-14 -6.2940E-11
-ele -3.9080E-14             -2.4869E-14 -7.1054E-15 -1.4211E-14 3.55271E-15 -7.1054E-15 4.52971E-14             -2.8422E-14 -1.4211E-14 -3.5527E-14 4.731291E-9 1.42109E-14 2.13163E-13 -7.9492E-14 -2.4869E-14 -1.2790E-13
-c   -9.9476E-14 -4.5475E-13 3.97904E-13 -5.6843E-14 2.84217E-14 7.10543E-15 1.42109E-14 1.70530E-13 -3.1264E-13 -1.1369E-13 5.68434E-14 -1.7053E-13 -1.3642E-12 -4.9738E-14 2.70006E-13 2.13163E-14 -8.5265E-14 -1.1369E-13
-g   -3.5527E-14 5.64437E-13 1.07470E-13 -1.3500E-13 6.08402E-14 3.56382E-14 -4.0856E-14 3.59712E-14 -7.4607E-14 -6.3061E-14 -3.2863E-14 -4.3521E-14 3.10862E-13 -9.2593E-14 -2.0961E-13 -8.5487E-15 2.70006E-13 3.94351E-13
-i   -1.2790E-13 3.12639E-13 7.10543E-14 -5.6843E-14 5.68434E-14 -1.4211E-14 7.10543E-15 -4.2633E-14 3.55271E-14 -7.1054E-15 -7.1054E-15 -7.1054E-15 1.70530E-13 -4.2633E-14 -5.6843E-13 -3.5527E-15 2.84217E-14 1.70530E-13
-COL -3.5527E-15 2.13163E-14             2.48690E-14             8.88178E-15             4.44089E-15 -1.1102E-16             8.32667E-17 -2.9310E-14 1.42109E-14             -2.1316E-14 3.99680E-14 3.55271E-15 1.06581E-14
-CRU 3.55271E-14 2.84217E-14                                                             3.12639E-13 7.10543E-15             -8.8818E-16 8.88178E-16 7.627222E-9             3.55271E-14             -2.2737E-13 1.13687E-13
-CHM 1.52767E-13             -1.2790E-13 -1.1369E-13 7.10543E-15 -1.7764E-15 1.06581E-14 -1.5099E-14 -7.1054E-15 -8.5265E-14 -2.1316E-14 -6.0396E-14 1.98952E-13 4.97380E-14 2.84217E-13 -8.8818E-16 -4.2633E-14 3.912305E-9
-IRS -3.9080E-14 7.10543E-14             -3.5527E-15 -3.5527E-15 6.66134E-15 8.88178E-15 1.42109E-14 3.55271E-15 -8.8818E-15 1.77636E-15 5.32907E-15 7.10543E-14 -5.3291E-15 8.52651E-13 -1.8652E-14 1.77636E-14 3.55271E-14
-MAC 6.39488E-14             7.10543E-14 3.69482E-13 8.52651E-14 -1.4211E-14 2.13163E-14 -5.6843E-14 1.42109E-14 -4.2633E-14 -7.1054E-15 -6.3949E-14             -7.1054E-15 5.68434E-13 -3.7303E-14 -5.6843E-14 1.13687E-13
-FOT -1.4211E-14 -5.6843E-14 -2.8422E-14 -4.9738E-14 -5.6843E-14 7.10543E-15 2.13163E-14 -9.9476E-14             1.42109E-14 7.10543E-15 7.10543E-15 -1.7053E-13             -1.8474E-13 -2.0073E-13 5.68434E-14 7.467463E-9
-ROI 2.84217E-14             -1.4211E-14 -1.4211E-14 4.26326E-14 -1.4211E-14 -3.5527E-14 -2.8422E-14             -1.4211E-14 2.13163E-14 -7.1054E-15 5.599986E-9 -5.6843E-14 -2.8422E-13 5.68434E-14 -1.1369E-13 1.528116E-8
-BUI -1.2790E-13 2.27374E-13 5.68434E-14 6.25278E-13 -2.8422E-14 4.26326E-14 1.42109E-14 -4.5475E-13 -2.8422E-14 5.68434E-14 4.26326E-14 -2.7001E-13 9.66338E-13 -5.6843E-14 -1.0232E-12 3.73035E-14 4.54747E-13 -5.6843E-14
-TRN 2.84217E-13 -1.7053E-13 -9.9476E-14 -1.4211E-14 -1.7764E-14 -4.6185E-14 -4.2633E-14             7.81597E-14 -3.5527E-14 5.68434E-14 4.26326E-14 -3.9790E-13 4.26326E-14 3.41061E-13 -2.4869E-14 1.42109E-14 5.51381E-12
-AGR             7.10543E-14             2.84217E-14             -1.2434E-14 -7.1054E-15 1.05452E-10 1.77636E-15 3.55271E-15 1.42109E-14 4.26326E-14 7.199105E-9 2.84217E-14 5.68434E-14 8.88178E-16 -1.7053E-13 1.902038E-9
-SER 2.27374E-13 2.72848E-12 -9.0949E-13 -9.0949E-13             -1.9895E-13 -1.1369E-13 2.02363E-11             3.41061E-13 2.27374E-13 1.76215E-12 -2.7285E-12 -2.2737E-13 -9.0949E-13 5.96856E-13 6.82121E-13 -1.8190E-12
+oil -1.5987E-13 1.88294E-13 4.04121E-14 1.19904E-14 -1.1546E-14 2.88658E-14 -3.9968E-15 -2.8599E-13 -1.0658E-14 -7.9936E-15             5.55112E-14 5.68434E-14             -3.1974E-13 8.88178E-16 -7.1054E-15 1.59872E-14
+gas 4.44089E-15                         -4.6629E-15             1.11022E-16             -5.6843E-14 8.88178E-16 5.32907E-15 2.22045E-16 3.99680E-15 3.889291E-9 2.77556E-16             8.32667E-17 1.27898E-13 7.489994E-9
+ppp -8.8818E-15 1.13687E-13 1.77636E-14 1.13687E-13             1.77636E-15 3.55271E-15 -2.6645E-15 -3.1974E-14 7.10543E-15 -3.5527E-15 5.28079E-10 -8.5265E-14 7.10543E-15 -3.5527E-14 5.32907E-15 7.10543E-15 9.412958E-9
+nmm                         -7.1054E-15 -7.1054E-15 7.10543E-15 -6.2172E-15 -1.0658E-14 -1.4591E-10 3.55271E-15 -2.1316E-14 3.55271E-15 -4.2633E-14 1.42109E-14 -7.1054E-15 2.55795E-13 -1.9984E-14 2.13163E-14 -6.0751E-13
+nfm 1.77636E-15 5.68434E-14             -3.5527E-15 1.24345E-14 4.88498E-15 3.55271E-15 1.08500E-11 -1.7764E-15 2.66454E-15 -8.8818E-16 -9.7700E-15 9.23706E-14 -6.6613E-15 6.39488E-14 -6.7502E-14 -3.5527E-15 -7.5410E-11
+mvh 9.76996E-15 -1.4211E-14 -5.3291E-14 -5.6843E-14 -1.0658E-14 1.77636E-15 -3.5527E-15 -5.3291E-15 1.06581E-14 -1.0658E-14 -3.5527E-15 -4.2633E-14 7.029229E-9 7.10543E-15 -2.7001E-13 4.35207E-14 -1.4211E-14 -6.2926E-11
+ele -3.9080E-14             -2.4869E-14 -7.1054E-15 -1.4211E-14 3.55271E-15 -7.1054E-15 4.52971E-14             -2.8422E-14 -1.4211E-14 -3.5527E-14 4.731305E-9 1.42109E-14 2.13163E-13 -7.9492E-14 -2.4869E-14 -8.5265E-14
+c   -9.9476E-14 -4.5475E-13 3.97904E-13 -5.6843E-14 2.84217E-14 7.10543E-15 1.42109E-14 1.70530E-13 -3.1264E-13 -1.1369E-13 5.68434E-14 -1.7053E-13 -1.3642E-12 -4.9738E-14 2.70006E-13 2.13163E-14 -8.5265E-14 -5.6843E-13
+g   -3.5527E-14 5.64437E-13 1.07470E-13 -1.3500E-13 6.08402E-14 3.56382E-14 -4.0856E-14 3.59712E-14 -7.4607E-14 -6.3061E-14 -3.2863E-14 -4.3521E-14 -1.3856E-13 -9.2593E-14 -2.0961E-13 -8.5487E-15 2.70006E-13 2.77112E-13
+i   -1.2790E-13 3.12639E-13 7.10543E-14 -5.6843E-14 5.68434E-14 -1.4211E-14 7.10543E-15 -4.2633E-14 3.55271E-14 -7.1054E-15 -7.1054E-15 -7.1054E-15 4.54747E-13 -4.2633E-14 -5.6843E-13 -3.5527E-15 2.84217E-14 2.27374E-13
+COL -3.5527E-15 2.13163E-14             2.48690E-14             8.88178E-15             4.44089E-15 -1.1102E-16             8.32667E-17 -2.9310E-14 1.06581E-14             -2.1316E-14 3.99680E-14 3.55271E-15 1.42109E-14
+CRU 3.55271E-14 2.84217E-14                                                             3.12639E-13 7.10543E-15             -8.8818E-16 8.88178E-16 7.627193E-9             3.55271E-14             -2.2737E-13 1.98952E-13
+CHM 1.52767E-13             -1.2790E-13 -1.1369E-13 7.10543E-15 -1.7764E-15 1.06581E-14 -1.5099E-14 -7.1054E-15 -8.5265E-14 -2.1316E-14 -6.0396E-14 2.84217E-14 4.97380E-14 2.84217E-13 -8.8818E-16 -4.2633E-14 3.912248E-9
+IRS -3.9080E-14 7.10543E-14             -3.5527E-15 -3.5527E-15 6.66134E-15 8.88178E-15 1.42109E-14 3.55271E-15 -8.8818E-15 1.77636E-15 5.32907E-15 7.10543E-14 -5.3291E-15 8.52651E-13 -1.8652E-14 1.77636E-14 2.84217E-14
+MAC 6.39488E-14             7.10543E-14 3.69482E-13 8.52651E-14 -1.4211E-14 2.13163E-14 -5.6843E-14 1.42109E-14 -4.2633E-14 -7.1054E-15 -6.3949E-14 1.70530E-13 -7.1054E-15 5.68434E-13 -3.7303E-14 -5.6843E-14
+FOT -1.4211E-14 -5.6843E-14 -2.8422E-14 -4.9738E-14 -5.6843E-14 7.10543E-15 2.13163E-14 -9.9476E-14             1.42109E-14 7.10543E-15 7.10543E-15 -2.8422E-13             -1.8474E-13 -2.0073E-13 5.68434E-14 7.467236E-9
+ROI 2.84217E-14             -1.4211E-14 -1.4211E-14 4.26326E-14 -1.4211E-14 -3.5527E-14 -2.8422E-14             -1.4211E-14 2.13163E-14 -7.1054E-15 5.600157E-9 -5.6843E-14 -2.8422E-13 5.68434E-14 -1.1369E-13 1.528130E-8
+BUI -1.2790E-13 2.27374E-13 5.68434E-14 6.25278E-13 -2.8422E-14 4.26326E-14 1.42109E-14 -4.5475E-13 -2.8422E-14 5.68434E-14 4.26326E-14 -2.7001E-13 9.09495E-13 -5.6843E-14 -1.0232E-12 3.73035E-14 4.54747E-13 2.55795E-13
+TRN 2.84217E-13 -1.7053E-13 -9.9476E-14 -1.4211E-14 -1.7764E-14 -4.6185E-14 -4.2633E-14             7.81597E-14 -3.5527E-14 5.68434E-14 4.26326E-14 2.27374E-13 4.26326E-14 3.41061E-13 -2.4869E-14 1.42109E-14 5.31486E-12
+AGR             7.10543E-14             2.84217E-14             -1.2434E-14 -7.1054E-15 1.05452E-10 1.77636E-15 3.55271E-15 1.42109E-14 4.26326E-14 7.198992E-9 2.84217E-14 5.68434E-14 8.88178E-16 -1.7053E-13 1.901867E-9
+SER 2.27374E-13 2.72848E-12 -9.0949E-13 -9.0949E-13             -1.9895E-13 -1.1369E-13 2.02363E-11             3.41061E-13 2.27374E-13 1.76215E-12 -3.6380E-12 -2.2737E-13 -9.0949E-13 5.96856E-13 6.82121E-13 -1.5916E-12
 
 
 **** REPORT FILE SUMMARY
 
-ktitle C:\GAMS\NEWAGE_REEEM\build\ktitle.put
+ktitle C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\ktitle.put
 
 
-EXECUTION TIME       =        6.334 SECONDS    250 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        6.349 SECONDS    250 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -1126,5 +1126,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\GAMS\NEWAGE_REEEM\build\gtapaggr_newage.gms
-Output     C:\GAMS\NEWAGE_REEEM\build\gtapaggr_newage.lst
+Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_newage.gms
+Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_newage.lst

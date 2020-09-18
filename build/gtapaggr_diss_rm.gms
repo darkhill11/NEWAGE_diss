@@ -4,7 +4,7 @@ $title  Aggregation Program for the GTAP9 Database
 $if not set source $set source gsd_01
 *old ->> $if not set target $set target 17x18x4_gtap9
 *edited on 17.10.2016 for new REEEM Maooing
-$if not set target $set target 18x18x4_gtap9
+$if not set target $set target 18x19x4_gtap9
 
 
 $if not set source $abort       Need to specify a source on command line: --source=xxx
