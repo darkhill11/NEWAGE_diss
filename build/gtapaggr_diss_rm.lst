@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 1
 Aggregation Program for the GTAP9 Database
 C o m p i l a t i o n
 
@@ -11,7 +11,7 @@ C o m p i l a t i o n
    9   
   13   
 INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 2
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 2
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -69,7 +69,7 @@ GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\gsd_01.gdx
   68  if (nd>0,
   69          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
   70          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 3
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -127,7 +127,7 @@ C o m p i l a t i o n
  116          esubd(i)        Elasticity of substitution (M versus D),
  117          esubva(g)       Elasticity of substitution between factors
  118          esubm(i)        Intra-import elasticity of substitution,
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 4
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 4
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -185,7 +185,7 @@ C o m p i l a t i o n
  164  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
  165   
  166  vdm("c",r) = vom("c",r);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 5
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 5
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -233,7 +233,7 @@ C o m p i l a t i o n
  207   
 EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
 INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\defines\18x19x4_gtap9.map
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 6
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -291,7 +291,7 @@ C o m p i l a t i o n
  261   
  263   
  264  *       The following names changes for single sectors are those which conform to the
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 7
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -328,8 +328,8 @@ C o m p i l a t i o n
  294          CNS.BUI                                                         Building and construction,
  295          (OTP,WTP,ATP).TRN                                               Transport,
  296          (PDR,WHT,GRO,V_F,OSD,C_B,PFB,OCR,CTL,OAP,RMK,WOL,FRS,FSH).AGR   Agriculture,
- 297          DWE.DWE                                                         Dwellings,
- 298          (WTR,TRD,CMN,OFI,ISR,OBS,ROS,OSG).SER                           Services /;
+ 297          (DWE,OBS).DWE                                                   Dwellings,
+ 298          (WTR,TRD,CMN,OFI,ISR,ROS,OSG).SER                               Services /;
  299   
  300   
  301  * ----- Regions (17) ----------------------------------------------------------
@@ -349,7 +349,7 @@ C o m p i l a t i o n
  315          OEC     Rest of OECD
  316          BRZ     Brazil
  317          RUS     Russia
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 8
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 8
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -407,7 +407,7 @@ C o m p i l a t i o n
  368          (       ! South-Eastern EU-28
  369                  AUT     !       Austria
  370                  CYP     !       Cyprus
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 12:29:33 Page 9
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 10/02/20 11:15:20 Page 9
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -465,7 +465,7 @@ C o m p i l a t i o n
  421          ).OPA,
  422   
  423          (       ! Rest of the World (incl. XOC + XNA)
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 10
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 10
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -523,7 +523,7 @@ C o m p i l a t i o n
  474                  XCF     !       Central Africa
  475                  XAC     !       South Central Africa
  476                  ETH     !       Ethiopia
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 11
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 11
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -581,7 +581,7 @@ C o m p i l a t i o n
  527          evd_(ii,*,rr)   Domestic energy use (mtoe),
  528          evi_(ii,*,rr)   Imported energy use (mtoe),
  529          eco2d_(ii,*,rr) CO2 emissions in domestic fuels - Mt CO2,
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 12
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 12
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -639,7 +639,7 @@ BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 2681  put_utility 'title' /"Aggregating evd.";
 BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 13
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 13
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -697,7 +697,7 @@ BATINCLUDE C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
 6040  rto_(gg,rr)$vom_(gg,rr) = rto_(gg,rr)/vom_(gg,rr);
 6041  rtf_(ff,jj,rr)$vfm_(ff,jj,rr)  = rtf_(ff,jj,rr) / vfm_(ff,jj,rr);
 6042  rtfd_(ii,gg,rr)$ vdfm_(ii,gg,rr) = rtfd_(ii,gg,rr) / vdfm_(ii,gg,rr);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 14
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 14
 GTAP Mapping which Relabels to Match GAMS Identifiers
 C o m p i l a t i o n
 
@@ -744,7 +744,7 @@ C o m p i l a t i o n
 6083   
 6084  put_utility 'title' /"All done with aggregation.";
 EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtapaggr_diss_rm.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 15
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 15
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
@@ -802,7 +802,7 @@ Include File Summary
     49     1554 BATINCLUDE    42     179  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
     50     1562 EXIT          49      18  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\chktarget.gms
     51     1568 EXIT          42     185  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 16
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 16
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
@@ -860,7 +860,7 @@ Include File Summary
    100     2682 BATINCLUDE     1      93  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\aggr.gms
    101     2743 BATINCLUDE   100     125  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
    102     2781 EXIT         101      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 17
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 17
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
@@ -918,7 +918,7 @@ Include File Summary
    151     3902 BATINCLUDE   148     158  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
    152     3940 EXIT         151      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
    153     3949 BATINCLUDE   148     191  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 18
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 18
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
@@ -976,7 +976,7 @@ Include File Summary
    202     5107 EXIT         201      82  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\checkset.gms
    203     5121 BATINCLUDE   196     205  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
    204     5167 EXIT         203      74  ..C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\domain.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 19
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 19
 GTAP Mapping which Relabels to Match GAMS Identifiers
 Include File Summary
 
@@ -1026,7 +1026,7 @@ Include File Summary
 
 
 COMPILATION TIME     =        0.234 SECONDS     59 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 20
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 20
 GTAP Mapping which Relabels to Match GAMS Identifiers
 E x e c u t i o n
 
@@ -1081,7 +1081,7 @@ Land   ,    NatlRes
 
 USA
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 12:29:33 Page 21
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                10/02/20 11:15:20 Page 21
 GTAP Mapping which Relabels to Match GAMS Identifiers
 E x e c u t i o n
 
@@ -1090,28 +1090,28 @@ E x e c u t i o n
 
             IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
-dwe 7.81597E-14 1.13687E-13 -2.8422E-13 -5.6843E-14             -5.6843E-14 -7.1054E-15             2.84217E-14 -3.5527E-14 -5.6843E-14 3.55271E-13 2.27374E-13             5.68434E-14 -9.9476E-14 9.94760E-14 -5.1159E-13
-oil -1.5987E-13 1.88294E-13 4.04121E-14 1.19904E-14 -1.1546E-14 2.88658E-14 -3.9968E-15 -2.8599E-13 -3.5527E-15 -7.9936E-15 -3.5527E-15 4.84057E-14 5.68434E-14 7.10543E-15 -2.9132E-13 8.88178E-16 -7.1054E-15 1.59872E-14
-gas 4.44089E-15                         -4.8850E-15             1.11022E-16             -5.6843E-14 8.88178E-16 5.32907E-15 2.22045E-16 3.99680E-15 3.889291E-9 2.77556E-16             8.32667E-17 1.27898E-13 7.489994E-9
-ppp -8.8818E-15 1.13687E-13 2.48690E-14 1.20792E-13             1.77636E-15 -3.5527E-15 -2.6645E-15 -3.9080E-14 7.10543E-15 -3.5527E-15 5.28079E-10 -8.5265E-14 7.10543E-15 -6.3949E-14 5.32907E-15 1.06581E-14 9.412958E-9
-nmm                         -7.1054E-15 -7.1054E-15 1.42109E-14 -4.4409E-15 -1.0658E-14 -1.4591E-10 1.77636E-15 -2.1316E-14 3.55271E-15 -4.2633E-14 1.42109E-14 -7.1054E-15 2.55795E-13 -1.9984E-14 2.13163E-14 -6.1462E-13
-nfm 1.77636E-15 5.68434E-14             -3.5527E-15 1.06581E-14 4.88498E-15 1.77636E-15 1.08500E-11 -1.7764E-15 2.66454E-15 -8.8818E-16 -9.7700E-15 9.23706E-14 -6.6613E-15 3.55271E-14 -6.7502E-14 -3.5527E-15 -7.5410E-11
-mvh 9.76996E-15 -1.4211E-14 -5.3291E-14 -5.6843E-14 -1.0658E-14 1.77636E-15 -3.5527E-15 -5.3291E-15 1.06581E-14 -1.4211E-14 -3.5527E-15 -3.5527E-14 7.029172E-9 7.10543E-15 -2.7001E-13 4.35207E-14 -1.4211E-14 -6.2926E-11
-ele -3.9080E-14             -2.4869E-14 -7.1054E-15 -1.4211E-14 3.55271E-15 -7.1054E-15 4.52971E-14             -2.6645E-14 -7.1054E-15 -3.5527E-14 4.731305E-9 1.42109E-14 2.13163E-13 -7.9492E-14 -2.4869E-14 -8.5265E-14
-c   -3.2685E-13 -4.5475E-13 3.97904E-13 -5.6843E-14 2.84217E-14 -4.9738E-14 -9.9476E-14 1.70530E-13 -3.1264E-13 -1.7053E-13 -5.6843E-14 5.68434E-14 -2.2737E-12 1.77636E-13 2.70006E-13 2.13163E-14 -8.5265E-14 -1.1369E-13
-g   -6.3949E-14 5.64437E-13 5.06262E-14 -1.3500E-13 6.08402E-14 3.56382E-14 -4.0856E-14 3.59712E-14 -7.4607E-14 -6.3061E-14 -6.1284E-14 -7.1942E-14 3.16192E-13 -9.2593E-14 -9.5923E-14 -8.5487E-15 1.56319E-13 6.18172E-13
-i   -7.1054E-14 8.52651E-14 7.10543E-14             5.68434E-14 -1.4211E-14 7.10543E-15 -4.2633E-14 3.55271E-14 -7.1054E-15 -7.1054E-15 -7.1054E-15 4.54747E-13 -4.2633E-14 -5.6843E-13 3.55271E-15 2.84217E-14 2.27374E-13
-COL -3.5527E-15 2.13163E-14             2.48690E-14             8.88178E-15             4.44089E-15 -1.1102E-16             8.32667E-17 -2.9310E-14 1.06581E-14             -2.1316E-14 3.99680E-14 3.55271E-15 1.06581E-14
-CRU 3.55271E-14 2.84217E-14                                                             3.12639E-13 7.10543E-15             -8.8818E-16 8.88178E-16 7.627193E-9             3.55271E-14             -2.2737E-13 1.98952E-13
-CHM 1.52767E-13 5.68434E-14 -1.2790E-13 -8.5265E-14 2.13163E-14 -1.7764E-15 1.06581E-14 -1.5099E-14             -8.5265E-14 -2.1316E-14 -6.0396E-14 -2.8422E-14 4.97380E-14 2.84217E-13 -8.8818E-16 -2.8422E-14 3.912277E-9
-IRS -3.9080E-14 7.10543E-14             -3.5527E-15 -7.1054E-15 6.66134E-15 7.10543E-15 1.42109E-14 3.55271E-15 -8.8818E-15             8.88178E-15 1.27898E-13 -8.8818E-15 8.52651E-13 -2.0428E-14 1.77636E-14 4.26326E-14
-MAC 6.39488E-14             7.10543E-14 3.69482E-13 8.52651E-14 -1.4211E-14 2.13163E-14 -5.6843E-14 1.42109E-14 -4.2633E-14 -7.1054E-15 -6.3949E-14 5.68434E-14 -7.1054E-15 7.95808E-13 -3.7303E-14 -5.6843E-14
-FOT -1.4211E-14 -1.1369E-13 -2.8422E-14 -4.9738E-14 -5.6843E-14 7.10543E-15 2.13163E-14 -9.9476E-14             1.42109E-14 7.10543E-15 7.10543E-15 -2.8422E-13 -2.8422E-14 -1.8474E-13 -2.0073E-13 5.68434E-14 7.467293E-9
-ROI 2.84217E-14             -1.4211E-14 -1.4211E-14 1.42109E-14 -1.0658E-14 -3.5527E-14 -2.8422E-14             -1.4211E-14 2.13163E-14 -7.1054E-15 5.600214E-9 -7.1054E-14 -2.8422E-13 5.68434E-14 -5.6843E-14 1.528136E-8
-BUI -1.2790E-13 2.27374E-13 5.68434E-14 6.25278E-13             4.26326E-14 1.42109E-14 -4.5475E-13 -2.8422E-14 5.68434E-14 4.26326E-14 -2.7001E-13 9.09495E-13 -5.6843E-14 -1.0232E-12 3.73035E-14 3.97904E-13 1.98952E-13
-TRN 2.84217E-13 -1.7053E-13 -8.5265E-14 1.42109E-14 -1.7764E-14 -4.6185E-14 -2.8422E-14             7.81597E-14 -3.5527E-14 5.68434E-14 4.26326E-14 2.27374E-13 4.26326E-14 3.41061E-13 -2.4869E-14 1.42109E-14 5.31486E-12
-AGR             7.10543E-14 -7.1054E-15 2.84217E-14             -1.0658E-14 -2.1316E-14 1.05452E-10 1.77636E-15 3.55271E-15 1.42109E-14 4.26326E-14 7.198992E-9 2.84217E-14 5.68434E-14 8.88178E-16 -1.7053E-13 1.901867E-9
-SER 2.27374E-13 1.81899E-12 -3.4106E-13 -6.8212E-13 -2.2737E-13 -1.7053E-13             2.02363E-11 1.13687E-13 1.13687E-13 3.41061E-13 1.25056E-12 -8.1855E-12 -2.2737E-13 -6.8212E-13 6.82121E-13             2.04636E-12
+dwe 1.56319E-13 4.54747E-13 -1.7053E-13             1.13687E-13 -3.5527E-14                         1.70530E-13 -1.1369E-13 -5.6843E-14 3.12639E-13 -6.8212E-13 2.84217E-14 -2.2737E-13 2.27374E-13 2.55795E-13 -8.5265E-13
+oil -1.4566E-13 2.73559E-13 4.04121E-14 1.19904E-14 -1.1546E-14 2.88658E-14 -3.9968E-15 -3.1442E-13 -3.5527E-15 -7.9936E-15 -3.5527E-15 4.84057E-14 5.68434E-14 7.10543E-15 -2.9132E-13 8.88178E-16 -7.1054E-15 4.44089E-14
+gas 4.44089E-15                         -4.8850E-15             5.55112E-17             -5.6843E-14             5.32907E-15 2.22045E-16 3.55271E-15 3.889291E-9 2.77556E-16             8.32667E-17 1.27898E-13 7.490009E-9
+ppp -8.8818E-15 8.52651E-14 3.19744E-14 1.13687E-13 1.42109E-14 1.77636E-15 -3.5527E-15 -1.7764E-15 -3.9080E-14 7.10543E-15 -3.5527E-15 5.28079E-10 -5.6843E-14 7.10543E-15 -4.2633E-14 5.32907E-15 1.42109E-14 9.412965E-9
+nmm 7.10543E-15             -1.0658E-14 -7.1054E-15 1.42109E-14 -6.2172E-15 -1.0658E-14 -1.4590E-10 1.77636E-15 -2.1316E-14 4.44089E-15 -4.2633E-14 1.42109E-14 -7.1054E-15 2.55795E-13 -1.9984E-14 1.42109E-14 -6.1462E-13
+nfm 1.77636E-15 3.90799E-14 -2.6645E-15 -3.5527E-15 1.06581E-14 4.44089E-15 3.55271E-15 1.08500E-11 -1.7764E-15 -8.8818E-16 -8.8818E-16 -9.7700E-15 9.23706E-14 -7.1054E-15 7.81597E-14 -6.7502E-14 -7.1054E-15 -7.5403E-11
+mvh 8.88178E-15 4.26326E-14 -4.9738E-14 -4.2633E-14 -8.8818E-15 1.77636E-15 -7.1054E-15 -4.4409E-15 7.10543E-15 -1.4211E-14 5.32907E-15 -4.2633E-14 7.029229E-9 2.13163E-14 -2.1316E-13 4.44089E-14 -1.4211E-14 -6.2919E-11
+ele -3.1974E-14 2.84217E-14 -3.5527E-14 -7.1054E-15 -2.1316E-14 3.55271E-15 -1.4211E-14 4.52971E-14 3.55271E-15 -2.8422E-14 -1.4211E-14 -3.5527E-14 4.731319E-9 1.42109E-14 2.06057E-13 -8.0602E-14 -1.0658E-14 -7.8160E-14
+c   -3.1974E-13 4.54747E-13 1.70530E-13 -5.6843E-14 2.84217E-14 -5.6843E-14 -8.5265E-14 1.98952E-13 -4.5475E-13 -2.2737E-13 -8.5265E-14 8.52651E-14 -1.3642E-12 1.77636E-13 2.70006E-13 1.77636E-14 -5.6843E-14 -5.6843E-14
+g   -6.3949E-14 5.64215E-13 1.07470E-13 -1.3145E-13 4.44089E-15 3.57492E-14 -1.2434E-14 3.59712E-14 -1.3323E-13 -7.1054E-15 -3.1974E-14 -1.0036E-13 8.88178E-14 -3.5749E-14 -9.5923E-14 -8.5487E-15 2.13163E-13 7.33635E-13
+i   -1.1369E-13 5.68434E-14 7.81597E-14             4.97380E-14 -7.1054E-15 -1.4211E-14 -4.2633E-14 3.55271E-14 1.42109E-14             2.84217E-14 6.82121E-13 -4.9738E-14 -5.4001E-13 1.77636E-15 2.84217E-14
+COL -3.5527E-15 1.42109E-14             2.48690E-14             8.88178E-15             4.44089E-15 -1.1102E-16             2.77556E-17 -2.9310E-14 1.42109E-14             -1.4211E-14 3.99680E-14 3.55271E-15 1.06581E-14
+CRU 3.37508E-14 2.84217E-14                                                             3.12639E-13 7.10543E-15             -8.8818E-16 8.88178E-16 7.627193E-9             3.55271E-14             -2.2737E-13 1.98952E-13
+CHM 1.49214E-13 5.68434E-14 -1.7053E-13 -1.1369E-13 2.13163E-14 -1.7764E-15 7.10543E-15 -2.2204E-14             -6.3949E-14             -6.0396E-14 1.13687E-13 4.97380E-14 2.84217E-13 -8.8818E-16 -2.8422E-14 3.912248E-9
+IRS -3.9080E-14 7.10543E-14             -7.1054E-15             6.66134E-15 7.10543E-15 1.42109E-14 3.55271E-15 -1.0658E-14 1.77636E-15 1.06581E-14 1.13687E-13 -8.8818E-15 8.52651E-13 -1.9540E-14 2.13163E-14 3.55271E-14
+MAC 4.26326E-14 2.27374E-13 7.10543E-14 3.12639E-13 8.52651E-14 -1.4211E-14 3.55271E-14 -4.6185E-14 -7.1054E-15 -2.1316E-14 -2.8422E-14 -7.8160E-14 2.27374E-13 -7.1054E-15 6.25278E-13 -4.0856E-14 -8.5265E-14 1.13687E-13
+FOT -1.4211E-14 -5.6843E-14 -2.8422E-14 -7.1054E-14 -5.6843E-14 7.10543E-15 1.42109E-14 -7.1054E-14 -7.1054E-15 2.48690E-14 1.42109E-14 -2.1316E-14 -2.8422E-13 -2.8422E-14 -7.1054E-14 -2.0517E-13 2.84217E-14 7.467406E-9
+ROI 1.42109E-14             1.42109E-14 -1.4211E-14 4.26326E-14 -1.4211E-14 -1.4211E-14 -2.1316E-14 -1.4211E-14 -2.1316E-14 3.55271E-14 -3.5527E-14 5.600100E-9 -7.1054E-14 -2.8422E-13 6.03961E-14 -8.5265E-14 1.528147E-8
+BUI -9.9476E-14 2.27374E-13 7.10543E-14 6.53699E-13             3.55271E-14 1.42109E-14 -4.5475E-13 -2.8422E-14 5.68434E-14 4.26326E-14 -2.7001E-13 9.09495E-13 -7.1054E-14 -1.1369E-12 3.73035E-14 3.97904E-13 1.70530E-13
+TRN 2.84217E-13 -1.7053E-13 -9.9476E-14 7.10543E-14 -3.1974E-14 -4.6185E-14 -4.2633E-14             8.52651E-14 -2.8422E-14 2.13163E-14 2.84217E-14 5.68434E-13 2.84217E-14 2.84217E-13 -2.4869E-14 1.42109E-14 5.31486E-12
+AGR             7.10543E-14             2.13163E-14             -1.0658E-14 -2.1316E-14 1.05452E-10 5.32907E-15 -1.7764E-15 1.06581E-14 3.55271E-14 7.198992E-9 2.84217E-14 5.68434E-14 8.88178E-16 -2.2737E-13 1.901867E-9
+SER 1.13687E-13 2.72848E-12 -1.1369E-13 -3.4106E-13 5.68434E-14 -1.2790E-13             2.01226E-11 -1.1369E-13 -1.1369E-13 5.68434E-14 1.13687E-12 -9.0949E-13 -1.1369E-13             3.12639E-13 5.68434E-13 2.95586E-12
 
 
 **** REPORT FILE SUMMARY

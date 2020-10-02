@@ -85,8 +85,8 @@ SET mapi(i,ii) 	Mapping of GTAP9 Sectors and Goods (from-to) /
 	CNS.BUI								Building and construction,
 	(OTP,WTP,ATP).TRN						Transport,
 	(PDR,WHT,GRO,V_F,OSD,C_B,PFB,OCR,CTL,OAP,RMK,WOL,FRS,FSH).AGR	Agriculture,
-        DWE.DWE                                                         Dwellings,
-	(WTR,TRD,CMN,OFI,ISR,OBS,ROS,OSG).SER			        Services /;
+        (DWE,OBS).DWE                                                   Dwellings,
+	(WTR,TRD,CMN,OFI,ISR,ROS,OSG).SER			        Services /;
 
 
 * ----- Regions (17) ----------------------------------------------------------
