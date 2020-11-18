@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 1
 Satellite code to transform LIBINCLUDE Data from Excel to GDX
 C o m p i l a t i o n
 
@@ -18,8 +18,8 @@ C o m p i l a t i o n
   21   
   24   
   26   
-INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 2
+INCLUDE    C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 2
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -32,7 +32,7 @@ C o m p i l a t i o n
   37   
   40   
   41  set     g(*)    Goods plus C and G;
-GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.gdx
 --- LOAD  g = 1:g
   45   
   46  set     i(g)    Goods
@@ -77,7 +77,7 @@ GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
   80  if (nd>0,
   81          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
   82          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 3
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -135,7 +135,7 @@ C o m p i l a t i o n
  128          esubd(i)        Elasticity of substitution (M versus D),
  129          esubva(g)       Elasticity of substitution between factors
  130          esubm(i)        Intra-import elasticity of substitution,
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 4
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 4
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -193,7 +193,7 @@ C o m p i l a t i o n
  176  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
  177   
  178  vdm("c",r) = vom("c",r);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 5
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 5
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -239,7 +239,7 @@ C o m p i l a t i o n
  217  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
  218  display rnum;
  219   
-EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+EXIT C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
  221   
  222   
  223  * ---------------------------------------------------------------------- *
@@ -251,7 +251,7 @@ EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
  229  SET      GEN             Stromerzeugungsarten /  bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS,
  230                                                   mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS, pOIL, pGAS, pHYDRO,
  231                                                   HYDRO, GEO, BIO, SOLAR, WIND /;
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 6
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -309,7 +309,7 @@ C o m p i l a t i o n
  282           ursk0(*)                        Initial unemployment rate among skilled
  283           diffcost(gen,r)                 Differenzkosten
  284           diffcost_exogen(gen,r)          Differenzkosten
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 7
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -335,701 +335,637 @@ C o m p i l a t i o n
  303           abschreibung_bmk_noCOAL(r,gen,yr)         Decommissioning geg. basis-bmk (for coal decomissioning till 2030 in germany)
  304   
  305  * ------ 10.06.2013: Zusammenfassung aller AEEI-Pfade in Tabelle aeei.xlsx
- 306           aeei_read(*,yr)                 Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
- 307   
- 308           AEEI_exo(yr)                    AEEI exogen
- 309           AEEI_exo_emerge(yr)             AEEI exogen emerge
- 310           AEEI_exo_deu(yr)                AEEI exogen deu
- 311           AEEI_exo_neu(yr)                AEEI exogen neu
- 312           AEEI_exo_ele_c(yr)              AEEI exogen ele_c
- 313           AEEI_exogen(yr)                 AEEI exogen für deutschland
- 314           AEEI_exogen_after2020(yr)       AEEI exogen für deutschland nach erreichen von mckinsey
- 315           AEEI_exogen_after2025(yr)       AEEI exogen für deutschland nach erreichen von mckinsey II
- 316           AEEI_exogen_gen_yr(yr)          AEEI exogen für den einstaz von fe in stromerzeugung in deu!
- 317           AEEI_exogen_gen_yr_after2020(yr) AEEI exogen electricity generation nach erreichen von mckinsey
- 318           AEEI_exogen_gen_yr_after2025(yr) AEEI exogen electricity generation nach erreichen von mckinsey II
- 319           AEEI_exogen_ele(yr)             AEEI exogen für deutschland stromverbrauch
- 320           AEEI_exogen_ele_after2020(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
- 321           AEEI_exogen_ele_after2025(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
- 322           AEEI_exogen_trn(yr)             AEEI exogen für deutschland TRN
- 323           AEEI_exogen_trn_after2020(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey
- 324           AEEI_exogen_trn_after2025(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey II
- 325           AEEI_exogen_hh(yr)              AEEI exogen für deutschland HH
- 326           AEEI_exogen_hh_after2020(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey
- 327           AEEI_exogen_hh_after2025(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey II
- 328           aeei_ind_ele(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
- 329           aeei_ind_ff(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
- 330           AEEI_c_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 331           AEEI_c_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 332           AEEI_trans_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 333           AEEI_trans_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 334           AEEI_ser_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 335           AEEI_ser_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
- 336           AEEI_ff(r,*,yr)
- 337           AEEI_ele(r,*,yr)
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 8
+ 306           aeei_ind_ele(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
+ 307           aeei_ind_ff(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
+ 308           AEEI_c_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 309           AEEI_c_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 310           AEEI_trans_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 311           AEEI_trans_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 312           AEEI_ser_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 313           AEEI_ser_ff(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
+ 314           AEEI_ff(r,*,yr)
+ 315           AEEI_ele(r,*,yr)
+ 316   
+ 317   
+ 318   
+ 319  * ------ 15.07.2014 Reading in Energy productivity and total factor productivity from the BASELINE Database
+ 320           lfhc_usk(r,yr)                  Labor force and human capital development for unskilled labor (BASELINE Database)
+ 321           lfhc_skl(r,yr)                  Labor force and human capital development for   skilled labor (BASELINE Database)
+ 322   
+ 323           ep(yr,r)                        Energy productivity development (BASELINE Database)
+ 324           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
+ 325   
+ 326           tfp_corona(r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
+ 327   
+ 328  *-------27.10.2017 CO2 growth
+ 329           co2pfad_eu(*,yr)     CO2-growth in the EU (all sectors)
+ 330   
+ 331           co2pfad_eu_ets(*,yr)    CO2-growth in the EU (ETS sectors)
+ 332   
+ 333           co2pfad_E3_eu(*,yr)
+ 334   
+ 335           co2pfad_E4_eu(*,yr)
+ 336   
+ 337           co2pfad_eu_nonets(r,yr)    CO2-growth in the EU (non ETS sectors) - INDC scenario
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 8
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
- 338   
+ 338           co2pfad_eu_nonets_2d(r,yr) CO2-growth in the EU (non ETS sectors) - 2 degree scenario
  339   
- 340   
- 341  * ------ 15.07.2014 Reading in Energy productivity and total factor productivity from the BASELINE Database
- 342           lfhc_usk(r,yr)                  Labor force and human capital development for unskilled labor (BASELINE Database)
- 343           lfhc_skl(r,yr)                  Labor force and human capital development for   skilled labor (BASELINE Database)
- 344   
- 345           ep(yr,r)                        Energy productivity development (BASELINE Database)
- 346           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
- 347   
- 348           tfp_corona(r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
- 349   
- 350  *-------27.10.2017 CO2 growth
- 351           co2pfad_eu(*,yr)     CO2-growth in the EU (all sectors)
- 352   
- 353           co2pfad_eu_ets(*,yr)    CO2-growth in the EU (ETS sectors)
+ 340           co2pfad_row(r,yr)    CO2-growth in the RoW (non-EU) - INDC scenario
+ 341           co2pfad_row_2d(r,yr)    CO2-growth in the RoW (non-EU) - 2 degree scenario
+ 342   
+ 343           co2pfad_DEU(sec,yr)     sector-specific CO2-growth in Germany
+ 344  *-------27.10.2017 end
+ 345   
+ 346  * ------ 28.05.2015
+ 347           co2pfad_ets_eu(*,yr)
+ 348   
+ 349  *-------22.08.2017
+ 350           co2pfad_ets_row(r,yr)            CO2-growth in the RoW (non-EU)
+ 351           co2pfad_ets_row_2dc(r,yr)        CO2-growth in the non-EU contries for a 2 dC target
+ 352           co2pfad_nonets(r,yr)             CO2 growth for non-ETS
+ 353           co2pfad_nonets_2dc(r,yr)             CO2 growth for non-ETS
  354   
- 355           co2pfad_E3_eu(*,yr)
- 356   
- 357           co2pfad_E4_eu(*,yr)
+ 355  * ----- 05.02.2018
+ 356           co2pfad_cluni_ets(*,yr)          CO2-growth for ets sectors on cluster union REEEM scenario
+ 357           co2pfad_cluni_nonets(r,yr)       CO2-growth for non-ets sectors on cluster union REEEM scenario
  358   
- 359           co2pfad_eu_nonets(r,yr)    CO2-growth in the EU (non ETS sectors) - INDC scenario
- 360           co2pfad_eu_nonets_2d(r,yr) CO2-growth in the EU (non ETS sectors) - 2 degree scenario
+ 359  * ----- 20.02.2018
+ 360           co2pfad_regpush(r,yr)            CO2-growth for countries outside the eU28
  361   
- 362           co2pfad_row(r,yr)    CO2-growth in the RoW (non-EU) - INDC scenario
- 363           co2pfad_row_2d(r,yr)    CO2-growth in the RoW (non-EU) - 2 degree scenario
- 364   
- 365           co2pfad_DEU(sec,yr)     sector-specific CO2-growth in Germany
- 366  *-------27.10.2017 end
+ 362  * ----- 05.03.2018 CO2-growth path for ets sectors under the tighther cap scenario
+ 363           co2pfad_REEEM_ets90(*,yr)
+ 364           co2pfad_REEEM_ets95(*,yr)
+ 365           co2pfad_REEEM_ALL90(*,yr)
+ 366           co2pfad_REEEM_ALL95(*,yr)
  367   
- 368  * ------ 28.05.2015
- 369           co2pfad_ets_eu(*,yr)
- 370   
- 371  *-------22.08.2017
- 372           co2pfad_ets_row(r,yr)            CO2-growth in the RoW (non-EU)
- 373           co2pfad_ets_row_2dc(r,yr)        CO2-growth in the non-EU contries for a 2 dC target
- 374           co2pfad_nonets(r,yr)             CO2 growth for non-ETS
- 375           co2pfad_nonets_2dc(r,yr)             CO2 growth for non-ETS
+ 368  * ------- 14.11.2017 data for PA pfad
+ 369           vy_pa_pfad(j,i,yr)
+ 370           vc_pa_pfad(i,yr)
+ 371           velex_pa_pfad(i,gen,yr)
+ 372           velen_pa_pfad(i,gen,yr)
+ 373   
+ 374  * ------- 18.10.2018 elasticities for energy
+ 375           elast_ene_yr(r,yr)
  376   
- 377  * ----- 05.02.2018
- 378           co2pfad_cluni_ets(*,yr)          CO2-growth for ets sectors on cluster union REEEM scenario
- 379           co2pfad_cluni_nonets(r,yr)       CO2-growth for non-ets sectors on cluster union REEEM scenario
+ 377  *         tp_no_vat(r,i)    tax for consumers witout VAT
+ 378   
+ 379  ;
  380   
- 381  * ----- 20.02.2018
- 382           co2pfad_regpush(r,yr)            CO2-growth for countries outside the eU28
- 383   
- 384  * ----- 05.03.2018 CO2-growth path for ets sectors under the tighther cap scenario
- 385           co2pfad_REEEM_ets90(*,yr)
- 386           co2pfad_REEEM_ets95(*,yr)
- 387           co2pfad_REEEM_ALL90(*,yr)
- 388           co2pfad_REEEM_ALL95(*,yr)
- 389   
- 390  * ------- 14.11.2017 data for PA pfad
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/18/20 16:19:24 Page 9
+ 381  *$libinclude    xlimport    tp_no_vat   %xcel_datadir%VAT_for_NEWAGE.xlsx   read_NEWAGE!a2:c152
+ 382   
+ 383  *$ontext
+ 384  * ---------------------------------------------------------------------------- *
+ 385  *        READ AEEI
+ 386  * ---------------------------------------------------------------------------- *
+ 387  * ###### AEEI ##################################################################
+ 388  * Modellparameter AEEI basiert auf AEEI_yr, welches im Wesentlichen auf AEEI_EXO beruht.(AEEI_EXOGEN... = AEEI_Variante)
+ 389  * REF: AEEI = AEEI_HH = AEEI_TRN
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 11:37:00 Page 9
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
- 391           vy_pa_pfad(j,i,yr)
- 392           vc_pa_pfad(i,yr)
- 393           velex_pa_pfad(i,gen,yr)
- 394           velen_pa_pfad(i,gen,yr)
- 395   
- 396  * ------- 18.10.2018 elasticities for energy
- 397           elast_ene_yr(r,yr)
- 398   
- 399  *         tp_no_vat(r,i)    tax for consumers witout VAT
- 400   
- 401  ;
- 402   
- 403  *$libinclude    xlimport    tp_no_vat   %xcel_datadir%VAT_for_NEWAGE.xlsx   read_NEWAGE!a2:c152
- 404   
- 405  *$ontext
- 406  * ---------------------------------------------------------------------------- *
- 407  *        READ AEEI
- 408  * ---------------------------------------------------------------------------- *
- 409  * ###### AEEI ##################################################################
- 410  * Modellparameter AEEI basiert auf AEEI_yr, welches im Wesentlichen auf AEEI_EXO beruht.(AEEI_EXOGEN... = AEEI_Variante)
- 411  * REF: AEEI = AEEI_HH = AEEI_TRN
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 518   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 540   
+ 647   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 712  ;
+ 713  *$exit
+ 714  * ---------------------------------------------------------------------------- *
+ 715  *        READ Decommissioning (Sterbelinien)
+ 716  * ---------------------------------------------------------------------------- *
+ 717  * ###### abschreibung ##########################################################
+ 718  * ------ include abschreibung for decommissioning curves for all regions (basically already includes abschreibung_z and abschreibung_bmk_z)
+ 719  *$libinclude      xlimport        abschreibung            %xcel_datadir%abschreibung.xlsx       abschreibung!A3:L327       // mit BAW
+ 720  *$libinclude      xlimport        abschreibung_bmk        %xcel_datadir%abschreibung.xlsx       abschreibung_bmk!A3:L327   // mit BAW
+ 721  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 786   
+ 787  * ###### abschreibung_z ########################################################
+ 788  * ------ include abschreibung for decommissioning curves for others
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 853   
+ 854   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+ 919  display abschreibung, abschreibung_bmk, abschreibung_z, abschreibung_bmk_z;
+ 920   
+ 921  * 12.08.2018 -------READ Ele_dev
+ 922  * ---------------------------------------------------------------------------- *
+ 923  * ----- 23.08.2018 - test times coupling
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 669   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 734   
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 767   
- 768  aeei_exo(yr)                     = aeei_read("aeei_exo",yr);
- 769  aeei_exo_ele_c(yr)               = aeei_read("aeei_exo_ele_c",yr);
- 770  aeei_exo_deu(yr)                 = aeei_read("aeei_exo_deu",yr);
- 771  aeei_exo_neu(yr)                 = aeei_read("aeei_exo_neu",yr);
- 772  aeei_exo_emerge(yr)              = aeei_read("aeei_exo_emerge",yr);
- 773  aeei_exogen(yr)                  = aeei_read("aeei_exogen",yr);
- 774   
- 775  aeei_exogen_after2020(yr)        = aeei_read("aeei_exogen_after2020",yr);
- 776  aeei_exogen_after2025(yr)        = aeei_read("aeei_exogen_after2025",yr);
- 777  aeei_exogen_ele(yr)              = aeei_read("aeei_exogen_ele",yr);
- 778  aeei_exogen_ele_after2020(yr)    = aeei_read("aeei_exogen_ele_after2020",yr);
- 779  aeei_exogen_ele_after2025(yr)    = aeei_read("aeei_exogen_ele_after2025",yr);
- 780  aeei_exogen_gen_yr(yr)           = aeei_read("aeei_exogen_gen_yr",yr);
- 781  aeei_exogen_gen_yr_after2020(yr) = aeei_read("aeei_exogen_gen_yr_after2020",yr);
- 782  aeei_exogen_gen_yr_after2025(yr) = aeei_read("aeei_exogen_gen_yr_after2025",yr);
- 783  aeei_exogen_hh(yr)               = aeei_read("aeei_exogen_hh",yr);
- 784  aeei_exogen_hh_after2020(yr)     = aeei_read("aeei_exogen_hh_after2020",yr);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 10
+1084   
+1085  display ele_dev;
+1086   
+1087   
+1088  * ---------------------------------------------------------------------------- *
+1089  * ---------------------------------------------------------------------------- *
+1090  *        READ co2-growth / co2-schalter
+1091  * ---------------------------------------------------------------------------- *
+1092  * ###### co2pfad_ets, co2pfad ##################################################
+1093  * ------ 12.05.2015 Einlesen der DEHst-Szenarien
+1094  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B90:k96       # DEHst Szenario 1 - Status Quo
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 10
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
- 785  aeei_exogen_hh_after2025(yr)     = aeei_read("aeei_exogen_hh_after2025",yr);
- 786  aeei_exogen_trn(yr)              = aeei_read("aeei_exogen_trn",yr);
- 787  aeei_exogen_trn_after2020(yr)    = aeei_read("aeei_exogen_trn_after2020",yr);
- 788  aeei_exogen_trn_after2025(yr)    = aeei_read("aeei_exogen_trn_after2025",yr);
- 789   
- 790  display
- 791  aeei_read
- 792  AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c,
- 793  AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025
- 794  AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025
- 795  AEEI_exogen_ele, AEEI_exogen_ele_after2020, AEEI_exogen_ele_after2025
- 796  AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025
- 797  AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025
- 798  ;
- 799  *$exit
- 800  * ---------------------------------------------------------------------------- *
- 801  *        READ Decommissioning (Sterbelinien)
- 802  * ---------------------------------------------------------------------------- *
- 803  * ###### abschreibung ##########################################################
- 804  * ------ include abschreibung for decommissioning curves for all regions (basically already includes abschreibung_z and abschreibung_bmk_z)
- 805  *$libinclude      xlimport        abschreibung            %xcel_datadir%abschreibung.xlsx       abschreibung!A3:L327       // mit BAW
- 806  *$libinclude      xlimport        abschreibung_bmk        %xcel_datadir%abschreibung.xlsx       abschreibung_bmk!A3:L327   // mit BAW
- 807  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1127   
+1128  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B41:l42          # REF EU28-Cap
+1129  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B77:k78          # Szenario 2 - KOM     [FC2 EU28-Pfad]
+1130  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B81:k82          # Szenario 4 - BMWi    [FC2 EU28-Pfad]
+1131  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B73:k74          # Szenario 1 - Status-Quo  [FC1 EU28-Pfad]
+1132  * ------ 1.04.2016
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 872   
- 873  * ###### abschreibung_z ########################################################
- 874  * ------ include abschreibung for decommissioning curves for others
+1197  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a66:j67
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
- 939   
- 940   
+1262   
+1263  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad!B118:k119           # 95% decrease in 2050
+1264   
+1265  *-------22.08.2017   read data on emission reduction targets for RoW according to the INDCs
+1266  *$libinclude      xlimport        co2pfad_ets_row                  %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A14:J24
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1005  display abschreibung, abschreibung_bmk, abschreibung_z, abschreibung_bmk_z;
-1006   
-1007  * 12.08.2018 -------READ Ele_dev
-1008  * ---------------------------------------------------------------------------- *
-1009  * ----- 23.08.2018 - test times coupling
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1363   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1460   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1589   
+1590   
+1591  *-------14.09.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
+1592  *$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad!A38:J44
+1593  *commented out because co2pfad_DEU from DEU-Pfad-2 is used instead! (see lines below)
+1594   
+1595  *-------20.10.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
+1596  *difference of DEU-Pfad 2 (compared to DEU-Pfad): process emissions from industry are distinguished and emission reduction in industry sector is therefore less stringent (meaning that reduction in other sectors must be stronger)
+1597  *$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad-2!A38:J44
+1598   
+1599  *-------27.10.2017
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1170   
-1171  display ele_dev;
-1172   
-1173   
-1174  * ---------------------------------------------------------------------------- *
-1175  * ---------------------------------------------------------------------------- *
-1176  *        READ co2-growth / co2-schalter
-1177  * ---------------------------------------------------------------------------- *
-1178  * ###### co2pfad_ets, co2pfad ##################################################
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 11
+1632  *-------27.10.2017 end
+1633   
+1634  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B81:k87      # DEHst Szenario 4 - ETS ambitioniert
+1635  *$libinclude      xlimport        co2pfad                 %xcel_datadir%150730_co2pfad_BMWi.xlsx         co2pfad_nonets!B22:k40   # bleibt vorerst gleich [ORIGINAL]   // mit BAW
+1636  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1669   
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1702   
+1703  * ------ 28.11.2014 (A) Sinkender Differenzbetrag (% vom Vorjahr, konstante Belastung)
+1704  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_80.xlsx      co2pfad_ets!A21:K27           # ETS-80-Ziel Version (A) [ORIGINAL]
+1705  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_80.xlsx      co2pfad_nonets!B2:L20         # bleibt vorerst gleich   [ORIGINAL]
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 11
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
-1179  * ------ 12.05.2015 Einlesen der DEHst-Szenarien
-1180  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B90:k96       # DEHst Szenario 1 - Status Quo
+1706   
+1707  * ------ 28.11.2014 Vergleich ETS60 mit ETS75
+1708  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_70.xlsx   co2pfad_ets!A21:K27             # ETS-70 Ziel Version (A)
+1709  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_70.xlsx   co2pfad_nonets!B2:L20           # bleibt vorerst gleich
+1710   
+1711   
+1712   
+1713  * ------ 10.07.2014 (B) Konstanter Differenzbetrag (% von 2013, steigende Belastung)
+1714  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad.xlsx      co2pfad_ets!A50:K56             # ETS-60 Ziel Version (B)
+1715  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad.xlsx      co2pfad_nonets!B2:L20           # bleibt vorerst gleich
+1716  display co2pfad, co2pfad_ets, co2pfad_ets_eu, co2pfad_ets_row, co2pfad_ets_row_2dc, co2pfad_nonets, co2pfad_nonets_2dc;
+1717   
+1718  * ---------------------------------------------------------------------------- *
+1719  *        READ renewable energies cost reduction
+1720  * ---------------------------------------------------------------------------- *
+1721  * ###### cost_red ##############################################################
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1213   
-1214  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B41:l42          # REF EU28-Cap
-1215  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B77:k78          # Szenario 2 - KOM     [FC2 EU28-Pfad]
-1216  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B81:k82          # Szenario 4 - BMWi    [FC2 EU28-Pfad]
-1217  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B73:k74          # Szenario 1 - Status-Quo  [FC1 EU28-Pfad]
-1218  * ------ 1.04.2016
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1283  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a66:j67
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1348   
-1349  *$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad!B118:k119           # 95% decrease in 2050
-1350   
-1351  *-------22.08.2017   read data on emission reduction targets for RoW according to the INDCs
-1352  *$libinclude      xlimport        co2pfad_ets_row                  %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A14:J24
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1449   
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1546   
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1675   
-1676   
-1677  *-------14.09.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
-1678  *$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad!A38:J44
-1679  *commented out because co2pfad_DEU from DEU-Pfad-2 is used instead! (see lines below)
-1680   
-1681  *-------20.10.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
-1682  *difference of DEU-Pfad 2 (compared to DEU-Pfad): process emissions from industry are distinguished and emission reduction in industry sector is therefore less stringent (meaning that reduction in other sectors must be stronger)
-1683  *$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad-2!A38:J44
-1684   
-1685  *-------27.10.2017
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1718  *-------27.10.2017 end
-1719   
-1720  *$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B81:k87      # DEHst Szenario 4 - ETS ambitioniert
-1721  *$libinclude      xlimport        co2pfad                 %xcel_datadir%150730_co2pfad_BMWi.xlsx         co2pfad_nonets!B22:k40   # bleibt vorerst gleich [ORIGINAL]   // mit BAW
-1722  * ------ 3.02.2016 BAW entfernen
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1754  display cost_red;
 1755   
+1756  * ---------------------------------------------------------------------------- *
+1757  *        READ Differenzkosten / schalter für diffcostsubvention
+1758  * ---------------------------------------------------------------------------- *
+1759  * ###### diffcost und difccost_exogen ##########################################
+1760  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b2:g20
+1761  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b2:g20
+1762   
+1763  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b25:t30
+1764  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b25:t30
+1765  * ------ 3.02.2016 BAW entfernen
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1788   
-1789  * ------ 28.11.2014 (A) Sinkender Differenzbetrag (% vom Vorjahr, konstante Belastung)
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 12
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1830   
+1831   
+1832  display diffcost, diffcost_exogen;
+1833   
+1834  *diffcost(gen,r)=diffcost_exogen(gen,r);
+1835   
+1836  * ---------------------------------------------------------------------------- *
+1837  *        READ nucsize (scenario specific parameter declaration and definition)
+1838  * ---------------------------------------------------------------------------- *
+1839  * ###### nucsize ###############################################################
+1840  *$libinclude      xlimport        nucsize         %xcel_datadir%nucsize.xlsx      nucsize!B22:k39
+1841  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+1874  display nucsize;
+1875   
+1876  * ---------------------------------------------------------------------------- *
+1877  *        READ Rohölpreise (pytarget_yr)                                         // ÄNDERUNG 13.02.2013
+1878  * ---------------------------------------------------------------------------- *
+1879  * ###### pytarget_yr ###########################################################
+1880  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget!B2:l20
+1881  * ------ 16.02.2015 RWE-Projekt
+1882  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget_RWE!B2:l19
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 12
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
-1790  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_80.xlsx      co2pfad_ets!A21:K27           # ETS-80-Ziel Version (A) [ORIGINAL]
-1791  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_80.xlsx      co2pfad_nonets!B2:L20         # bleibt vorerst gleich   [ORIGINAL]
-1792   
-1793  * ------ 28.11.2014 Vergleich ETS60 mit ETS75
-1794  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_70.xlsx   co2pfad_ets!A21:K27             # ETS-70 Ziel Version (A)
-1795  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_70.xlsx   co2pfad_nonets!B2:L20           # bleibt vorerst gleich
-1796   
-1797   
-1798   
-1799  * ------ 10.07.2014 (B) Konstanter Differenzbetrag (% von 2013, steigende Belastung)
-1800  *$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad.xlsx      co2pfad_ets!A50:K56             # ETS-60 Ziel Version (B)
-1801  *$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad.xlsx      co2pfad_nonets!B2:L20           # bleibt vorerst gleich
-1802  display co2pfad, co2pfad_ets, co2pfad_ets_eu, co2pfad_ets_row, co2pfad_ets_row_2dc, co2pfad_nonets, co2pfad_nonets_2dc;
-1803   
-1804  * ---------------------------------------------------------------------------- *
-1805  *        READ renewable energies cost reduction
-1806  * ---------------------------------------------------------------------------- *
-1807  * ###### cost_red ##############################################################
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1840  display cost_red;
-1841   
-1842  * ---------------------------------------------------------------------------- *
-1843  *        READ Differenzkosten / schalter für diffcostsubvention
-1844  * ---------------------------------------------------------------------------- *
-1845  * ###### diffcost und difccost_exogen ##########################################
-1846  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b2:g20
-1847  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b2:g20
-1848   
-1849  *$libinclude      xlimport        diffcost        %xcel_datadir%diffcost.xlsx     diffcost!b25:t30
-1850  *$libinclude      xlimport        diffcost_exogen %xcel_datadir%diffcost.xlsx     diffcost_exogen!b25:t30
-1851  * ------ 3.02.2016 BAW entfernen
+1883  * ------ 3.02.2016 BAW entfernen
+1884  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget_RWE!B2:l56
+1885  *display  pytarget_yr;
+1886   
+1887  *-----25.08.17 use energy prices from REMIND results
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1916   
-1917   
-1918  display diffcost, diffcost_exogen;
-1919   
-1920  *diffcost(gen,r)=diffcost_exogen(gen,r);
-1921   
-1922  * ---------------------------------------------------------------------------- *
-1923  *        READ nucsize (scenario specific parameter declaration and definition)
-1924  * ---------------------------------------------------------------------------- *
-1925  * ###### nucsize ###############################################################
-1926  *$libinclude      xlimport        nucsize         %xcel_datadir%nucsize.xlsx      nucsize!B22:k39
-1927  * ------ 3.02.2016 BAW entfernen
+1952   
+1953  display  pytarget_yr;
+1954   
+1955  * ---------------------------------------------------------------------------- *
+1956  *        READ growth rates for renewable energy sources
+1957  * ---------------------------------------------------------------------------- *
+1958  * ###### ressize ###############################################################
+1959  *$libinclude      xlimport        ressize         %xcel_datadir%ressize.xlsx      ressize!B2:M74
+1960  * ------ 3.02.2016 BAW entfernen
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-1960  display nucsize;
-1961   
-1962  * ---------------------------------------------------------------------------- *
-1963  *        READ Rohölpreise (pytarget_yr)                                         // ÄNDERUNG 13.02.2013
-1964  * ---------------------------------------------------------------------------- *
-1965  * ###### pytarget_yr ###########################################################
-1966  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget!B2:l20
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 13
+1993  display  ressize ;
+1994   
+1995  * ---------------------------------------------------------------------------- *
+1996  *        READ gdp-growth rate / labor-growth rate
+1997  * ---------------------------------------------------------------------------- *
+1998  * ###### lfhc_usk, lfhc_skl ####################################################
+1999  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:Q39
+2000  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
+2001  * ------ 3.02.2016 BAW entfernen
+2002  * ------ 5.02.2016 size_17x18x4.xlsx verändert um Wirtschaftswachstum in DEU zu erhöhen!
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+2067  *------- 23.08.2016 command line to get data for new mapping
+2068  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:P39
+2069  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
+2070  display lfhc_usk, lfhc_skl;
+2071   
+2072  * ---------------------------------------------------------------------------- *
+2073  *        READ specifiactions for unemployment and labor market modeling
+2074  * ---------------------------------------------------------------------------- *
+2075  * ###### urun0, ursk0 ##########################################################
+2076  *$libinclude      xlimport        ur_read         %xcel_datadir%ursk0+urun0.xlsx  ur!b2:d20
+2077  * ------ 3.02.2016 BAW entfernen
+LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
+2110  display ur_read;
+2111   
+2112   
+2113   
+2114  ursk0(r) = ur_read(r,"ursk0"); display ursk0;
+2115  urun0(r) = ur_read(r,"urun0"); display urun0;
+2116   
+2117  * ---------------------------------------------------------------------------- *
+2118  *        READ Wirkungsgradsteigerungen
+2119  * ---------------------------------------------------------------------------- *
+2120  * ###### wg0, wg_yr ########################################################## *
+2121  *$libinclude      xlimport        wg0             %xcel_datadir%wg.xlsx           wg0!a2:s20
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 13
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
-1967  * ------ 16.02.2015 RWE-Projekt
-1968  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget_RWE!B2:l19
-1969  * ------ 3.02.2016 BAW entfernen
-1970  *$libinclude      xlimport        pytarget_yr     %xcel_datadir%pytarget.xlsx     pytarget_RWE!B2:l56
-1971  *display  pytarget_yr;
-1972   
-1973  *-----25.08.17 use energy prices from REMIND results
+2122  *$libinclude      xlimport        wg_yr           %xcel_datadir%wg.xlsx           wg_yr!a2:k20
+2123  * ------ 3.02.2016 BAW entfernen
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2038   
-2039  display  pytarget_yr;
-2040   
-2041  * ---------------------------------------------------------------------------- *
-2042  *        READ growth rates for renewable energy sources
-2043  * ---------------------------------------------------------------------------- *
-2044  * ###### ressize ###############################################################
-2045  *$libinclude      xlimport        ressize         %xcel_datadir%ressize.xlsx      ressize!B2:M74
-2046  * ------ 3.02.2016 BAW entfernen
+2188   
+2189  display wg0, wg_yr;
+2190   
+2191  * ---------------------------------------------------------------------------- *
+2192  *        Energy elasticity
+2193  * ---------------------------------------------------------------------------- *
+2194   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2079  display  ressize ;
-2080   
-2081  * ---------------------------------------------------------------------------- *
-2082  *        READ gdp-growth rate / labor-growth rate
-2083  * ---------------------------------------------------------------------------- *
-2084  * ###### lfhc_usk, lfhc_skl ####################################################
-2085  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:Q39
-2086  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
-2087  * ------ 3.02.2016 BAW entfernen
-2088  * ------ 5.02.2016 size_17x18x4.xlsx verändert um Wirtschaftswachstum in DEU zu erhöhen!
+2227   
+2228  * ---------------------------------------------------------------------------- *
+2229  *        Energy productivity and total factor productivity from the BASELINE Database
+2230  * ---------------------------------------------------------------------------- *
+2231   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2153  *------- 23.08.2016 command line to get data for new mapping
-2154  *$libinclude      xlimport        lfhc_usk        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G21:P39
-2155  *$libinclude      xlimport        lfhc_skl        %xcel_datadir%size_18x18x4.xlsx  size_18x18x4!G2:P20
-2156  display lfhc_usk, lfhc_skl;
-2157   
-2158  * ---------------------------------------------------------------------------- *
-2159  *        READ specifiactions for unemployment and labor market modeling
-2160  * ---------------------------------------------------------------------------- *
-2161  * ###### urun0, ursk0 ##########################################################
-2162  *$libinclude      xlimport        ur_read         %xcel_datadir%ursk0+urun0.xlsx  ur!b2:d20
-2163  * ------ 3.02.2016 BAW entfernen
+2296   
+2297  * ------ 16.07.2014 ORIGINAL
+2298  *$libinclude      xlimport         ep     %xcel_datadir%ep+tfp.xlsx        ep_newage!A30:R40
+2299  * ------ 16.07.2014 Halber Zuwachs
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2196  display ur_read;
-2197   
-2198   
-2199   
-2200  ursk0(r) = ur_read(r,"ursk0"); display ursk0;
-2201  urun0(r) = ur_read(r,"urun0"); display urun0;
-2202   
-2203  * ---------------------------------------------------------------------------- *
-2204  *        READ Wirkungsgradsteigerungen
-2205  * ---------------------------------------------------------------------------- *
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 14
-GAMS Code to Read a GTAP 9 Dataset
-C o m p i l a t i o n
-
-
-2206  * ###### wg0, wg_yr ########################################################## *
-2207  *$libinclude      xlimport        wg0             %xcel_datadir%wg.xlsx           wg0!a2:s20
-2208  *$libinclude      xlimport        wg_yr           %xcel_datadir%wg.xlsx           wg_yr!a2:k20
-2209  * ------ 3.02.2016 BAW entfernen
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2274   
-2275  display wg0, wg_yr;
-2276   
-2277  * ---------------------------------------------------------------------------- *
-2278  *        Energy elasticity
-2279  * ---------------------------------------------------------------------------- *
-2280   
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2313   
-2314  * ---------------------------------------------------------------------------- *
-2315  *        Energy productivity and total factor productivity from the BASELINE Database
-2316  * ---------------------------------------------------------------------------- *
-2317   
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2382   
-2383  * ------ 16.07.2014 ORIGINAL
-2384  *$libinclude      xlimport         ep     %xcel_datadir%ep+tfp.xlsx        ep_newage!A30:R40
-2385  * ------ 16.07.2014 Halber Zuwachs
-LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-2418   
-2419   
-2420  display ep, tfp;
-2421   
-2422  * ########################################################################### *
-2423   
-2424  EXECUTE_UNLOAD '..\data11\18x19x4_gtap9_XCEL.gdx'
-2425   
-2426  display diffcost;
-2427   
-2428  * ############################################################################ *
-2429  *$offtext
-2430   
-EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 15
+2332   
+2333   
+2334  display ep, tfp;
+2335   
+2336  * ########################################################################### *
+2337   
+2338  EXECUTE_UNLOAD '..\data11\18x19x4_gtap9_XCEL.gdx'
+2339   
+2340  display diffcost;
+2341   
+2342  * ############################################################################ *
+2343  *$offtext
+2344   
+EXIT C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 14
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-     2       27 INCLUDE        1      27  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-     3       42 IF EXIST       2      15  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
-     4       43 IF EXIST       2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
-     5       43 GDXIN          2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
-     6      220 EXIT           2     193  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-     7      412 LIBINCLUDE     1     219  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-     8      419 IF EXIST       7       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-     9      437 CALL           7      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    10      441 GDXIN          7      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    11      444 LIBINCLUDE     1     220  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    12      451 IF EXIST      11       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    13      469 CALL          11      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    14      473 GDXIN         11      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    15      476 LIBINCLUDE     1     221  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    16      483 IF EXIST      15       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    17      501 CALL          15      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    18      505 GDXIN         15      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    19      508 LIBINCLUDE     1     222  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    20      515 IF EXIST      19       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    21      533 CALL          19      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    22      537 GDXIN         19      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    23      541 LIBINCLUDE     1     224  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    24      548 IF EXIST      23       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    25      566 CALL          23      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    26      570 GDXIN         23      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    27      573 LIBINCLUDE     1     225  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    28      580 IF EXIST      27       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    29      598 CALL          27      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    30      602 GDXIN         27      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    31      605 LIBINCLUDE     1     226  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    32      612 IF EXIST      31       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    33      630 CALL          31      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    34      634 GDXIN         31      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    35      637 LIBINCLUDE     1     227  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    36      644 IF EXIST      35       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    37      662 CALL          35      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    38      666 GDXIN         35      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    39      670 LIBINCLUDE     1     229  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    40      677 IF EXIST      39       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    41      695 CALL          39      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    42      699 GDXIN         39      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    43      702 LIBINCLUDE     1     230  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    44      709 IF EXIST      43       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    45      727 CALL          43      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    46      731 GDXIN         43      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    47      735 LIBINCLUDE     1     232  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    48      742 IF EXIST      47       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
-    49      760 CALL          47      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    50      764 GDXIN         47      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    51      808 LIBINCLUDE     1     274  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 16
+     1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+     2       27 INCLUDE        1      27  .C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
+     3       42 IF EXIST       2      15  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
+     4       43 IF EXIST       2      16  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
+     5       43 GDXIN          2      16  .C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.gdx
+     6      220 EXIT           2     193  .C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
+     7      390 LIBINCLUDE     1     197  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+     8      397 IF EXIST       7       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+     9      415 CALL           7      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    10      419 GDXIN          7      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    11      422 LIBINCLUDE     1     198  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    12      429 IF EXIST      11       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    13      447 CALL          11      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    14      451 GDXIN         11      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    15      454 LIBINCLUDE     1     199  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    16      461 IF EXIST      15       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    17      479 CALL          15      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    18      483 GDXIN         15      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    19      486 LIBINCLUDE     1     200  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    20      493 IF EXIST      19       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    21      511 CALL          19      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    22      515 GDXIN         19      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    23      519 LIBINCLUDE     1     202  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    24      526 IF EXIST      23       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    25      544 CALL          23      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    26      548 GDXIN         23      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    27      551 LIBINCLUDE     1     203  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    28      558 IF EXIST      27       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    29      576 CALL          27      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    30      580 GDXIN         27      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    31      583 LIBINCLUDE     1     204  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    32      590 IF EXIST      31       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    33      608 CALL          31      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    34      612 GDXIN         31      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    35      615 LIBINCLUDE     1     205  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    36      622 IF EXIST      35       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    37      640 CALL          35      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    38      644 GDXIN         35      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    39      648 LIBINCLUDE     1     207  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    40      655 IF EXIST      39       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    41      673 CALL          39      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    42      677 GDXIN         39      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    43      680 LIBINCLUDE     1     208  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    44      687 IF EXIST      43       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
+    45      705 CALL          43      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
+    46      709 GDXIN         43      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    47      722 LIBINCLUDE     1     219  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    48      729 IF EXIST      47       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    49      747 CALL          47      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    50      751 GDXIN         47      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    51      754 LIBINCLUDE     1     220  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 15
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-    52      815 IF EXIST      51       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
-    53      833 CALL          51      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    54      837 GDXIN         51      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    55      840 LIBINCLUDE     1     275  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    56      847 IF EXIST      55       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
-    57      865 CALL          55      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    58      869 GDXIN         55      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    59      875 LIBINCLUDE     1     279  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    60      882 IF EXIST      59       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
-    61      900 CALL          59      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    62      904 GDXIN         59      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    63      907 LIBINCLUDE     1     280  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    64      914 IF EXIST      63       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
-    65      932 CALL          63      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    66      936 GDXIN         63      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    67      941 LIBINCLUDE     1     283  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    68      948 IF EXIST      67       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
-    69      966 CALL          67      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
-    70      970 GDXIN         67      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    71      973 LIBINCLUDE     1     284  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    72      980 IF EXIST      71       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
-    73      998 CALL          71      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
-    74     1002 GDXIN         71      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    75     1010 LIBINCLUDE     1     290  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    76     1017 IF EXIST      75       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev_switch.xlsx
-    77     1035 CALL          75      49  .gdxxrw "..\xcel_data\ele_dev_switch.xlsx" @xllink.txt log=xllink.log
-    78     1039 GDXIN         75      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    79     1042 LIBINCLUDE     1     291  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    80     1049 IF EXIST      79       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
-    81     1067 CALL          79      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    82     1071 GDXIN         79      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    83     1074 LIBINCLUDE     1     292  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    84     1081 IF EXIST      83       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
-    85     1099 CALL          83      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    86     1103 GDXIN         83      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    87     1106 LIBINCLUDE     1     293  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    88     1113 IF EXIST      87       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
-    89     1131 CALL          87      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    90     1135 GDXIN         87      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    91     1138 LIBINCLUDE     1     294  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    92     1145 IF EXIST      91       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
-    93     1163 CALL          91      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    94     1167 GDXIN         91      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    95     1181 LIBINCLUDE     1     306  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    96     1188 IF EXIST      95       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
-    97     1206 CALL          95      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
-    98     1210 GDXIN         95      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-    99     1219 LIBINCLUDE     1     313  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   100     1226 IF EXIST      99       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   101     1244 CALL          99      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   102     1248 GDXIN         99      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 17
+    52      761 IF EXIST      51       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    53      779 CALL          51      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    54      783 GDXIN         51      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    55      789 LIBINCLUDE     1     224  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    56      796 IF EXIST      55       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    57      814 CALL          55      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    58      818 GDXIN         55      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    59      821 LIBINCLUDE     1     225  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    60      828 IF EXIST      59       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    61      846 CALL          59      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
+    62      850 GDXIN         59      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    63      855 LIBINCLUDE     1     228  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    64      862 IF EXIST      63       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
+    65      880 CALL          63      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
+    66      884 GDXIN         63      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    67      887 LIBINCLUDE     1     229  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    68      894 IF EXIST      67       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
+    69      912 CALL          67      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
+    70      916 GDXIN         67      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    71      924 LIBINCLUDE     1     235  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    72      931 IF EXIST      71       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev_switch.xlsx
+    73      949 CALL          71      49  .gdxxrw "..\xcel_data\ele_dev_switch.xlsx" @xllink.txt log=xllink.log
+    74      953 GDXIN         71      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    75      956 LIBINCLUDE     1     236  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    76      963 IF EXIST      75       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    77      981 CALL          75      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
+    78      985 GDXIN         75      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    79      988 LIBINCLUDE     1     237  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    80      995 IF EXIST      79       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    81     1013 CALL          79      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
+    82     1017 GDXIN         79      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    83     1020 LIBINCLUDE     1     238  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    84     1027 IF EXIST      83       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    85     1045 CALL          83      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
+    86     1049 GDXIN         83      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    87     1052 LIBINCLUDE     1     239  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    88     1059 IF EXIST      87       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    89     1077 CALL          87      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
+    90     1081 GDXIN         87      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    91     1095 LIBINCLUDE     1     251  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    92     1102 IF EXIST      91       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
+    93     1120 CALL          91      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
+    94     1124 GDXIN         91      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    95     1133 LIBINCLUDE     1     258  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+    96     1140 IF EXIST      95       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+    97     1158 CALL          95      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+    98     1162 GDXIN         95      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+    99     1165 LIBINCLUDE     1     259  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   100     1172 IF EXIST      99       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   101     1190 CALL          99      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   102     1194 GDXIN         99      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 16
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   103     1251 LIBINCLUDE     1     314  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   104     1258 IF EXIST     103       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   105     1276 CALL         103      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   106     1280 GDXIN        103      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   107     1284 LIBINCLUDE     1     316  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   108     1291 IF EXIST     107       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   109     1309 CALL         107      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   110     1313 GDXIN        107      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   111     1316 LIBINCLUDE     1     317  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   112     1323 IF EXIST     111       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   113     1341 CALL         111      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   114     1345 GDXIN        111      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   115     1353 LIBINCLUDE     1     323  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   116     1360 IF EXIST     115       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   117     1378 CALL         115      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   118     1382 GDXIN        115      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   119     1385 LIBINCLUDE     1     324  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   120     1392 IF EXIST     119       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   121     1410 CALL         119      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   122     1414 GDXIN        119      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   123     1417 LIBINCLUDE     1     325  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   124     1424 IF EXIST     123       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   125     1442 CALL         123      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   126     1446 GDXIN        123      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   127     1450 LIBINCLUDE     1     327  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   128     1457 IF EXIST     127       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   129     1475 CALL         127      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   130     1479 GDXIN        127      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   131     1482 LIBINCLUDE     1     328  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   132     1489 IF EXIST     131       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   133     1507 CALL         131      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   134     1511 GDXIN        131      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   135     1514 LIBINCLUDE     1     329  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   136     1521 IF EXIST     135       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   137     1539 CALL         135      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   138     1543 GDXIN        135      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   139     1547 LIBINCLUDE     1     331  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   140     1554 IF EXIST     139       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   141     1572 CALL         139      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   142     1576 GDXIN        139      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   143     1579 LIBINCLUDE     1     332  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   144     1586 IF EXIST     143       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   145     1604 CALL         143      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   146     1608 GDXIN        143      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   147     1611 LIBINCLUDE     1     333  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   148     1618 IF EXIST     147       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   149     1636 CALL         147      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   150     1640 GDXIN        147      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   151     1643 LIBINCLUDE     1     334  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   152     1650 IF EXIST     151       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   153     1668 CALL         151      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 18
+   103     1198 LIBINCLUDE     1     261  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   104     1205 IF EXIST     103       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   105     1223 CALL         103      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   106     1227 GDXIN        103      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   107     1230 LIBINCLUDE     1     262  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   108     1237 IF EXIST     107       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   109     1255 CALL         107      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   110     1259 GDXIN        107      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   111     1267 LIBINCLUDE     1     268  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   112     1274 IF EXIST     111       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   113     1292 CALL         111      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   114     1296 GDXIN        111      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   115     1299 LIBINCLUDE     1     269  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   116     1306 IF EXIST     115       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   117     1324 CALL         115      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   118     1328 GDXIN        115      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   119     1331 LIBINCLUDE     1     270  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   120     1338 IF EXIST     119       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   121     1356 CALL         119      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   122     1360 GDXIN        119      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   123     1364 LIBINCLUDE     1     272  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   124     1371 IF EXIST     123       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   125     1389 CALL         123      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   126     1393 GDXIN        123      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   127     1396 LIBINCLUDE     1     273  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   128     1403 IF EXIST     127       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   129     1421 CALL         127      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   130     1425 GDXIN        127      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   131     1428 LIBINCLUDE     1     274  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   132     1435 IF EXIST     131       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   133     1453 CALL         131      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   134     1457 GDXIN        131      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   135     1461 LIBINCLUDE     1     276  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   136     1468 IF EXIST     135       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   137     1486 CALL         135      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   138     1490 GDXIN        135      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   139     1493 LIBINCLUDE     1     277  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   140     1500 IF EXIST     139       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   141     1518 CALL         139      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   142     1522 GDXIN        139      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   143     1525 LIBINCLUDE     1     278  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   144     1532 IF EXIST     143       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   145     1550 CALL         143      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   146     1554 GDXIN        143      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   147     1557 LIBINCLUDE     1     279  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   148     1564 IF EXIST     147       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   149     1582 CALL         147      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   150     1586 GDXIN        147      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   151     1600 LIBINCLUDE     1     291  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   152     1607 IF EXIST     151       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   153     1625 CALL         151      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 17
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   154     1672 GDXIN        151      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   155     1686 LIBINCLUDE     1     346  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   156     1693 IF EXIST     155       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   157     1711 CALL         155      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   158     1715 GDXIN        155      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   159     1723 LIBINCLUDE     1     352  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   160     1730 IF EXIST     159       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
-   161     1748 CALL         159      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
-   162     1752 GDXIN        159      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   163     1756 LIBINCLUDE     1     354  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   164     1763 IF EXIST     163       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-   165     1781 CALL         163      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   166     1785 GDXIN        163      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   167     1808 LIBINCLUDE     1     375  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   168     1815 IF EXIST     167       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\cost_red.xlsx
-   169     1833 CALL         167      49  .gdxxrw "..\xcel_data\cost_red.xlsx" @xllink.txt log=xllink.log
-   170     1837 GDXIN        167      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   171     1852 LIBINCLUDE     1     388  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   172     1859 IF EXIST     171       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\diffcost.xlsx
-   173     1877 CALL         171      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
-   174     1881 GDXIN        171      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   175     1884 LIBINCLUDE     1     389  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   176     1891 IF EXIST     175       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\diffcost.xlsx
-   177     1909 CALL         175      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
-   178     1913 GDXIN        175      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   179     1928 LIBINCLUDE     1     402  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   180     1935 IF EXIST     179       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\nucsize.xlsx
-   181     1953 CALL         179      49  .gdxxrw "..\xcel_data\nucsize.xlsx" @xllink.txt log=xllink.log
-   182     1957 GDXIN        179      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   183     1974 LIBINCLUDE     1     417  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   184     1981 IF EXIST     183       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\pytarget.xlsx
-   185     1999 CALL         183      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
-   186     2003 GDXIN        183      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   187     2006 LIBINCLUDE     1     418  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   188     2013 IF EXIST     187       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\pytarget.xlsx
-   189     2031 CALL         187      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
-   190     2035 GDXIN        187      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   191     2047 LIBINCLUDE     1     428  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   192     2054 IF EXIST     191       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ressize.xlsx
-   193     2072 CALL         191      49  .gdxxrw "..\xcel_data\ressize.xlsx" @xllink.txt log=xllink.log
-   194     2076 GDXIN        191      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   195     2089 LIBINCLUDE     1     439  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   196     2096 IF EXIST     195       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
-   197     2114 CALL         195      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
-   198     2118 GDXIN        195      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   199     2121 LIBINCLUDE     1     440  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   200     2128 IF EXIST     199       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
-   201     2146 CALL         199      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
-   202     2150 GDXIN        199      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   203     2164 LIBINCLUDE     1     452  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   204     2171 IF EXIST     203       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ursk0+urun0.xlsx
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 19
+   154     1629 GDXIN        151      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   155     1637 LIBINCLUDE     1     297  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   156     1644 IF EXIST     155       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
+   157     1662 CALL         155      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
+   158     1666 GDXIN        155      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   159     1670 LIBINCLUDE     1     299  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   160     1677 IF EXIST     159       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   161     1695 CALL         159      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
+   162     1699 GDXIN        159      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   163     1722 LIBINCLUDE     1     320  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   164     1729 IF EXIST     163       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\cost_red.xlsx
+   165     1747 CALL         163      49  .gdxxrw "..\xcel_data\cost_red.xlsx" @xllink.txt log=xllink.log
+   166     1751 GDXIN        163      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   167     1766 LIBINCLUDE     1     333  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   168     1773 IF EXIST     167       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\diffcost.xlsx
+   169     1791 CALL         167      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
+   170     1795 GDXIN        167      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   171     1798 LIBINCLUDE     1     334  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   172     1805 IF EXIST     171       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\diffcost.xlsx
+   173     1823 CALL         171      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
+   174     1827 GDXIN        171      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   175     1842 LIBINCLUDE     1     347  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   176     1849 IF EXIST     175       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\nucsize.xlsx
+   177     1867 CALL         175      49  .gdxxrw "..\xcel_data\nucsize.xlsx" @xllink.txt log=xllink.log
+   178     1871 GDXIN        175      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   179     1888 LIBINCLUDE     1     362  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   180     1895 IF EXIST     179       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\pytarget.xlsx
+   181     1913 CALL         179      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
+   182     1917 GDXIN        179      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   183     1920 LIBINCLUDE     1     363  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   184     1927 IF EXIST     183       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\pytarget.xlsx
+   185     1945 CALL         183      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
+   186     1949 GDXIN        183      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   187     1961 LIBINCLUDE     1     373  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   188     1968 IF EXIST     187       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ressize.xlsx
+   189     1986 CALL         187      49  .gdxxrw "..\xcel_data\ressize.xlsx" @xllink.txt log=xllink.log
+   190     1990 GDXIN        187      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   191     2003 LIBINCLUDE     1     384  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   192     2010 IF EXIST     191       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
+   193     2028 CALL         191      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
+   194     2032 GDXIN        191      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   195     2035 LIBINCLUDE     1     385  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   196     2042 IF EXIST     195       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
+   197     2060 CALL         195      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
+   198     2064 GDXIN        195      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   199     2078 LIBINCLUDE     1     397  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   200     2085 IF EXIST     199       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ursk0+urun0.xlsx
+   201     2103 CALL         199      49  .gdxxrw "..\xcel_data\ursk0+urun0.xlsx" @xllink.txt log=xllink.log
+   202     2107 GDXIN        199      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   203     2124 LIBINCLUDE     1     412  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   204     2131 IF EXIST     203       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\wg.xlsx
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 18
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   205     2189 CALL         203      49  .gdxxrw "..\xcel_data\ursk0+urun0.xlsx" @xllink.txt log=xllink.log
-   206     2193 GDXIN        203      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   207     2210 LIBINCLUDE     1     467  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   208     2217 IF EXIST     207       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\wg.xlsx
-   209     2235 CALL         207      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
-   210     2239 GDXIN        207      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   211     2242 LIBINCLUDE     1     468  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   212     2249 IF EXIST     211       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\wg.xlsx
-   213     2267 CALL         211      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
-   214     2271 GDXIN        211      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   215     2281 LIBINCLUDE     1     476  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   216     2288 IF EXIST     215       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\elast_ene.xlsx
-   217     2306 CALL         215      49  .gdxxrw "..\xcel_data\elast_ene.xlsx" @xllink.txt log=xllink.log
-   218     2310 GDXIN        215      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   219     2318 LIBINCLUDE     1     482  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   220     2325 IF EXIST     219       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
-   221     2343 CALL         219      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   222     2347 GDXIN        219      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   223     2350 LIBINCLUDE     1     483  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   224     2357 IF EXIST     223       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
-   225     2375 CALL         223      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   226     2379 GDXIN        223      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   227     2386 LIBINCLUDE     1     488  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   228     2393 IF EXIST     227       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
-   229     2411 CALL         227      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   230     2415 GDXIN        227      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   231     2431 EXIT           1     502  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+   205     2149 CALL         203      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
+   206     2153 GDXIN        203      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   207     2156 LIBINCLUDE     1     413  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   208     2163 IF EXIST     207       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\wg.xlsx
+   209     2181 CALL         207      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
+   210     2185 GDXIN        207      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   211     2195 LIBINCLUDE     1     421  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   212     2202 IF EXIST     211       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\elast_ene.xlsx
+   213     2220 CALL         211      49  .gdxxrw "..\xcel_data\elast_ene.xlsx" @xllink.txt log=xllink.log
+   214     2224 GDXIN        211      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   215     2232 LIBINCLUDE     1     427  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   216     2239 IF EXIST     215       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   217     2257 CALL         215      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
+   218     2261 GDXIN        215      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   219     2264 LIBINCLUDE     1     428  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   220     2271 IF EXIST     219       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   221     2289 CALL         219      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
+   222     2293 GDXIN        219      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   223     2300 LIBINCLUDE     1     433  .C:\GAMS\win64\24.7\inclib\xlimport.gms
+   224     2307 IF EXIST     223       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   225     2325 CALL         223      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
+   226     2329 GDXIN        223      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   227     2345 EXIT           1     447  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
 
 
-COMPILATION TIME     =       40.451 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 20
+COMPILATION TIME     =      113.585 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 19
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1042,7 +978,7 @@ IND,    USA,    FRA,    DEU,    ITA,    POL,    ESP,    RUS,    UKI,    BNL,    
 ----    191 PARAMETER vb  Current account balance
 
 IND        108.584,    USA        568.013,    FRA         61.027,    DEU       -110.239,    ITA         46.889,    POL         20.180,    ESP         44.384,    RUS       -137.361,    UKI        105.813,    BNL        -15.540,    EUN        -78.809
-EUS         37.818,    OEC        -84.062,    BRZ         -3.845,    CHI       -222.418,    RSA          5.628,    OPA       -317.204,    ROW        -28.857,    chksum -1.57212E-8
+EUS         37.818,    OEC        -84.062,    BRZ         -3.845,    CHI       -222.418,    RSA          5.628,    OPA       -317.204,    ROW        -28.857,    chksum -1.57190E-8
 
 
 ----    197 SET mf  Mobile primary factors
@@ -1070,150 +1006,7 @@ RES
 USA
 
 
-----    791 PARAMETER aeei_read  Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
-
-                                    2011        2015        2020        2025        2030        2035        2040        2045        2050
-
-AEEI_EXO                           1.000       0.973       0.946       0.921       0.896       0.868       0.827       0.775       0.672
-AEEI_EXO_ELE_C                     1.000       0.998       0.995       0.993       0.990       0.988       0.977       0.966       0.955
-AEEI_EXO_DEU                       1.000       0.980       0.961       0.942       0.923       0.923       0.922       1.024       1.024
-AEEI_EXO_NEU                       1.000       0.946       0.895       0.847       0.802       0.758       0.718       0.679       0.642
-AEEI_EXO_EMERGE                    1.000       0.932       0.868       0.809       0.754       0.703       0.655       0.611       0.569
-AEEI_EXOGEN                        1.000       0.824       0.679       0.559       0.461       0.380       0.313       0.258       0.212
-AEEI_EXOGEN_AFTER2020              1.000       0.850       0.722       0.614       0.522       0.443       0.377       0.320       0.272
-AEEI_EXOGEN_AFTER2025              1.000       0.864       0.746       0.645       0.557       0.481       0.416       0.359       0.310
-AEEI_EXOGEN_ELE                    1.000       0.899       0.809       0.727       0.654       0.647       0.591       0.539       0.493
-AEEI_EXOGEN_ELE_AFTER2020          1.000       0.913       0.834       0.762       0.695       0.635       0.580       0.530       0.484
-AEEI_EXOGEN_ELE_AFTER2025          1.000       0.913       0.834       0.762       0.695       0.635       0.580       0.530       0.484
-AEEI_EXOGEN_GEN_YR                 1.000       0.953       0.909       0.867       0.826       0.788       0.751       0.716       0.683
-AEEI_EXOGEN_GEN_YR_AFTER2020       1.000       0.961       0.923       0.886       0.852       0.818       0.786       0.755       0.725
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 21
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-        791 PARAMETER aeei_read  Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
-
-                                    2011        2015        2020        2025        2030        2035        2040        2045        2050
-
-AEEI_EXOGEN_GEN_YR_AFTER2025       1.000       0.970       0.942       0.914       0.887       0.860       0.835       0.810       0.786
-AEEI_EXOGEN_HH                     1.000       0.848       0.719       0.609       0.516       0.438       0.371       0.315       0.267
-AEEI_EXOGEN_HH_AFTER2020           1.000       0.865       0.749       0.648       0.561       0.485       0.420       0.363       0.315
-AEEI_EXOGEN_HH_AFTER2025           1.000       0.870       0.757       0.658       0.573       0.498       0.433       0.377       0.328
-AEEI_EXOGEN_TRN                    1.000       0.862       0.744       0.641       0.553       0.477       0.411       0.354       0.306
-AEEI_EXOGEN_TRN_AFTER2020          1.000       0.870       0.757       0.658       0.573       0.498       0.433       0.377       0.328
-AEEI_EXOGEN_TRN_AFTER2025          1.000       0.879       0.772       0.679       0.597       0.524       0.461       0.405       0.356
-
-
-----    791 PARAMETER AEEI_exo  AEEI exogen
-
-2011 1.000,    2015 0.973,    2020 0.946,    2025 0.921,    2030 0.896,    2035 0.868,    2040 0.827,    2045 0.775,    2050 0.672
-
-
-----    791 PARAMETER AEEI_exo_emerge  AEEI exogen emerge
-
-2011 1.000,    2015 0.932,    2020 0.868,    2025 0.809,    2030 0.754,    2035 0.703,    2040 0.655,    2045 0.611,    2050 0.569
-
-
-----    791 PARAMETER AEEI_exo_deu  AEEI exogen deu
-
-2011 1.000,    2015 0.980,    2020 0.961,    2025 0.942,    2030 0.923,    2035 0.923,    2040 0.922,    2045 1.024,    2050 1.024
-
-
-----    791 PARAMETER AEEI_exo_neu  AEEI exogen neu
-
-2011 1.000,    2015 0.946,    2020 0.895,    2025 0.847,    2030 0.802,    2035 0.758,    2040 0.718,    2045 0.679,    2050 0.642
-
-
-----    791 PARAMETER AEEI_exo_ele_c  AEEI exogen ele_c
-
-2011 1.000,    2015 0.998,    2020 0.995,    2025 0.993,    2030 0.990,    2035 0.988,    2040 0.977,    2045 0.966,    2050 0.955
-
-
-----    791 PARAMETER AEEI_exogen_gen_yr  AEEI exogen für den einstaz von fe in stromerzeugung in deu!
-
-2011 1.000,    2015 0.953,    2020 0.909,    2025 0.867,    2030 0.826,    2035 0.788,    2040 0.751,    2045 0.716,    2050 0.683
-
-
-----    791 PARAMETER AEEI_exogen_gen_yr_after2020  AEEI exogen electricity generation nach erreichen von mckinsey
-
-2011 1.000,    2015 0.961,    2020 0.923,    2025 0.886,    2030 0.852,    2035 0.818,    2040 0.786,    2045 0.755,    2050 0.725
-
-
-----    791 PARAMETER AEEI_exogen_gen_yr_after2025  AEEI exogen electricity generation nach erreichen von mckinsey II
-
-2011 1.000,    2015 0.970,    2020 0.942,    2025 0.914,    2030 0.887,    2035 0.860,    2040 0.835,    2045 0.810,    2050 0.786
-
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 22
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-----    791 PARAMETER AEEI_exogen  AEEI exogen für deutschland
-
-2011 1.000,    2015 0.824,    2020 0.679,    2025 0.559,    2030 0.461,    2035 0.380,    2040 0.313,    2045 0.258,    2050 0.212
-
-
-----    791 PARAMETER AEEI_exogen_after2020  AEEI exogen für deutschland nach erreichen von mckinsey
-
-2011 1.000,    2015 0.850,    2020 0.722,    2025 0.614,    2030 0.522,    2035 0.443,    2040 0.377,    2045 0.320,    2050 0.272
-
-
-----    791 PARAMETER AEEI_exogen_after2025  AEEI exogen für deutschland nach erreichen von mckinsey II
-
-2011 1.000,    2015 0.864,    2020 0.746,    2025 0.645,    2030 0.557,    2035 0.481,    2040 0.416,    2045 0.359,    2050 0.310
-
-
-----    791 PARAMETER AEEI_exogen_ele  AEEI exogen für deutschland stromverbrauch
-
-2011 1.000,    2015 0.899,    2020 0.809,    2025 0.727,    2030 0.654,    2035 0.647,    2040 0.591,    2045 0.539,    2050 0.493
-
-
-----    791 PARAMETER AEEI_exogen_ele_after2020  AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
-
-2011 1.000,    2015 0.913,    2020 0.834,    2025 0.762,    2030 0.695,    2035 0.635,    2040 0.580,    2045 0.530,    2050 0.484
-
-
-----    791 PARAMETER AEEI_exogen_ele_after2025  AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
-
-2011 1.000,    2015 0.913,    2020 0.834,    2025 0.762,    2030 0.695,    2035 0.635,    2040 0.580,    2045 0.530,    2050 0.484
-
-
-----    791 PARAMETER AEEI_exogen_trn  AEEI exogen für deutschland TRN
-
-2011 1.000,    2015 0.862,    2020 0.744,    2025 0.641,    2030 0.553,    2035 0.477,    2040 0.411,    2045 0.354,    2050 0.306
-
-
-----    791 PARAMETER AEEI_exogen_trn_after2020  AEEI exogen für deutschland TRN nach erreichen von mckinsey
-
-2011 1.000,    2015 0.870,    2020 0.757,    2025 0.658,    2030 0.573,    2035 0.498,    2040 0.433,    2045 0.377,    2050 0.328
-
-
-----    791 PARAMETER AEEI_exogen_trn_after2025  AEEI exogen für deutschland TRN nach erreichen von mckinsey II
-
-2011 1.000,    2015 0.879,    2020 0.772,    2025 0.679,    2030 0.597,    2035 0.524,    2040 0.461,    2045 0.405,    2050 0.356
-
-
-----    791 PARAMETER AEEI_exogen_hh  AEEI exogen für deutschland HH
-
-2011 1.000,    2015 0.848,    2020 0.719,    2025 0.609,    2030 0.516,    2035 0.438,    2040 0.371,    2045 0.315,    2050 0.267
-
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 23
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-----    791 PARAMETER AEEI_exogen_hh_after2020  AEEI exogen für deutschland HH nach erreichen von mckinsey
-
-2011 1.000,    2015 0.865,    2020 0.749,    2025 0.648,    2030 0.561,    2035 0.485,    2040 0.420,    2045 0.363,    2050 0.315
-
-
-----    791 PARAMETER AEEI_exogen_hh_after2025  AEEI exogen für deutschland HH nach erreichen von mckinsey II
-
-2011 1.000,    2015 0.870,    2020 0.757,    2025 0.658,    2030 0.573,    2035 0.498,    2040 0.433,    2045 0.377,    2050 0.328
-
-
-----   1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
+----    919 PARAMETER abschreibung  Decommissioning geg. vorperiode
 
                   2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -1230,6 +1023,15 @@ IND.mGAS         0.185       0.185       0.185       0.185       0.185       0.1
 IND.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 20
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 IND.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1256,15 +1058,6 @@ FRA.bGEO         0.797       0.997       1.000       1.000
 FRA.bHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
 FRA.bHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
 FRA.bGAS         0.125       0.121       0.284       1.000
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 24
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 FRA.bOIL         0.345       0.366       0.744       1.000
 FRA.mHC          0.330       0.393       0.622       0.846       0.846       0.846       0.846       0.846
 FRA.mGAS         0.125       0.121       0.284       1.000
@@ -1288,6 +1081,15 @@ DEU.mSOLAR 1.77636E-15 7.404117E-4       0.154       1.000
 DEU.mOIL         0.682       1.000
 DEU.pOIL         0.682       1.000
 DEU.pGAS         0.324       0.591       0.174       0.719       1.000                               1.000
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 21
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 ITA.bNUC         0.026       0.107       0.427       0.828       0.828       0.828       0.828       0.828
 ITA.bBC          0.411       0.264       0.539       1.000
 ITA.bBIO         0.036       0.365       0.654       1.000
@@ -1314,15 +1116,6 @@ POL.bGAS         0.143       0.150       0.347       1.000
 POL.bOIL         0.379       0.425       0.750       1.000
 POL.mHC          0.349       0.405       0.587       0.777       0.777       0.777       0.777       0.777
 POL.mGAS         0.143       0.150       0.347       1.000
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 25
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 POL.mWIND        0.899       0.900
 POL.mSOLAR       0.182       0.830       0.474       1.000
 POL.mOIL         0.379       0.425       0.750       1.000
@@ -1346,6 +1139,15 @@ ESP.pHYDRO -2.04146E-5 -2.04142E-5 -1.02069E-5 -1.02068E-5 -1.02068E-5 -1.02068E
 RUS.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 22
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 RUS.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1372,15 +1174,6 @@ UKI.mGAS         0.125       0.121       0.284       1.000
 UKI.mWIND        0.999       1.000
 UKI.mSOLAR       0.202       0.922       0.545       1.000
 UKI.mOIL         0.345       0.366       0.744       1.000
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 26
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 UKI.pOIL         0.345       0.366       0.744       1.000
 UKI.pGAS         0.125       0.121       0.284       1.000
 UKI.pHYDRO       0.001       0.002       0.003       0.006       0.006       0.006       0.006       0.006
@@ -1404,6 +1197,15 @@ EUN.bNUC         0.185       0.185       0.185       0.185       0.185       0.1
 EUN.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 23
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 EUN.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1430,15 +1232,6 @@ EUS.mWIND        0.185       0.185       0.185       0.185       0.185       0.1
 EUS.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUS.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUS.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 27
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 EUS.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUS.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OEC.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1462,6 +1255,15 @@ BRZ.bBC          0.185       0.185       0.185       0.185       0.185       0.1
 BRZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 24
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 BRZ.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1488,15 +1290,6 @@ CHI.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.1
 CHI.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 CHI.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 CHI.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 28
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung  Decommissioning geg. vorperiode
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 CHI.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1520,6 +1313,15 @@ OPA.bBIO         0.185       0.185       0.185       0.185       0.185       0.1
 OPA.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 25
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung  Decommissioning geg. vorperiode
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 OPA.bGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.bOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.mHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1546,12 +1348,9 @@ ROW.mOIL         0.185       0.185       0.185       0.185       0.185       0.1
 ROW.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 29
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
 
 
-----   1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+----    919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
 
                   2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -1572,6 +1371,15 @@ IND.pOIL         1.000       0.319       0.260       0.212       0.173       0.1
 IND.pGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 IND.pHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 USA.bNUC         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 26
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 USA.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 USA.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 USA.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
@@ -1604,15 +1412,6 @@ FRA.mOIL         1.000       0.434       0.215       0.056
 FRA.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 FRA.pOIL         1.000       0.434       0.180       0.180
 FRA.pGAS         1.000       0.559       0.540       0.534       0.534       0.534       0.508       0.354       0.124
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 30
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 FRA.pHYDRO       1.000       0.995       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 DEU.bNUC         1.000       0.850       0.460
 DEU.bBC          1.000       1.000       0.968       0.892       0.686       0.609       0.494       0.440       0.434
@@ -1630,6 +1429,15 @@ DEU.mSOLAR       1.000       1.000       0.999       0.846
 DEU.mOIL         1.000       0.318
 DEU.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 DEU.pOIL         1.000       0.318
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 27
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 DEU.pGAS         1.000       0.676       0.276       0.228       0.064
 DEU.pHYDRO       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 ITA.bNUC         1.000
@@ -1662,15 +1470,6 @@ POL.bCCS         1.000       1.000       1.000       1.000       1.000       1.0
 POL.mHC          1.000       0.530       0.474       0.267       0.170       0.153       0.122       0.097       0.081
 POL.mGAS         1.000       1.000       1.000       0.872       0.872       0.872       0.872       0.865       0.699
 POL.mWIND        1.000                   0.200
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 31
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 POL.mSOLAR       1.000
 POL.mOIL         1.000       0.070       0.540       0.535       0.535       0.479       0.479       0.479
 POL.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
@@ -1688,6 +1487,15 @@ ESP.bOIL         1.000       0.616       0.509       0.385       0.231       0.1
 ESP.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 ESP.mHC          1.000       0.861       0.861       0.027       0.027       0.027
 ESP.mGAS         1.000       0.955       0.955       0.911       0.911       0.911       0.726       0.279
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 28
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 ESP.mWIND        1.000       0.800       0.200       0.517       0.129       0.029
 ESP.mSOLAR       1.000       0.667       0.666       0.662       0.247
 ESP.mOIL         1.000       0.616       0.609       0.399       0.136       0.068
@@ -1720,15 +1528,6 @@ UKI.bHC          1.000       0.397       0.107       0.071       0.024
 UKI.bGAS         1.000       0.983       0.983       0.902       0.828       0.822       0.814       0.300       0.095
 UKI.bOIL         1.000       0.867       0.567       0.393       0.220       0.078       0.035
 UKI.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 32
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 UKI.mHC          1.000       0.397       0.211       0.181       0.181       0.113
 UKI.mGAS         1.000       0.983       0.983       0.878       0.877       0.850       0.639       0.247       0.004
 UKI.mWIND        1.000       0.800       0.200       0.598       0.081
@@ -1746,6 +1545,15 @@ BNL.bHYDRO       1.000       1.000       0.984       0.984       0.984       0.9
 BNL.bHC          1.000       0.832       0.644       0.642       0.634       0.634       0.419       0.418       0.418
 BNL.bGAS         1.000       0.739       0.737       0.655       0.424       0.358
 BNL.bOIL         1.000       0.771       0.415       0.323       0.120       0.009       0.009
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 29
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 BNL.bCCS                     1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 BNL.mHC          1.000       0.832       0.832       0.832       0.832       0.832       0.826       0.826       0.826
 BNL.mGAS         1.000       0.739       0.739       0.739       0.721       0.546       0.373       0.188       0.003
@@ -1778,15 +1586,6 @@ EUS.bNUC         1.000       1.000       1.000       1.000       1.000       1.0
 EUS.bBC          1.000       0.573       0.524       0.474       0.427       0.269       0.171       0.106       0.086
 EUS.bBIO         1.000       1.000       0.705       0.672       0.661       0.563       0.234       0.022
 EUS.bGEO         1.000 1.000000E-4
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 33
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 EUS.bHYDRO       1.000       1.000       0.801       0.801       0.802       0.803       0.805       0.808       0.812
 EUS.bHC          1.000       0.772       0.195       0.073       0.073       0.064       0.064
 EUS.bGAS         1.000       0.820       0.495       0.461       0.461       0.439       0.429       0.355       0.278
@@ -1804,6 +1603,15 @@ EUS.pHYDRO       1.000       1.000       1.000       1.000       1.000       1.0
 OEC.bNUC         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 30
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 OEC.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bHC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
@@ -1836,15 +1644,6 @@ BRZ.pHYDRO       1.000       0.319       0.260       0.212       0.173       0.1
 CHI.bNUC         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 CHI.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 CHI.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 34
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 CHI.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 CHI.bHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 CHI.bHC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
@@ -1862,6 +1661,15 @@ RSA.bNUC         1.000       0.319       0.260       0.212       0.173       0.1
 RSA.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 31
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 RSA.bHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bHC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
@@ -1894,15 +1702,6 @@ ROW.bNUC         1.000       0.319       0.260       0.212       0.173       0.1
 ROW.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 35
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk  Decommissioning geg. basis-bmk
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 ROW.bHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.bHC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.bGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
@@ -1916,8 +1715,12 @@ ROW.pOIL         1.000       0.319       0.260       0.212       0.173       0.1
 ROW.pGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.pHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 32
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   1005 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+----    919 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
 
                   2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -1952,15 +1755,6 @@ USA.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.1
 USA.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 USA.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 USA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 36
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 USA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -1979,6 +1773,15 @@ RUS.pOIL         0.185       0.185       0.185       0.185       0.185       0.1
 RUS.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OEC.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 33
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 OEC.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OEC.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OEC.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -2010,15 +1813,6 @@ BRZ.mOIL         0.185       0.185       0.185       0.185       0.185       0.1
 BRZ.pOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 37
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 CHI.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 CHI.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 CHI.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -2037,6 +1831,15 @@ CHI.pGAS         0.185       0.185       0.185       0.185       0.185       0.1
 CHI.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 34
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
+
+                  2015        2020        2025        2030        2035        2040        2045        2050
+
 RSA.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -2068,15 +1871,6 @@ OPA.pOIL         0.185       0.185       0.185       0.185       0.185       0.1
 OPA.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 38
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_z  Decommissioning geg. vorperiode für länder ohne daten über sterbekurven
-
-                  2015        2020        2025        2030        2035        2040        2045        2050
-
 ROW.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
@@ -2093,8 +1887,12 @@ ROW.pOIL         0.185       0.185       0.185       0.185       0.185       0.1
 ROW.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 35
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   1005 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+----    919 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
 
                   2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2126,15 +1924,6 @@ USA.mHC          1.000       0.815       0.665       0.542       0.442       0.3
 USA.mGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.240       0.240       0.195
 USA.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 USA.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 39
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 USA.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 USA.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 USA.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.240       0.240       0.195
@@ -2156,6 +1945,15 @@ RUS.pOIL         1.000       0.815       0.665       0.542       0.442       0.3
 RUS.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RUS.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OEC.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 36
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 OEC.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OEC.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OEC.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
@@ -2184,15 +1982,6 @@ BRZ.mGAS         1.000       0.815       0.665       0.542       0.442       0.3
 BRZ.mWIND        1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 BRZ.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 BRZ.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 40
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 BRZ.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 BRZ.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 BRZ.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
@@ -2214,6 +2003,15 @@ CHI.pGAS         1.000       0.815       0.665       0.542       0.442       0.3
 CHI.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 37
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+        919 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 RSA.bBIO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bGEO         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
@@ -2242,15 +2040,6 @@ OPA.mWIND        1.000       0.815       0.665       0.542       0.442       0.3
 OPA.mSOLAR       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OPA.mOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OPA.pOIL         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 41
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1005 PARAMETER abschreibung_bmk_z  Decommissioning geg. basis-bmk für länder ohne daten über sterbekurven
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 OPA.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OPA.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 ROW.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
@@ -2270,8 +2059,12 @@ ROW.pOIL         1.000       0.815       0.665       0.542       0.442       0.3
 ROW.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 ROW.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 38
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   1171 PARAMETER ele_dev  growth curve from TIMES-PanEU
+
+----   1085 PARAMETER ele_dev  growth curve from TIMES-PanEU
 
                   2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2300,15 +2093,6 @@ bBIO  .EUS       1.000       1.595       3.131       3.440       4.328       4.3
 bGEO  .FRA                               0.500       1.038       1.576       2.394       3.636       5.522       6.388
 bGEO  .DEU       1.000       0.665       5.571       5.682      14.310      31.671      49.096      63.506      73.923
 bGEO  .ITA       1.000       0.942       0.942       1.318       1.805       2.221       2.637       3.053       3.389
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 42
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1171 PARAMETER ele_dev  growth curve from TIMES-PanEU
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 bGEO  .POL                         1.134308E-4 4.332159E-4       0.446       1.465       2.865       2.896       2.901
 bGEO  .ESP       1.000       1.910       4.134       4.217       8.220      13.912      14.050      14.186      14.324
 bGEO  .UKI                                                                   0.075       0.150       0.224       0.299
@@ -2333,6 +2117,15 @@ bHC   .UKI       1.000       0.065       0.067       0.068       0.068       0.0
 bHC   .BNL       1.000       1.091       0.785       0.910       0.249       0.101       0.019       0.011 7.789852E-4
 bHC   .EUN       1.000       1.525       1.551       1.499       0.758       0.291       0.161       0.095       0.012
 bHC   .EUS                   9.735       9.593       9.016       6.484       4.437       0.729       0.572       0.511
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 39
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1085 PARAMETER ele_dev  growth curve from TIMES-PanEU
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 bGAS  .FRA                               0.396       8.590       8.337       7.152       4.638       1.771       3.446
 bGAS  .DEU       1.000       0.521       0.728       0.849       0.860       0.546       0.176       0.132       0.084
 bGAS  .ITA       1.000       0.749       0.804       0.470       0.415       0.108       0.177       0.114       0.098
@@ -2358,15 +2151,6 @@ bCCS  .ESP                                     5.297300E-4 5.293636E-4       8.0
 bCCS  .EUN                                     7.029709E-4 9.538654E-4 8.392768E-4 8.940585E-4
 bCCS  .EUS                         7.165616E-5       0.001       0.001      22.401      22.645      23.116      23.122
 mHC   .FRA       1.000       0.534       0.008       0.008
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 43
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1171 PARAMETER ele_dev  growth curve from TIMES-PanEU
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 mHC   .DEU       1.000       0.863       0.390       0.257       0.089       0.005       0.005       0.005       0.005
 mHC   .ITA       1.000       0.869       0.536       0.300       0.064 4.222690E-4 4.222305E-4 4.222059E-4 4.223683E-4
 mHC   .POL       1.000       1.006       0.005 3.045825E-6 1.353817E-6
@@ -2391,6 +2175,15 @@ mWIND .POL       1.000       3.312       3.312       3.313      10.453      11.8
 mWIND .ESP       1.000       1.150       1.577       1.722       2.248       2.504       2.809       2.886       4.349
 mWIND .UKI       1.000       2.379       4.435      12.120      13.116      13.362      15.892      20.649      21.491
 mWIND .BNL       1.000       2.120       4.190       9.555      17.136      19.460      27.824      32.525      41.352
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 40
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1085 PARAMETER ele_dev  growth curve from TIMES-PanEU
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 mWIND .EUN       1.000       1.843       2.034       3.718       6.486       8.354      10.111      11.997      13.729
 mWIND .EUS       1.000       2.171       2.334       2.584       6.892       9.270      15.498      20.588      28.637
 mSOLAR.FRA       1.000       3.543       3.543       3.543      17.088      26.734      40.101      53.469      67.216
@@ -2416,15 +2209,6 @@ mCCS  .DEU                                           0.009       0.745      12.8
 mCCS  .ITA       1.000                   5.350       5.351       5.351      42.227      48.063      50.182      50.139
 mCCS  .POL                                     1.524739E-4 1.494926E-4      30.945      31.368      37.364      38.262
 mCCS  .ESP       1.000       6.628       6.628       6.628       6.629      28.353      44.353      40.115      40.508
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 44
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       1171 PARAMETER ele_dev  growth curve from TIMES-PanEU
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 mCCS  .UKI       1.000                                                      12.968      28.905      35.172      59.075
 mCCS  .BNL       1.000       1.850       1.850       1.850       1.850      21.810      28.039      27.842      27.376
 mCCS  .EUN       1.000                   4.014       4.099      11.003      36.739      29.290      28.497      28.447
@@ -2449,6 +2233,15 @@ pGAS  .EUS       1.000       1.257       1.181       4.478       4.728       4.1
 pHYDRO.FRA       1.000       6.893       6.965       8.631       8.967       9.303       9.639       9.975      10.311
 pHYDRO.DEU       1.000       0.912       0.987       1.001       1.009       1.009       1.009       1.009       1.000
 pHYDRO.ITA       1.000      43.182      17.824      23.265      24.351      24.351      24.351      24.351      24.351
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 41
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1085 PARAMETER ele_dev  growth curve from TIMES-PanEU
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 pHYDRO.POL       1.000      29.217       3.338       4.003       4.726       5.449       6.171       6.895      11.175
 pHYDRO.ESP       1.000      11.064      13.407      13.446      13.436      13.415      13.393      13.412      13.456
 pHYDRO.UKI       1.000       2.139       2.176       2.213       2.250       2.293       2.323       2.360       2.397
@@ -2457,7 +2250,7 @@ pHYDRO.EUN       1.000      95.280      87.285      87.472     103.083     105.5
 pHYDRO.EUS       1.000       9.062       9.132      10.917      13.752      14.839      16.132      17.315      18.091
 
 
-----   1802 PARAMETER co2pfad  CO2-growth
+----   1716 PARAMETER co2pfad  CO2-growth
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2474,12 +2267,8 @@ EUN       1.000       1.031       1.010       1.002       1.008       1.013     
 EUS       1.000       1.073       1.083       1.126       1.193       1.229       1.265       1.277       1.288
 OEC       1.000       0.949       0.898       0.853       0.808       0.766       0.726       0.687       0.651
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 45
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
 
-
-----   1802 PARAMETER co2pfad_ets  CO2-growth in the EU-ETS
+----   1716 PARAMETER co2pfad_ets  CO2-growth in the EU-ETS
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2494,14 +2283,18 @@ EUN       1.000       0.985       0.897       0.784       0.672       0.560     
 EUS       1.000       0.899       0.818       0.715       0.613       0.511       0.408       0.306       0.203
 
 
-----   1802 PARAMETER co2pfad_ets_eu  
+----   1716 PARAMETER co2pfad_ets_eu  
 
             2011        2015        2020        2025        2030        2035        2040        2045        2050
 
 EU28       1.000       0.944       0.884       0.828       0.750       0.680       0.620       0.526       0.447
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 42
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   1802 PARAMETER co2pfad_ets_row  CO2-growth in the RoW (non-EU)
+
+----   1716 PARAMETER co2pfad_ets_row  CO2-growth in the RoW (non-EU)
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2517,7 +2310,7 @@ OPA       1.000       1.093       1.172       1.270       1.383       1.491     
 ROW       1.000       1.093       1.172       1.270       1.383       1.491       1.606       1.701       1.782
 
 
-----   1802 PARAMETER co2pfad_ets_row_2dc  CO2-growth in the non-EU contries for a 2 dC target
+----   1716 PARAMETER co2pfad_ets_row_2dc  CO2-growth in the non-EU contries for a 2 dC target
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2531,12 +2324,8 @@ RSA       1.000       1.006       0.687       0.822       0.516       0.333     
 OPA       1.000       1.114       1.129       1.139       1.050       0.942       0.849       0.748       0.673
 ROW       1.000       1.114       1.129       1.139       1.050       0.942       0.849       0.748       0.673
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 46
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
 
-
-----   1802 PARAMETER co2pfad_nonets  CO2 growth for non-ETS
+----   1716 PARAMETER co2pfad_nonets  CO2 growth for non-ETS
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2551,13 +2340,22 @@ EUN       1.000       0.932       0.883       0.860       0.835       0.827     
 EUS       1.000       0.954       0.925       0.909       0.897       0.902       0.905       0.902       0.903
 
 
-----   1802 PARAMETER co2pfad_nonets_2dc  CO2 growth for non-ETS
+----   1716 PARAMETER co2pfad_nonets_2dc  CO2 growth for non-ETS
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
 FRA       1.000       0.964       0.857       0.706       0.566       0.438       0.321       0.215       0.120
 DEU       1.000       0.975       0.834       0.683       0.543       0.414       0.297       0.191       0.096
 ITA       1.000       0.890       0.882       0.746       0.620       0.503       0.396       0.298       0.210
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 43
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1716 PARAMETER co2pfad_nonets_2dc  CO2 growth for non-ETS
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 POL       1.000       0.915       0.964       0.832       0.710       0.595       0.490       0.393       0.305
 ESP       1.000       0.888       0.926       0.803       0.687       0.580       0.480       0.389       0.305
 UKI       1.000       0.934       0.944       0.786       0.639       0.504       0.380       0.268       0.167
@@ -2566,7 +2364,7 @@ EUN       1.000       0.915       0.848       0.718       0.596       0.484     
 EUS       1.000       0.916       1.053       0.911       0.777       0.653       0.539       0.433       0.338
 
 
-----   1840 PARAMETER cost_red  Renewable energies cost reduction
+----   1754 PARAMETER cost_red  Renewable energies cost reduction
 
               2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2576,7 +2374,7 @@ mWIND        1.000       0.440       0.280       0.240       0.220       0.200  
 mSOLAR       1.000       0.300       0.220       0.180       0.140       0.110       0.090       0.080       0.060
 
 
-----   1918 PARAMETER diffcost  Differenzkosten
+----   1832 PARAMETER diffcost  Differenzkosten
 
                IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA
 
@@ -2586,12 +2384,8 @@ bHYDRO       1.626       1.626       1.626       1.626       1.626       1.626  
 mWIND        1.403       1.403       1.403       1.000       1.403       1.403       1.403       1.403       1.000       1.403       1.403       1.403       1.403       1.403       1.403       1.403       1.403
 mSOLAR      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 47
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
 
-
-----   1918 PARAMETER diffcost_exogen  Differenzkosten
+----   1832 PARAMETER diffcost_exogen  Differenzkosten
 
                IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA
 
@@ -2602,7 +2396,7 @@ mWIND        2.443       2.443       2.443       1.000       2.443       2.443  
 mSOLAR      15.743      15.743      15.743      20.000      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743      15.743
 
 
-----   1960 PARAMETER nucsize  Ausbau- bzw. Rückbaupfad Kernenergie
+----   1874 PARAMETER nucsize  Ausbau- bzw. Rückbaupfad Kernenergie
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2611,6 +2405,15 @@ USA       1.000       1.080       1.161       1.241       1.322       1.402     
 FRA       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 DEU       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 ITA       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 44
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1874 PARAMETER nucsize  Ausbau- bzw. Rückbaupfad Kernenergie
+
+           2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 POL       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 ESP       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 RUS       1.000       1.159       1.318       1.477       1.636       1.795       1.954       2.113       2.272
@@ -2626,7 +2429,7 @@ OPA       1.000       1.615       2.229       2.844       3.459       4.073     
 ROW       1.000       1.487       1.973       2.460       2.947       3.433       3.920       4.407       4.893
 
 
-----   2039 PARAMETER pytarget_yr  Exogenous price paths for resources
+----   1953 PARAMETER pytarget_yr  Exogenous price paths for resources
 
                2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2644,15 +2447,6 @@ DEU.COL       1.000       0.700       1.077       1.116       1.116       1.175 
 DEU.CRU       1.000       0.747       1.152       1.265       1.361       1.567       1.530       1.680       1.850
 ITA.gas       1.000       0.925       1.141       1.178       1.221       1.329       1.420       1.469       1.542
 ITA.COL       1.000       0.898       1.104       1.155       1.156       1.235       1.295       1.367       1.435
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 48
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       2039 PARAMETER pytarget_yr  Exogenous price paths for resources
-
-               2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 ITA.CRU       1.000       1.026       1.169       1.294       1.401       1.629       1.589       1.754       1.943
 POL.gas       1.000       0.925       1.141       1.178       1.221       1.329       1.420       1.469       1.542
 POL.COL       1.000       0.898       1.104       1.155       1.156       1.235       1.295       1.367       1.435
@@ -2669,6 +2463,15 @@ UKI.CRU       1.000       1.026       1.169       1.294       1.401       1.629 
 BNL.gas       1.000       0.925       1.141       1.178       1.221       1.329       1.420       1.469       1.542
 BNL.COL       1.000       0.898       1.104       1.155       1.156       1.235       1.295       1.367       1.435
 BNL.CRU       1.000       1.026       1.169       1.294       1.401       1.629       1.589       1.754       1.943
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 45
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1953 PARAMETER pytarget_yr  Exogenous price paths for resources
+
+               2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 EUN.gas       1.000       0.925       1.141       1.178       1.221       1.329       1.420       1.469       1.542
 EUN.COL       1.000       0.898       1.104       1.155       1.156       1.235       1.295       1.367       1.435
 EUN.CRU       1.000       1.026       1.169       1.294       1.401       1.629       1.589       1.754       1.943
@@ -2695,22 +2498,13 @@ ROW.COL       1.000       1.016       1.095       1.210       1.317       1.434 
 ROW.CRU       1.000       1.027       1.180       1.315       1.460       1.686       1.638       1.809       2.011
 
 
-----   2079 PARAMETER ressize  Growth rates for renewable energy sources
+----   1993 PARAMETER ressize  Growth rates for renewable energy sources
 
                   2011        2015        2020        2025        2030        2035        2040        2045        2050
 
 IND.bBIO         1.000       8.845      16.690      30.735      44.780      65.243      95.057     138.495     201.784
 IND.bHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
 IND.pHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 49
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       2079 PARAMETER ressize  Growth rates for renewable energy sources
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 USA.bBIO         1.000       1.994       2.987       4.168       5.350       6.865       8.811      11.308      14.512
 USA.bHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
 USA.pHYDRO       1.000       1.048       1.095       1.122       1.150       1.177       1.206       1.235       1.265
@@ -2727,6 +2521,15 @@ ITA.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.1
 ITA.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
 ITA.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
 POL.bBIO         1.000       4.766       8.900      16.301      23.702      34.463      50.110      72.860     105.940
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 46
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       1993 PARAMETER ressize  Growth rates for renewable energy sources
+
+                  2011        2015        2020        2025        2030        2035        2040        2045        2050
+
 POL.bHYDRO       1.000       1.086       1.223       1.262       1.371       1.491       1.620       1.761       1.914
 POL.mWIND        1.000       1.840       2.655       3.407       4.182       5.134       6.303       7.737       9.498
 POL.pHYDRO       1.000       1.029       1.223       1.262       1.371       1.491       1.620       1.761       1.914
@@ -2760,15 +2563,6 @@ BRZ.bBIO         1.000       8.608      16.216      29.836      43.457      63.2
 BRZ.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 BRZ.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 CHI.bBIO         1.000       8.845      16.690      30.735      44.780      65.243      95.057     138.495     201.784
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 50
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       2079 PARAMETER ressize  Growth rates for renewable energy sources
-
-                  2011        2015        2020        2025        2030        2035        2040        2045        2050
-
 CHI.bHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
 CHI.pHYDRO       1.000       1.462       1.924       2.155       2.386       2.641       2.924       3.237       3.583
 RSA.bBIO         1.000       8.608      16.216      29.836      43.457      63.295      92.190     134.276     195.574
@@ -2781,65 +2575,64 @@ ROW.bBIO         1.000       8.608      16.216      29.836      43.457      63.2
 ROW.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 ROW.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 47
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   2156 PARAMETER lfhc_usk  Labor force and human capital development for unskilled labor (BASELINE Database)
+
+----   2070 PARAMETER lfhc_usk  Labor force and human capital development for unskilled labor (BASELINE Database)
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
-IND       1.000       1.082       1.162       1.233       1.293       1.337       1.363       1.370       1.359
+IND       1.000       1.075       1.114       1.135       1.135       1.119       1.084       1.036       0.976
 USA       1.000       0.989       0.978       0.955       0.920       0.882       0.838       0.788       0.729
 FRA       1.000       0.947       0.887       0.826       0.762       0.701       0.636       0.585       0.538
 DEU       1.000       0.955       0.910       0.852       0.785       0.727       0.680       0.634       0.580
 ITA       1.000       0.966       0.926       0.872       0.810       0.747       0.689       0.643       0.599
 POL       1.000       0.991       0.939       0.878       0.808       0.732       0.656       0.579       0.497
 ESP       1.000       0.943       0.896       0.841       0.770       0.695       0.611       0.537       0.474
-RUS       1.000       0.948       0.892       0.838       0.783       0.725       0.658       0.583       0.510
+RUS       1.000       1.024       1.072       1.107       1.129       1.137       1.129       1.107       1.068
 UKI       1.000       0.956       0.903       0.841       0.772       0.697       0.625       0.566       0.515
 BNL       1.000       0.924       0.870       0.810       0.745       0.680       0.620       0.571       0.520
 EUN       1.000       0.965       0.929       0.888       0.840       0.789       0.733       0.674       0.611
 EUS       1.000       0.984       0.936       0.877       0.808       0.732       0.655       0.582       0.509
-OEC       1.000       0.977       0.950       0.916       0.877       0.829       0.776       0.722       0.672
-BRZ       1.000       1.026       1.063       1.078       1.074       1.055       1.019       0.970       0.907
-CHI       1.000       1.019       1.004       0.972       0.928       0.876       0.818       0.759       0.699
-RSA       1.000       1.028       1.070       1.114       1.152       1.182       1.201       1.205       1.195
-OPA       1.000       1.065       1.142       1.213       1.279       1.336       1.384       1.417       1.444
-ROW       1.000       1.075       1.174       1.272       1.368       1.462       1.549       1.628       1.696
+OEC       1.000       0.983       0.967       0.945       0.916       0.878       0.833       0.786       0.739
+BRZ       1.000       1.006       1.019       1.016       0.996       0.967       0.928       0.883       0.827
+CHI       1.000       1.006       1.019       1.016       0.999       0.969       0.925       0.869       0.804
+RSA       1.000       1.082       1.162       1.233       1.293       1.337       1.363       1.370       1.359
+OPA       1.000       1.027       1.031       1.018       0.993       0.958       0.915       0.866       0.812
+ROW       1.000       1.083       1.194       1.308       1.423       1.540       1.655       1.763       1.864
 
 
-----   2156 PARAMETER lfhc_skl  Labor force and human capital development for   skilled labor (BASELINE Database)
+----   2070 PARAMETER lfhc_skl  Labor force and human capital development for   skilled labor (BASELINE Database)
 
            2011        2015        2020        2025        2030        2035        2040        2045        2050
 
-IND       1.000       1.228       1.546       1.922       2.371       2.884       3.462       4.090       4.750
+IND       1.000       1.275       1.624       1.995       2.412       2.863       3.326       3.785       4.252
 USA       1.000       1.059       1.112       1.173       1.254       1.348       1.449       1.551       1.659
 FRA       1.000       1.116       1.294       1.481       1.692       1.903       2.128       2.338       2.541
 DEU       1.000       0.961       0.955       0.941       0.938       0.971       1.052       1.161       1.322
 ITA       1.000       1.027       1.098       1.170       1.272       1.401       1.590       1.821       2.135
 POL       1.000       1.093       1.192       1.311       1.478       1.653       1.823       1.973       2.257
 ESP       1.000       1.078       1.212       1.339       1.472       1.581       1.680       1.770       1.903
-RUS       1.000       1.001       0.975       0.952       0.946       0.948       0.946       0.941       0.950
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 51
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
-
-
-       2156 PARAMETER lfhc_skl  Labor force and human capital development for   skilled labor (BASELINE Database)
-
-           2011        2015        2020        2025        2030        2035        2040        2045        2050
-
+RUS       1.000       1.191       1.500       1.847       2.254       2.715       3.227       3.768       4.344
 UKI       1.000       1.159       1.360       1.574       1.812       2.072       2.337       2.548       2.693
 BNL       1.000       1.048       1.160       1.268       1.380       1.499       1.645       1.810       1.979
 EUN       1.000       1.066       1.157       1.252       1.374       1.516       1.679       1.847       2.034
 EUS       1.000       1.091       1.195       1.303       1.447       1.594       1.770       1.966       2.225
-OEC       1.000       1.093       1.211       1.327       1.426       1.529       1.627       1.732       1.816
-BRZ       1.000       1.163       1.450       1.780       2.115       2.501       2.912       3.355       3.838
-CHI       1.000       1.156       1.327       1.497       1.660       1.815       1.996       2.170       2.288
-RSA       1.000       1.067       1.171       1.319       1.482       1.671       1.869       2.087       2.336
-OPA       1.000       1.194       1.455       1.755       2.113       2.520       2.961       3.415       3.908
-ROW       1.000       1.166       1.394       1.658       1.974       2.338       2.741       3.176       3.653
+OEC       1.000       1.091       1.208       1.325       1.427       1.535       1.640       1.754       1.854
+BRZ       1.000       1.136       1.321       1.481       1.652       1.830       2.017       2.172       2.315
+CHI       1.000       1.027       1.051       1.085       1.134       1.197       1.262       1.329       1.414
+RSA       1.000       1.228       1.546       1.922       2.371       2.884       3.462       4.090       4.750
+OPA       1.000       1.163       1.352       1.549       1.752       1.959       2.190       2.415       2.603
+ROW       1.000       1.193       1.465       1.786       2.167       2.607       3.100       3.638       4.225
+
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 48
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
 
-----   2196 PARAMETER ur_read  Einlesen aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
+----   2110 PARAMETER ur_read  Einlesen aller Unemployment rates über aggregierte Tabelle aus ursk0+urun0.xlsx
 
           URSK0       URUN0
 
@@ -2851,33 +2644,29 @@ ITA       0.029       0.084
 POL       0.032       0.090
 ESP       0.084       0.221
 RUS       0.031       0.074
-UKI       0.037       0.107
+UKI       0.039       0.112
 BNL       0.032       0.085
-EUN       0.040       0.113
-EUS       0.053       0.154
-OEC       0.031       0.020
+EUN       0.053       0.142
+EUS       0.034       0.092
+OEC       0.035       0.058
 BRZ       0.069       0.087
 CHI       0.005       0.017
 RSA       0.100       0.292
-OPA       0.063       0.075
-ROW       0.045       0.080
+OPA       0.055       0.094
+ROW       0.032       0.052
 
 
-----   2200 PARAMETER ursk0  Initial unemployment rate among skilled
+----   2114 PARAMETER ursk0  Initial unemployment rate among skilled
 
-IND 0.011,    USA 0.049,    FRA 0.028,    DEU 0.023,    ITA 0.029,    POL 0.032,    ESP 0.084,    RUS 0.031,    UKI 0.037,    BNL 0.032,    EUN 0.040,    EUS 0.053,    OEC 0.031,    BRZ 0.069,    CHI 0.005,    RSA 0.100,    OPA 0.063,    ROW 0.045
-
-
-----   2201 PARAMETER urun0  Initial unemployment rate among unskilled
-
-IND 0.036,    USA 0.121,    FRA 0.135,    DEU 0.109,    ITA 0.084,    POL 0.090,    ESP 0.221,    RUS 0.074,    UKI 0.107,    BNL 0.085,    EUN 0.113,    EUS 0.154,    OEC 0.020,    BRZ 0.087,    CHI 0.017,    RSA 0.292,    OPA 0.075,    ROW 0.080
-
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 52
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
+IND 0.011,    USA 0.049,    FRA 0.028,    DEU 0.023,    ITA 0.029,    POL 0.032,    ESP 0.084,    RUS 0.031,    UKI 0.039,    BNL 0.032,    EUN 0.053,    EUS 0.034,    OEC 0.035,    BRZ 0.069,    CHI 0.005,    RSA 0.100,    OPA 0.055,    ROW 0.032
 
 
-----   2275 PARAMETER wg0  Wirkungsgrad im bmk
+----   2115 PARAMETER urun0  Initial unemployment rate among unskilled
+
+IND 0.036,    USA 0.121,    FRA 0.135,    DEU 0.109,    ITA 0.084,    POL 0.090,    ESP 0.221,    RUS 0.074,    UKI 0.112,    BNL 0.085,    EUN 0.142,    EUS 0.092,    OEC 0.058,    BRZ 0.087,    CHI 0.017,    RSA 0.292,    OPA 0.094,    ROW 0.052
+
+
+----   2189 PARAMETER wg0  Wirkungsgrad im bmk
 
              IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
@@ -2892,8 +2681,12 @@ mOIL       0.355       0.353       0.353       0.260       0.353       0.353    
 pOIL       0.355       0.353       0.353       0.260       0.353       0.353       0.353       0.355       0.353       0.353       0.353       0.355       0.353       0.355       0.355       0.355       0.355       0.355
 pGAS       0.421       0.455       0.455       0.490       0.455       0.455       0.455       0.421       0.455       0.455       0.455       0.421       0.455       0.421       0.421       0.421       0.421       0.421
 
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 49
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
 
-----   2275 PARAMETER wg_yr  Wirkungsgrad nach jahren jeweils bat
+
+----   2189 PARAMETER wg_yr  Wirkungsgrad nach jahren jeweils bat
 
             2011        2015        2020        2025        2030        2035        2040        2045        2050
 
@@ -2909,7 +2702,7 @@ pOIL       0.428       0.428       0.456       0.456       0.474       0.499    
 pGAS       0.600       0.600       0.600       0.610       0.620       0.645       0.670       0.695       0.695
 
 
-----   2420 PARAMETER ep  Energy productivity development (BASELINE Database)
+----   2334 PARAMETER ep  Energy productivity development (BASELINE Database)
 
              IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
@@ -2923,12 +2716,8 @@ pGAS       0.600       0.600       0.600       0.610       0.620       0.645    
 2045       0.392       0.470       0.680       0.556       0.660       0.424       0.635       0.610       0.480       0.496       0.515       0.705       0.484       0.609       0.294       0.346       0.454       0.415
 2050       0.319       0.430       0.480       0.500       0.600       0.360       0.575       0.559       0.354       0.431       0.451       0.647       0.446       0.535       0.247       0.280       0.427       0.370
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                09/18/20 16:19:24 Page 53
-GAMS Code to Read a GTAP 9 Dataset
-E x e c u t i o n
 
-
-----   2420 PARAMETER tfp  Total factor productivity development (BASELINE Database)
+----   2334 PARAMETER tfp  Total factor productivity development (BASELINE Database)
 
              IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
@@ -2943,19 +2732,28 @@ E x e c u t i o n
 2050       8.254       1.812       1.324       1.243       0.725       1.315       1.157       2.022       1.368       1.284       1.470       1.154       1.180       2.277       3.598       1.052       2.987       1.403
 
 
-----   2426 PARAMETER diffcost  Differenzkosten
+----   2340 PARAMETER diffcost  Differenzkosten
 
                IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA
 
 bBIO         2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156
 bGEO         3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333
 bHYDRO       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                11/18/20 11:37:00 Page 50
+GAMS Code to Read a GTAP 9 Dataset
+E x e c u t i o n
+
+
+       2340 PARAMETER diffcost  Differenzkosten
+
+               IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA
+
 mWIND        1.403       1.403       1.403       1.000       1.403       1.403       1.403       1.403       1.000       1.403       1.403       1.403       1.403       1.403       1.403       1.403       1.403
 mSOLAR      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287      11.287
 
 
 
-EXECUTION TIME       =        0.047 SECONDS      8 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        0.234 SECONDS      8 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -2965,5 +2763,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.lst
+Input      C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+Output     C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.lst

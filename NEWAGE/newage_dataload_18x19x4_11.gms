@@ -110,28 +110,6 @@ PARAMETER
          abschreibung_bmk_noCOAL(r,gen,yr)         Decommissioning geg. basis-bmk (for coal decomissioning till 2030 in germany)
 
 * ------ 10.06.2013: Zusammenfassung aller AEEI-Pfade in Tabelle aeei.xlsx
-         aeei_read(*,yr)                 Einlesen aller AEEI-Pfade über aggregierte Tabelle aus aeei.xlsx
-
-         AEEI_exo(yr)                    AEEI exogen
-         AEEI_exo_emerge(yr)             AEEI exogen emerge
-         AEEI_exo_deu(yr)                AEEI exogen deu
-         AEEI_exo_neu(yr)                AEEI exogen neu
-         AEEI_exo_ele_c(yr)              AEEI exogen ele_c
-         AEEI_exogen(yr)                 AEEI exogen für deutschland
-         AEEI_exogen_after2020(yr)       AEEI exogen für deutschland nach erreichen von mckinsey
-         AEEI_exogen_after2025(yr)       AEEI exogen für deutschland nach erreichen von mckinsey II
-         AEEI_exogen_gen_yr(yr)          AEEI exogen für den einstaz von fe in stromerzeugung in deu!
-         AEEI_exogen_gen_yr_after2020(yr) AEEI exogen electricity generation nach erreichen von mckinsey
-         AEEI_exogen_gen_yr_after2025(yr) AEEI exogen electricity generation nach erreichen von mckinsey II
-         AEEI_exogen_ele(yr)             AEEI exogen für deutschland stromverbrauch
-         AEEI_exogen_ele_after2020(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey
-         AEEI_exogen_ele_after2025(yr)   AEEI exogen für deutschland stromverbrauch nach erreichen von mckinsey II
-         AEEI_exogen_trn(yr)             AEEI exogen für deutschland TRN
-         AEEI_exogen_trn_after2020(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey
-         AEEI_exogen_trn_after2025(yr)   AEEI exogen für deutschland TRN nach erreichen von mckinsey II
-         AEEI_exogen_hh(yr)              AEEI exogen für deutschland HH
-         AEEI_exogen_hh_after2020(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey
-         AEEI_exogen_hh_after2025(yr)    AEEI exogen für deutschland HH nach erreichen von mckinsey II
          aeei_ind_ele(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
          aeei_ind_ff(r,yr)                  AEEI exogen for industrial sectors (especially for kopernikus project)
          AEEI_c_ele(r,yr)                    AEEI exogen for residential sector (especially for kopernikus project)
@@ -228,39 +206,6 @@ $libinclude      xlimport        aeei_ser_ff           %xcel_datadir%aeei.xlsx  
 
 $libinclude      xlimport        aeei_ff           %xcel_datadir%aeei.xlsx       AEEI_ff_2!a2:k137
 $libinclude      xlimport        aeei_ele           %xcel_datadir%aeei.xlsx       AEEI_ele_2!a2:k128
-
-$libinclude      xlimport        aeei_read       %xcel_datadir%aeei.xlsx       aeei!b1:k40
-
-aeei_exo(yr)                     = aeei_read("aeei_exo",yr);
-aeei_exo_ele_c(yr)               = aeei_read("aeei_exo_ele_c",yr);
-aeei_exo_deu(yr)                 = aeei_read("aeei_exo_deu",yr);
-aeei_exo_neu(yr)                 = aeei_read("aeei_exo_neu",yr);
-aeei_exo_emerge(yr)              = aeei_read("aeei_exo_emerge",yr);
-aeei_exogen(yr)                  = aeei_read("aeei_exogen",yr);
-
-aeei_exogen_after2020(yr)        = aeei_read("aeei_exogen_after2020",yr);
-aeei_exogen_after2025(yr)        = aeei_read("aeei_exogen_after2025",yr);
-aeei_exogen_ele(yr)              = aeei_read("aeei_exogen_ele",yr);
-aeei_exogen_ele_after2020(yr)    = aeei_read("aeei_exogen_ele_after2020",yr);
-aeei_exogen_ele_after2025(yr)    = aeei_read("aeei_exogen_ele_after2025",yr);
-aeei_exogen_gen_yr(yr)           = aeei_read("aeei_exogen_gen_yr",yr);
-aeei_exogen_gen_yr_after2020(yr) = aeei_read("aeei_exogen_gen_yr_after2020",yr);
-aeei_exogen_gen_yr_after2025(yr) = aeei_read("aeei_exogen_gen_yr_after2025",yr);
-aeei_exogen_hh(yr)               = aeei_read("aeei_exogen_hh",yr);
-aeei_exogen_hh_after2020(yr)     = aeei_read("aeei_exogen_hh_after2020",yr);
-aeei_exogen_hh_after2025(yr)     = aeei_read("aeei_exogen_hh_after2025",yr);
-aeei_exogen_trn(yr)              = aeei_read("aeei_exogen_trn",yr);
-aeei_exogen_trn_after2020(yr)    = aeei_read("aeei_exogen_trn_after2020",yr);
-aeei_exogen_trn_after2025(yr)    = aeei_read("aeei_exogen_trn_after2025",yr);
-
-display
-aeei_read
-AEEI_exo, AEEI_exo_emerge, AEEI_exo_deu, AEEI_exo_neu, AEEI_exo_ele_c,
-AEEI_exogen_gen_yr, AEEI_exogen_gen_yr_after2020, AEEI_exogen_gen_yr_after2025
-AEEI_exogen, AEEI_exogen_after2020, AEEI_exogen_after2025
-AEEI_exogen_ele, AEEI_exogen_ele_after2020, AEEI_exogen_ele_after2025
-AEEI_exogen_trn, AEEI_exogen_trn_after2020, AEEI_exogen_trn_after2025
-AEEI_exogen_hh, AEEI_exogen_hh_after2020, AEEI_exogen_hh_after2025
 ;
 *$exit
 * ---------------------------------------------------------------------------- *

@@ -1,4 +1,4 @@
-$TITLE  NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+$TITLE  NEWAGE 18x19x4 -- GTAP9 -- Calibration of Electricity Generation
 
 $onempty
 
@@ -12,7 +12,7 @@ $eolcom //
 * ------ Read GTAP9 data set without BAW
 
 * ------ source must match target in gtapaggr.gms
-$if not set source       $set source     18x18x4_gtap9
+$if not set source       $set source     18x19x4_gtap9
 $if not set output       $set output     %source%
 
 * ------ 15.04.2014
@@ -45,7 +45,7 @@ $if not set xcel_datadir $set xcel_datadir "..\xcel_data\"
 
 SET      
         r       'regions' / DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW /
-        i       'sectors' / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, AGR, BUI, SER, TRN, ELE, OIL, CRU, COL, GAS /;
+        i       'sectors' / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, AGR, BUI, SER, TRN, ELE, OIL, CRU, COL, GAS, DWE /;
 
 
 

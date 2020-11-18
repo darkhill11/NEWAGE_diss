@@ -1,5 +1,5 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 1
-NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:53:21 Page 1
+NEWAGE 18x19x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
 
@@ -39,7 +39,7 @@ C o m p i l a t i o n
   45   
   46  SET
   47          r       'regions' / DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW /
-  48          i       'sectors' / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, AGR, BUI, SER, TRN, ELE, OIL, CRU, COL, GAS /;
+  48          i       'sectors' / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI, AGR, BUI, SER, TRN, ELE, OIL, CRU, COL, GAS, DWE /;
   49   
   50   
   51   
@@ -56,8 +56,8 @@ C o m p i l a t i o n
   62   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
   95   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 2
-NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:53:21 Page 2
+NEWAGE 18x19x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
 
@@ -66,29 +66,29 @@ C o m p i l a t i o n
   98   
   99   
  100   
- 101  Execute_Unload '..\data11\18x18x4_gtap9_tp_no_vat', tp_vat;
+ 101  Execute_Unload '..\data11\18x19x4_gtap9_tp_no_vat', tp_vat;
  102   
  103   
  104  *display hh_consumption;
-EXIT C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 3
-NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+EXIT C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\vat_dataload.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:53:21 Page 3
+NEWAGE 18x19x4 -- GTAP9 -- Calibration of Electricity Generation
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+     1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\vat_dataload.gms
      2       63 LIBINCLUDE     1      63  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-     3       70 IF EXIST       2       7  .C:\GAMS\NEWAGE_article_coupling\xcel_data\vat_for_newage.xlsx
+     3       70 IF EXIST       2       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\vat_for_newage.xlsx
      4       88 CALL           2      49  .gdxxrw "..\xcel_data\vat_for_newage.xlsx" @xllink.txt log=xllink.log
-     5       92 GDXIN          2      53  .C:\GAMS\NEWAGE_article_coupling\NEWAGE\xllink.gdx
-     6      105 EXIT           1      74  C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
+     5       92 GDXIN          2      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+     6      105 EXIT           1      74  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\vat_dataload.gms
 
 
-COMPILATION TIME     =        1.451 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/20 17:43:30 Page 4
-NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
+COMPILATION TIME     =        3.088 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:53:21 Page 4
+NEWAGE 18x19x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
 
@@ -108,7 +108,7 @@ EUS     0.10947     0.09562     0.08467     0.07652     0.03183     0.03048     
 
 
 
-EXECUTION TIME       =        0.000 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        0.110 SECONDS      4 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -118,5 +118,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.gms
-Output     C:\GAMS\NEWAGE_article_coupling\NEWAGE\vat_dataload.lst
+Input      C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\vat_dataload.gms
+Output     C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\vat_dataload.lst

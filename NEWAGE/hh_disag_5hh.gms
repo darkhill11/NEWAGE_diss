@@ -12,7 +12,7 @@ $eolcom //
 * ------ Read GTAP9 data set without BAW
 
 * ------ source must match target in gtapaggr.gms
-$if not set source       $set source     18x18x4_gtap9
+$if not set source       $set source     18x19x4_gtap9
 $if not set output       $set output     %source%
 
 * ------ 15.04.2014
