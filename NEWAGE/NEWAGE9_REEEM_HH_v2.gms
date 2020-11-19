@@ -299,8 +299,8 @@ SET
                          / DEU /
 
          HH_DISAG(R)     countries with household disaggregation
-*                         / DEU, FRA, ITA, UKI, BNL, ESP, POL, EUN, EUS /
-                         / /
+                         / DEU, FRA, ITA, UKI, BNL, ESP, POL, EUN, EUS /
+*                         / /
 
          h_t_cons_reg(r)    countries where consumption will be reorganized with heat and transport consumption
 *                            / DEU/
