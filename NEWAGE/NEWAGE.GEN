@@ -3553,6 +3553,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 NEWAGE.INTEGER1 = NEWAGE.INTEGER1 + 1;
-$IF %NEWAGE%=="11/19/2010:39:37" $EXIT
+$IF %NEWAGE%=="11/23/2014:00:24" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked

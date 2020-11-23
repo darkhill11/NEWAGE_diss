@@ -303,8 +303,8 @@ SET
 *                         / /
 
          h_t_cons_reg(r)    countries where consumption will be reorganized with heat and transport consumption
-*                            / DEU/
-                            / /
+                            / DEU/
+*                            / /
 
 *         groupA(r)       Adaptation group A - high vulnerability
 *                         / IND, ROW /
@@ -3267,7 +3267,7 @@ $constraint:URUN(r)$(urun0(r)$(emerge(r)and HH_DISAG(r)))
 
 
 $constraint:R_SUPPLY(i,r)$(rd0(i,r)$PRICETARGET(i,R) AND HH_DISAG(r))
-         pytarget(i,r) =e= py(i,r)/(sum(hh,PC_hh(hh,r))/5) ;
+         pytarget(i,r) =e= pr(i,r)/(sum(hh,PC_hh(hh,r))/5) ;
 *-------
 
 $constraint:REBATE_DIFF(r)$diffrebate(r)
@@ -3276,7 +3276,7 @@ $constraint:REBATE_DIFF(r)$diffrebate(r)
 
 * ------ 17.06.2014
 $constraint:R_SUPPLY(i,r)$(rd0(i,r)$PRICETARGET(i,R) AND not HH_DISAG(r))
-         pytarget(i,r) =e= py(i,r)/pc(r) ;
+         pytarget(i,r) =e= pr(i,r)/pc(r) ;
 
 * ------ 12.01.2015
 $constraint:YLO(i,r)$ylo_on(i,r)
