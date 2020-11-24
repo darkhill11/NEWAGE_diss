@@ -63,12 +63,12 @@ $GDXIN %datadir%%output%.GDX
 PARAMETER
 
 * ------ From disaggregation output
-         hh_consumption(r,i,hh)        household consumption per sector and region
+         hh_consumption(r,i,hh)              "household consumption per sector and region"
          hh_income(r,*,hh)
 * ------ for calculation
-         total_cons(r,i)                     Sum over households to get total sectoral consumption
-         hh_sector_share(r,i,hh)             share that each household consumes from each sector
-         hh_total_consumption_share(r,hh)    share that each houshold consumes from total consumption 
+         total_cons(r,i)                     "Sum over households to get total sectoral consumption"
+         hh_sector_share(r,i,hh)             "share that each household consumes from each sector"
+         hh_total_consumption_share(r,hh)    "share that each houshold consumes from total consumption "
 
          total_skl(r)
          total_usk(r)
@@ -85,6 +85,8 @@ PARAMETER
          hh_tax_in_share(r,hh)
          hh_tax_out_share(r,hh)
          hh_savings_share(r,hh)
+
+         hh_energy_share(r,*,*,*)           "Share of Electricity and oil used in transport and other usages"
 
 * ------ DEFINE rounding parameter rd ------------------------------------------
 
@@ -140,20 +142,14 @@ hh_savings_share(r,hh) = hh_income(r,"savings",hh)/total_savings(r);
 *   if(hh_consumption(r,i,hh) < 0.00001),
 *      hh_hh_consumption(r,i,hh) = 0)
 
-$ontext
-hh_skl_share("EUS",hh) = 0.2;
-hh_usk_share("EUS",hh) =  0.2;
-hh_rkr_share("EUS",hh) =  0.2;
-hh_rkx_ele_share("EUS",hh) =  0.2;
-hh_tax_in_share("EUS",hh) =  0.2;
-hh_tax_out_share("EUS",hh) =  0.2;
-hh_savings_share("EUS",hh) =  0.2;
-hh_total_consumption_share("EUS",hh) = 0.2;
-hh_sector_share("EUS",i,hh) =0.2;
-$offtext
+$call    gdxxrw %xcel_datadir%\households\EU28_hh_ene.xlsx par=hh_energy_share rng=NEWAGE_rel!A1 rDim=3 cDim=1
+$gdxin   EU28_hh_ene.gdx
+$load    hh_energy_share
+$gdxin
 
 Execute_Unload '%datadir%%output%_consumption_diss', hh_consumption, total_cons, hh_sector_share, hh_total_consumption_share,
- hh_income, hh_skl_share, hh_usk_share, hh_rkr_share, hh_rkx_ele_share, hh_tax_in_share, hh_tax_out_share, hh_savings_share;
+ hh_income, hh_skl_share, hh_usk_share, hh_rkr_share, hh_rkx_ele_share, hh_tax_in_share, hh_tax_out_share, hh_savings_share,
+ hh_energy_share;
 *Execute_Unload '%datadir%%output%_consumption_diss', hh_tax_in_share, hh_tax_out_share, hh_savings_share;
 
 

@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 1
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
@@ -56,18 +56,18 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.GDX
   62   
   63  PARAMETER
   64   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 2
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 2
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
 
   65  * ------ From disaggregation output
-  66           hh_consumption(r,i,hh)        household consumption per sector and region
+  66           hh_consumption(r,i,hh)              "household consumption per sector and region"
   67           hh_income(r,*,hh)
   68  * ------ for calculation
-  69           total_cons(r,i)                     Sum over households to get total sectoral consumption
-  70           hh_sector_share(r,i,hh)             share that each household consumes from each sector
-  71           hh_total_consumption_share(r,hh)    share that each houshold consumes from total consumption
+  69           total_cons(r,i)                     "Sum over households to get total sectoral consumption"
+  70           hh_sector_share(r,i,hh)             "share that each household consumes from each sector"
+  71           hh_total_consumption_share(r,hh)    "share that each houshold consumes from total consumption "
   72   
   73           total_skl(r)
   74           total_usk(r)
@@ -85,77 +85,73 @@ C o m p i l a t i o n
   86           hh_tax_out_share(r,hh)
   87           hh_savings_share(r,hh)
   88   
-  89  * ------ DEFINE rounding parameter rd ------------------------------------------
+  89           hh_energy_share(r,*,*,*)           "Share of Electricity and oil used in transport and other usages"
   90   
-  91           rd              Number of decimals for rounding cut-off         / 12 /
-  92  ;
-  93   
-  94  * ---------------------------------------------------------------------------- *
+  91  * ------ DEFINE rounding parameter rd ------------------------------------------
+  92   
+  93           rd              Number of decimals for rounding cut-off         / 12 /
+  94  ;
   95   
+  96  * ---------------------------------------------------------------------------- *
+  97   
 GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
 --- LOAD  r = 2:Dim1
 --- LOAD  i = 3:Dim2
 --- LOAD  hh = 4:Dim3
- 102   
+ 104   
 --- LOAD  hh_consumption = 1:hh_consumption
- 105   
- 106  display hh_consumption;
  107   
+ 108  display hh_consumption;
+ 109   
 GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
- 111   
+ 113   
 --- LOAD  hh_income = 1:hh_income
- 114   
- 115   
- 116  *hh_consumption(r,i,hh) = hh_consumption(r,i,hh)$round(hh_consumption(r,i,hh),5);
+ 116   
  117   
- 118  total_cons(r,i) = sum(hh, hh_consumption(r,i,hh));
- 119  hh_sector_share(r,i,hh)$(total_cons(r,i)) = hh_consumption(r,i,hh)/total_cons(r,i);
- 120  *hh_sector_share(r,i,hh)$(NOT hh_consumption(r,i,hh)) = 0;
- 121  hh_total_consumption_share(r,hh) = sum(i,hh_consumption(r,i,hh))/sum(i,total_cons(r,i));
- 122   
- 123  total_skl(r) = sum(hh, hh_income(r,"skl_labor",hh));
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 3
+ 118  *hh_consumption(r,i,hh) = hh_consumption(r,i,hh)$round(hh_consumption(r,i,hh),5);
+ 119   
+ 120  total_cons(r,i) = sum(hh, hh_consumption(r,i,hh));
+ 121  hh_sector_share(r,i,hh)$(total_cons(r,i)) = hh_consumption(r,i,hh)/total_cons(r,i);
+ 122  *hh_sector_share(r,i,hh)$(NOT hh_consumption(r,i,hh)) = 0;
+ 123  hh_total_consumption_share(r,hh) = sum(i,hh_consumption(r,i,hh))/sum(i,total_cons(r,i));
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 3
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
 
- 124  total_usk(r) = sum(hh, hh_income(r,"usk_labor",hh));
- 125  total_rkr(r) = sum(hh, hh_income(r,"rkr",hh));
- 126  total_rkx_ele(r) = sum(hh, hh_income(r,"rkx_ele",hh));
- 127  total_tax_in(r) = sum(hh, hh_income(r,"taxes income",hh));
- 128  total_tax_out(r) = sum(hh, hh_income(r,"tax on income",hh));
- 129  total_savings(r) = sum(hh, hh_income(r,"savings",hh));
- 130   
- 131  hh_skl_share(r,hh) = hh_income(r,"skl_labor",hh)/total_skl(r);
- 132  hh_usk_share(r,hh) = hh_income(r,"usk_labor",hh)/total_usk(r);
- 133  hh_rkr_share(r,hh) = hh_income(r,"rkr",hh)/total_rkr(r);
- 134  hh_rkx_ele_share(r,hh) = hh_income(r,"rkx_ele",hh)/total_rkx_ele(r);
- 135  hh_tax_in_share(r,hh) = hh_income(r,"taxes income",hh)/total_tax_in(r);
- 136  hh_tax_out_share(r,hh) = hh_income(r,"tax on income",hh)/total_tax_out(r);
- 137  hh_savings_share(r,hh) = hh_income(r,"savings",hh)/total_savings(r);
- 138   
- 139  *loop((i,r,hh),
- 140  *   if(hh_consumption(r,i,hh) < 0.00001),
- 141  *      hh_hh_consumption(r,i,hh) = 0)
- 142   
-      hh_skl_share("EUS",hh) = 0.2;
-      hh_usk_share("EUS",hh) =  0.2;
-      hh_rkr_share("EUS",hh) =  0.2;
-      hh_rkx_ele_share("EUS",hh) =  0.2;
-      hh_tax_in_share("EUS",hh) =  0.2;
-      hh_tax_out_share("EUS",hh) =  0.2;
-      hh_savings_share("EUS",hh) =  0.2;
-      hh_total_consumption_share("EUS",hh) = 0.2;
-      hh_sector_share("EUS",i,hh) =0.2;
+ 124   
+ 125  total_skl(r) = sum(hh, hh_income(r,"skl_labor",hh));
+ 126  total_usk(r) = sum(hh, hh_income(r,"usk_labor",hh));
+ 127  total_rkr(r) = sum(hh, hh_income(r,"rkr",hh));
+ 128  total_rkx_ele(r) = sum(hh, hh_income(r,"rkx_ele",hh));
+ 129  total_tax_in(r) = sum(hh, hh_income(r,"taxes income",hh));
+ 130  total_tax_out(r) = sum(hh, hh_income(r,"tax on income",hh));
+ 131  total_savings(r) = sum(hh, hh_income(r,"savings",hh));
+ 132   
+ 133  hh_skl_share(r,hh) = hh_income(r,"skl_labor",hh)/total_skl(r);
+ 134  hh_usk_share(r,hh) = hh_income(r,"usk_labor",hh)/total_usk(r);
+ 135  hh_rkr_share(r,hh) = hh_income(r,"rkr",hh)/total_rkr(r);
+ 136  hh_rkx_ele_share(r,hh) = hh_income(r,"rkx_ele",hh)/total_rkx_ele(r);
+ 137  hh_tax_in_share(r,hh) = hh_income(r,"taxes income",hh)/total_tax_in(r);
+ 138  hh_tax_out_share(r,hh) = hh_income(r,"tax on income",hh)/total_tax_out(r);
+ 139  hh_savings_share(r,hh) = hh_income(r,"savings",hh)/total_savings(r);
+ 140   
+ 141  *loop((i,r,hh),
+ 142  *   if(hh_consumption(r,i,hh) < 0.00001),
+ 143  *      hh_hh_consumption(r,i,hh) = 0)
+ 144   
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
+--- LOAD  hh_energy_share = 1:hh_energy_share
+ 149   
+ 150  Execute_Unload '..\data11\18x19x4_gtap9_consumption_diss', hh_consumption, total_cons, hh_sector_share, hh_total_consumption_share,
+ 151   hh_income, hh_skl_share, hh_usk_share, hh_rkr_share, hh_rkx_ele_share, hh_tax_in_share, hh_tax_out_share, hh_savings_share,
+ 152   hh_energy_share;
+ 153  *Execute_Unload '%datadir%%output%_consumption_diss', hh_tax_in_share, hh_tax_out_share, hh_savings_share;
  154   
- 155  Execute_Unload '..\data11\18x19x4_gtap9_consumption_diss', hh_consumption, total_cons, hh_sector_share, hh_total_consumption_share,
- 156   hh_income, hh_skl_share, hh_usk_share, hh_rkr_share, hh_rkx_ele_share, hh_tax_in_share, hh_tax_out_share, hh_savings_share;
- 157  *Execute_Unload '%datadir%%output%_consumption_diss', hh_tax_in_share, hh_tax_out_share, hh_savings_share;
- 158   
- 159   
- 160  *display hh_consumption;
+ 155   
+ 156  *display hh_consumption;
 EXIT C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 4
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 4
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 Include File Summary
 
@@ -164,20 +160,22 @@ Include File Summary
 
      1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
      2       53 GDXIN          1      53  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.GDX
-     3       96 CALL           1      96  csv2gdx ..\xcel_data\consumption_diss_out.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_consumption fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
-     4       98 GDXIN          1      98  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
-     5      108 CALL           1     108  csv2gdx ..\xcel_data\hh_income.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_income fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
-     6      110 GDXIN          1     110  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
-     7      161 EXIT           1     161  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
+     3       98 CALL           1      98  csv2gdx ..\xcel_data\consumption_diss_out.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_consumption fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
+     4      100 GDXIN          1     100  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+     5      110 CALL           1     110  csv2gdx ..\xcel_data\hh_income.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_income fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
+     6      112 GDXIN          1     112  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+     7      145 CALL           1     145  gdxxrw ..\xcel_data\\households\EU28_hh_ene.xlsx par=hh_energy_share rng=NEWAGE_rel!A1 rDim=3 cDim=1
+     8      146 GDXIN          1     146  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
+     9      157 EXIT           1     157  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
 
 
-COMPILATION TIME     =        0.795 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 5
+COMPILATION TIME     =        1.685 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 5
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
 
-----    106 PARAMETER hh_consumption  household consumption per sector and region
+----    108 PARAMETER hh_consumption  household consumption per sector and region
 
                 hh1         hh2         hh3         hh4         hh5
 
@@ -230,12 +228,12 @@ ITA.CHM     2.60864     4.36470     6.14302     8.08302    12.54626
 ITA.IRS     0.00003     0.00013     0.00026     0.00046     0.00172
 ITA.MAC     0.62541     1.78463     3.37662     6.30337    29.95772
 ITA.FOT    12.21043    16.63694    19.42376    22.60800    28.35972
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 6
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
 
-        106 PARAMETER hh_consumption  household consumption per sector and region
+        108 PARAMETER hh_consumption  household consumption per sector and region
 
                 hh1         hh2         hh3         hh4         hh5
 
@@ -288,12 +286,12 @@ ESP.nfm     0.00170     0.00206     0.00227     0.00277     0.00270
 ESP.mvh     1.53317     2.62728     3.99041     5.23980     9.76031
 ESP.ele     2.60937     3.01837     3.17816     3.42612     3.96370
 ESP.COL     0.00198     0.00143     0.00095     0.00071     0.00050
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 7
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
 
-        106 PARAMETER hh_consumption  household consumption per sector and region
+        108 PARAMETER hh_consumption  household consumption per sector and region
 
                 hh1         hh2         hh3         hh4         hh5
 
@@ -346,12 +344,12 @@ EUN.SER    12.80178    43.52482    55.05575    67.21679    87.17082
 EUS.oil     0.91005     2.34219     4.97331     9.98803    25.90026
 EUS.gas     0.32059     0.63799     1.15011     1.23749     0.56444
 EUS.ppp     0.38306     0.76088     1.49331     2.36543     5.12701
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/18/20 13:54:37 Page 8
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 8
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
 
-        106 PARAMETER hh_consumption  household consumption per sector and region
+        108 PARAMETER hh_consumption  household consumption per sector and region
 
                 hh1         hh2         hh3         hh4         hh5
 
