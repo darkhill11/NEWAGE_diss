@@ -1,0 +1,22 @@
+"0","# create dataframe from the input csv file"
+"0","pf <- read_delim('consumption_diss_input.csv', delim = ';')"
+"2","
+[36m--[39m [1m[1mColumn specification[1m[22m [36m--------------------------------------------------------[39m
+cols(
+  Region = [31mcol_character()[39m,
+  Sector = [31mcol_character()[39m,
+  D1 = [32mcol_double()[39m,
+  D2 = [32mcol_double()[39m,
+  D3 = [32mcol_double()[39m,
+  D4 = [32mcol_double()[39m,
+  D5 = [32mcol_double()[39m,
+  D6 = [32mcol_double()[39m,
+  D7 = [32mcol_double()[39m,
+  D8 = [32mcol_double()[39m,
+  D9 = [32mcol_double()[39m,
+  D10 = [32mcol_double()[39m
+)
+
+"
+"0","#make copy of the original datafram to work on"
+"0","pf2 <- pf"
