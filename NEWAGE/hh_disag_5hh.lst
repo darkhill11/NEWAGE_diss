@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 1
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
@@ -44,7 +44,7 @@ C o m p i l a t i o n
   50  * ############################################################################ * GDXIN
   51   
   52  * ------ 18.07.2016
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.GDX
+GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.GDX
   54  *$LOAD pf0 vfm vafm voa vom
   55  *$LOAD vfm vifm vdfm vom rto rtf
   56   
@@ -56,7 +56,7 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.GDX
   62   
   63  PARAMETER
   64   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 2
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 2
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
@@ -94,7 +94,7 @@ C o m p i l a t i o n
   95   
   96  * ---------------------------------------------------------------------------- *
   97   
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
 --- LOAD  r = 2:Dim1
 --- LOAD  i = 3:Dim2
 --- LOAD  hh = 4:Dim3
@@ -103,7 +103,7 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_d
  107   
  108  display hh_consumption;
  109   
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
  113   
 --- LOAD  hh_income = 1:hh_income
  116   
@@ -114,7 +114,7 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_d
  121  hh_sector_share(r,i,hh)$(total_cons(r,i)) = hh_consumption(r,i,hh)/total_cons(r,i);
  122  *hh_sector_share(r,i,hh)$(NOT hh_consumption(r,i,hh)) = 0;
  123  hh_total_consumption_share(r,hh) = sum(i,hh_consumption(r,i,hh))/sum(i,total_cons(r,i));
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 3
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 C o m p i l a t i o n
 
@@ -140,7 +140,7 @@ C o m p i l a t i o n
  142  *   if(hh_consumption(r,i,hh) < 0.00001),
  143  *      hh_hh_consumption(r,i,hh) = 0)
  144   
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
+GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
 --- LOAD  hh_energy_share = 1:hh_energy_share
  149   
  150  Execute_Unload '..\data11\18x19x4_gtap9_consumption_diss', hh_consumption, total_cons, hh_sector_share, hh_total_consumption_share,
@@ -150,27 +150,27 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
  154   
  155   
  156  *display hh_consumption;
-EXIT C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 4
+EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 4
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
-     2       53 GDXIN          1      53  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.GDX
+     1        1 INPUT          0       0  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
+     2       53 GDXIN          1      53  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.GDX
      3       98 CALL           1      98  csv2gdx ..\xcel_data\consumption_diss_out.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_consumption fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
-     4      100 GDXIN          1     100  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+     4      100 GDXIN          1     100  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
      5      110 CALL           1     110  csv2gdx ..\xcel_data\hh_income.csv output=..\data11\18x19x4_gtap9_consumption_diss.gdx id=hh_income fieldSep=semiColon decimalSep=Period index=1,2,3 useHeader=y value=4 trace=0
-     6      112 GDXIN          1     112  C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
+     6      112 GDXIN          1     112  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9_consumption_diss.gdx
      7      145 CALL           1     145  gdxxrw ..\xcel_data\\households\EU28_hh_ene.xlsx par=hh_energy_share rng=NEWAGE_rel!A1 rDim=3 cDim=1
-     8      146 GDXIN          1     146  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
-     9      157 EXIT           1     157  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
+     8      146 GDXIN          1     146  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\EU28_hh_ene.gdx
+     9      157 EXIT           1     157  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
 
 
-COMPILATION TIME     =        1.685 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 5
+COMPILATION TIME     =        0.702 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 5
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
@@ -179,24 +179,25 @@ E x e c u t i o n
 
                 hh1         hh2         hh3         hh4         hh5
 
-DEU.oil     6.27863     9.39541    11.64984    13.77110    15.70070
-DEU.gas     1.38465     1.57028     1.73391     1.87758     2.28811
-DEU.ppp     4.15546     5.25087     6.18930     7.35851    10.17566
-DEU.nmm     0.69683     1.07909     1.38423     1.57921     2.06008
-DEU.nfm     0.00190     0.00307     0.00464     0.00497     0.00639
-DEU.mvh     3.76061     7.97738    11.60532    17.31223    38.08792
-DEU.ele     7.73268     7.75224     8.07271     8.46734     9.21129
-DEU.COL     0.04065     0.03407     0.04009     0.04358     0.04227
-DEU.CRU     0.00530     0.00646     0.00739     0.00845     0.00984
-DEU.CHM     6.01409     7.96912     9.73070    11.53553    13.83140
-DEU.IRS     0.00036     0.00058     0.00088     0.00094     0.00121
-DEU.MAC     4.89578     8.42184    11.13738    15.13097    26.51514
-DEU.FOT    29.59700    32.86639    35.33208    37.68517    40.03091
-DEU.ROI    13.66898    19.15725    24.10634    29.94799    41.59309
-DEU.BUI     0.36601     0.61757     0.94402     1.18245     1.79322
-DEU.TRN     6.90514     7.66720     9.02210    11.10541    19.29253
-DEU.AGR     1.80487     2.01820     2.14512     2.26954     2.40802
-DEU.SER   103.90129   119.79879   139.45175   170.04650   260.08456
+DEU.oil     7.23205     9.98232    11.88858    13.45629    14.23644
+DEU.gas     1.58142     1.65315     1.75190     1.81649     2.05158
+DEU.ppp     4.79772     5.58858     6.32576     7.19916     9.21857
+DEU.nmm     0.80558     1.15107     1.41889     1.54968     1.87423
+DEU.nfm     0.00220     0.00328     0.00477     0.00489     0.00583
+DEU.mvh     4.50356     8.78571    12.30163    17.52598    35.62657
+DEU.ele     8.76036     8.08780     8.08084     8.11487     8.19240
+DEU.COL     0.04602     0.03546     0.04002     0.04166     0.03753
+DEU.CRU     0.00608     0.00681     0.00749     0.00820     0.00885
+DEU.CHM     6.92252     8.46002     9.91965    11.25972    12.51893
+DEU.IRS     0.00041     0.00062     0.00090     0.00092     0.00110
+DEU.MAC     5.75543     9.13168    11.61318    15.10263    24.49819
+DEU.FOT    33.62492    34.40216    35.49873    36.25152    35.73423
+DEU.ROI    15.85880    20.49605    24.77238    29.46413    37.88229
+DEU.BUI     0.42907     0.66632     0.98048     1.17432     1.65308
+DEU.TRN     8.02730     8.21223     9.27842    10.92973    17.54471
+DEU.AGR     2.04917     2.11144     2.15412     2.18212     2.14890
+DEU.SER    58.49836    73.67950    90.46529   117.59786   198.26282
+DEU.DWE    51.76828    48.31308    49.14725    50.81674    54.73370
 FRA.oil     4.91848     6.48728     8.12538     8.53618    10.11000
 FRA.gas     0.44406     0.53152     0.56215     0.53525     0.72877
 FRA.ppp     2.14811     2.44542     2.99493     3.57698     6.51944
@@ -227,8 +228,7 @@ ITA.CRU 2.451000E-7 4.470000E-7 6.830000E-7 9.450000E-7 1.137000E-6
 ITA.CHM     2.60864     4.36470     6.14302     8.08302    12.54626
 ITA.IRS     0.00003     0.00013     0.00026     0.00046     0.00172
 ITA.MAC     0.62541     1.78463     3.37662     6.30337    29.95772
-ITA.FOT    12.21043    16.63694    19.42376    22.60800    28.35972
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 6
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
@@ -237,6 +237,7 @@ E x e c u t i o n
 
                 hh1         hh2         hh3         hh4         hh5
 
+ITA.FOT    12.21043    16.63694    19.42376    22.60800    28.35972
 ITA.ROI     5.93899    12.34289    17.85615    26.09396    45.22085
 ITA.BUI     0.12308     0.46703     0.92425     1.64079     6.12185
 ITA.TRN     1.97292     3.50323     5.41381     8.38068    19.54845
@@ -285,8 +286,7 @@ ESP.nmm     0.09435     0.11219     0.13527     0.15709     0.19997
 ESP.nfm     0.00170     0.00206     0.00227     0.00277     0.00270
 ESP.mvh     1.53317     2.62728     3.99041     5.23980     9.76031
 ESP.ele     2.60937     3.01837     3.17816     3.42612     3.96370
-ESP.COL     0.00198     0.00143     0.00095     0.00071     0.00050
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 7
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
@@ -295,6 +295,7 @@ E x e c u t i o n
 
                 hh1         hh2         hh3         hh4         hh5
 
+ESP.COL     0.00198     0.00143     0.00095     0.00071     0.00050
 ESP.CRU 3.230000E-7 5.790000E-7 6.480000E-7 6.810000E-7 9.560000E-7
 ESP.CHM     2.00099     2.61004     3.20788     3.73150     4.73101
 ESP.IRS     0.00088     0.00106     0.00117     0.00143     0.00139
@@ -343,8 +344,7 @@ EUN.AGR     0.96431     1.51235     1.76484     1.95959     2.23338
 EUN.SER    12.80178    43.52482    55.05575    67.21679    87.17082
 EUS.oil     0.91005     2.34219     4.97331     9.98803    25.90026
 EUS.gas     0.32059     0.63799     1.15011     1.23749     0.56444
-EUS.ppp     0.38306     0.76088     1.49331     2.36543     5.12701
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/24/20 12:38:44 Page 8
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 11/25/20 15:31:46 Page 8
 NEWAGE 18x18x4 -- GTAP9 -- Calibration of Electricity Generation
 E x e c u t i o n
 
@@ -353,6 +353,7 @@ E x e c u t i o n
 
                 hh1         hh2         hh3         hh4         hh5
 
+EUS.ppp     0.38306     0.76088     1.49331     2.36543     5.12701
 EUS.nmm     0.14002     0.38194     0.68290     1.18828     1.75088
 EUS.nfm     0.00547     0.01478     0.02294     0.03944     0.05029
 EUS.mvh     0.20923     0.35993     1.32884     2.92947    15.87231
@@ -381,5 +382,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
-Output     C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\hh_disag_5hh.lst
+Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\hh_disag_5hh.gms
+Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\hh_disag_5hh.lst

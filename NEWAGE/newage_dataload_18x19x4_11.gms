@@ -132,45 +132,6 @@ PARAMETER
 
          tfp_corona(r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
 
-*-------27.10.2017 CO2 growth
-         co2pfad_eu(*,yr)     CO2-growth in the EU (all sectors)
-
-         co2pfad_eu_ets(*,yr)    CO2-growth in the EU (ETS sectors)
-
-         co2pfad_E3_eu(*,yr)
-
-         co2pfad_E4_eu(*,yr)
-
-         co2pfad_eu_nonets(r,yr)    CO2-growth in the EU (non ETS sectors) - INDC scenario
-         co2pfad_eu_nonets_2d(r,yr) CO2-growth in the EU (non ETS sectors) - 2 degree scenario
-
-         co2pfad_row(r,yr)    CO2-growth in the RoW (non-EU) - INDC scenario
-         co2pfad_row_2d(r,yr)    CO2-growth in the RoW (non-EU) - 2 degree scenario
-
-         co2pfad_DEU(sec,yr)     sector-specific CO2-growth in Germany
-*-------27.10.2017 end
-
-* ------ 28.05.2015
-         co2pfad_ets_eu(*,yr)
-
-*-------22.08.2017
-         co2pfad_ets_row(r,yr)            CO2-growth in the RoW (non-EU)
-         co2pfad_ets_row_2dc(r,yr)        CO2-growth in the non-EU contries for a 2 dC target
-         co2pfad_nonets(r,yr)             CO2 growth for non-ETS
-         co2pfad_nonets_2dc(r,yr)             CO2 growth for non-ETS
-
-* ----- 05.02.2018
-         co2pfad_cluni_ets(*,yr)          CO2-growth for ets sectors on cluster union REEEM scenario
-         co2pfad_cluni_nonets(r,yr)       CO2-growth for non-ets sectors on cluster union REEEM scenario
-
-* ----- 20.02.2018
-         co2pfad_regpush(r,yr)            CO2-growth for countries outside the eU28
-         
-* ----- 05.03.2018 CO2-growth path for ets sectors under the tighther cap scenario
-         co2pfad_REEEM_ets90(*,yr)
-         co2pfad_REEEM_ets95(*,yr)
-         co2pfad_REEEM_ALL90(*,yr)
-         co2pfad_REEEM_ALL95(*,yr)
 
 * ------- 14.11.2017 data for PA pfad
          vy_pa_pfad(j,i,yr)
@@ -182,6 +143,35 @@ PARAMETER
          elast_ene_yr(r,yr)
 
 *         tp_no_vat(r,i)    tax for consumers witout VAT
+
+*-----------------------------------
+* CO2 Paths for specific scenarios
+*-----------------------------------
+
+* ----- REFERENCE SCENARIO 2020 (06.11.2020)
+         co2pfad_ets_eu28_ref(*,yr)       "CO2 pathway for the reference scenario in 2020"
+
+* ----- OTHER (06.11.2020)
+         co2pfad_eu(*,yr)                 "CO2-growth in the EU (all sectors)"
+         co2pfad_eu_nonets(r,yr)          "CO2-growth in the EU (non ETS sectors) - INDC scenario"
+         co2pfad_row(r,yr)                "CO2-growth in the RoW (non-EU) - INDC scenario"
+         co2pfad_DEU(sec,yr)              "sector-specific CO2-growth in Germany"
+         co2pfad_ets_eu(*,yr)
+         co2pfad_ets_row(r,yr)            "CO2-growth in the RoW (non-EU)"
+         co2pfad_nonets(r,yr)             "CO2 growth for non-ETS"
+
+* ----- ARIADNE Scenarios - European CO2 emissions
+         CO2_AP5_sce3(*,*,yr)                 "ARIADNE - AP5 - scenario 3 (06.11.2020)"
+         CO2_AP5_sce4(*,*,yr)                 "ARIADNE - AP5 - scenario 4 (06.11.2020)"
+         CO2_AP5_sce5(*,*,yr)                 "ARIADNE - AP5 - scenario 5 (06.11.2020)"
+         CO2_AP5_sce6(*,*,yr)                 "ARIADNE - AP5 - scenario 6 (06.11.2020)"
+         CO2_AP5_sce7(*,*,yr)                 "ARIADNE - AP5 - scenario 7 (06.11.2020)"
+         CO2_AP5_sce8(*,*,yr)                 "ARIADNE - AP5 - scenario 8 (06.11.2020)"
+         CO2_AP5_sce9(*,*,yr)                 "ARIADNE - AP5 - scenario 9 (06.11.2020)"
+         CO2_AP5_sce10(*,*,yr)                "ARIADNE - AP5 - scenario 10 (06.11.2020)"
+
+* ----- ARIADNE scenarios - Non-EU emissions pathways
+         CO2_AP5_world(*,yr)                  "ARIADNE - AP5 - sustainable development scenario"
 
 ;
 
@@ -247,71 +237,46 @@ display ele_dev;
 * ---------------------------------------------------------------------------- *
 * ###### co2pfad_ets, co2pfad ##################################################
 * ------ 12.05.2015 Einlesen der DEHst-Szenarien
-*$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B90:k96       # DEHst Szenario 1 - Status Quo
-$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B72:k81       # DEHst Szenario 1 - Status Quo (aktualisiert) [REF]
 
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B41:l42          # REF EU28-Cap
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B77:k78          # Szenario 2 - KOM     [FC2 EU28-Pfad]
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B81:k82          # Szenario 4 - BMWi    [FC2 EU28-Pfad]
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%150730_co2pfad_BMWi.xlsx         EU-Pfad!B73:k74          # Szenario 1 - Status-Quo  [FC1 EU28-Pfad]
 * ------ 1.04.2016
 $libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a42:j43           # EU-Emissionsreduktionspfad gemäß historisch verfügbarer Zertifikate bis 2013 (http://www.eea.europa.eu/data-and-maps/data/data-viewers/emissions-trading-viewer) und der Emissionsreduktionsziele -21% in 2020 und -43% in 2030
-$libinclude      xlimport        co2pfad_E3_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a11:j12
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a66:j67
-$libinclude      xlimport        co2pfad_E4_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad_ENAVI!a75:j76
-$libinclude      xlimport        co2pfad_cluni_ets           %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_REEEM!a51:j52
 
-*$libinclude      xlimport        co2pfad_ets_eu          %xcel_datadir%160330_co2pfad.xlsx               EU-Pfad!B118:k119           # 95% decrease in 2050
+$libinclude      xlimport        co2pfad_ets_row         %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A14:J24 
 
-*-------22.08.2017   read data on emission reduction targets for RoW according to the INDCs
-*$libinclude      xlimport        co2pfad_ets_row                  %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A14:J24
-$libinclude      xlimport        co2pfad_ets_row                  %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A14:J24 
-$libinclude      xlimport        co2pfad_ets_row_2dc              %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A2:J12
-$libinclude      xlimport        co2pfad_regpush                  %xcel_datadir%160330_co2pfad.xlsx              RoW-Pfad!A29:J38
+$libinclude      xlimport        co2pfad_nonets          %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_ENAVI!a46:j55
 
-$libinclude      xlimport        co2pfad_nonets                   %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_ENAVI!a46:j55
-$libinclude      xlimport        co2pfad_cluni_nonets             %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_REEEM!a55:j64
-$libinclude      xlimport        co2pfad_nonets_2dc               %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad!b151:k160
+$libinclude      xlimport        co2pfad_DEU             %xcel_datadir%160330_co2pfad.xlsx   DEU-Pfad!A91:J95
 
-$libinclude      xlimport        co2pfad_REEEM_ets90             %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_REEEM!a72:j73
-$libinclude      xlimport        co2pfad_REEEM_ets95             %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_REEEM!a81:j82
-$libinclude      xlimport        co2pfad_REEEM_ALL90             %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_REEEM!a93:j94
-$libinclude      xlimport        co2pfad_REEEM_ALL95             %xcel_datadir%160330_co2pfad.xlsx              EU-Pfad_ENAVI!a66:j67
-
-
-*-------14.09.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
-*$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad!A38:J44
-*commented out because co2pfad_DEU from DEU-Pfad-2 is used instead! (see lines below)
-
-*-------20.10.2017   read data on sector-specific emission reduction targets for Germany according to the Klimaschutzplan 2050 and the UNFCC paper
-*difference of DEU-Pfad 2 (compared to DEU-Pfad): process emissions from industry are distinguished and emission reduction in industry sector is therefore less stringent (meaning that reduction in other sectors must be stronger)
-*$libinclude   xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx      DEU-Pfad-2!A38:J44
-
-*-------27.10.2017
-$libinclude xlimport co2pfad_DEU    %xcel_datadir%160330_co2pfad.xlsx   DEU-Pfad!A91:J95
-*-------27.10.2017 end
-
-*$libinclude      xlimport        co2pfad_ets             %xcel_datadir%150730_co2pfad_BMWi.xlsx         DEHst_1vs4!B81:k87      # DEHst Szenario 4 - ETS ambitioniert
-*$libinclude      xlimport        co2pfad                 %xcel_datadir%150730_co2pfad_BMWi.xlsx         co2pfad_nonets!B22:k40   # bleibt vorerst gleich [ORIGINAL]   // mit BAW
-* ------ 3.02.2016 BAW entfernen
 $libinclude      xlimport        co2pfad                 %xcel_datadir%150730_co2pfad_BMWi.xlsx         co2pfad_nonets_vorher!B22:K40   # bleibt vorerst gleich [ORIGINAL]
 
 $libinclude      xlimport        co2pfad_ets_eu28_ref    %xcel_datadir%160330_co2pfad.xlsx              Reference_2020!a3:j4
 
-* ------ 28.11.2014 (A) Sinkender Differenzbetrag (% vom Vorjahr, konstante Belastung)
-*$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_80.xlsx      co2pfad_ets!A21:K27           # ETS-80-Ziel Version (A) [ORIGINAL]
-*$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_80.xlsx      co2pfad_nonets!B2:L20         # bleibt vorerst gleich   [ORIGINAL]
+* ----- AP5 Paths
 
-* ------ 28.11.2014 Vergleich ETS60 mit ETS75
-*$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad_70.xlsx   co2pfad_ets!A21:K27             # ETS-70 Ziel Version (A)
-*$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad_70.xlsx   co2pfad_nonets!B2:L20           # bleibt vorerst gleich
+$onEcho > read_ARIADNE.txt
+par = CO2_AP5_sce3   rng=sce_3!L7:V28   rDIM=2 cDim=1
+par = CO2_AP5_sce4   rng=sce_4!L7:V28   rDIM=2 cDim=1
+par = CO2_AP5_sce5   rng=sce_5!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce6   rng=sce_6!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce7   rng=sce_7!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce8   rng=sce_8!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce9   rng=sce_9!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce10  rng=sce_10!L7:V24  rDIM=2 cDim=1
+$offEcho
+$call gdxxrw   %xcel_datadir%European_Targets_ARIADNE.xlsx  @read_ARIADNE.txt
+$GDXIN   European_Targets_ARIADNE.gdx
+$LOAD CO2_AP5_sce3   CO2_AP5_sce4   CO2_AP5_sce5   CO2_AP5_sce6
+$LOAD CO2_AP5_sce7   CO2_AP5_sce8   CO2_AP5_sce9   CO2_AP5_sce10
+$GDXIN
 
 
 
-* ------ 10.07.2014 (B) Konstanter Differenzbetrag (% von 2013, steigende Belastung)
-*$libinclude      xlimport        co2pfad_ets     %xcel_datadir%co2pfad.xlsx      co2pfad_ets!A50:K56             # ETS-60 Ziel Version (B)
-*$libinclude      xlimport        co2pfad         %xcel_datadir%co2pfad.xlsx      co2pfad_nonets!B2:L20           # bleibt vorerst gleich
-display co2pfad, co2pfad_ets, co2pfad_ets_eu, co2pfad_ets_row, co2pfad_ets_row_2dc, co2pfad_nonets, co2pfad_nonets_2dc;
+
+
+$call gdxxrw   %xcel_datadir%world_CO2.xlsx  par=CO2_AP5_world rng=NEWAGE_read!A15  rDim=1 cDim=1
+$GDXIN   world_CO2.gdx
+$LOAD CO2_AP5_world
+$GDXIN
 
 * ---------------------------------------------------------------------------- *
 *        READ renewable energies cost reduction

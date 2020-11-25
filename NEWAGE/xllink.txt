@@ -1,3 +1,3 @@
-o=xllink.gdx par=tp_vat
-rng=read_NEWAGE!a1:r10
+o=xllink.gdx par=ep
+rng=ep_newage!A91:s100
 dim=2
