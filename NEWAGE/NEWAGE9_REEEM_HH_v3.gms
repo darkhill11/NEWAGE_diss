@@ -123,7 +123,7 @@ SCALARS
          etstrade        Defines carbon regime as EU-28 ETS      permit price PCO2_ETS                   / 0 /   // ETStrade --> Schalter for basis scenario //article
          row_notrade     Defines carbon regime in rest of world (without EU28) as regional permit price PCO2        / 0 /   // Schalter for basis scenario
          netstrade       Defines carbon regime as EU-28 Non-ETS  permit price PCO2_NETS                  / 0 /
-         netstrade_r     Defines carbon regime as regional Non-ETS permit price PCO2_NETSr(r)            / 1 /  // Schalter for basis scenario
+         netstrade_r     Defines carbon regime as regional Non-ETS permit price PCO2_NETSr(r)            / 0 /  // Schalter for basis scenario
          hhets           Defines carbon regime as including Households into ETS permit price PCO2_ETS    / 0 /
          bawnets         Defines carbon regime as BAW Non-ETS  permit price PCO2_NETS                    / 0 /
          trade           Schalter f?r Emissionsreduktion mit  Handel                                     / 0 /
@@ -161,6 +161,7 @@ SCALARS
 * ----- Scenario switch
          reference_scenario_2020                                                                            / 1 /
          corona_scenario_2020                                                                               / 1 /
+         AR7          "EU Green Deal -Current Mechanisms- w/o German Targets"                               / 0 /
 ;
 
 
@@ -1163,8 +1164,8 @@ PARAMETER
          carbon_ETS_bmk(r,*)     2001 Carbon Emissions (IEA) GT Kohlenstoff (GT C) in ETS sectors
 
 * ----- 11.09.17 sector-specific emissions
-    carblim_sec(sec,r)  sector-specific carbon emission limits for Germany
-    carblim_sec0(sec,r) sector-specific carbon emission limits for Germany (benchmark)
+    carblim_sec(*,r)  sector-specific carbon emission limits for Germany
+    carblim_sec0(*,r) sector-specific carbon emission limits for Germany (benchmark)
 
 * ------ 26.01.2018 make carblim for germany, so it can have a separate target - only active if "detrade" is active
     carblim_deu		carbon emission limits for Germany (over all sectors)
@@ -1478,6 +1479,15 @@ PARAMETER
          ele_calib_2015(gen,r)
          ele_dev_switch(*,*)
 
+* --- PARAMETERS FOR ARIADNE SCENARIOS (06.11.2020)
+* ----- AP5
+
+* ------- CO2 Pathways
+        CO2_AP5_sce7(*,*,yr)                "ARIADNE - AP5 - CO2 emissions pathway for scenario 7 (06.11.2020) [REG*TYPE*YEAR]"
+
+        CO2_AP5_world(r,yr)                 "ARIADNE - AP5 - CO2 emissions pathway for non-EU regions (09.11.2020) [REG*TYPE*YEAR]"
+
+
 ;
 
 * ##############################################################################
@@ -1493,7 +1503,6 @@ $GDXIN   %datadir%%output%_XCEL.gdx                                    //GDXin
 *$GDXIN   %datadir%newage_dataload_26x19x4.gdx                                    //GDXin
 * ------ LOAD
 $LOAD    ressize
-$LOAD    co2pfad_ets  co2pfad co2pfad_ets_eu co2pfad_ets_row co2pfad_ets_row_2dc co2pfad_nonets co2pfad_nonets_2dc co2pfad_DEU co2pfad_E3_eu co2pfad_cluni_nonets co2pfad_cluni_ets co2pfad_E4_eu co2pfad_regpush co2pfad_REEEM_ets90 co2pfad_REEEM_ets95 co2pfad_REEEM_all90 co2pfad_REEEM_all95
 $LOAD    co2pfad_ets_eu28_ref
 $LOAD    URUN0  URSK0
 *$LOAD    un_numb0  sk_numb0  labsize
@@ -1513,6 +1522,8 @@ $LOAD    lfhc_usk  lfhc_skl
 $LOAD    ep  tfp tfp_corona
 $load    ele_dev_REEEM ele_calib_2015 ele_dev_switch ele_dev ele_dev_REEEM_path
 
+$LOAD CO2_AP5_sce7
+$LOAD CO2_AP5_world
 
 
 
@@ -2259,6 +2270,13 @@ bta_reb_sec_reg(i,s,r) = 0;
 bta_reb_sec_reg(i,s,r)$(BTA_coa(s) AND NOT BTA_coa(r) and BTA_sec(i) and cc(i,s,r) AND bta AND bta_rebate) = 1;
 
 
+* ----- 12.11.2020
+Parameter        e_sub(r)                       "elasticity of substitution between electricity and fossil fuels"
+;
+
+e_sub(r) = 0.1;
+
+
 
 *Execute_Unload 'cons_with_tax', cons_with_tax;
 *$EXIT
@@ -2305,7 +2323,7 @@ $sectors:
          ELE_trans(r)$h_t_cons_reg(r)     ! private transportation using electricity
 
 * ------ carbon emission
-         CEMIT(r)$(EU28(r) AND eutrade)
+         CEMIT(r)$(EU28(r) AND eutrade and bta_test)
 
 
 * ------ COMMODITIES / PRICES ------------------------------------------------ *
@@ -2331,7 +2349,7 @@ $commodities:
          PCO2W$worldtrade                ! International Permit Price
 
 *         PCO2W$eutrade                         ! International Permit Price
-         PCO2Wr(r)$(eu28(r) AND eutrade)        ! International Permit Price. This price is used in combination with PCO2W to decribe how many carbon certificates each region within PCO2W uses
+         PCO2Wr(r)$(eu28(r) AND eutrade AND bta_test)        ! International Permit Price. This price is used in combination with PCO2W to decribe how many carbon certificates each region within PCO2W uses
          PCO2W$eutrade                          ! International Permit Price
 
 *         PCO2W$detrade                   ! all sectors permit for germany
@@ -2616,7 +2634,7 @@ $demand:RA_HH(hh,r)$HH_DISAG(r)    s:1
 * ----- 09.03.2020 - Classical consumption for disaggregated government
 * ---------------------------------------------------------------------
 
-$prod:CEMIT(r)$(EU28(r) and eutrade)
+$prod:CEMIT(r)$(EU28(r) and eutrade AND bta_test)
          o:PCO2Wr(r)        q:1
          i:PCO2W            q:1
          i:PUSK(r)          q:2e-6
@@ -2806,7 +2824,7 @@ $prod:ELE_trans(r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0
 * --> only difference to (3) is the nesting of PSKL and PUSK (lab: vs. va:)
 
 * ------ 10.12.2014 (Erste Zeile Original)
-$prod:Y(i,r)$nr(i,r)   s:0  vae(s):0.5  va(vae):1  e(vae):0.1  nel(e):0.5  lqd(nel):2  oil(lqd):0  col(nel):0  gas(lqd):0
+$prod:Y(i,r)$nr(i,r)   s:0  vae(s):0.5  va(vae):1  e(vae):e_sub(r)  nel(e):0.5  lqd(nel):2  oil(lqd):0  col(nel):0  gas(lqd):0
 *$prod:Y(i,r)$nr(i,r)   s:0  vae(s):0.25  va(vae):1  e(vae):0.1  nel(e):0.5  lqd(nel):2  oil(lqd):0  col(nel):0  gas(lqd):0
 
 * ------ 23.05.2014
@@ -2838,7 +2856,8 @@ $prod:Y(i,r)$nr(i,r)   s:0  vae(s):0.5  va(vae):1  e(vae):0.1  nel(e):0.5  lqd(n
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2_ETS#(fe)$eu28(r)$ets(i)$etstrade                 q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)    t:(carbon_tax(r)/co2coefy(fe,i,r))
@@ -2895,7 +2914,8 @@ $prod:Y(i,r)$(vom(i,r)$oil(i))   s:0  vae(s):0.5  va(vae):0.2 lab(va):0.5  e(vae
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:
          i:PCO2_ETS#(fe)$eu28(r)$ets(i)$etstrade                 q:(co2em(fe,i,r) * aeei(fe,i,r))        p:1e-6  fe.tl:     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)    t:(carbon_tax(r)/co2coefy(fe,i,r))
@@ -3000,7 +3020,8 @@ $prod:ELEx(gen,r)$((out_gen(gen,r))$(ks_x(gen,r))$(reg(gen)))    s:0
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2_ETS#(fe)$eu28(r)$etstrade                        q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)     t:(carbon_tax(r)/co2coefele(fe,gen,r))
@@ -3044,7 +3065,8 @@ $prod:ELEx(gen,r)$((out_gen(gen,r))$(ks_x(gen,r))$(not reg(gen)))    s:0
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6
          i:PCO2_ETS#(fe)$eu28(r)$etstrade                        q:(co2em(fe,gen,r) * aeei_elex(gen,r))  p:1e-6     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)     t:(carbon_tax(r)/co2coefele(fe,gen,r))
@@ -3088,7 +3110,8 @@ $prod:ELEn(gen,r)$out_gen(gen,r)$ks_n(gen,r)$reg(gen)     s:0  lab(s):0
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2_ETS#(fe)$eu28(r)$etstrade                        q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)     t:(carbon_tax(r)/co2coefele(fe,gen,r))
@@ -3135,7 +3158,8 @@ $prod:ELEn(gen,r)$((out_gen(gen,r))$(ks_n(gen,r))$(not reg(gen))) s:0  lab(s):0
 * ------ Carbon regimes:
          i:PCO2(r)#(fe)$notrad(r)                                q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade                      q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
-         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
+         i:PCO2W#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
+*         i:PCO2Wr(r)#(fe)$eu28(r)$eutrade                            q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
 *         i:PCO2W#(fe)$deu(r)$detrade                             q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2W#(fe)$noneu28(r)$worldtrade2                     q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6
          i:PCO2_ETS#(fe)$eu28(r)$etstrade                        q:(co2em(fe,gen,r) * aeei_elen(gen,r))  p:1e-6     a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)     t:(carbon_tax(r)/co2coefele(fe,gen,r))
@@ -4168,6 +4192,21 @@ LOOP (yr,                                                                       
 
 * ------ BEFORE-SOLVE ----------------------------------------------------------
 
+* ------ ARIADNE Scenario Switches
+
+* ------ Scenario 7: EU Green Deal "Current Mechanisms" w/o German Targets
+    reference_scenario_2020$AR7 =   1;
+    corona_scenario_2020$AR7    =   1;
+*    germany_reference_nEHS$AR7  =   1;
+
+    etstrade$(AR7 and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(AR7 and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(AR7 and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND AR7 AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    e_sub(r)$(AR7 AND eu28(r) AND after2025(yr))         =   0.1;
+
+
 bmk_ele_trans$yr2015(yr) = 1;
 ELE_trans.l(r)$(h_t_cons_reg(r) AND yr2015(yr))=1;
 
@@ -4665,60 +4704,46 @@ eletwhyr("X.UP","EU28","total",yr)       = sum(gen,      eletwhyr("X.UP","EU28",
 * ----- 23.09.2018 - TIMES coupling
 *ELE_EX.fx(gen,r)$ele_dev_switch(gen,r) = ele_dev(gen,r,yr);
 ele_dev_act(gen,r)$ele_dev_switch(gen,r)=ele_dev(gen,r,yr);
-
-*eletwhyr("NEW.UP","BRD",gen,yr)    = sum(r$bawdeu(r),eletwhyr("NEW.UP",r,gen,yr)) ;
-*eletwhyr("NEW.LO","BRD",gen,yr)    = sum(r$bawdeu(r),eletwhyr("NEW.LO",r,gen,yr)) ;
-*eletwhyr("NEW.UP","BRD","total",yr)=sum(gen,      eletwhyr("NEW.UP","BRD",gen,yr))   ;
-*eletwhyr("NEW.LO","BRD","total",yr)=sum(gen,      eletwhyr("NEW.LO","BRD",gen,yr))   ;
-*eletwhyr("X.UP","BRD",gen,yr)    = sum(r$bawdeu(r),eletwhyr("X.UP",r,gen,yr)) ;
-*eletwhyr("X.UP","BRD","total",yr)=sum(gen,      eletwhyr("X.UP","BRD",gen,yr))   ;
+;
 
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 * ------ SCENARIOS (Diss)
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-* ------ Carbon Regimes for ETS sectors ----------------------------------------
-* ------ 02.07.2014 Set co2pfad_ets for BAW equal to DEU
-*co2pfad_ets("baw",yr)            = co2pfad_ets("deu",yr);
-* ------ 26.01.2016
-*co2pfad_ets_eu("EU28",yr)$yr2010(yr) = 0.98;
-*co2pfad_ets_eu("EU28",yr)$yr2015(yr) = 0.95;
-*co2pfad_ets_eu("EU28",yr)$yr2020(yr) = 0.90;
-
-* ------ 9.02.2016 CO2-Pfad f?r ETStrade [Quelle: CO2-Pfad EU-ETS.xlsx in D:\GAMS\GTAP8inGAMS\Rutherford - EnHH - 11\xcel_data]
-* ------ 13.04.2016
-co2pfad_ets(r,yr)$(eu28(r) and etstrade) = co2pfad_ets_eu("EU28",yr);
-co2pfad_ets(r,yr)$(eu28(r) and eutrade)  = co2pfad_ets_eu("EU28",yr);
-co2pfad_ets(r,yr)$(eu28(r) and notrade)  = co2pfad_ets_eu("EU28",yr);
-
-* ---- 14.02.2018 - read the world CO2-growth
-co2pfad_ets(r,yr)$(not eu28(r) and row_notrade)  = co2pfad_ets_row(r,yr); // base pathway
-
-
-
+* ------ REFERENCE 2020
 
 * ----- 03.08.2020 set CO2 pathway for reference scenario 2020
 carblim_ets(r)$(eu28(r) and reference_scenario_2020)    = carblim_ets0(r) * co2pfad_ets_eu28_ref('EU28',yr);  // if etstrade = 1
 
+* ------ ARIADNE Scenarios
+
+* ------ AR7
+carblim_ets(r)$(eu28(r) and AR7 AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and AR7 AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and AR7 AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+
+*pytarget(i,r)$(pricetarget(i,r) AND AR7 AND after2020(yr)) = pytarget_ariadne(r,i,"eu_green_deal",yr);
+
+
 * ------ 22.07.2014 Set carblim_ets equal to co2pfad_ets
 *co2pfad_ets_eu28_refcarblim_ets(r)$(eu28(r) and etstrade)    = carblim_ets0(r) * co2pfad_ets(r,yr);  // if etstrade = 1
 * ------ 15.02.2016 Set carblim_ets equal to co2pfad_ets
-carblim_ets(r)$(eu28(r) and hhets)       = carblim_ets0(r) * co2pfad_ets(r,yr);  // if hhets = 1
+*carblim_ets(r)$(eu28(r) and hhets)       = carblim_ets0(r) * co2pfad_ets(r,yr);  // if hhets = 1
 * ------ 2.02.2016 EU-wide, cross-sectoral ETS
-carblim(r)$(eu28(r) and eutrade)         = carblim0(r) * co2pfad_ets(r,yr) ;     // if eutrade = 1
+*carblim(r)$(eu28(r) and eutrade)         = carblim0(r) * co2pfad_ets(r,yr) ;     // if eutrade = 1
 * ------ 2.02.2016 Regionale, sektor?bergreifende CO2-Reduktionspflicht ohne ETS
-notrad(r)$(eu28(r) and notrade)          = yes ;                                 // if notrade = 1
-carblim(r)$(eu28(r) and notrad(r))       = carblim0(r) * co2pfad_ets(r,yr) ;     // if notrade = 1
+*notrad(r)$(eu28(r) and notrade)          = yes ;                                 // if notrade = 1
+*carblim(r)$(eu28(r) and notrad(r))       = carblim0(r) * co2pfad_ets(r,yr) ;     // if notrade = 1
 
 *-------22.08.2017 regional, cross-sectoral CO2-reduction obligation in RoW
-carblim(r)$(not eu28(r) and row_notrade) = carblim0(r) * co2pfad_ets(r,yr); // if row_notrade = 1
+*carblim(r)$(not eu28(r) and row_notrade) = carblim0(r) * co2pfad_ets(r,yr); // if row_notrade = 1
 
 *------28.09.2017
-carblim_sec(sec,"DEU")$DEU_sec = carblim_sec0(sec,"DEU") * co2pfad_DEU(sec,yr);
+*carblim_sec(sec,"DEU")$DEU_sec = carblim_sec0(sec,"DEU") * co2pfad_DEU(sec,yr);
 
 
 * ----- 26.01.2018
-carblim_deu$detrade = carblim_deu0 * co2pfad_ets_row("DEU",yr);
+*carblim_deu$detrade = carblim_deu0 * co2pfad_ets_row("DEU",yr);
 carblim_deu_yr(yr)$detrade = carblim_deu;
 
 carblim(r)$(BTA_coa(r) and bta_test) = carblim(r) * 0.8;
@@ -4726,109 +4751,10 @@ carblim(r)$(BTA_coa(r) and bta_test) = carblim(r) * 0.8;
 * ------ Carbon Regimes for ETS + Non-ETS sectors ------------------------------
 
 
-* ------ 24.10.2017 -- read the non-ETS emissions development from co2pfad_nonets
-co2pfad_nets(r,yr)$(eu28(r) and netstrade_r)= co2pfad_nonets(r,yr) ;                   display co2pfad_nets;
-
-
-* ------ 15.02.2016 carblim für jede Modellperiode über [carblim0(r) * co2pfad_nets(r,yr)] definieren
-*carblim(r)$(eu28(r) and netstrade_r)     = carblim0(r) * co2pfad_nets(r,yr) ;
-*carblim(r)$(eu28(r) and netstrade)       = carblim0(r) * co2pfad_nets(r,yr) ;
-* ------ 18.02.2016 carblim für jede Modellperiode über [ (carblim0(r) - carblim_ets0(r)) * co2pfad_nets(r,yr)] definieren
-carblim(r)$(eu28(r) and netstrade_r)     = (carblim0(r) - carblim_ets0(r)) * co2pfad_nets(r,yr) ;
-carblim(r)$(eu28(r) and netstrade)       = (carblim0(r) - carblim_ets0(r)) * co2pfad_nets(r,yr) ;
-
-display co2pfad_ets, co2pfad_ets_eu, co2pfad_nets, carblim_ets, carblim_ets0, carblim0, carblim, co2pfad_ets_row;
-
 * ------ CO2 Tax ---------------------------------------------------------------
-$ontext  // CO2 tax hier einschalten
-* ------ 1.04.2016 CO2-Steuer im HH-Bereich (aufdiskontiert mit 4 %, Referenzjahr 2007 = 30 --> vgl. co2tax_30.xlsx)
-co2price = 0;
-co2price$after(yr)  = 34;
-co2price$yr2015(yr) = 41;
-co2price$yr2020(yr) = 50;
-co2price$yr2025(yr) = 61;
-co2price$yr2030(yr) = 74;
-co2tax(r,i,cbt,cbf)$c0_fuels(r,i,cbt,cbf) = cbco2i(r,i,cbt,cbf) * co2price / c0_fuels(r,i,cbt,cbf) ;
-display co2price, co2tax ;
-$offtext  // CO2 tax hier einschalten
-
-* ----- LOOK HERE to CHECK YEARS (DOWN)
-
-* ------ Efficiency standards --------------------------------------------------
-$ontext  // Standards hier einschalten
-* ------ 7.01.2016 Fahrzeug-Standards (SC3)
-eff_target(r)$(deu(r) and yr2011(yr))    = eff_avg(r) ;
-eff_target(r)$(deu(r) and yr2015(yr))    = 115/1000 ;
-eff_target(r)$(deu(r) and yr2010(yr))    = 145/1000 ;
-eff_target(r)$(deu(r) and yr2020(yr))    = 95/1000;
-eff_target(r)$(deu(r) and yr2025(yr))    = 78/1000;
-eff_target(r)$(deu(r) and yr2030(yr))    = 65/1000;
-*NEWCAR.UP(r,"small","ele") = 10 * NEWCAR.L(r,"small","ele") ;
-
-* ------ 7.01.2016 Gebäude-Standards (SC3)
-*effh_target(r)$(deu(r) and yr2010(yr))   = effh_avg(r) ;
-*effh_target(r)$(deu(r) and yr2015(yr))   = 55 ;
-*effh_target(r)$(deu(r) and yr2020(yr))   = 46 ;
-*effh_target(r)$(deu(r) and yr2025(yr))   = 38 ;
-*effh_target(r)$(deu(r) and yr2030(yr))   = 30 ;
-* ------ 29.03.2016 bringt keine wesentlichen Änderungen hinsichtlich avgkwh_yr
-effh_target(r)$(deu(r) and yr2007(yr))   = effh_avg(r) ;
-effh_target(r)$(deu(r) and yr2010(yr))   = 56 ;
-effh_target(r)$(deu(r) and yr2015(yr))   = 47 ;
-effh_target(r)$(deu(r) and yr2020(yr))   = 39 ;
-effh_target(r)$(deu(r) and yr2025(yr))   = 32 ;
-effh_target(r)$(deu(r) and yr2030(yr))   = 27 ;
-* ------ 5.02.2016 Folgendes ist nötig um bei Effizienzstandards Lösungsprobleme in 2015 zu vermeiden
-*carsub(r,"small","ele")$yr2015(yr)    = -0.1 ;
-$offtext  // Standards hier einschalten
-
-* ----- LOOK HERE to CHECK YEARS (UP)
-
-* ------ Electricity tax -------------------------------------------------------
-* ------ 14.09.2015 (Diss) Stromsteuer in Deutschland entfernen
-*tfueli(r,i,cbt,cbf)$(ele(i) and eu28(r) and after(yr))   = tfueli(r,i,cbt,cbf)   * 0.5 ;
-*tothele0(r)$(eu28(r) and after(yr))                      = tothele0(r)           * 0.5 ;
-*tc(i,r)$(ele(i) and eu28(r) and after(yr))               = tc(i,r)               * 0.5 ;
-*ti(i,j,r)$(ele(i) and eu28(r) and after(yr))             = ti(i,j,r)             * 0.5 ;
-*display ti, ty, tc, tfueli, tothele0;
 
 
-* ------ Public funding of low-carbon energy technologies ----------------------
-$ontext   // Förd. hier einschalten
-* ------ 1.04.2016 E-Autos Zuschuss/Kaufprämie (Electric Vehicle Initiative) --> Diss!
-carsub(r,"small","ele")$after(yr)    = -0.23 ;
-carsub(r,"middl","phe")$after(yr)    = -0.14 ;
-carsub(r,"large","phe")$after(yr)    = -0.08 ;
-display carsub;
-*$offtext
-*$ontext
-* ------ 1.04.2016 Passivhäuser subventionieren (KfW-Förderung) --> Diss!
-bt_sub(r,"new_p",bf)$(after(yr)  and (sum(i, bnd0(r,i,"new_p",bf))))  = -0.25 ;
-* ------ 29.03.2016
-*bt_sub(r,"new_p",bf)$(after(yr)  and (sum(i, bnd0(r,i,"new_p",bf))))  = -0.5 ;
-*bt_sub(r,"new_e",bf)$(after(yr)  and (sum(i, bnd0(r,i,"new_e",bf))))  = -0.5 ;
-display bt_sub ;
-*$offtext
-*$ontext
-* ------ 4.01.2016 Sanierungsrate manuell ansteuern --> Achtung: Wirkung auf CO2_yr tritt verzögert ein (wirkt erst über altbau-abschreibung in der folgenden Periode)
-*bt_san(r,"old_r",bf)$(yr2007(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.20 ;
-*bt_san(r,"old_r",bf)$(yr2010(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.45 ;
-*bt_san(r,"old_r",bf)$(yr2015(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.20 ;
-*bt_san(r,"old_r",bf)$(yr2020(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.80 ;
-*bt_san(r,"old_r",bf)$(yr2025(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.80 ;
-*bt_san(r,"old_r",bf)$(yr2030(yr) and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.40 ;
-*bt_san(r,"old_r",bf)$(after(yr)  and (sum(i, bnd0(r,i,"old_r",bf))))    = bt_san(r,"old_r",bf)/2 ;
-* ------ 1.04.2016  Sanierungen subventionieren--> Diss!
-bt_san(r,"old_r",bf)$(after(yr)  and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.24 ;
-* ------ 29.03.2016
-*bt_san(r,"old_r",bf)$(after(yr)  and (sum(i, bnd0(r,i,"old_r",bf))))    = -0.5 ;
 
-
-display bt_san;
-$offtext  // Förd. hier einschalten
-*PITAX.fx(r)$HH_DISAG(r) = 1;
-* ------ 11.01.2016 Diss: Textmarke Scenarios
-* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 * ---------------------------------------------------------------------- *
 * ###### SOLVE STATEMENT 2                                                       // # LOOP-solve #
