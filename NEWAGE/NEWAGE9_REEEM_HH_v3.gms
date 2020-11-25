@@ -123,7 +123,7 @@ SCALARS
          etstrade        Defines carbon regime as EU-28 ETS      permit price PCO2_ETS                   / 0 /   // ETStrade --> Schalter for basis scenario //article
          row_notrade     Defines carbon regime in rest of world (without EU28) as regional permit price PCO2        / 0 /   // Schalter for basis scenario
          netstrade       Defines carbon regime as EU-28 Non-ETS  permit price PCO2_NETS                  / 0 /
-         netstrade_r     Defines carbon regime as regional Non-ETS permit price PCO2_NETSr(r)            / 0 /  // Schalter for basis scenario
+         netstrade_r     Defines carbon regime as regional Non-ETS permit price PCO2_NETSr(r)            / 1 /  // Schalter for basis scenario
          hhets           Defines carbon regime as including Households into ETS permit price PCO2_ETS    / 0 /
          bawnets         Defines carbon regime as BAW Non-ETS  permit price PCO2_NETS                    / 0 /
          trade           Schalter f?r Emissionsreduktion mit  Handel                                     / 0 /
@@ -365,7 +365,7 @@ SET
                          / ELE, OIL, PPP, IRS, NFM, NMM, CHM /
          eii(i)          EU-ETS energy intensive sectors without Electricity
                          /      OIL, PPP, IRS, NFM, NMM, CHM /
-         ind(i)          Verarbeitendes Gewerbe - Manufacturing - Industrie
+         ind(i)          Verarbeitendes Gewerbe - Manufacturing - 
                          / CHM, PPP, IRS, NFM, NMM, FOT, MVH, MAC, ROI /
          indE(i)         Energieintensive Industrie
                          / CHM, PPP, IRS, NFM, NMM /
@@ -2716,15 +2716,17 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:1
 * ----- 09.03.2020 - Consumption with specified nests for heat and transportation
 * -------------------------------------------------------------------------------
 
-$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))       s:0.5   c:1    h:0.6   tr:1    ct(tr):0   tr_e(ct):1   e(h):1     oil(e):0   col(e):0   gas(e):0
+$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1   h:0.6   bd(h):0.1   e(h):1     oil(e):0   col(e):0   gas(e):0
 
          o:PC_hh(hh,r)                 Q:(vom("c",r) * hh_total_consumption_share(r,hh))
 
 * ------ All consumption goods (DEU: except transport, energy, cars and buildings)
 * .tl alerts MPSGE that a set of nests are being declared
-         i:PA(i,r)$non_h_t_goods(i)              q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  c:$(not (e(i) OR bui(i)))  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+         i:PA(i,r)$non_h_t_goods(i)              q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  c:$non_h_t_goods(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
 
-         i:PA(i,r)$bui(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  h:$bui(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+         i:PA(i,r)$bui(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$bui(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+
+         i:PA(i,r)$dwe(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$dwe(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
 
          i:PA(i,r)$trn(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  tr:$trn(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
          
@@ -4152,11 +4154,11 @@ scalar check_nuc;
 *        L O O P
 * ---------------------------------------------------------------------------- *
 
-*LOOP (yr,                                                                        // # LOOP-start #
+LOOP (yr,                                                                        // # LOOP-start #
 *LOOP (yrx(yr),                                                                  // 10-year-milestones Berechnungen
 *LOOP (before2011(yr),
 *LOOP (before2015(yr),
-LOOP (before2020(yr),
+*LOOP (before2020(yr),
 *LOOP (before2025(yr),
 *LOOP (before2030(yr),
 *LOOP (before2035(yr),
@@ -4693,61 +4695,7 @@ co2pfad_ets(r,yr)$(eu28(r) and notrade)  = co2pfad_ets_eu("EU28",yr);
 co2pfad_ets(r,yr)$(not eu28(r) and row_notrade)  = co2pfad_ets_row(r,yr); // base pathway
 
 
-*------28.09.2017 for sector-specific CO2 prices in Germany
-*co2pfad_DEU(sec,yr)$DEU_sec = co2pfad_DEU(sec,yr);
 
-* ------ 13.04.2016 auskommentiert, da EU-Pfad über 160330_co2pfad.xlsx [EU-Pad!B69:L70] eingelesen wird
-*loop(yryr$yr2007(yr), co2pfad_ets(r,yryr)$(eu28(r) and etstrade) = 0;) ;
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2007(yr)) = 1.000 ;
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2010(yr)) = 1.000 ;
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2015(yr)) = 0.950 ;
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2020(yr)) = 0.900 ;
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2025(yr)) = 0.733 ;   // wie in 150730_co2pfad_BMWi.xlsx (EU-Pfad)
-*co2pfad_ets(r,yr)$(eu28(r) and etstrade  and yr2030(yr)) = 0.576 ;   // wie in 150730_co2pfad_BMWi.xlsx (EU-Pfad)
-
-* ----- LOOK HERE to CHECK YEARS (DOWN)
-
-$ontext
-* ------ 15.02.2016 CO2-Pfad für HHETS: Vary co2pfad_ets in order to achieve same CO2 level as with Standards (std)
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2007(yr)) = 1.000 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2010(yr)) = 0.740 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2015(yr)) = 0.820 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2020(yr)) = 0.680 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2025(yr)) = 0.580 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-co2pfad_ets(r,yr)$(deu(r)  and hhets     and yr2030(yr)) = 0.495 ;  // einkommentieren, wenn CO2-Level angepasst werden soll!
-$offtext
-
-* ------ 9.02.2016 CO2-Pfad für EUtrade [Quelle: CO2-Pfad EU-ETS.xlsx in D:\GAMS\GTAP8inGAMS\Rutherford - EnHH - 11\xcel_data]
-*loop(yryr$yr2007(yr), co2pfad_ets(r,yryr)$(eu28(r) and (eutrade or notrade)) = 0;) ;
-* ------ 17.04.2016 EUTRADE-Pfad anpassen an 'CO2_yr.p' in report_pivot_dias.xlsx des Referenzszenarios NETSTRADE_R!
-$ontext
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2007(yr)) = 1.000 * co2pfad_ets(r,yr) ;
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2010(yr)) = 1.002 * co2pfad_ets(r,yr) ;
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2015(yr)) = 1.034 * co2pfad_ets(r,yr) ;
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2020(yr)) = 1.047 * co2pfad_ets(r,yr) ;
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2025(yr)) = 1.072 * co2pfad_ets(r,yr) ;
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2030(yr)) = 1.095 * co2pfad_ets(r,yr) ;   // EU-Pfad gemäß netstrade_r-Ergebnis aus 'CO2_yr.p' in report_pivot_dias.xlsx [ETS -43 % und non-ETS -30 % jeweils ggü. 2005; Gesamt -36 % ggü. 2007 entspricht ungefähr -42 % ggü. 1990]
-***co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2030(yr)) = 1.00 * co2pfad_ets(r,yr) ;  // = -34.1 % ggü. 2007 = -40.0 % ggü. 1990 (und -26.9 % ggü. 2010)
-$offtext
-* ------ 22.04.2016 EUTRADE-Pfad anpassen an 'CO2_yr.p' in report_pivot_dias.xlsx des Referenzszenarios NETSTRADE_R!
-*co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2011(yr)) = 1.000  ;      // ohne Diss
-*co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2015(yr)) = 0.905635 ;    // ohne Diss
-*co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2020(yr)) = 0.878312 ;    // ohne Diss
-*co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2025(yr)) = 0.837089 ;    // ohne Diss
-*co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2030(yr)) = 0.737676 ;    // ohne Diss
-
-$ontext
-*original before changing years 24.08.2016
-* ------ 22.04.2016 EUTRADE-Pfad anpassen an 'CO2_yr.p' in report_pivot_dias.xlsx des Referenzszenarios NETSTRADE_R!
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2007(yr)) = 1.000  ;      // ohne Diss
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2010(yr)) = 0.905635 ;    // ohne Diss
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2015(yr)) = 0.878312 ;    // ohne Diss
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2020(yr)) = 0.837089 ;    // ohne Diss
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2025(yr)) = 0.737676 ;    // ohne Diss
-co2pfad_ets(r,yr)$(eu28(r) and (eutrade or notrade) and yr2030(yr)) = 0.631778 ;    // ohne Diss
-$offtext
-
-* ----- LOOK HERE to CHECK YEARS (UP)
 
 * ----- 03.08.2020 set CO2 pathway for reference scenario 2020
 carblim_ets(r)$(eu28(r) and reference_scenario_2020)    = carblim_ets0(r) * co2pfad_ets_eu28_ref('EU28',yr);  // if etstrade = 1
@@ -4776,17 +4724,7 @@ carblim_deu_yr(yr)$detrade = carblim_deu;
 carblim(r)$(BTA_coa(r) and bta_test) = carblim(r) * 0.8;
 
 * ------ Carbon Regimes for ETS + Non-ETS sectors ------------------------------
-* ------ 12.02.2016 Non-ETS restrictions with sectoral trade only (netstrade_r)
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2007(yr)) = 1.000 ;
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2010(yr)) = 1.000 ;
-***co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2015(yr)) = 0.418 ;
-***co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2020(yr)) = 0.306 ;
-***co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2025(yr)) = 0.3342 ;
-***co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2030(yr)) = 0.3568 ;
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2015(yr)) = 0.4160 ;    //eutrade 160216
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r an d yr2020(yr)) = 0.2965 ;    //eutrade 160216
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2025(yr)) = 0.3255 ;    //eutrade 160216
-*co2pfad_nets(r,yr)$(eu28(r) and netstrade_r and yr2030(yr)) = 0.3495 ;    //eutrade 160216
+
 
 * ------ 24.10.2017 -- read the non-ETS emissions development from co2pfad_nonets
 co2pfad_nets(r,yr)$(eu28(r) and netstrade_r)= co2pfad_nonets(r,yr) ;                   display co2pfad_nets;
