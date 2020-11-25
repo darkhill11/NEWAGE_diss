@@ -182,13 +182,13 @@ $(document).ready(function () {
 <pre class="r"><code># import tidyverse
 library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXHUwMDFiWzMwbS0tIFx1MDAxYlsxbUF0dGFjaGluZyBwYWNrYWdlc1x1MDAxYlsyMm0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIHRpZHl2ZXJzZSAxLjIuMSAtLVx1MDAxYlszOW1cblx1MDAxYlszMG1cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWdncGxvdDJcdTAwMWJbMzBtIDMuMS4wICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXB1cnJyICBcdTAwMWJbMzBtIDAuMi41XG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXRpYmJsZSBcdTAwMWJbMzBtIDEuNC4yICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWRwbHlyICBcdTAwMWJbMzBtIDAuNy43XG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXRpZHlyICBcdTAwMWJbMzBtIDAuOC4yICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXN0cmluZ3JcdTAwMWJbMzBtIDEuMy4xXG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXJlYWRyICBcdTAwMWJbMzBtIDEuMS4xICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWZvcmNhdHNcdTAwMWJbMzBtIDAuMy4wXHUwMDFiWzM5bVxuXHUwMDFiWzMwbS0tIFx1MDAxYlsxbUNvbmZsaWN0c1x1MDAxYlsyMm0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIHRpZHl2ZXJzZV9jb25mbGljdHMoKSAtLVxuXHUwMDFiWzMxbXhcdTAwMWJbMzBtIFx1MDAxYlszNG1kcGx5clx1MDAxYlszMG06Olx1MDAxYlszMm1maWx0ZXIoKVx1MDAxYlszMG0gbWFza3MgXHUwMDFiWzM0bXN0YXRzXHUwMDFiWzMwbTo6ZmlsdGVyKClcblx1MDAxYlszMW14XHUwMDFiWzMwbSBcdTAwMWJbMzRtZHBseXJcdTAwMWJbMzBtOjpcdTAwMWJbMzJtbGFnKClcdTAwMWJbMzBtICAgIG1hc2tzIFx1MDAxYlszNG1zdGF0c1x1MDAxYlszMG06OmxhZygpXHUwMDFiWzM5bVxuIn0= -->
-<pre><code>[30m-- [1mAttaching packages[22m --------------------------------------- tidyverse 1.2.1 --[39m
-[30m[32mv[30m [34mggplot2[30m 3.1.0     [32mv[30m [34mpurrr  [30m 0.2.5
-[32mv[30m [34mtibble [30m 1.4.2     [32mv[30m [34mdplyr  [30m 0.7.7
-[32mv[30m [34mtidyr  [30m 0.8.2     [32mv[30m [34mstringr[30m 1.3.1
-[32mv[30m [34mreadr  [30m 1.1.1     [32mv[30m [34mforcats[30m 0.3.0[39m
-[30m-- [1mConflicts[22m ------------------------------------------ tidyverse_conflicts() --
+<!-- rnb-output-begin eyJkYXRhIjoiUGFrZXQgkXRpZHl2ZXJzZZIgd3VyZGUgdW50ZXIgUiBWZXJzaW9uIDMuNS4zIGVyc3RlbGx0XHUwMDFiWzMwbS0tIFx1MDAxYlsxbUF0dGFjaGluZyBwYWNrYWdlc1x1MDAxYlsyMm0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIHRpZHl2ZXJzZSAxLjMuMCAtLVx1MDAxYlszOW1cblx1MDAxYlszMG1cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWdncGxvdDJcdTAwMWJbMzBtIDMuMy4yICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXB1cnJyICBcdTAwMWJbMzBtIDAuMy40XG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXRpYmJsZSBcdTAwMWJbMzBtIDMuMC40ICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWRwbHlyICBcdTAwMWJbMzBtIDEuMC4yXG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXRpZHlyICBcdTAwMWJbMzBtIDEuMS4yICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXN0cmluZ3JcdTAwMWJbMzBtIDEuNC4wXG5cdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bXJlYWRyICBcdTAwMWJbMzBtIDEuNC4wICAgICBcdTAwMWJbMzJtdlx1MDAxYlszMG0gXHUwMDFiWzM0bWZvcmNhdHNcdTAwMWJbMzBtIDAuNS4wXHUwMDFiWzM5bVxuUGFrZXQgkXB1cnJykiB3dXJkZSB1bnRlciBSIFZlcnNpb24gMy41LjMgZXJzdGVsbHRQYWtldCCRc3RyaW5ncpIgd3VyZGUgdW50ZXIgUiBWZXJzaW9uIDMuNS4zIGVyc3RlbGx0UGFrZXQgkWZvcmNhdHOSIHd1cmRlIHVudGVyIFIgVmVyc2lvbiAzLjUuMyBlcnN0ZWxsdFx1MDAxYlszMG0tLSBcdTAwMWJbMW1Db25mbGljdHNcdTAwMWJbMjJtIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSB0aWR5dmVyc2VfY29uZmxpY3RzKCkgLS1cblx1MDAxYlszMW14XHUwMDFiWzMwbSBcdTAwMWJbMzRtZHBseXJcdTAwMWJbMzBtOjpcdTAwMWJbMzJtZmlsdGVyKClcdTAwMWJbMzBtIG1hc2tzIFx1MDAxYlszNG1zdGF0c1x1MDAxYlszMG06OmZpbHRlcigpXG5cdTAwMWJbMzFteFx1MDAxYlszMG0gXHUwMDFiWzM0bWRwbHlyXHUwMDFiWzMwbTo6XHUwMDFiWzMybWxhZygpXHUwMDFiWzMwbSAgICBtYXNrcyBcdTAwMWJbMzRtc3RhdHNcdTAwMWJbMzBtOjpsYWcoKVx1MDAxYlszOW1cbiJ9 -->
+<pre><code>Paket 㤼㸱tidyverse㤼㸲 wurde unter R Version 3.5.3 erstellt[30m-- [1mAttaching packages[22m --------------------------------------- tidyverse 1.3.0 --[39m
+[30m[32mv[30m [34mggplot2[30m 3.3.2     [32mv[30m [34mpurrr  [30m 0.3.4
+[32mv[30m [34mtibble [30m 3.0.4     [32mv[30m [34mdplyr  [30m 1.0.2
+[32mv[30m [34mtidyr  [30m 1.1.2     [32mv[30m [34mstringr[30m 1.4.0
+[32mv[30m [34mreadr  [30m 1.4.0     [32mv[30m [34mforcats[30m 0.5.0[39m
+Paket 㤼㸱purrr㤼㸲 wurde unter R Version 3.5.3 erstelltPaket 㤼㸱stringr㤼㸲 wurde unter R Version 3.5.3 erstelltPaket 㤼㸱forcats㤼㸲 wurde unter R Version 3.5.3 erstellt[30m-- [1mConflicts[22m ------------------------------------------ tidyverse_conflicts() --
 [31mx[30m [34mdplyr[30m::[32mfilter()[30m masks [34mstats[30m::filter()
 [31mx[30m [34mdplyr[30m::[32mlag()[30m    masks [34mstats[30m::lag()[39m</code></pre>
 <!-- rnb-output-end -->
@@ -200,21 +200,22 @@ library(tidyverse)</code></pre>
 <pre class="r"><code># create dataframe from the input csv file
 pf &lt;- read_delim('consumption_diss_input.csv', delim = ';')</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBSZWdpb24gPSBjb2xfY2hhcmFjdGVyKCksXG4gIFNlY3RvciA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgRDEgPSBjb2xfZG91YmxlKCksXG4gIEQyID0gY29sX2RvdWJsZSgpLFxuICBEMyA9IGNvbF9kb3VibGUoKSxcbiAgRDQgPSBjb2xfZG91YmxlKCksXG4gIEQ1ID0gY29sX2RvdWJsZSgpLFxuICBENiA9IGNvbF9kb3VibGUoKSxcbiAgRDcgPSBjb2xfZG91YmxlKCksXG4gIEQ4ID0gY29sX2RvdWJsZSgpLFxuICBEOSA9IGNvbF9kb3VibGUoKSxcbiAgRDEwID0gY29sX2RvdWJsZSgpXG4pXG4ifQ== -->
-<pre><code>Parsed with column specification:
+<!-- rnb-output-begin eyJkYXRhIjoiXG5cdTAwMWJbMzZtLS1cdTAwMWJbMzltIFx1MDAxYlsxbVx1MDAxYlsxbUNvbHVtbiBzcGVjaWZpY2F0aW9uXHUwMDFiWzFtXHUwMDFiWzIybSBcdTAwMWJbMzZtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cdTAwMWJbMzltXG5jb2xzKFxuICBSZWdpb24gPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgU2VjdG9yID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIEQxID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQyID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQzID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ0ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ1ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ2ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ3ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ4ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQ5ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIEQxMCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltXG4pXG4ifQ== -->
+<pre><code>
+[36m--[39m [1m[1mColumn specification[1m[22m [36m--------------------------------------------------------[39m
 cols(
-  Region = col_character(),
-  Sector = col_character(),
-  D1 = col_double(),
-  D2 = col_double(),
-  D3 = col_double(),
-  D4 = col_double(),
-  D5 = col_double(),
-  D6 = col_double(),
-  D7 = col_double(),
-  D8 = col_double(),
-  D9 = col_double(),
-  D10 = col_double()
+  Region = [31mcol_character()[39m,
+  Sector = [31mcol_character()[39m,
+  D1 = [32mcol_double()[39m,
+  D2 = [32mcol_double()[39m,
+  D3 = [32mcol_double()[39m,
+  D4 = [32mcol_double()[39m,
+  D5 = [32mcol_double()[39m,
+  D6 = [32mcol_double()[39m,
+  D7 = [32mcol_double()[39m,
+  D8 = [32mcol_double()[39m,
+  D9 = [32mcol_double()[39m,
+  D10 = [32mcol_double()[39m
 )</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI21ha2UgY29weSBvZiB0aGUgb3JpZ2luYWwgZGF0YWZyYW0gdG8gd29yayBvblxucGYyIDwtIHBmXG5gYGAifQ== -->
