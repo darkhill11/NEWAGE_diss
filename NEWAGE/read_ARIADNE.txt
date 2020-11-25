@@ -1,0 +1,8 @@
+par = CO2_AP5_sce3   rng=sce_3!L7:V28   rDIM=2 cDim=1
+par = CO2_AP5_sce4   rng=sce_4!L7:V28   rDIM=2 cDim=1
+par = CO2_AP5_sce5   rng=sce_5!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce6   rng=sce_6!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce7   rng=sce_7!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce8   rng=sce_8!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce9   rng=sce_9!L7:V24   rDIM=2 cDim=1
+par = CO2_AP5_sce10  rng=sce_10!L7:V24  rDIM=2 cDim=1
