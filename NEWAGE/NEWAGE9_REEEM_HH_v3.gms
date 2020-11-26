@@ -28,7 +28,7 @@ $ONEMPTY
 * ------ 26.10.2016 - Set the SOURCE (.map file that contains mapping of regions and comodities)
 $if not set source  $set source     18x19x4_gtap9
 
-* ------ 26.10.2016 - Set the name of the OUTPUT file (.gdx)
+* ------ 26.10.2016 - Set the name of the OUTPUT file (.gdx) 
 $if not set output       $set output     %source%
 * ------ 10.04.2014 DataSet
 * ------ 26.07.2016 Folgende Zeile für GTAP9 einkommentieren
@@ -2734,7 +2734,7 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:1
 * ----- 09.03.2020 - Consumption with specified nests for heat and transportation
 * -------------------------------------------------------------------------------
 
-$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1   h:0.6   bd(h):0.1   e(h):1     oil(e):0   col(e):0   gas(e):0
+$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1  tr_o(tr_e):0   h:0.6   bd(h):0.1   e(h):1     oil(e):0   col(e):0   gas(e):0
 
          o:PC_hh(hh,r)                 Q:(vom("c",r) * hh_total_consumption_share(r,hh))
 
@@ -2750,7 +2750,7 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
          
          i:PA(i,r)$mvh(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  ct:$mvh(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r) 
          
-         i:p_oil_trans(r)                        q:(c_hh0("oil_transport",r) * pc_hh0("oil",r) * hh_sector_share(r,"oil",hh))         tr_e:
+         i:p_oil_trans(r)                        q:(c_hh0("oil_transport",r) * pc_hh0("oil",r) * hh_sector_share(r,"oil",hh))         tr_o:
          
          i:p_ele_trans(r)                        q:(c_hh0("ele_transport",r) * pc_hh0("ele",r) * hh_sector_share(r,"ele",hh))         tr_e:
 
@@ -2763,45 +2763,31 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
          i:PA(e,r)$gas(e)                       q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))         p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(e,r)
          i:PA(e,r)$col(e)                       q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))         p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(e,r)
 
-* ------ Carbon regimes:
+* ------ Carbon regimes (not for transportation):
 * the # represents multiple inputs for PCO2, one for each element of set fe
          i:PCO2(r)#(fe)$notrad(r)                 q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
          i:PCO2W#(fe)$pco2w_r(r)$worldtrade       q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
          i:PCO2Wr(r)#(fe)$eu28(r)$eutrade         q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
-*         i:PCO2W#(fe)$deu(r)$detrade              q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:          a:RA(r)
          i:PCO2W#(fe)$noneu28(r)$worldtrade2      q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
          i:PCO2_NETS#(fe)$eu28(r)$netstrade       q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:
          i:PCO2_NETSr(r)#(fe)$eu28(r)$netstrade_r q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
-
-*--------16.10.2017 sector-specific targets in Germany
-*         i:PCO2W#(fe)$(DEU_sec and eu28(r) and eutrade)   q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:  a:RA(r)
          i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))   p:1e-6  fe.tl:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
+         i:PCO2(r)#(fe)$(deu(r) and detrade)                             q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:      a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
 
-*--------16.10.2017 end
-
-* ----- 26.01.2018
-         i:PCO2(r)#(fe)$(deu(r) and detrade)                 q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:      a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
+* ------ Carbon regimes (for transportation):
+         i:PCO2(r)$notrad(r)                 q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
+         i:PCO2W$pco2w_r(r)$worldtrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
+         i:PCO2W$eu28(r)$eutrade             q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
+         i:PCO2W$noneu28(r)$worldtrade2      q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
+         i:PCO2_NETS$eu28(r)$netstrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:
+         i:PCO2_NETSr(r)$eu28(r)$netstrade_r q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh("oil",r))
+         i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))    p:1e-6  tr_o:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
 * --------------------------------------------------------------------------------
 
 $prod:FF_trans(r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0     oil(s):0
     
          o:p_oil_trans(r)                    q:(c_hh0("oil_transport",r) * pc_hh0("oil",r))
-
- 
-
          i:PA(e,r)$oil(e)                    q:(c_hh0("oil_transport",r) * pc_hh0("oil",r))      p:pc_hh0(e,r)     oil:   a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(e,r)            
-
-         i:PCO2(r)$notrad(r)                 q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:           a:GOV(r)
-         i:PCO2W$pco2w_r(r)$worldtrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:           a:GOV(r)
-         i:PCO2W$eu28(r)$eutrade             q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:           a:GOV(r)
-*         i:PCO2W#(fe)$deu(r)$detrade              q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:          a:RA(r)
-         i:PCO2W$noneu28(r)$worldtrade2      q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:           a:GOV(r)
-         i:PCO2_NETS$eu28(r)$netstrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:
-         i:PCO2_NETSr(r)$eu28(r)$netstrade_r q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  oil:           a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh("oil",r))
-
-*--------16.10.2017 sector-specific targets in Germany
-*         i:PCO2W#(fe)$(DEU_sec and eu28(r) and eutrade)   q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:  a:RA(r)
-         i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))    p:1e-6  oil:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
 
 *--------16.10.2017 end
 
@@ -6339,7 +6325,7 @@ ks_x_yr3(r,gen,yr) = round(ks_x_yr2(r,gen,yr) - ks_x_yr(r,gen,yr),7); display ks
 *$call gdxxrw.exe i=results.gdx o=%resultsdir%report_pivot.xlsx @dumppar.txt
 
 * ------ 21.07.2014 (auskommentiert)
-Execute  'gdxxrw.exe i=%resultsdir%results.gdx o=%resultsdir%report_pivot.xlsx epsout=0 @dumppar_ohneDiss.txt'
+Execute  'gdxxrw.exe i=%resultsdir%results.gdx o=%resultsdir%report_pivot.xlsx epsout=0 @dumppar_diss_rm.txt'
 
 * ------ 03.07.2014
 *Execute 'gdxxrw.exe i=results.gdx o=%resultsdir%report_pivot.xlsx @dumppar_noele.txt'
