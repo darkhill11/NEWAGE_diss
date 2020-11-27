@@ -161,7 +161,7 @@ SCALARS
 * ----- Scenario switch
          reference_scenario_2020                                                                            / 1 /
          corona_scenario_2020                                                                               / 1 /
-         AR7          "EU Green Deal -Current Mechanisms- w/o German Targets"                               / 0 /
+         AR7          "EU Green Deal -Current Mechanisms- w/o German Targets"                               / 1 /
 ;
 
 
@@ -304,7 +304,7 @@ SET
 *                         / /
 
          h_t_cons_reg(r)    countries where consumption will be reorganized with heat and transport consumption
-                            / DEU/
+                            / DEU, FRA, ITA, UKI, BNL, ESP, POL, EUN, EUS /
 *                            / /
 
 *         groupA(r)       Adaptation group A - high vulnerability
@@ -3963,6 +3963,7 @@ PARAMETERS
          YT_yr(yr)
          A_yr(*,i,yr)
          C_yr(*,yr)
+         c_hh_yr(r,hh,yr)
          ELEx_yr(*,gen,yr)
          ELEn_yr(*,gen,yr)
          ELE_yr(*,gen,yr)
@@ -4177,6 +4178,13 @@ LOOP (yr,                                                                       
 * Textmarke LOOP
 
 * ------ BEFORE-SOLVE ----------------------------------------------------------
+
+c_hh0("oil_transport",r)$h_t_cons_reg(r)   = hh_energy_share(r,"oil","Transport",yr) * vafm("oil","c",r);
+c_hh0("oil",r)$h_t_cons_reg(r)             = hh_energy_share(r,"oil","Others",yr) * vafm("oil","c",r);
+
+c_hh0("ele_transport",r)$h_t_cons_reg(r)   = hh_energy_share(r,"Electricity","Transport",yr) * vafm("ele","c",r);
+c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Others",yr) * vafm("ele","c",r);
+
 
 * ------ ARIADNE Scenario Switches
 
@@ -5769,6 +5777,8 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
                                                       + sum(hh, cons_hh_accounts(r,hh,"tax_rebate",yr))$no_vat
                                                       ;
     
+c_hh_yr(r,hh,yr)$HH_DISAG(r) = c_hh.l(hh,r);
+ 
 
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 * ------ Competitiveness  ------------------------------------------------------

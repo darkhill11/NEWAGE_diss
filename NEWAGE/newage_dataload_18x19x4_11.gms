@@ -121,6 +121,8 @@ PARAMETER
          AEEI_ff(r,*,yr)
          AEEI_ele(r,*,yr)
 
+         AEEI_hh_transport(r,*,yr)             "AEEI  for energy consumption related to transport in Households (Roland's Dissertation)"
+
 
 
 * ------ 15.07.2014 Reading in Energy productivity and total factor productivity from the BASELINE Database
@@ -195,7 +197,13 @@ $libinclude      xlimport        AEEI_trans_ff         %xcel_datadir%aeei.xlsx  
 $libinclude      xlimport        aeei_ser_ff           %xcel_datadir%aeei.xlsx       AEEI_ff!a37:j46
 
 $libinclude      xlimport        aeei_ff           %xcel_datadir%aeei.xlsx       AEEI_ff_2!a2:k137
-$libinclude      xlimport        aeei_ele           %xcel_datadir%aeei.xlsx       AEEI_ele_2!a2:k128
+$libinclude      xlimport        aeei_ele           %xcel_datadir%aeei.xlsx       AEEI_ele_2!a2:k137
+
+$call gdxxrw   %xcel_datadir%AEEI_hh.xlsx  par=AEEI_hh_transport  rng=AEEI_hh_transport!A1  rDim=2 cDim=1
+$GDXIN   AEEI_hh.gdx
+$LOAD AEEI_hh_transport
+$GDXIN
+
 ;
 *$exit
 * ---------------------------------------------------------------------------- *
