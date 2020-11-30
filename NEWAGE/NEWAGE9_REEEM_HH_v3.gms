@@ -149,9 +149,9 @@ SCALARS
          no_VAT                                                                                             / 0 /
          low_cap_tax                                                                                        / 0 /
          low_lab_tax                                                                                        / 0 /
-         per_capita_dis         switch to turn on the per capita redistribution                             / 0 /
-         diss_factor_tax        switch that disaggregates the taxes on primary FACTORS                      / 0 /
-*         h_t_cons               switch that reorganizes hh consumption accorgin to heat and transport       / 0 / 
+         per_capita_dis         switch to turn on the per capita redistribution                             / 1 /
+         diss_factor_tax        switch that disaggregates the taxes on primary FACTORS                      / 1 /
+         h_t_cons               switch that reorganizes hh consumption according to heat and transport      / 0 / 
 
 * ------ Switch to turn on cross border carbon tax
          bta                    switch to turn on the border tax Adjustment for CO2 Emissions               / 0 /
