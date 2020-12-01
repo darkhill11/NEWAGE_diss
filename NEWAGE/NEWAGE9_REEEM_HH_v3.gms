@@ -149,8 +149,9 @@ SCALARS
          no_VAT                                                                                             / 0 /
          low_cap_tax                                                                                        / 0 /
          low_lab_tax                                                                                        / 0 /
-         per_capita_dis         switch to turn on the per capita redistribution                             / 1 /
-         diss_factor_tax        switch that disaggregates the taxes on primary FACTORS                      / 1 /
+         per_capita_dis         switch to turn on the per capita redistribution                             / 0 /
+         per_capita_dis_NETSr   switch to turn on the per capita redistribution for non-ETS-sectors         / 0 /
+         diss_factor_tax        switch that disaggregates the taxes on primary FACTORS                      / 1 / // leave it on for all DISSERTATION scenarios
          h_t_cons               switch that reorganizes hh consumption according to heat and transport      / 0 / 
 
 * ------ Switch to turn on cross border carbon tax
@@ -159,9 +160,14 @@ SCALARS
          bta_rebate                                                                                         / 0 /
 
 * ----- Scenario switch
-         reference_scenario_2020                                                                            / 1 /
-         corona_scenario_2020                                                                               / 1 /
-         AR7          "EU Green Deal -Current Mechanisms- w/o German Targets"                               / 1 /
+         reference_scenario_2020                                                                            / 0 /
+         corona_scenario_2020                                                                               / 0 /
+
+         diss_ref                                                                                           / 0 /
+         diss_BAU                                                                                           / 0 /
+         diss_CAP                                                                                           / 0 /
+         diss_VAT                                                                                           / 0 /
+         diss_LAB                                                                                           / 1 /
 ;
 
 
@@ -1661,7 +1667,9 @@ PARAMETERS
 * ------ 30.01.2020 removing vat
         tp_vat(r,i)
         sec_no_vat(i,r)
+        sec_no_lab(*,i,r)
         no_vat_summary(r,yr,*)
+        no_lab_summary(r,yr,*)
 ;
 
 $GDXIN   %datadir%%output%_tp_no_vat.gdx                                    //GDXin
@@ -1669,6 +1677,8 @@ $LOAD    tp_vat
 $GDXIN
 
 sec_no_vat(i,r)$(eU28(r) AND (tp(i,r) > 0)) = 1; 
+sec_no_lab('skl',i,r)$(eU28(r) AND (rtf0('skl',i,r) > 0)) = 1;
+sec_no_lab('usk',i,r)$(eU28(r) AND (rtf0('usk',i,r) > 0)) = 1; 
 
 ele_dev_switch_actual(gen,r) = 0;
 ele_dev_actual(gen,r) = 0;
@@ -2422,7 +2432,8 @@ $auxiliary:
           CO2_supply$bta                        ! multiplier for bca test
 
 $auxiliary:
-          tax_reb(r)$(no_vat and eu28(r))       ! abatement of income taxes for no-vat scenario 
+          tax_reb(r)$(no_vat and eu28(r))       ! abatement of income taxes for no-vat scenario
+          tax_reb(r)$(low_lab_tax and eu28(r))       ! abatement of income taxes for no-vat scenario  
 
 * -- E Q U A T I O N S ------------------------------------------------------- *
 
@@ -2580,6 +2591,7 @@ $demand:GOV(r)$HH_DISAG(r)
 
          e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND NOT per_capita_dis)                                                q:carblim(r)
          e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND NOT per_capita_dis)                                          q:carblim(r)
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND NOT per_capita_dis_NETSr)                                    q:carblim(r)
 
 *------28.09.2017 sector-specific CO2 reduction targets in Germany
          e:PCO2_DEU(sec)$(DEU_sec and deu(r) and carblim_sec(sec,r) AND NOT per_capita_dis)                                       q:carblim_sec(sec,r)
@@ -2613,13 +2625,14 @@ $demand:RA_HH(hh,r)$HH_DISAG(r)    s:1
 * ------ Carbon regimes
          e:PCO2(r)$(carblim(r) AND notrad(r) AND per_capita_dis)                                                                    q:(carblim(r)/5)
          e:PCO2W$(carblim(r) AND pco2w_r(r) AND worldtrade AND per_capita_dis)                                                      q:(carblim(r)/5)
-*         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                            q:(carblim(r)/5)
-         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                        q:(carblim(r)/5)
+*         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                           q:(carblim(r)/5)
+         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                            q:(carblim(r)/5)
          e:PCO2W$(carblim(r) AND noneu28(r) AND worldtrade2 AND per_capita_dis)                                                     q:(carblim(r)/5)
          e:PCO2_ETS$(carblim_ets(r) AND eu28(r) AND etstrade AND per_capita_dis)                                                    q:(carblim_ets(r)/5)
 
          e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND per_capita_dis)                                                      q:(carblim(r)/5)
          e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis)                                                q:(carblim(r)/5)
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis_NETSr)                                          q:(carblim(r)/5)
 
 *------28.09.2017 sector-specific CO2 reduction targets in Germany
          e:PCO2_DEU(sec)$(DEU_sec and deu(r) and carblim_sec(sec,r) AND per_capita_dis)                                             q:(carblim_sec(sec,r)/5)
@@ -2828,9 +2841,11 @@ $prod:Y(i,r)$nr(i,r)   s:0  vae(s):0.5  va(vae):1  e(vae):e_sub(r)  nel(e):0.5  
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:skld0(i,r)           va:
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                          q:skld0(i,r)           p:pf0("skl",i,r)      va:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl",i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',i,r) AND low_lab_tax)      m:(-rtf('skl',i,r))$(sec_no_lab('skl',i,r) AND low_lab_tax)
          
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:uskd0(i,r)           va:
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                          q:uskd0(i,r)           p:pf0("usk",i,r)      va:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk",i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',i,r) AND low_lab_tax)      m:(-rtf('usk',i,r))$(sec_no_lab('usk',i,r) AND low_lab_tax)
 
          i:RKG$(gk)                                                           q:kd0(i,r)             va:
          
@@ -2886,9 +2901,11 @@ $prod:Y(i,r)$(vom(i,r)$oil(i))   s:0  vae(s):0.5  va(vae):0.2 lab(va):0.5  e(vae
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:skld0(i,r)           lab:
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                          q:skld0(i,r)           p:pf0("skl",i,r)      lab:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl",i,r)
-         
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',i,r) AND low_lab_tax)      m:(-rtf('skl',i,r))$(sec_no_lab('skl',i,r) AND low_lab_tax)
+
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:uskd0(i,r)           lab:
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                          q:uskd0(i,r)           p:pf0("usk",i,r)      lab:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk",i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',i,r) AND low_lab_tax)      m:(-rtf('usk',i,r))$(sec_no_lab('usk',i,r) AND low_lab_tax)
 
          i:RKG$(gk)                                                           q:kd0(i,r)             va:
          
@@ -2944,9 +2961,11 @@ $prod:Y(i,r)$(vom(i,r)$xe(i))  s:(esub_es(i,r))  id:0   lab(id):0
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:skld0(i,r)           lab:
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                          q:skld0(i,r)           p:pf0("skl",i,r)      lab:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl",i,r)
-         
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',"ele",r) AND low_lab_tax)      m:(-rtf('skl',"ele",r))$(sec_no_lab('skl',"ele",r) AND low_lab_tax)
+
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:uskd0(i,r)           lab:
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                          q:uskd0(i,r)           p:pf0("usk",i,r)      lab:        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk",i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',"ele",r) AND low_lab_tax)      m:(-rtf('usk',"ele",r))$(sec_no_lab('usk',"ele",r) AND low_lab_tax)
 
 *         i:RKR(r)$rsk                                           q:kd0(i,r)            id:
          i:RKR(r)$(rsk AND NOT (diss_factor_tax AND HH_DISAG(r)))             q:kd0(i,r)             id:
@@ -2995,9 +3014,11 @@ $prod:ELEx(gen,r)$((out_gen(gen,r))$(ks_x(gen,r))$(reg(gen)))    s:0
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:skl_input(gen,r)           
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                          q:skl_input(gen,r)           p:pf0("skl","ele",r)       a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',"ele",r) AND low_lab_tax)      m:(-rtf('skl',"ele",r))$(sec_no_lab('skl',"ele",r) AND low_lab_tax)
          
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:usk_input(gen,r)           
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                          q:usk_input(gen,r)           p:pf0("usk","ele",r)       a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',"ele",r) AND low_lab_tax)      m:(-rtf('usk',"ele",r))$(sec_no_lab('usk',"ele",r) AND low_lab_tax)
 
 *         i:RKX_ELE(gen,r)        q:cap_input0(gen,r)
          i:RKX_ELE(gen,r)$(NOT (diss_factor_tax AND HH_DISAG(r)))             q:cap_input0(gen,r)
@@ -3040,9 +3061,11 @@ $prod:ELEx(gen,r)$((out_gen(gen,r))$(ks_x(gen,r))$(not reg(gen)))    s:0
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:skl_input(gen,r)           
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                          q:skl_input(gen,r)           p:pf0("skl","ele",r)       a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',"ele",r) AND low_lab_tax)      m:(-rtf('skl',"ele",r))$(sec_no_lab('skl',"ele",r) AND low_lab_tax)
          
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))                    q:usk_input(gen,r)           
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                          q:usk_input(gen,r)           p:pf0("usk","ele",r)       a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',"ele",r) AND low_lab_tax)      m:(-rtf('usk',"ele",r))$(sec_no_lab('usk',"ele",r) AND low_lab_tax)
 
 *         i:RKX_ELE(gen,r)        q:cap_input0(gen,r)
          i:RKX_ELE(gen,r)$(NOT (diss_factor_tax AND HH_DISAG(r)))             q:cap_input0(gen,r)
@@ -3084,9 +3107,11 @@ $prod:ELEn(gen,r)$out_gen(gen,r)$ks_n(gen,r)$reg(gen)     s:0  lab(s):0
 
          i:PSKL(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))            q:(skl_input(gen,r)*(diffcost(gen,r)))           lab:           
          i:PSKL(r)$(diss_factor_tax AND HH_DISAG(r))                  q:(skl_input(gen,r)*(diffcost(gen,r)))           p:pf0("skl","ele",r)       lab:          a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("skl","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('skl',"ele",r) AND low_lab_tax)      m:(-rtf('skl',"ele",r))$(sec_no_lab('skl',"ele",r) AND low_lab_tax)
          
          i:PUSK(r)$(NOT (diss_factor_tax AND HH_DISAG(r)))            q:(usk_input(gen,r)*(diffcost(gen,r)))           lab:
          i:PUSK(r)$(diss_factor_tax AND HH_DISAG(r))                  q:(usk_input(gen,r)*(diffcost(gen,r)))           p:pf0("usk","ele",r)       lab:          a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:rtf("usk","ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_lab('usk',"ele",r) AND low_lab_tax)      m:(-rtf('usk',"ele",r))$(sec_no_lab('usk',"ele",r) AND low_lab_tax)
 
          i:RKG$gk                q:(cap_input(gen,r)*(diffcost(gen,r)))
 *         i:RKR(r)$rsk            q:(cap_input(gen,r)*(diffcost(gen,r)))
@@ -3288,7 +3313,19 @@ $constraint:tax_reb(r)$(eu28(r) AND no_vat)
           tax_reb(r) *
           (sum((hh,i)$(sec_no_vat(i,r) AND NOT e(i)), tp(i,r) * PA(i,r) * C_hh(hh,r) * (c_hh0(i,r) * hh_sector_share(r,i,hh))) +
            sum((hh,i)$(sec_no_vat(i,r) AND e(i)), tp(i,r) * PA(i,r) * C_hh(hh,r) * (c_hh0(i,r) * aeei(i,"c",r)) * hh_sector_share(r,i,hh)))
-          =e= PCO2Wr(r) * CEMIT(r);           
+          =e= PCO2_NETSr(r) * carblim(r);
+
+$constraint:tax_reb(r)$(eu28(r) AND low_lab_tax)
+          tax_reb(r) *
+          (sum((i)$(sec_no_lab("skl",i,r) AND NOT e(i)), rtf("skl",i,r) * PSKL(r) * Y(i,r) * skld0(i,r)) +
+           sum((i)$(sec_no_lab("usk",i,r) AND NOT e(i)), rtf("usk",i,r) * PUSK(r) * Y(i,r) * uskd0(i,r)) +
+
+           sum((gen,i)$(sec_no_lab("skl",i,r) AND e(i)), rtf("skl","ele",r) * PSKL(r) * ELEx(gen,r) * (skl_input(gen,r))) +
+           sum((gen,i)$(sec_no_lab("usk",i,r) AND e(i)), rtf("usk","ele",r) * PUSK(r) * ELEx(gen,r) * (usk_input(gen,r))) +
+           sum((gen,i)$(sec_no_lab("skl",i,r) AND e(i)), rtf("skl","ele",r) * PSKL(r) * ELEn(gen,r) * (skl_input(gen,r))) +
+           sum((gen,i)$(sec_no_lab("usk",i,r) AND e(i)), rtf("usk","ele",r) * PUSK(r) * ELEn(gen,r) * (usk_input(gen,r))) 
+           )
+          =e= PCO2_NETSr(r) * carblim(r);           
 
 * ------ REPORTING -------------------------------------------------------------
 
@@ -4185,20 +4222,71 @@ c_hh0("oil",r)$h_t_cons_reg(r)             = hh_energy_share(r,"oil","Others",yr
 c_hh0("ele_transport",r)$h_t_cons_reg(r)   = hh_energy_share(r,"Electricity","Transport",yr) * vafm("ele","c",r);
 c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Others",yr) * vafm("ele","c",r);
 
+* ------ DISSERTATION SCENARIO SWITCHES
 
-* ------ ARIADNE Scenario Switches
+* ------ Scenario 1: Reference - Reference 2020 with corona
+    reference_scenario_2020$diss_ref =   1;
+    corona_scenario_2020$diss_ref    =   1;
 
-* ------ Scenario 7: EU Green Deal "Current Mechanisms" w/o German Targets
-    reference_scenario_2020$AR7 =   1;
-    corona_scenario_2020$AR7    =   1;
-*    germany_reference_nEHS$AR7  =   1;
+* ------ Scenario 2: New targets and no recycling (business as usual) - same as ARIADNE 7
+    reference_scenario_2020$diss_BAU =   1;
+    corona_scenario_2020$diss_BAU    =   1;
 
-    etstrade$(AR7 and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
-    netstrade_r$(AR7 and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
-    row_notrade$(AR7 and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
-    notrad(r)$(NOT eu28(r) AND AR7 AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
 
-    e_sub(r)$(AR7 AND eu28(r) AND after2025(yr))         =   0.1;
+    etstrade$(diss_BAU and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(diss_BAU and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(diss_BAU and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND diss_BAU AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    e_sub(r)$(diss_BAU AND eu28(r) AND after2025(yr))         =   0.1;
+
+
+* ------ Scenario 3: New targets (ARIADNE 7) and per capita redistribution
+    reference_scenario_2020$diss_CAP =   1;
+    corona_scenario_2020$diss_CAP    =   1;
+
+
+    etstrade$(diss_CAP and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(diss_CAP and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(diss_CAP and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND diss_CAP AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    per_capita_dis_NETSr$(after2020(yr) AND diss_CAP)         =   1;      // activates per capita redistribution after 2020
+
+    e_sub(r)$(diss_CAP AND eu28(r) AND after2025(yr))         =   0.1;
+
+
+* ------ Scenario 4: New targets (ARIADNE 7) and lower VAT
+    reference_scenario_2020$diss_VAT =   1;
+    corona_scenario_2020$diss_VAT    =   1;
+
+
+    etstrade$(diss_VAT and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(diss_VAT and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(diss_VAT and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND diss_VAT AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    no_vat$(after2020(yr) AND diss_VAT)                       =   1;      // activates redistribution by reducing VAT
+
+    e_sub(r)$(diss_VAT AND eu28(r) AND after2025(yr))         =   0.1;
+
+
+* ------ Scenario 5: New targets (ARIADNE 7) and lower LAbor tax
+    reference_scenario_2020$diss_LAB =   1;
+    corona_scenario_2020$diss_LAB    =   1;
+
+
+    etstrade$(diss_LAB and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(diss_LAB and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(diss_LAB and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND diss_LAB AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    low_lab_tax$(after2020(yr) AND diss_LAB)                  =   1;      // activates redistribution by reducing VAT
+
+    e_sub(r)$(diss_LAB AND eu28(r) AND after2025(yr))         =   0.1;
+
+
+
 
 
 bmk_ele_trans$yr2015(yr) = 1;
@@ -4243,8 +4331,8 @@ rtf("cap",i,r)$(low_cap_tax and EU28(r) and yr2035(yr)) = rtf0("cap",i,r) * 1;
 
 * ---- Tax on Labor
 
-rtf("skl",i,r)$(low_cap_tax and EU28(r) and yr2035(yr)) = rtf0("skl",i,r) * 1;
-rtf("usk",i,r)$(low_cap_tax and EU28(r) and yr2035(yr)) = rtf0("usk",i,r) * 1;
+*rtf("skl",i,r)$(low_cap_tax and EU28(r) and yr2035(yr)) = rtf0("skl",i,r) * 1;
+*rtf("usk",i,r)$(low_cap_tax and EU28(r) and yr2035(yr)) = rtf0("usk",i,r) * 1;
 
 
 * ----- 08.02.2018 - carbon tax update
@@ -4709,14 +4797,28 @@ ele_dev_act(gen,r)$ele_dev_switch(gen,r)=ele_dev(gen,r,yr);
 * ----- 03.08.2020 set CO2 pathway for reference scenario 2020
 carblim_ets(r)$(eu28(r) and reference_scenario_2020)    = carblim_ets0(r) * co2pfad_ets_eu28_ref('EU28',yr);  // if etstrade = 1
 
-* ------ ARIADNE Scenarios
+* ------ DISSERTATION Scenarios
 
-* ------ AR7
-carblim_ets(r)$(eu28(r) and AR7 AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
-carblim(r)$(eu28(r) and AR7 AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
-carblim(r)$(NOT eu28(r) and AR7 AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+* ------ diss_BAU
+carblim_ets(r)$(eu28(r) and diss_BAU AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and diss_BAU AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and diss_BAU AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
 
-*pytarget(i,r)$(pricetarget(i,r) AND AR7 AND after2020(yr)) = pytarget_ariadne(r,i,"eu_green_deal",yr);
+* ------ diss_CAP
+carblim_ets(r)$(eu28(r) and diss_CAP AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and diss_CAP AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and diss_CAP AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+
+* ------ diss_VAT
+carblim_ets(r)$(eu28(r) and diss_VAT AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and diss_VAT AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and diss_VAT AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+
+* ------ diss_LAB
+carblim_ets(r)$(eu28(r) and diss_LAB AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and diss_LAB AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and diss_LAB AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+
 
 
 * ------ 22.07.2014 Set carblim_ets equal to co2pfad_ets
@@ -4818,6 +4920,8 @@ RA_hh_par_yr("CO2_payments",r,hh,yr)$(HH_DISAG(r) AND per_capita_dis)    =   (PC
                                                                              (PCO2_ETS.l        * (carblim_ets(r)/5)) +
                                                                              (PCO2_NETS.l       * (carblim(r)/5)) + 
                                                                              (PCO2_NETSr.l(r)   * (carblim(r)/5));
+
+RA_hh_par_yr("CO2_payments",r,hh,yr)$(HH_DISAG(r) AND per_capita_dis_NETSr)    =   (PCO2_NETSr.l(r)   * (carblim(r)/5));
 
 
 RA_hh_par_yr("total_income",r,hh,yr)$HH_DISAG(r) =  RA_hh_par_yr("PSKL",r,hh,yr) + RA_hh_par_yr("PUSK",r,hh,yr)  + RA_hh_par_yr("RKR",r,hh,yr)  + RA_hh_par_yr("RKX_ELE",r,hh,yr)  + RA_hh_par_yr("tax_income",r,hh,yr) + RA_hh_par_yr("CO2_payments",r,hh,yr);
@@ -5474,6 +5578,18 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     no_vat_summary(r,yr,"sum_tax")$(eU28(r) AND no_vat)     = sum((hh,i)$(sec_no_vat(i,r) AND NOT e(i)), tp(i,r) * PA.L(i,r) * C_hh.L(hh,r) * (c_hh0(i,r) * hh_sector_share(r,i,hh))) +
                                                               sum((hh,i)$(sec_no_vat(i,r) AND e(i)), tp(i,r) * PA.L(i,r) * C_hh.L(hh,r) * (c_hh0(i,r) * aeei(i,"c",r)) * hh_sector_share(r,i,hh));
     no_vat_summary(r,yr,"total")$(eU28(r) AND no_vat)       = tax_reb.L(r) * no_vat_summary(r,yr,"sum_tax");
+
+
+    no_lab_summary(r,yr,"tax_reb")$(eU28(r) AND low_lab_tax)     = tax_reb.L(r);
+    no_lab_summary(r,yr,"sum_tax")$(eU28(r) AND low_lab_tax)     =  sum((i)$(sec_no_lab("skl",i,r) AND NOT e(i)), rtf("skl",i,r) * PSKL.L(r) * Y.L(i,r) * skld0(i,r)) +
+                                                                    sum((i)$(sec_no_lab("usk",i,r) AND NOT e(i)), rtf("usk",i,r) * PUSK.L(r) * Y.L(i,r) * uskd0(i,r)) +
+
+                                                                    sum((gen,i)$(sec_no_lab("skl",i,r) AND e(i)), rtf("skl","ele",r) * PSKL.L(r) * ELEx.L(gen,r) * (skl_input(gen,r))) +
+                                                                    sum((gen,i)$(sec_no_lab("usk",i,r) AND e(i)), rtf("usk","ele",r) * PUSK.L(r) * ELEx.L(gen,r) * (usk_input(gen,r))) +
+                                                                    sum((gen,i)$(sec_no_lab("skl",i,r) AND e(i)), rtf("skl","ele",r) * PSKL.L(r) * ELEn.L(gen,r) * (skl_input(gen,r))) +
+                                                                    sum((gen,i)$(sec_no_lab("usk",i,r) AND e(i)), rtf("usk","ele",r) * PUSK.L(r) * ELEn.L(gen,r) * (usk_input(gen,r))) ;
+
+    no_lab_summary(r,yr,"total")$(eU28(r) AND low_lab_tax)       = tax_reb.L(r) * no_lab_summary(r,yr,"sum_tax");
 
 
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
