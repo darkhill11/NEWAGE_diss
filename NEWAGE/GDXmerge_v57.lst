@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/08/20 10:55:15 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 12/01/20 16:17:01 Page 1
 merge GDX files
 C o m p i l a t i o n
 
@@ -7,40 +7,46 @@ C o m p i l a t i o n
    4   
    5  * ------ Read results from GDX-files
    6   
-GDXIN   E:\IAEE conference\NEWAGE_article_coupling\results\reference.gdx
-GDXIN   E:\IAEE conference\NEWAGE_article_coupling\results\covid.gdx
-   9   
-  10  * ------ Create merged.gdx
-  11  Execute 'gdxmerge ..\results\reference.gdx ..\results\covid.gdx';
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_ref.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_BAU.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_CAP.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_VAT.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_LAB.gdx
   12   
-  13  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-  14  Execute 'gdxxrw.exe i=merged.gdx  o=..\results\report_pivot_merged.xlsx  epsout=0  @dumppar1.txt'
+  13  * ------ Create merged.gdx
+  14  Execute 'gdxmerge ..\results\diss\201201\diss_ref.gdx ..\results\diss\201201\diss_BAU.gdx ..\results\diss\201201\diss_CAP.gdx ..\results\diss\201201\diss_VAT.gdx ..\results\diss\201201\diss_LAB.gdx output=..\results\diss\201201\merged.gdx';
   15   
-  16  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
-  17  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_HH.txt'
+  16  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
+  17  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar1.txt'
   18   
-  19   
-  20  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
-  21  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_extra.txt'
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/08/20 10:55:15 Page 2
+  19  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
+  20  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_HH.txt'
+  21   
+  22   
+  23  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
+  24  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_extra.txt'
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 12/01/20 16:17:01 Page 2
 merge GDX files
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  E:\IAEE conference\NEWAGE_article_coupling\NEWAGE\GDXmerge_v57.gms
-     2        7 GDXIN          1       7  E:\IAEE conference\NEWAGE_article_coupling\results\reference.gdx
-     3        8 GDXIN          1       8  E:\IAEE conference\NEWAGE_article_coupling\results\covid.gdx
+     1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\GDXmerge_v57.gms
+     2        7 GDXIN          1       7  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_ref.gdx
+     3        8 GDXIN          1       8  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_BAU.gdx
+     4        9 GDXIN          1       9  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_CAP.gdx
+     5       10 GDXIN          1      10  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_VAT.gdx
+     6       11 GDXIN          1      11  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\201201\diss_LAB.gdx
 
 
-COMPILATION TIME     =        0.016 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 09/08/20 10:55:15 Page 3
+COMPILATION TIME     =        0.421 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 12/01/20 16:17:01 Page 3
 merge GDX files
 E x e c u t i o n
 
 
-EXECUTION TIME       =      125.315 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        7.784 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -50,5 +56,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      E:\IAEE conference\NEWAGE_article_coupling\NEWAGE\GDXmerge_v57.gms
-Output     E:\IAEE conference\NEWAGE_article_coupling\NEWAGE\GDXmerge_v57.lst
+Input      C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\GDXmerge_v57.gms
+Output     C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\GDXmerge_v57.lst
