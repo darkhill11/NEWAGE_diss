@@ -1,0 +1,33 @@
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 12/02/20 13:56:52 Page 1
+merge GDX files
+C o m p i l a t i o n
+
+
+   2   
+   4  * ------ Read results from GDX-files
+   5   
+  32   
+  33   
+  34  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
+  35  Execute 'gdxxrw.exe i=201201/merged.gdx  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
+  36   
+
+
+COMPILATION TIME     =        0.000 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 12/02/20 13:56:52 Page 2
+merge GDX files
+E x e c u t i o n
+
+
+EXECUTION TIME       =       11.326 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+
+
+USER: IER                                            S151125:0513AO-WIN
+      Universitaet Stuttgart                                      DC848
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\results\diss\read_merged.gms
+Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\results\diss\read_merged.lst

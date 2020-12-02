@@ -3358,17 +3358,17 @@ $REPORT:
 
 
 * ------ $prod:C_hh
-         V:VC_hh_PC(hh,r)$HH_DISAG(r)                              o:PC_hh(hh,R)   prod:C_hh(hh,r)
-         V:VC_hh_PA(i,hh,r)$HH_DISAG(r)                            i:PA(i,r)       prod:C_hh(hh,r)
-         V:VC_HH_p_oil_trans(hh,r)$(HH_DISAG(r) AND h_t_cons_reg(r))   i:p_oil_trans(r)    prod:C_hh(hh,r)
-         V:VC_HH_p_ele_trans(hh,r)$(HH_DISAG(r) AND h_t_cons_reg(r))   i:p_ele_trans(r)    prod:C_hh(hh,r)   
-         V:VC_hh_CO2(hh,r)$notrad(r)$HH_DISAG(r)                   i:PCO2(r)       prod:C_hh(hh,r)
-         V:VC_hh_CO2W(hh,r)$pco2w_r(r)$worldtrade$HH_DISAG(r)      i:PCO2W         prod:C_hh(hh,r)
+         V:VC_hh_PC(hh,r)$HH_DISAG(r)                                   o:PC_hh(hh,R)   prod:C_hh(hh,r)
+         V:VC_hh_PA(i,hh,r)$HH_DISAG(r)                                 i:PA(i,r)       prod:C_hh(hh,r)
+         V:VC_HH_p_oil_trans(hh,r)$(HH_DISAG(r) AND h_t_cons_reg(r))    i:p_oil_trans(r)    prod:C_hh(hh,r)
+         V:VC_HH_p_ele_trans(hh,r)$(HH_DISAG(r) AND h_t_cons_reg(r))    i:p_ele_trans(r)    prod:C_hh(hh,r)   
+         V:VC_hh_CO2(hh,r)$notrad(r)$HH_DISAG(r)                        i:PCO2(r)       prod:C_hh(hh,r)
+         V:VC_hh_CO2W(hh,r)$pco2w_r(r)$worldtrade$HH_DISAG(r)           i:PCO2W         prod:C_hh(hh,r)
 *         V:VC_hh_CO2W(hh,r)$eu28(r)$eutrade$HH_DISAG(r)            i:PCO2W         prod:C_hh(hh,r)
-         V:VC_hh_CO2W(hh,r)$eu28(r)$eutrade$HH_DISAG(r)            i:PCO2Wr(r)      prod:C_hh(hh,r)
-         V:VC_hh_CO2W(hh,r)$worldtrade2$HH_DISAG(r)                i:PCO2W         prod:C_hh(hh,r)
-         V:VC_hh_CO2_NETS(hh,r)$eu28(r)$netstrade$HH_DISAG(r)      i:PCO2_NETS     prod:C_hh(hh,r)
-         V:VC_hh_CO2_NETSr(hh,r)$eu28(r)$netstrade_r$HH_DISAG(r)   i:PCO2_NETSr(r) prod:C_hh(hh,r)
+         V:VC_hh_CO2W(hh,r)$eu28(r)$eutrade$HH_DISAG(r)                 i:PCO2Wr(r)      prod:C_hh(hh,r)
+         V:VC_hh_CO2W(hh,r)$worldtrade2$HH_DISAG(r)                     i:PCO2W         prod:C_hh(hh,r)
+         V:VC_hh_CO2_NETS(hh,r)$eu28(r)$netstrade$HH_DISAG(r)           i:PCO2_NETS     prod:C_hh(hh,r)
+         V:VC_hh_CO2_NETSr(hh,r)$eu28(r)$netstrade_r$HH_DISAG(r)        i:PCO2_NETSr(r) prod:C_hh(hh,r)
 
 
 * ------ $prod:C_gov
@@ -5796,7 +5796,9 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     cons_hh_accounts(r,hh,"total_inputs",yr)$(HH_DISAG(r))      = sum(i, cons_hh_accounts(r,hh,i,yr)) + cons_hh_accounts(r,hh,"tax_inputs",yr) + cons_hh_accounts(r,hh,"CO2",yr) +
                                                               cons_hh_accounts(r,hh,"CO2W",yr) + cons_hh_accounts(r,hh,"CO2_NETS",yr) + cons_hh_accounts(r,hh,"CO2_NETSr",yr)
 *                                                             + cons_hh_accounts(r,hh,"CO2_SEC",yr)
-                                                              - cons_hh_accounts(r,hh,"tax_rebate",yr)$no_vat;
+                                                              - cons_hh_accounts(r,hh,"tax_rebate",yr)$no_vat
+                                                              + cons_hh_accounts(r,hh,"oil_car",yr)$h_t_cons_reg(r)
+                                                              + cons_hh_accounts(r,hh,"ele_car",yr)$h_t_cons_reg(r);
 
 * ---- Consumption - Government
 * ---- total consumpiton
