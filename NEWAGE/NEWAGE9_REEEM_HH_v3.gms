@@ -164,10 +164,10 @@ SCALARS
          corona_scenario_2020                                                                               / 0 /
 
          diss_ref                                                                                           / 0 /
-         diss_BAU                                                                                           / 0 /
+         diss_BAU                                                                                           / 1 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
-         diss_LAB                                                                                           / 1 /
+         diss_LAB                                                                                           / 0 /
 ;
 
 
@@ -4631,6 +4631,10 @@ ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2045(yr))      = 1.05 * ELEn.L(gen
 ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2015(yr))= 2.2 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
 ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2015(yr))= 2.2 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
 ELEn.up(gen,r)$(msolar(gen)  and deu(r)  and after2020(yr))= ((-0.293 * log(ord(yr) - 3)) + 1.5979) * elen.l(gen,r);
+
+ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP))= 2.45 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
+ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP))= 2.45 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
+ELEn.up(gen,r)$(msolar(gen)  and deu(r)  and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP))= ((-0.293 * log(ord(yr) - 3)) + 1.69) * elen.l(gen,r);
 
 check_nuc = ELEn.UP("bNUC","EUS");
 display "check_nuc 2. ",yr, ">>" ,check_nuc;
