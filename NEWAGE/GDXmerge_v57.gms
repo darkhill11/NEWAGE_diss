@@ -21,4 +21,4 @@ Execute 'gdxmerge %resultsdir%diss_ref.gdx %resultsdir%diss_BAU.gdx %resultsdir%
 
 
 * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
-*Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_extra.txt'
+Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_extra.txt'
