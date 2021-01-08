@@ -5382,18 +5382,35 @@ VC_hh_CO2_NETSr_yr(hh,r,yr) = VC_hh_CO2_NETSr.L(hh,r);
 *VC_CO2_SEC_yr(r,yr) = VC_CO2_SEC.l(r);
 
 abs_sector_hh_yr(r,i,hh,yr)$HH_DISAG(r) = VC_hh_PA.L(i,hh,r) * (PA.L(i,r) + tp(i,r));
+abs_sector_hh_yr(r,"oil_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_p_oil_trans.L(hh,r) * p_oil_trans.L(r);
+abs_sector_hh_yr(r,"ele_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_p_ele_trans.L(hh,r) * p_ele_trans.L(r);
+
 abs_sector_hh_yr(r,"NETSr",hh,yr)$HH_DISAG(r) = VC_hh_CO2_NETSr.L(hh,r) * PCO2_NETSr.L(r);
 *abs_sector_hh_yr(r,"LS_target",hh,yr)$HH_DISAG(r) = VC_hh_CO2_SEC.L(hh,r) * PCO2_DEU.L("residential");
 abs_sector_hh_yr(r,"PCO2W",hh,yr)$HH_DISAG(r) = VC_hh_CO2W.L(hh,r) * PCO2W.L;
-abs_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr);
-abs_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, abs_sector_hh_yr(r,i,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr);
+abs_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
+                                                + (abs_sector_hh_yr(r,"ele_trans",hh,yr) + abs_sector_hh_yr(r,"oil_trans",hh,yr))$h_t_cons_reg(r);
+
+abs_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr);                                                
+
+abs_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, abs_sector_hh_yr(r,i,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
+                                                + (abs_sector_hh_yr(r,"ele_trans",hh,yr) + abs_sector_hh_yr(r,"oil_trans",hh,yr))$h_t_cons_reg(r);
+
 
 share_sector_hh_yr(r,i,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,i,hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
+share_sector_hh_yr(r,"oil_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = abs_sector_hh_yr(r,"oil_trans",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
+share_sector_hh_yr(r,"ele_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = abs_sector_hh_yr(r,"ele_trans",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
+
 share_sector_hh_yr(r,"NETSr",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"NETSr",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
 *share_sector_hh_yr(r,"LS_target",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"LS_target",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
 share_sector_hh_yr(r,"PCO2W",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"PCO2W",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
-share_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr);
-share_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, share_sector_hh_yr(r,i,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr);
+share_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr)
+                                                + (share_sector_hh_yr(r,"oil_trans",hh,yr) + share_sector_hh_yr(r,"ele_trans",hh,yr))$h_t_cons_reg(r);
+
+share_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr);
+
+share_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, share_sector_hh_yr(r,i,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr)
+                                                + (share_sector_hh_yr(r,"oil_trans",hh,yr) + share_sector_hh_yr(r,"ele_trans",hh,yr))$h_t_cons_reg(r);
 
 
 *--------------------------------------------------------------------------
