@@ -169,7 +169,7 @@ SCALARS
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 0 /
+         diss_inv_payment                                                                                   / 1 /
 ;
 
 
@@ -427,6 +427,7 @@ SET     hh      household groups /
         HH4(hh) /hh4/
         HH5(hh) /hh5/;
 
+alias (hh,hh_);
 * ACHTUNG
 * ETS soll im szenario notrad(r) leer sein da sonst falsche report werte für carbon
 * SET      ETS(I) / /;
@@ -2806,10 +2807,10 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
          i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))   p:1e-6  fe.tl:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
          i:PCO2(r)#(fe)$(deu(r) and detrade)                             q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:      a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
          
-         i:PCO2_NETSr(r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND NOT HH_DISAG(hh,r))  
+         i:PCO2_NETSr(r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND NOT HH_DISAG(r))  
 +        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
 
-         i:PCO2_inv_pay(hh,r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(hh,r))   
+         i:PCO2_inv_pay(hh,r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(r))   
 +        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
 
 * ------ Carbon regimes (for transportation):
@@ -3357,9 +3358,9 @@ $constraint:tax_reb(r)$(eu28(r) AND low_lab_tax)
            )
           =e= PCO2_NETSr(r) * carblim(r); 
 
-$constrain:CO2_inv_pay(hh,r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(r))
+$constraint:CO2_inv_pay(hh,r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(r))
           CO2_inv_pay(hh,r) =e=
-          (CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh,r)) / sum(hh, CONVERT_PCO2_HH(hh,r));   
+          (CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh,r)) / sum(hh_, CONVERT_PCO2_HH(hh_,r));   
 
 * ------ REPORTING -------------------------------------------------------------
 
@@ -3402,7 +3403,8 @@ $REPORT:
          V:VC_hh_CO2W(hh,r)$eu28(r)$eutrade$HH_DISAG(r)                 i:PCO2Wr(r)      prod:C_hh(hh,r)
          V:VC_hh_CO2W(hh,r)$worldtrade2$HH_DISAG(r)                     i:PCO2W         prod:C_hh(hh,r)
          V:VC_hh_CO2_NETS(hh,r)$eu28(r)$netstrade$HH_DISAG(r)           i:PCO2_NETS     prod:C_hh(hh,r)
-         V:VC_hh_CO2_NETSr(hh,r)$eu28(r)$netstrade_r$HH_DISAG(r)        i:PCO2_NETSr(r) prod:C_hh(hh,r)
+         V:VC_hh_CO2_NETSr(hh,r)$(netstrade_r AND HH_DISAG(r) AND NOT inverse_co2_pay)      i:PCO2_NETSr(r)       prod:C_hh(hh,r)
+         V:VC_hh_CO2_inv_pay(hh,r)$(netstrade_r AND HH_DISAG(r) AND   inverse_co2_pay)      i:PCO2_inv_pay(hh,r)  prod:C_hh(hh,r)
 
 
 * ------ $prod:C_gov
@@ -4187,6 +4189,8 @@ PARAMETERS
          VC_hh_CO2_NETSr_yr(hh,r,yr)   
          VC_hh_CO2_SEC_yr(hh,r,yr)  
 
+         VC_hh_CO2_inv_pay_yr(hh,r,yr)
+
          VC_CO2_SEC_yr(r,yr)
 
          RA_hh_par_yr(*,r,hh,yr)
@@ -4872,6 +4876,11 @@ carblim_ets(r)$(eu28(r) and diss_LAB AND after2020(yr))      = carblim_ets0(r) *
 carblim(r)$(eu28(r) and diss_LAB AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
 carblim(r)$(NOT eu28(r) and diss_LAB AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
 
+* ------ diss_inv_payment
+carblim_ets(r)$(eu28(r) and diss_inv_payment AND after2020(yr))      = carblim_ets0(r) * CO2_AP5_sce7("EU28","ETS",yr);              // ETS in the EU
+carblim(r)$(eu28(r) and diss_inv_payment AND after2020(yr))          = (carblim0(r) - carblim_ets0(r)) * CO2_AP5_sce7(r,"ESD",yr) ;  // ESD in the EU
+carblim(r)$(NOT eu28(r) and diss_inv_payment AND after2020(yr))      = carblim0(r) * CO2_AP5_world(r,yr) ;                           // national targets outside of the EU
+
 
 
 * ------ 22.07.2014 Set carblim_ets equal to co2pfad_ets
@@ -5202,11 +5211,14 @@ sharec_yr(r,"PCO2_NETS",yr)$(HH_DISAG(r))    = (( sum(hh,VC_hh_CO2_NETS.L(hh,r))
 sharec_yr(r,"PCO2_NETSr",yr)$(HH_DISAG(r))   = (( sum(hh,VC_hh_CO2_NETSr.L(hh,r)) * PCO2_NETSr.L(r) ) + ( VC_gov_CO2_NETSr.L(r) * PCO2_NETSr.L(r) )) / 
                                                (sum(hh,(VC_hh_PC.L(hh,r) * PC_hh.L(hh,r))) + (VC_gov_PC.L(r) * PC_gov.L(r)));
 
+sharec_yr(r,"PCO2_inv_pay",yr)$(HH_DISAG(r))   = (( sum(hh,VC_hh_CO2_inv_pay.L(hh,r)) * PCO2_inv_pay.L(hh,r) ) + ( VC_gov_CO2_NETSr.L(r) * PCO2_NETSr.L(r) )) / 
+                                               (sum(hh,(VC_hh_PC.L(hh,r) * PC_hh.L(hh,r))) + (VC_gov_PC.L(r) * PC_gov.L(r)));
+
 
 * ------ Check input shares --> shareCt_yr must be zero
 shareCt_yr(r,yr) = round(
                  + sum(i, sharec_yr(r,i,yr))
-                 + sharec_yr(r,"PCO2",yr) + sharec_yr(r,"PCO2W",yr) + sharec_yr(r,"PCO2_NETS",yr) + sharec_yr(r,"PCO2_NETSr",yr)
+                 + sharec_yr(r,"PCO2",yr) + sharec_yr(r,"PCO2W",yr) + sharec_yr(r,"PCO2_NETS",yr) + sharec_yr(r,"PCO2_NETSr",yr) + sharec_yr(r,"PCO2_inv_pay",yr)
                  - 1,    rd);
 
 * ------------------------------------------------------------------------------
@@ -5426,6 +5438,8 @@ demand_yr("EU28",i,"i",yr)    = sum(r$eu28(r), demand_yr(r,i,"i",yr)) ;
 * ------ 13.03.2019 - usage of disposable income--------------------------------
 
 VC_hh_CO2_NETSr_yr(hh,r,yr) = VC_hh_CO2_NETSr.L(hh,r);
+
+VC_hh_CO2_inv_pay_yr(hh,r,yr) = VC_hh_CO2_inv_pay.L(hh,r);
 *VC_hh_CO2_SEC_yr(hh,r,yr)   = VC_hh_CO2_SEC.L(hh,r);
 
 *VC_CO2_SEC_yr(r,yr) = VC_CO2_SEC.l(r);
@@ -5435,12 +5449,13 @@ abs_sector_hh_yr(r,"oil_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_
 abs_sector_hh_yr(r,"ele_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_p_ele_trans.L(hh,r) * p_ele_trans.L(r);
 
 abs_sector_hh_yr(r,"NETSr",hh,yr)$HH_DISAG(r) = VC_hh_CO2_NETSr.L(hh,r) * PCO2_NETSr.L(r);
+abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr)$HH_DISAG(r) = VC_hh_CO2_inv_pay.L(hh,r) * PCO2_inv_pay.L(r);
 *abs_sector_hh_yr(r,"LS_target",hh,yr)$HH_DISAG(r) = VC_hh_CO2_SEC.L(hh,r) * PCO2_DEU.L("residential");
 abs_sector_hh_yr(r,"PCO2W",hh,yr)$HH_DISAG(r) = VC_hh_CO2W.L(hh,r) * PCO2W.L;
-abs_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
+abs_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
                                                 + (abs_sector_hh_yr(r,"ele_trans",hh,yr) + abs_sector_hh_yr(r,"oil_trans",hh,yr))$h_t_cons_reg(r);
 
-abs_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr);                                                
+abs_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr) + abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr);                                                
 
 abs_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, abs_sector_hh_yr(r,i,hh,yr)) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
                                                 + (abs_sector_hh_yr(r,"ele_trans",hh,yr) + abs_sector_hh_yr(r,"oil_trans",hh,yr))$h_t_cons_reg(r);
@@ -5451,14 +5466,16 @@ share_sector_hh_yr(r,"oil_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = abs_
 share_sector_hh_yr(r,"ele_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = abs_sector_hh_yr(r,"ele_trans",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
 
 share_sector_hh_yr(r,"NETSr",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"NETSr",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
+
+share_sector_hh_yr(r,"CO2_inv_pay",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
 *share_sector_hh_yr(r,"LS_target",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"LS_target",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
 share_sector_hh_yr(r,"PCO2W",hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"PCO2W",hh,yr) / abs_sector_hh_yr(r,"Total",hh,yr);
-share_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr)
+share_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr) + share_sector_hh_yr(r,"CO2_inv_pay",hh,yr)
                                                 + (share_sector_hh_yr(r,"oil_trans",hh,yr) + share_sector_hh_yr(r,"ele_trans",hh,yr))$h_t_cons_reg(r);
 
-share_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr);
+share_sector_hh_yr(r,"Energy_no_transport",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = sum(e, share_sector_hh_yr(r,e,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr) + share_sector_hh_yr(r,"CO2_inv_pay",hh,yr);
 
-share_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, share_sector_hh_yr(r,i,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr)
+share_sector_hh_yr(r,"Total",hh,yr)$HH_DISAG(r) = sum(i, share_sector_hh_yr(r,i,hh,yr)) + share_sector_hh_yr(r,"NETSr",hh,yr) + share_sector_hh_yr(r,"PCO2W",hh,yr) + share_sector_hh_yr(r,"CO2_inv_pay",hh,yr)
                                                 + (share_sector_hh_yr(r,"oil_trans",hh,yr) + share_sector_hh_yr(r,"ele_trans",hh,yr))$h_t_cons_reg(r);
 
 
@@ -5470,6 +5487,7 @@ share_income_hh("Energy",r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"Energy",hh,y
 share_income_hh(e,r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,e,hh,yr)/RA_hh_par_yr("net_income",r,hh,yr);
 share_income_hh("NETSr",r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"NETSr",hh,yr)/RA_hh_par_yr("net_income",r,hh,yr);
 share_income_hh("PCO2W",r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"PCO2W",hh,yr)/RA_hh_par_yr("net_income",r,hh,yr);
+share_income_hh("CO2_inv_pay",r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr)/RA_hh_par_yr("net_income",r,hh,yr);
 *share_income_hh("LS_target",r,hh,yr)$HH_DISAG(r) = abs_sector_hh_yr(r,"LS_target",hh,yr)/RA_hh_par_yr("net_income",r,hh,yr);
 
 * ----- 23.02.2018 - Adding sectorial disaggregation to the employment information
@@ -5856,7 +5874,7 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     cons_hh_accounts(r,hh,"CO2W",yr)$(worldtrade2 AND NOT HH_DISAG(r))                =  VC_hh_CO2W.l(hh,r) * PCO2W.l; 
     cons_hh_accounts(r,hh,"CO2_NETS",yr)$(eu28(r) AND netstrade AND HH_DISAG(r))      =  VC_hh_CO2_NETS.l(hh,r) * PCO2_NETS.l; 
     cons_hh_accounts(r,hh,"CO2_NETSr",yr)$(eu28(r) AND netstrade_r AND HH_DISAG(r))   =  VC_hh_CO2_NETSr.l(hh,r) * PCO2_NETSr.l(r); 
-
+    cons_hh_accounts(r,hh,"CO2_inv_pay",yr)$(eu28(r) AND netstrade_r AND HH_DISAG(r))   =  VC_hh_CO2_inv_pay.l(hh,r) * PCO2_inv_pay.l(r);
 
 * ---- Taxes
     cons_hh_accounts(r,hh,"tax_inputs",yr)$(HH_DISAG(r))                = sum(i, VC_hh_PA.l(i,hh,r)  *  PA.l(i,r) * tp(i,r));
@@ -6435,6 +6453,27 @@ energy_cons_sec_yr("total","c+g","EU28",yr) = sum(e, energy_cons_sec_yr(e,"c+g",
 * ---------------------------------------------------------------------- *
 );
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+* XXXXX  GET GINI COEFFICIENT
+
+PARAMETER
+    gini(*,*,r,yr);
+
+gini("net", "net_all", r, yr) = sum( hh, RA_hh_par_yr("net_income", r, hh, yr));
+gini("net", hh, r, yr)$RA_hh_par_yr("net_income", r, hh, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr("net_income", r, hh_, yr)) / gini("net", "net_all", r, yr);
+
+gini("net_area", hh, r, yr)$gini("net", hh, r, yr) = ((gini("net", hh, r, yr) -( sum(hh_$((ord(hh_) = (ord(hh) - 1)) AND (ord(hh) > 0)), gini("net", hh_, r, yr)) + 0) ) /10) +( sum(hh_$((ord(hh_) = ord(hh) - 1) AND (ord(hh) > 0)), gini("net", hh_, r, yr))  * 0.2);
+
+gini("net", "gini", r, yr) = 2 * (0.5 - sum(hh_,gini("net_area", hh_, r, yr)));
+
+
+gini("total", "total_all", r, yr) = sum( hh, RA_hh_par_yr("total_income", r, hh, yr));
+gini("total", hh, r, yr)$RA_hh_par_yr("total_income", r, hh, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr("total_income", r, hh_, yr)) / gini("total", "total_all", r, yr);
+
+gini("total_area", hh, r, yr)$gini("total", hh, r, yr) = ((gini("total", hh, r, yr) -( sum(hh_$((ord(hh_) = (ord(hh) - 1)) AND (ord(hh) > 0)), gini("total", hh_, r, yr)) + 0) ) /10) +( sum(hh_$((ord(hh_) = ord(hh) - 1) AND (ord(hh) > 0)), gini("total", hh_, r, yr))  * 0.2);
+
+gini("total", "gini", r, yr) = 2 * (0.5 - sum(hh_,gini("total_area", hh_, r, yr)));
+
 
 *display wg_diff, delta_wg_before, gew_wg, velen_pgenyr, zubau_ele, gen_limit_yr, genlimit_twh_yr;
 
