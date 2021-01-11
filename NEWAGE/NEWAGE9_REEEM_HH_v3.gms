@@ -153,6 +153,7 @@ SCALARS
          per_capita_dis_NETSr   switch to turn on the per capita redistribution for non-ETS-sectors         / 0 /
          diss_factor_tax        switch that disaggregates the taxes on primary FACTORS                      / 1 / // leave it on for all DISSERTATION scenarios
          h_t_cons               switch that reorganizes hh consumption according to heat and transport      / 0 / 
+         inverse_co2_pay        redistributes co2 revenues to hh inversely to expenditures                  / 0 /
 
 * ------ Switch to turn on cross border carbon tax
          bta                    switch to turn on the border tax Adjustment for CO2 Emissions               / 0 /
@@ -164,10 +165,11 @@ SCALARS
          corona_scenario_2020                                                                               / 0 /
 
          diss_ref                                                                                           / 0 /
-         diss_BAU                                                                                           / 1 /
+         diss_BAU                                                                                           / 0 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
+         diss_inv_payment                                                                                   / 0 /
 ;
 
 
@@ -2334,6 +2336,7 @@ $sectors:
 
 * ------ carbon emission
          CEMIT(r)$(EU28(r) AND eutrade and bta_test)
+         CONVERT_PCO2_HH(hh,r)$(inverse_co2_pay AND HH_DISAG(r) AND netstrade_r)
 
 
 * ------ COMMODITIES / PRICES ------------------------------------------------ *
@@ -2376,6 +2379,9 @@ $commodities:
 
 * ----- 26.01.2018 germany specific co2 targets
         PCO2(r)$(deu(r) and detrade)
+
+* ----- 11.01.2021 specific price for households
+        PCO2_inv_pay(hh,r)$(inverse_co2_pay AND HH_DISAG(r) AND netstrade_r)
 
 * ----- 08.02.2018 adding prices for taxes that the government receives and that are transferred to the RA
         PGOV(r)$HH_DISAG(r)
@@ -2434,6 +2440,9 @@ $auxiliary:
 $auxiliary:
           tax_reb(r)$(no_vat and eu28(r))       ! abatement of income taxes for no-vat scenario
           tax_reb(r)$(low_lab_tax and eu28(r))       ! abatement of income taxes for no-vat scenario  
+
+$auxiliary:
+          CO2_inv_pay(hh,r)$(inverse_co2_pay AND HH_DISAG(r) AND netstrade_r)   !multiplier for payment of co2 revenues inversely proportional to expenditures
 
 * -- E Q U A T I O N S ------------------------------------------------------- *
 
@@ -2631,8 +2640,8 @@ $demand:RA_HH(hh,r)$HH_DISAG(r)    s:1
          e:PCO2_ETS$(carblim_ets(r) AND eu28(r) AND etstrade AND per_capita_dis)                                                    q:(carblim_ets(r)/5)
 
          e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND per_capita_dis)                                                      q:(carblim(r)/5)
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis)                                                q:(carblim(r)/5)
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis_NETSr)                                          q:(carblim(r)/5)
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis)                                                q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay  
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis_NETSr)                                          q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay
 
 *------28.09.2017 sector-specific CO2 reduction targets in Germany
          e:PCO2_DEU(sec)$(DEU_sec and deu(r) and carblim_sec(sec,r) AND per_capita_dis)                                             q:(carblim_sec(sec,r)/5)
@@ -2651,6 +2660,11 @@ $prod:CEMIT(r)$(EU28(r) and eutrade AND bta_test)
          o:PCO2Wr(r)        q:1
          i:PCO2W            q:1
          i:PUSK(r)          q:2e-6
+
+$prod:CONVERT_PCO2_HH(hh,r)$(inverse_co2_pay AND HH_DISAG(r) AND netstrade_r)
+         o:PCO2_inv_pay(hh,r)   q:1
+         i:PCO2_NETSr(r)        q:1
+
 
 $prod:C_gov(r)$HH_DISAG(r)       s:0.5   c:1     e:1     oil(e):0   col(e):0   gas(e):0
 
@@ -2732,7 +2746,12 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:1
 *         i:PCO2W#(fe)$deu(r)$detrade              q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:          a:RA(r)
          i:PCO2W#(fe)$noneu28(r)$worldtrade2      q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:          a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
          i:PCO2_NETS#(fe)$eu28(r)$netstrade       q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:
-         i:PCO2_NETSr(r)#(fe)$eu28(r)$netstrade_r q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:          a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
+
+         i:PCO2_NETSr(r)#(fe)$eu28(r)$(netstrade_r AND NOT inverse_co2_pay)  
++        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:          a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
+         
+         i:PCO2_inv_pay(hh,r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay) 
++        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:          a:ra(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
 
 *--------16.10.2017 sector-specific targets in Germany
 *         i:PCO2W#(fe)$(DEU_sec and eu28(r) and eutrade)   q:(co2em(fe,"final",r) * aeei(fe,"c",r))        p:1e-6  fe.tl:  a:RA(r)
@@ -2783,18 +2802,29 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
          i:PCO2Wr(r)#(fe)$eu28(r)$eutrade         q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
          i:PCO2W#(fe)$noneu28(r)$worldtrade2      q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)
          i:PCO2_NETS#(fe)$eu28(r)$netstrade       q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:
-         i:PCO2_NETSr(r)#(fe)$eu28(r)$netstrade_r q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
+
          i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))   p:1e-6  fe.tl:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
          i:PCO2(r)#(fe)$(deu(r) and detrade)                             q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))        p:1e-6  fe.tl:      a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
+         
+         i:PCO2_NETSr(r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND NOT HH_DISAG(hh,r))  
++        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
+
+         i:PCO2_inv_pay(hh,r)#(fe)$eu28(r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(hh,r))   
++        q:(co2em(fe,"c",r) * aeei(fe,"c",r) * hh_sector_share(r,fe,hh))      p:1e-6  fe.tl:      a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh(fe,r))
 
 * ------ Carbon regimes (for transportation):
          i:PCO2(r)$notrad(r)                 q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
          i:PCO2W$pco2w_r(r)$worldtrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
          i:PCO2W$eu28(r)$eutrade             q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
          i:PCO2W$noneu28(r)$worldtrade2      q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
-         i:PCO2_NETS$eu28(r)$netstrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:
-         i:PCO2_NETSr(r)$eu28(r)$netstrade_r q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh("oil",r))
+         i:PCO2_NETS$eu28(r)$netstrade       q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)
          i:PCO2_DEU("buildings")#(fe)$(DEU_sec and deu(r))               q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))    p:1e-6  tr_o:  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r)
+
+         i:PCO2_NETSr(r)$eu28(r)$(netstrade_r AND NOT inverse_co2_pay)
++        q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh("oil",r))
+
+         i:PCO2_inv_pay(hh,r)$eu28(r)$(netstrade_r AND inverse_co2_pay)
++        q:(co2em("oil","c",r) * aeei("oil","c",r) * HH_ENERGY_SHARE(R,"OIL","TRANSPORT","2011"))        p:1e-6  tr_o:           a:GOV(r)    t:(carbon_tax(r)/co2coefc_hh("oil",r))         
 * --------------------------------------------------------------------------------
 
 $prod:FF_trans(r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0     oil(s):0
@@ -3325,7 +3355,11 @@ $constraint:tax_reb(r)$(eu28(r) AND low_lab_tax)
            sum((gen,i)$(sec_no_lab("skl",i,r) AND e(i)), rtf("skl","ele",r) * PSKL(r) * ELEn(gen,r) * (skl_input(gen,r))) +
            sum((gen,i)$(sec_no_lab("usk",i,r) AND e(i)), rtf("usk","ele",r) * PUSK(r) * ELEn(gen,r) * (usk_input(gen,r))) 
            )
-          =e= PCO2_NETSr(r) * carblim(r);           
+          =e= PCO2_NETSr(r) * carblim(r); 
+
+$constrain:CO2_inv_pay(hh,r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(r))
+          CO2_inv_pay(hh,r) =e=
+          (CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh,r)) / sum(hh, CONVERT_PCO2_HH(hh,r));   
 
 * ------ REPORTING -------------------------------------------------------------
 
@@ -4284,6 +4318,21 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
     low_lab_tax$(after2020(yr) AND diss_LAB)                  =   1;      // activates redistribution by reducing VAT
 
     e_sub(r)$(diss_LAB AND eu28(r) AND after2025(yr))         =   0.1;
+
+
+* ------ Scenario 6: New targets (ARIADNE 7) and co2 revenue inversely to expenditure
+    reference_scenario_2020$diss_inv_payment =   1;
+    corona_scenario_2020$diss_inv_payment    =   1;
+
+
+    etstrade$(diss_inv_payment and after2020(yr))                     =   1;      // ETS with new targets is part of the green Deal
+    netstrade_r$(diss_inv_payment and after2020(yr))                  =   1;      // regional reduction targets for non-ETS sectors in the EU
+    row_notrade$(diss_inv_payment and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
+    notrad(r)$(NOT eu28(r) AND diss_inv_payment AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
+
+    inverse_co2_pay$(after2020(yr) AND diss_inv_payment)              =   1;      // activates redistribution by reducing VAT
+
+    e_sub(r)$(diss_inv_payment AND eu28(r) AND after2025(yr))         =   0.1;
 
 
 
