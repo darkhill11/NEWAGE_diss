@@ -22,3 +22,4 @@ par=abs_sector_hh_yr	rng=abs_sector_hh_yr!B2		cDim=0
 par=RA_hh_par_yr		rng=RA_hh_par_yr!B2			cDim=0
 par=share_income_hh		rng=share_income_hh!B2		cDim=0
 par=vc_hh_pc_yr			rng=vc_hh_pc_yr!B2			cDim=0
+par=gini				rng=gini!B2					cDim=0

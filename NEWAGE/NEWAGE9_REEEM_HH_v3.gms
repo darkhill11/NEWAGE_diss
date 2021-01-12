@@ -168,8 +168,8 @@ SCALARS
          diss_BAU                                                                                           / 0 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
-         diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 1 /
+         diss_LAB                                                                                           / 1 /
+         diss_inv_payment                                                                                   / 0 /
 ;
 
 
@@ -5211,7 +5211,7 @@ sharec_yr(r,"PCO2_NETS",yr)$(HH_DISAG(r))    = (( sum(hh,VC_hh_CO2_NETS.L(hh,r))
 sharec_yr(r,"PCO2_NETSr",yr)$(HH_DISAG(r))   = (( sum(hh,VC_hh_CO2_NETSr.L(hh,r)) * PCO2_NETSr.L(r) ) + ( VC_gov_CO2_NETSr.L(r) * PCO2_NETSr.L(r) )) / 
                                                (sum(hh,(VC_hh_PC.L(hh,r) * PC_hh.L(hh,r))) + (VC_gov_PC.L(r) * PC_gov.L(r)));
 
-sharec_yr(r,"PCO2_inv_pay",yr)$(HH_DISAG(r))   = (( sum(hh,VC_hh_CO2_inv_pay.L(hh,r)) * PCO2_inv_pay.L(hh,r) ) + ( VC_gov_CO2_NETSr.L(r) * PCO2_NETSr.L(r) )) / 
+sharec_yr(r,"PCO2_inv_pay",yr)$(HH_DISAG(r))   = (( sum(hh,VC_hh_CO2_inv_pay.L(hh,r) * PCO2_inv_pay.L(hh,r) )) + ( VC_gov_CO2_NETSr.L(r) * PCO2_NETSr.L(r) )) / 
                                                (sum(hh,(VC_hh_PC.L(hh,r) * PC_hh.L(hh,r))) + (VC_gov_PC.L(r) * PC_gov.L(r)));
 
 
@@ -5449,7 +5449,7 @@ abs_sector_hh_yr(r,"oil_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_
 abs_sector_hh_yr(r,"ele_trans",hh,yr)$(HH_DISAG(r) AND h_t_cons_reg(r)) = VC_HH_p_ele_trans.L(hh,r) * p_ele_trans.L(r);
 
 abs_sector_hh_yr(r,"NETSr",hh,yr)$HH_DISAG(r) = VC_hh_CO2_NETSr.L(hh,r) * PCO2_NETSr.L(r);
-abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr)$HH_DISAG(r) = VC_hh_CO2_inv_pay.L(hh,r) * PCO2_inv_pay.L(r);
+abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr)$HH_DISAG(r) = VC_hh_CO2_inv_pay.L(hh,r) * PCO2_inv_pay.L(hh,r);
 *abs_sector_hh_yr(r,"LS_target",hh,yr)$HH_DISAG(r) = VC_hh_CO2_SEC.L(hh,r) * PCO2_DEU.L("residential");
 abs_sector_hh_yr(r,"PCO2W",hh,yr)$HH_DISAG(r) = VC_hh_CO2W.L(hh,r) * PCO2W.L;
 abs_sector_hh_yr(r,"Energy",hh,yr)$HH_DISAG(r) = sum(e, abs_sector_hh_yr(r,e,hh,yr)) + abs_sector_hh_yr(r,"CO2_inv_pay",hh,yr) + abs_sector_hh_yr(r,"NETSr",hh,yr) + abs_sector_hh_yr(r,"PCO2W",hh,yr)
@@ -5844,6 +5844,7 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     cons_accounts(r,"CO2_NETSr",yr)$(eu28(r) AND netstrade_r AND NOT HH_DISAG(r))   =  VC_CO2_NETSr.l(r) * PCO2_NETSr.l(r); 
 
 
+
 * ---- Taxes
     cons_accounts(r,"tax_inputs",yr)$(NOT HH_DISAG(r))                                    =  sum(i, VC_PA.l(i,r)  *  PA.l(i,r)  *  tc(i,r));
 
@@ -5872,9 +5873,9 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     cons_hh_accounts(r,hh,"CO2W",yr)$(pco2w_r(r) AND worldtrade AND HH_DISAG(r))      =  VC_hh_CO2W.l(hh,r) * PCO2W.l; 
     cons_hh_accounts(r,hh,"CO2W",yr)$(eu28(r) AND eutrade AND HH_DISAG(r))            =  VC_hh_CO2W.l(hh,r) * PCO2W.l; 
     cons_hh_accounts(r,hh,"CO2W",yr)$(worldtrade2 AND NOT HH_DISAG(r))                =  VC_hh_CO2W.l(hh,r) * PCO2W.l; 
-    cons_hh_accounts(r,hh,"CO2_NETS",yr)$(eu28(r) AND netstrade AND HH_DISAG(r))      =  VC_hh_CO2_NETS.l(hh,r) * PCO2_NETS.l; 
+    cons_hh_accounts(r,hh,"CO2_NETS",yr)$(eu28(r) AND netstrade AND HH_DISAG(r))      =  VC_hh_CO2_NETS.l(hh,r) * PCO2_NETS.l;  
     cons_hh_accounts(r,hh,"CO2_NETSr",yr)$(eu28(r) AND netstrade_r AND HH_DISAG(r))   =  VC_hh_CO2_NETSr.l(hh,r) * PCO2_NETSr.l(r); 
-    cons_hh_accounts(r,hh,"CO2_inv_pay",yr)$(eu28(r) AND netstrade_r AND HH_DISAG(r))   =  VC_hh_CO2_inv_pay.l(hh,r) * PCO2_inv_pay.l(r);
+    cons_hh_accounts(r,hh,"CO2_inv_pay",yr)$(eu28(r) AND netstrade_r AND HH_DISAG(r))   =  VC_hh_CO2_inv_pay.l(hh,r) * PCO2_inv_pay.l(hh,r);
 
 * ---- Taxes
     cons_hh_accounts(r,hh,"tax_inputs",yr)$(HH_DISAG(r))                = sum(i, VC_hh_PA.l(i,hh,r)  *  PA.l(i,r) * tp(i,r));

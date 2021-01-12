@@ -1,6 +1,6 @@
 $TITLE merge GDX files
 
-$if not set target   $set target "201201/merged.gdx"
+$if not set target   $set target "210112/merged.gdx"
 * ------ Read results from GDX-files
 
 $onEcho > howToWrite.txt
@@ -28,13 +28,14 @@ par=abs_sector_hh_yr	rng=abs_sector_hh_yr!B2		cDim=0
 par=RA_hh_par_yr		rng=RA_hh_par_yr!B2			cDim=0
 par=share_income_hh		rng=share_income_hh!B2		cDim=0
 par=vc_hh_pc_yr			rng=vc_hh_pc_yr!B2			cDim=0
+par=gini				rng=gini!B2					cDim=0
 $offEcho
 
 
 * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-*Execute 'gdxxrw.exe i=%target%  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
+Execute 'gdxxrw.exe i=%target%  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
 
-
+$ontext
 SETS
 	r  /DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW/,
 	hh /hh1, hh2, hh3, hh4, hh5/,
@@ -72,9 +73,9 @@ gini(sce,"total_area", hh, r, yr)$gini(sce,"total", hh, r, yr) = ((gini(sce,"tot
 gini(sce,"total", "gini", r, yr) = 2 * (0.5 - sum(hh_,gini(sce,"total_area", hh_, r, yr)));
 
 display gini;
-
+$offtext
 *gini(sce,"net", hh, r, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr(sce,"net_income", r, hh_, yr)) / sum( hh_, RA_hh_par_yr(sce,"net_income", r, hh_, yr));
 
-Execute_unload   "201201/gini.gdx" 
+*Execute_unload   "201201/gini.gdx" 
 
-Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini	rng=gini!B2	cDim=0'
+*Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini	rng=gini!B2	cDim=0'
