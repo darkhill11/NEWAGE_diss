@@ -168,8 +168,8 @@ SCALARS
          diss_BAU                                                                                           / 0 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
-         diss_LAB                                                                                           / 1 /
-         diss_inv_payment                                                                                   / 0 /
+         diss_LAB                                                                                           / 0 /
+         diss_inv_payment                                                                                   / 1 /
 ;
 
 
@@ -2600,8 +2600,7 @@ $demand:GOV(r)$HH_DISAG(r)
          e:PCO2_ETS$(carblim_ets(r) AND eu28(r) AND etstrade AND NOT per_capita_dis)                                              q:carblim_ets(r)
 
          e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND NOT per_capita_dis)                                                q:carblim(r)
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND NOT per_capita_dis)                                          q:carblim(r)
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND NOT per_capita_dis_NETSr)                                    q:carblim(r)
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND NOT (per_capita_dis OR inverse_co2_pay))                     q:carblim(r)
 
 *------28.09.2017 sector-specific CO2 reduction targets in Germany
          e:PCO2_DEU(sec)$(DEU_sec and deu(r) and carblim_sec(sec,r) AND NOT per_capita_dis)                                       q:carblim_sec(sec,r)
@@ -2633,16 +2632,17 @@ $demand:RA_HH(hh,r)$HH_DISAG(r)    s:1
 *         e:PTAX(r)               q:(check_ra_inputs("RA_taxes",r) * hh_tax_in_share(r,hh))
 
 * ------ Carbon regimes
-         e:PCO2(r)$(carblim(r) AND notrad(r) AND per_capita_dis)                                                                    q:(carblim(r)/5)
-         e:PCO2W$(carblim(r) AND pco2w_r(r) AND worldtrade AND per_capita_dis)                                                      q:(carblim(r)/5)
+*         e:PCO2(r)$(carblim(r) AND notrad(r) AND per_capita_dis)                                                                    q:(carblim(r)/5)
+*         e:PCO2W$(carblim(r) AND pco2w_r(r) AND worldtrade AND per_capita_dis)                                                      q:(carblim(r)/5)
 *         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                           q:(carblim(r)/5)
-         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                            q:(carblim(r)/5)
-         e:PCO2W$(carblim(r) AND noneu28(r) AND worldtrade2 AND per_capita_dis)                                                     q:(carblim(r)/5)
-         e:PCO2_ETS$(carblim_ets(r) AND eu28(r) AND etstrade AND per_capita_dis)                                                    q:(carblim_ets(r)/5)
+*         e:PCO2W$(carblim(r) AND eu28(r) AND eutrade AND per_capita_dis)                                                            q:(carblim(r)/5)
+*         e:PCO2W$(carblim(r) AND noneu28(r) AND worldtrade2 AND per_capita_dis)                                                     q:(carblim(r)/5)
+*         e:PCO2_ETS$(carblim_ets(r) AND eu28(r) AND etstrade AND per_capita_dis)                                                    q:(carblim_ets(r)/5)
 
-         e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND per_capita_dis)                                                      q:(carblim(r)/5)
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis)                                                q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay  
-         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis_NETSr)                                          q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay
+*         e:PCO2_NETS$(carblim(r) AND eu28(r) AND netstrade AND per_capita_dis)                                                      q:(carblim(r)/5)
+*         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis)                                                q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay  
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND per_capita_dis_NETSr)                                           q:(carblim(r)/5)
+         e:PCO2_NETSr(r)$(carblim(r) AND eu28(r) AND netstrade_r AND inverse_co2_pay)                                                q:(carblim(r)/5)  R:CO2_inv_pay(hh,r)$inverse_co2_pay
 
 *------28.09.2017 sector-specific CO2 reduction targets in Germany
          e:PCO2_DEU(sec)$(DEU_sec and deu(r) and carblim_sec(sec,r) AND per_capita_dis)                                             q:(carblim_sec(sec,r)/5)
@@ -3360,7 +3360,7 @@ $constraint:tax_reb(r)$(eu28(r) AND low_lab_tax)
 
 $constraint:CO2_inv_pay(hh,r)$(netstrade_r AND inverse_co2_pay AND HH_DISAG(r))
           CO2_inv_pay(hh,r) =e=
-          (CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh,r)) / sum(hh_, CONVERT_PCO2_HH(hh_,r));   
+          (CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh,r))*5/ sum(hh_, CONVERT_PCO2_HH("hh5",r) - CONVERT_PCO2_HH(hh_,r) + 0.000001);   
 
 * ------ REPORTING -------------------------------------------------------------
 
@@ -4001,6 +4001,8 @@ PARAMETERS
          pco2_ets_yr(yr)
          pco2_nets_yr(yr)
          pco2_netsr_yr(r,yr)
+         PCO2_inv_pay_yr(hh,r,yr)
+         CO2_inv_pay_yr(hh,r,yr)
          pco2w_yr(yr)
          price_pco2w_yr(yr)
          pco2_yr(r,yr)
@@ -4985,6 +4987,8 @@ RA_hh_par_yr("CO2_payments",r,hh,yr)$(HH_DISAG(r) AND per_capita_dis)    =   (PC
 
 RA_hh_par_yr("CO2_payments",r,hh,yr)$(HH_DISAG(r) AND per_capita_dis_NETSr)    =   (PCO2_NETSr.l(r)   * (carblim(r)/5));
 
+RA_hh_par_yr("CO2_payments",r,hh,yr)$(HH_DISAG(r) AND inverse_co2_pay)    =   (PCO2_NETSr.l(r)   * (carblim(r)/5) * CO2_inv_pay.L(hh,r));
+
 
 RA_hh_par_yr("total_income",r,hh,yr)$HH_DISAG(r) =  RA_hh_par_yr("PSKL",r,hh,yr) + RA_hh_par_yr("PUSK",r,hh,yr)  + RA_hh_par_yr("RKR",r,hh,yr)  + RA_hh_par_yr("RKX_ELE",r,hh,yr)  + RA_hh_par_yr("tax_income",r,hh,yr) + RA_hh_par_yr("CO2_payments",r,hh,yr);
 RA_hh_par_yr("net_income",r,hh,yr)$HH_DISAG(r) = RA_hh_par_yr("total_income",r,hh,yr) + RA_hh_par_yr("PITAX",r,hh,yr);
@@ -5575,6 +5579,8 @@ pgen_yr(r,gen,yr)= PGEN.L(gen,r) ;
 pco2_ets_yr(yr)  = PCO2_ETS.L    ;
 pco2_nets_yr(yr) = PCO2_NETS.L   ;
 pco2_netsr_yr(r,yr) = PCO2_NETSr.L(r)   ;
+PCO2_inv_pay_yr(hh,r,yr) = PCO2_inv_pay.L(hh,r);
+CO2_inv_pay_yr(hh,r,yr) = CO2_inv_pay.L(hh,r);
 pco2w_yr(yr)     = PCO2W.L       ;
 price_pco2w_yr(yr) = PCO2W.L/PC.L("USA");
 pco2_yr(r,yr)    = PCO2.L(r)     ;

@@ -627,132 +627,89 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  298}        PUT /,'+Q:'CARBLIM(R);
 {  299}      );
 {  299}    );
-{  299}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND NOT PER_CAPITA_DIS),
+{  299}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND NOT (PER_CAPITA_DIS OR INVERSE_CO2_PAY)),
 {  299}      IF(ABS(CARBLIM(R)) GT MPSEPS,
 {  299}        PUT /,'E:PCO2_NETSR''.'R.TL;
 {  299}        PUT /,'+Q:'CARBLIM(R);
-{  300}      );
-{  300}    );
-{  300}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND NOT PER_CAPITA_DIS_NETSR),
-{  300}      IF(ABS(CARBLIM(R)) GT MPSEPS,
-{  300}        PUT /,'E:PCO2_NETSR''.'R.TL;
-{  300}        PUT /,'+Q:'CARBLIM(R);
-{  303}      );
-{  303}    );
-{  303}    LOOP((SEC)$(DEU_SEC AND DEU(R) AND CARBLIM_SEC(SEC,R) AND NOT PER_CAPITA_DIS),
-{  303}      IF(ABS(CARBLIM_SEC(SEC,R)) GT MPSEPS,
-{  303}        PUT /,'E:PCO2_DEU''.'SEC.TL;
-{  303}        PUT /,'+Q:'CARBLIM_SEC(SEC,R);
-{  307}      );
-{  307}    );
-{  307}    IF ((CARBLIM_DEU AND DEU(R) AND DETRADE AND NOT PER_CAPITA_DIS),
-{  307}      IF(ABS(CARBLIM_DEU) GT MPSEPS,
-{  307}        PUT /,'E:PCO2''.'R.TL;
-{  307}        PUT /,'+Q:'CARBLIM_DEU;
-{  310}      );
-{  310}    );
-{  310}  );
+{  302}      );
+{  302}    );
+{  302}    LOOP((SEC)$(DEU_SEC AND DEU(R) AND CARBLIM_SEC(SEC,R) AND NOT PER_CAPITA_DIS),
+{  302}      IF(ABS(CARBLIM_SEC(SEC,R)) GT MPSEPS,
+{  302}        PUT /,'E:PCO2_DEU''.'SEC.TL;
+{  302}        PUT /,'+Q:'CARBLIM_SEC(SEC,R);
+{  306}      );
+{  306}    );
+{  306}    IF ((CARBLIM_DEU AND DEU(R) AND DETRADE AND NOT PER_CAPITA_DIS),
+{  306}      IF(ABS(CARBLIM_DEU) GT MPSEPS,
+{  306}        PUT /,'E:PCO2''.'R.TL;
+{  306}        PUT /,'+Q:'CARBLIM_DEU;
+{  309}      );
+{  309}    );
+{  309}  );
  
-{  310}  LOOP((HH,R)$(HH_DISAG(R)),
-{  310}    PUT /;
-{  310}    PUT /,'$DEMAND:RA_HH''.'HH.TL'.'R.TL;
-{  310}    IF ((ABS(1) GT MPSEPS),PUT /,'+S:'1;  );
-{  311}    IF(ABS((VOM("C",R) * HH_TOTAL_CONSUMPTION_SHARE(R,HH))) GT MPSEPS,
-{  311}      PUT /,'D:PC_HH''.'HH.TL'.'R.TL;
-{  311}      PUT /,'+Q:'(VOM("C",R) * HH_TOTAL_CONSUMPTION_SHARE(R,HH));
-{  313}    );
-{  313}    IF(ABS((VOM("I",R) * HH_SAVINGS_SHARE(R,HH))) GT MPSEPS,
-{  313}      PUT /,'D:PINV''.'R.TL;
-{  313}      PUT /,'+Q:'(VOM("I",R) * HH_SAVINGS_SHARE(R,HH));
-{  316}    );
-{  316}    IF(ABS((TAX_HH_2_GOV(R) * HH_TAX_OUT_SHARE(R,HH))) GT MPSEPS,
-{  316}      PUT /,'D:PITAX''.'R.TL;
-{  316}      PUT /,'+Q:'(TAX_HH_2_GOV(R) * HH_TAX_OUT_SHARE(R,HH));
+{  309}  LOOP((HH,R)$(HH_DISAG(R)),
+{  309}    PUT /;
+{  309}    PUT /,'$DEMAND:RA_HH''.'HH.TL'.'R.TL;
+{  309}    IF ((ABS(1) GT MPSEPS),PUT /,'+S:'1;  );
+{  310}    IF(ABS((VOM("C",R) * HH_TOTAL_CONSUMPTION_SHARE(R,HH))) GT MPSEPS,
+{  310}      PUT /,'D:PC_HH''.'HH.TL'.'R.TL;
+{  310}      PUT /,'+Q:'(VOM("C",R) * HH_TOTAL_CONSUMPTION_SHARE(R,HH));
+{  312}    );
+{  312}    IF(ABS((VOM("I",R) * HH_SAVINGS_SHARE(R,HH))) GT MPSEPS,
+{  312}      PUT /,'D:PINV''.'R.TL;
+{  312}      PUT /,'+Q:'(VOM("I",R) * HH_SAVINGS_SHARE(R,HH));
+{  315}    );
+{  315}    IF(ABS((TAX_HH_2_GOV(R) * HH_TAX_OUT_SHARE(R,HH))) GT MPSEPS,
+{  315}      PUT /,'D:PITAX''.'R.TL;
+{  315}      PUT /,'+Q:'(TAX_HH_2_GOV(R) * HH_TAX_OUT_SHARE(R,HH));
+{  317}    );
+{  317}    IF(ABS((( EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH))) GT MPSEPS,
+{  317}      PUT /,'E:PSKL''.'R.TL;
+{  317}      PUT /,'+Q:'(( EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH));
 {  318}    );
-{  318}    IF(ABS((( EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH))) GT MPSEPS,
+{  318}    IF(ABS(((-EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH))) GT MPSEPS,
 {  318}      PUT /,'E:PSKL''.'R.TL;
-{  318}      PUT /,'+Q:'(( EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH));
-{  319}    );
-{  319}    IF(ABS(((-EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH))) GT MPSEPS,
-{  319}      PUT /,'E:PSKL''.'R.TL;
-{  319}      PUT /,'+Q:'((-EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH));
-{  319}      IF ((URSK0(R)), PUT /'+','R:URSK''.'R.TL );
+{  318}      PUT /,'+Q:'((-EVOA("SKL",R) / (1-URSK0(R))) * HH_SKL_SHARE(R,HH));
+{  318}      IF ((URSK0(R)), PUT /'+','R:URSK''.'R.TL );
+{  320}    );
+{  320}    IF(ABS((( EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH))) GT MPSEPS,
+{  320}      PUT /,'E:PUSK''.'R.TL;
+{  320}      PUT /,'+Q:'(( EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH));
 {  321}    );
-{  321}    IF(ABS((( EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH))) GT MPSEPS,
+{  321}    IF(ABS(((-EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH))) GT MPSEPS,
 {  321}      PUT /,'E:PUSK''.'R.TL;
-{  321}      PUT /,'+Q:'(( EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH));
-{  322}    );
-{  322}    IF(ABS(((-EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH))) GT MPSEPS,
-{  322}      PUT /,'E:PUSK''.'R.TL;
-{  322}      PUT /,'+Q:'((-EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH));
-{  322}      IF ((URUN0(R)), PUT /'+','R:URUN''.'R.TL );
+{  321}      PUT /,'+Q:'((-EVOA("USK",R) / (1-URUN0(R))) * HH_USK_SHARE(R,HH));
+{  321}      IF ((URUN0(R)), PUT /'+','R:URUN''.'R.TL );
+{  323}    );
+{  323}    IF ((RSK),
+{  323}      IF(ABS((EVOA("CAP",R) * HH_RKR_SHARE(R,HH))) GT MPSEPS,
+{  323}        PUT /,'E:RKR''.'R.TL;
+{  323}        PUT /,'+Q:'(EVOA("CAP",R) * HH_RKR_SHARE(R,HH));
+{  324}      );
 {  324}    );
-{  324}    IF ((RSK),
-{  324}      IF(ABS((EVOA("CAP",R) * HH_RKR_SHARE(R,HH))) GT MPSEPS,
-{  324}        PUT /,'E:RKR''.'R.TL;
-{  324}        PUT /,'+Q:'(EVOA("CAP",R) * HH_RKR_SHARE(R,HH));
+{  324}    IF ((GK),
+{  324}      IF(ABS((EVOA("CAP",R)/5)) GT MPSEPS,
+{  324}        PUT /,'E:RKG';
+{  324}        PUT /,'+Q:'(EVOA("CAP",R)/5);
 {  325}      );
 {  325}    );
-{  325}    IF ((GK),
-{  325}      IF(ABS((EVOA("CAP",R)/5)) GT MPSEPS,
-{  325}        PUT /,'E:RKG';
-{  325}        PUT /,'+Q:'(EVOA("CAP",R)/5);
-{  326}      );
-{  326}    );
-{  326}    LOOP((GEN)$(KS_X(GEN,R)),
-{  326}      IF(ABS((KS_X(GEN,R) * HH_RKX_ELE_SHARE(R,HH))) GT MPSEPS,
-{  326}        PUT /,'E:RKX_ELE''.'GEN.TL'.'R.TL;
-{  326}        PUT /,'+Q:'(KS_X(GEN,R) * HH_RKX_ELE_SHARE(R,HH));
-{  328}      );
-{  328}    );
-{  328}    IF(ABS((TAX_GOV_2_HH(R) * TAX_DELTA(R) * HH_TAX_IN_SHARE(R,HH))) GT MPSEPS,
-{  328}      PUT /,'E:PTAX''.'R.TL;
-{  328}      PUT /,'+Q:'(TAX_GOV_2_HH(R) * TAX_DELTA(R) * HH_TAX_IN_SHARE(R,HH));
-{  332}    );
-{  332}    IF ((CARBLIM(R) AND NOTRAD(R) AND PER_CAPITA_DIS),
-{  332}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
-{  332}        PUT /,'E:PCO2''.'R.TL;
-{  332}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  333}      );
-{  333}    );
-{  333}    IF ((CARBLIM(R) AND PCO2W_R(R) AND WORLDTRADE AND PER_CAPITA_DIS),
-{  333}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
-{  333}        PUT /,'E:PCO2W';
-{  333}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  335}      );
-{  335}    );
-{  335}    IF ((CARBLIM(R) AND EU28(R) AND EUTRADE AND PER_CAPITA_DIS),
-{  335}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
-{  335}        PUT /,'E:PCO2W';
-{  335}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  336}      );
-{  336}    );
-{  336}    IF ((CARBLIM(R) AND NONEU28(R) AND WORLDTRADE2 AND PER_CAPITA_DIS),
-{  336}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
-{  336}        PUT /,'E:PCO2W';
-{  336}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  337}      );
-{  337}    );
-{  337}    IF ((CARBLIM_ETS(R) AND EU28(R) AND ETSTRADE AND PER_CAPITA_DIS),
-{  337}      IF(ABS((CARBLIM_ETS(R)/5)) GT MPSEPS,
-{  337}        PUT /,'E:PCO2_ETS';
-{  337}        PUT /,'+Q:'(CARBLIM_ETS(R)/5);
-{  339}      );
-{  339}    );
-{  339}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE AND PER_CAPITA_DIS),
-{  339}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
-{  339}        PUT /,'E:PCO2_NETS';
-{  339}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  340}      );
+{  325}    LOOP((GEN)$(KS_X(GEN,R)),
+{  325}      IF(ABS((KS_X(GEN,R) * HH_RKX_ELE_SHARE(R,HH))) GT MPSEPS,
+{  325}        PUT /,'E:RKX_ELE''.'GEN.TL'.'R.TL;
+{  325}        PUT /,'+Q:'(KS_X(GEN,R) * HH_RKX_ELE_SHARE(R,HH));
+{  327}      );
+{  327}    );
+{  327}    IF(ABS((TAX_GOV_2_HH(R) * TAX_DELTA(R) * HH_TAX_IN_SHARE(R,HH))) GT MPSEPS,
+{  327}      PUT /,'E:PTAX''.'R.TL;
+{  327}      PUT /,'+Q:'(TAX_GOV_2_HH(R) * TAX_DELTA(R) * HH_TAX_IN_SHARE(R,HH));
 {  340}    );
-{  340}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND PER_CAPITA_DIS),
+{  340}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND PER_CAPITA_DIS_NETSR),
 {  340}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
 {  340}        PUT /,'E:PCO2_NETSR''.'R.TL;
 {  340}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  340}        IF ((INVERSE_CO2_PAY), PUT /'+','R:CO2_INV_PAY''.'HH.TL'.'R.TL );
 {  341}      );
 {  341}    );
-{  341}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND PER_CAPITA_DIS_NETSR),
+{  341}    IF ((CARBLIM(R) AND EU28(R) AND NETSTRADE_R AND INVERSE_CO2_PAY),
 {  341}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
 {  341}        PUT /,'E:PCO2_NETSR''.'R.TL;
 {  341}        PUT /,'+Q:'(CARBLIM(R)/5);
@@ -3677,6 +3634,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 NEWAGE.INTEGER1 = NEWAGE.INTEGER1 + 1;
-$IF %NEWAGE%=="01/12/2114:32:27" $EXIT
+$IF %NEWAGE%=="01/13/2118:02:54" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked
