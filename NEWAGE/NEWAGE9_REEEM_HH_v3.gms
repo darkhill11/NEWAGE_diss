@@ -164,14 +164,16 @@ SCALARS
          reference_scenario_2020                                                                            / 0 /
          corona_scenario_2020                                                                               / 0 /
 
-         diss_ref                                                                                           / 0 /
+         diss_ref                                                                                           / 1 /
          diss_BAU                                                                                           / 0 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 1 /
+         diss_inv_payment                                                                                   / 0 /
 
-         test_inv_mult /1/
+         test_inv_mult /0/
+
+         test_lower_tax /0/
 ;
 
 
@@ -2596,6 +2598,7 @@ $demand:GOV(r)$HH_DISAG(r)
 
          e:PLKTAX(r)             q:tax_hh_2_gov(r)
 *         e:PLKTAX(r)             q:(check_ra_inputs("LKTAX",r))
+         e:PLKTAX(r)$(test_lower_tax and DEU(r))             q:(-0.2 * tax_hh_2_gov(r))
 
          e:PC("USA")             q:vb(r)
 
@@ -2618,13 +2621,14 @@ $demand:GOV(r)$HH_DISAG(r)
          e:PCO2(r)$(carblim_deu and deu(r) and detrade AND NOT per_capita_dis)                                                    q:carblim_deu
 
 * ------ Representative agent for disaggregated households
-$demand:RA_HH(hh,r)$HH_DISAG(r)    s:1
-         d:PC_hh(hh,r)           q:(vom("c",r) * hh_total_consumption_share(r,hh))
+$demand:RA_HH(hh,r)$HH_DISAG(r)    s:8      c(s):1
+         d:PC_hh(hh,r)           q:(vom("c",r) * hh_total_consumption_share(r,hh))  c:
 
-         d:PINV(r)               q:(vom("i",r) * hh_savings_share(r,hh))
+         d:PINV(r)               q:(vom("i",r) * hh_savings_share(r,hh))            c:
 
 *         d:PITAX(r)              q:(check_ra_inputs("LKTAX",r) * hh_tax_out_share(r,hh))
          d:PITAX(r)              q:(tax_hh_2_gov(r) * hh_tax_out_share(r,hh))
+         d:PITAX(r)$(test_lower_tax and DEU(r))              q:(-0.2* tax_hh_2_gov(r) * hh_tax_out_share(r,hh))
 
          e:PSKL(r)               q:(( evoa("skl",r) / (1-ursk0(r))) * hh_skl_share(r,hh))
          e:PSKL(r)               q:((-evoa("skl",r) / (1-ursk0(r))) * hh_skl_share(r,hh))       R:URSK(r)$ursk0(r)
@@ -4250,13 +4254,13 @@ scalar check_nuc;
 *        L O O P
 * ---------------------------------------------------------------------------- *
 
-*LOOP (yr,                                                                        // # LOOP-start #
+LOOP (yr,                                                                        // # LOOP-start #
 *LOOP (yrx(yr),                                                                  // 10-year-milestones Berechnungen
 *LOOP (before2011(yr),
 *LOOP (before2015(yr),
 *LOOP (before2020(yr),
 *LOOP (before2025(yr),
-LOOP (before2030(yr),
+*LOOP (before2030(yr),
 *LOOP (before2035(yr),
 *LOOP (before2040(yr),
 *LOOP (before2050(yr),
@@ -4275,6 +4279,8 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
 * ------ Scenario 1: Reference - Reference 2020 with corona
     reference_scenario_2020$diss_ref =   1;
     corona_scenario_2020$diss_ref    =   1;
+
+    test_lower_tax$(after2020(yr) and diss_ref) = 1;
 
 * ------ Scenario 2: New targets and no recycling (business as usual) - same as ARIADNE 7
     reference_scenario_2020$diss_BAU =   1;
