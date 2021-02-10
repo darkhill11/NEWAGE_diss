@@ -223,7 +223,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  141}  PUT /;
  
 {  141}  PUT'$AUXILIARY:'/;
-{  142}  LOOP((HH,R)$(INVERSE_CO2_PAY AND HH_DISAG(R) AND NETSTRADE_R AND TEST_INV_MULT),
+{  142}  LOOP((HH,R)$(INVERSE_CO2_PAY AND HH_DISAG(R) AND NETSTRADE_R),
 {  142}    PUT /,'CO2_INV_PAY''.'HH.TL'.'R.TL;
 {  142}  );
  
@@ -728,7 +728,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  343}      IF(ABS((CARBLIM(R)/5)) GT MPSEPS,
 {  343}        PUT /,'E:PCO2_NETSR''.'R.TL;
 {  343}        PUT /,'+Q:'(CARBLIM(R)/5);
-{  343}        IF ((INVERSE_CO2_PAY AND TEST_INV_MULT), PUT /'+','R:CO2_INV_PAY''.'HH.TL'.'R.TL );
+{  343}        IF ((INVERSE_CO2_PAY), PUT /'+','R:CO2_INV_PAY''.'HH.TL'.'R.TL );
 {  346}      );
 {  346}    );
 {  346}    LOOP((SEC)$(DEU_SEC AND DEU(R) AND CARBLIM_SEC(SEC,R) AND PER_CAPITA_DIS),
@@ -3649,6 +3649,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 NEWAGE.INTEGER1 = NEWAGE.INTEGER1 + 1;
-$IF %NEWAGE%=="02/10/2118:40:21" $EXIT
+$IF %NEWAGE%=="02/10/2122:16:15" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked
