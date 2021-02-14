@@ -166,10 +166,10 @@ SCALARS
 
          diss_ref                                                                                           / 0 /
          diss_BAU                                                                                           / 0 /
-         diss_CAP                                                                                           / 1 /
+         diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 0 /
+         diss_inv_payment                                                                                   / 1 /
 
          test_lower_tax /0/
 ;
@@ -2783,19 +2783,52 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
 
 * ------ All consumption goods (DEU: except transport, energy, cars and buildings)
 * .tl alerts MPSGE that a set of nests are being declared
-         i:PA(i,r)$non_h_t_goods(i)              q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  c:$non_h_t_goods(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+         i:PA(i,r)$non_h_t_goods(i)              q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  c:$non_h_t_goods(i)  a:GOV(r)$HH_DISAG(r)
++        a:GOV(r)$HH_DISAG(r)   t:tp(i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(i,r) AND no_vat)      m:(-tp(i,r))$(sec_no_vat(i,r) AND no_vat)
 
-         i:PA(i,r)$bui(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$bui(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+* ------ Building and dwellings
+         i:PA(i,r)$bui(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$bui(i)  a:GOV(r)$HH_DISAG(r)
++        a:GOV(r)$HH_DISAG(r)   t:tp(i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(i,r) AND no_vat)      m:(-tp(i,r))$(sec_no_vat(i,r) AND no_vat)
 
-         i:PA(i,r)$dwe(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$dwe(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+         i:PA(i,r)$dwe(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  bd:$dwe(i)  a:GOV(r)$HH_DISAG(r)
++        a:GOV(r)$HH_DISAG(r)   t:tp(i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(i,r) AND no_vat)      m:(-tp(i,r))$(sec_no_vat(i,r) AND no_vat)
 
-         i:PA(i,r)$trn(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  tr:$trn(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
+* ------ Transportation, vehicles and fuels (oil, ele)
+         i:PA(i,r)$trn(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  tr:$trn(i)  a:GOV(r)$HH_DISAG(r)
++        a:GOV(r)$HH_DISAG(r)   t:tp(i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(i,r) AND no_vat)      m:(-tp(i,r))$(sec_no_vat(i,r) AND no_vat)
          
-         i:PA(i,r)$mvh(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  ct:$mvh(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r) 
+         i:PA(i,r)$mvh(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))         p:pc_hh0(i,r)  ct:$mvh(i)  a:GOV(r)$HH_DISAG(r)
++        a:GOV(r)$HH_DISAG(r)   t:tp(i,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(i,r) AND no_vat)      m:(-tp(i,r))$(sec_no_vat(i,r) AND no_vat) 
          
          i:p_oil_trans(r)                        q:(c_hh0("oil_transport",r) * pc_hh0("oil",r) * hh_sector_share(r,"oil",hh))         tr_o:
++        a:GOV(r)$HH_DISAG(r)   t:tp("oil",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat("oil",r) AND no_vat)      m:(-tp("oil",r))$(sec_no_vat("oil",r) AND no_vat)
          
          i:p_ele_trans(r)                        q:(c_hh0("ele_transport",r) * pc_hh0("ele",r) * hh_sector_share(r,"ele",hh))         tr_e:
++        a:GOV(r)$HH_DISAG(r)   t:tp("ele",r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat("ele",r) AND no_vat)      m:(-tp("ele",r))$(sec_no_vat("ele",r) AND no_vat)
+
+* ------ Residential energy use
+         i:PA(e,r)$oil(e)                        q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))       p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  
++        a:GOV(r)$HH_DISAG(r)   t:tp(e,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(e,r) AND no_vat)      m:(-tp(e,r))$(sec_no_vat(e,r) AND no_vat)
+
+         i:PA(e,r)$ele(e)                        q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))       p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  
++        a:GOV(r)$HH_DISAG(r) t:tp(e,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(e,r) AND no_vat)      m:(-tp(e,r))$(sec_no_vat(e,r) AND no_vat)
+
+         i:PA(e,r)$gas(e)                        q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))       p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  
++        a:GOV(r)$HH_DISAG(r)   t:tp(e,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(e,r) AND no_vat)      m:(-tp(e,r))$(sec_no_vat(e,r) AND no_vat)
+
+         i:PA(e,r)$col(e)                        q:((c_hh0(e,r)*aeei(e,"c",r)) * hh_sector_share(r,e,hh))       p:pc_hh0(e,r) e.tl:$fe(e)  e:$ele(e)  
++        a:GOV(r)$HH_DISAG(r)   t:tp(e,r)
++        a:GOV(r)$HH_DISAG(r)   n:tax_reb(r)$(sec_no_vat(e,r) AND no_vat)      m:(-tp(e,r))$(sec_no_vat(e,r) AND no_vat)
 
 * ------ Residential crude oil is NOT used for combustion --> no CO2-emissions --> no climate policy relevance
          i:PA(i,r)$cru(i)                        q:(c_hh0(i,r) * hh_sector_share(r,i,hh))                       p:pc_hh0(i,r) i.tl:$fe(i)               e:$ele(i)  a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(i,r)
@@ -2841,7 +2874,7 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr
 $prod:FF_trans(r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0     oil(s):0
     
          o:p_oil_trans(r)                    q:(c_hh0("oil_transport",r) * pc_hh0("oil",r))
-         i:PA(e,r)$oil(e)                    q:(c_hh0("oil_transport",r) * pc_hh0("oil",r))      p:pc_hh0(e,r)     oil:   a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(e,r)            
+         i:PA(e,r)$oil(e)                    q:(c_hh0("oil_transport",r) * pc_hh0("oil",r))      p:pc_hh0(e,r)     oil:          
 
 *--------16.10.2017 end
 
@@ -2852,7 +2885,7 @@ $prod:ELE_trans(r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0
     
          o:p_ele_trans(r)              q:(c_hh0("ele_transport",r) * pc_hh0("ele",r))
 
-         i:PA(e,r)$ele(e)              q:c_hh0("ele_transport",r)            p:pc_hh0(e,r)        a:RA(r)$(not HH_DISAG(r)) a:GOV(r)$HH_DISAG(r) t:tp(e,r)
+         i:PA(e,r)$ele(e)              q:c_hh0("ele_transport",r)            p:pc_hh0(e,r) 
 
 
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
