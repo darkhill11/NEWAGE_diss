@@ -1,0 +1,7 @@
+"0","plot_gdp <- ggplot(data = filter(gdp_diff_filter, Year > 2022), aes(y = Scenario, x = Value))"
+"0","plot_gdp +"
+"0","  geom_point(aes(colour = Region), alpha = 0.2, size = 3) +"
+"0","  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == ""EU-28""), aes(colour = Region), alpha = 1, size = 3.5, color = ""red"") +"
+"0","  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == ""DEU""), aes(colour = Region), alpha = 1, size = 3.5, color = ""black"") +"
+"0","  facet_wrap(~Year) +"
+"0","  scale_x_continuous(labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))"

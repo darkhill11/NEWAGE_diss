@@ -1,6 +1,6 @@
 $TITLE merge GDX files
 
-$if not set target   $set target "210112/merged.gdx"
+$if not set target   $set target "210214/merged_results.gdx"
 * ------ Read results from GDX-files
 
 $onEcho > howToWrite.txt

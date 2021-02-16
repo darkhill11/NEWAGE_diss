@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1613508343399.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "79568AAC",
+    "lastKnownWriteTime" : 7308604914264011873,
+    "last_content_update" : 1613508343399,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "31357D28",
+        "caption" : "gdp_diff",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=gdp_diff&cache_key=31357D28",
+        "displayedObservations" : 900,
+        "environment" : "",
+        "object" : "gdp_diff",
+        "preview" : 0,
+        "totalObservations" : 900,
+        "variables" : 9
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
