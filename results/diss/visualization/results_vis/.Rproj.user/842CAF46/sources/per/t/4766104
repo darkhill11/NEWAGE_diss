@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1613576904264.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4766104",
+    "lastKnownWriteTime" : 28147905697480775,
+    "last_content_update" : 1613576904264,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "697E293E",
+        "caption" : "gva_diff",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=gva_diff&cache_key=697E293E",
+        "displayedObservations" : 3465,
+        "environment" : "",
+        "object" : "gva_diff",
+        "preview" : 0,
+        "totalObservations" : 3465,
+        "variables" : 9
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

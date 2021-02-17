@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(extrafont)
+library(showtext)
+
+ttf_import(pattern = "lmroman*")
+
+loadfonts()
+```
+
+
+```{r}
+#read gdp data from results
+gdp_disag <- read_excel("report_pivot_merged.xlsx", sheet = "gdpreal_disag_yr")
+
+```
+
+```{r}
+# Spread scenarios to be able to change them
+gdp_diff <- spread(gdp_disag, key = "Scenario", value = "Value")
+
+# Transform each scenario into the relative difference to reference scenario
+gdp_diff <- gdp_diff %>% mutate(bau = (bau-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(cAP = (cAP-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(inv = (inv-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(lab = (lab-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(vat = (vat-ref)/ref)
+```
+
+```{r}
+# drop non-EU regions, years after 2030 and categories that are not 'total'
+gdp_diff_filter <- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU-28', Region))
+gdp_diff_filter <- filter(gdp_diff_filter, grepl('2011|2015|2020|2025|2030', Year))
+gdp_diff_filter <- filter(gdp_diff_filter, Type == 'total')
+# drop ref
+gdp_diff_filter <- subset(gdp_diff_filter, select = -c(ref, Type))
+
+# gather scenarios
+gdp_diff_filter <- gather(gdp_diff_filter, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+```
+
+```{r}
+gdp_diff_filter[[3]] = toupper(gdp_diff_filter[[3]])
+
+gdp_diff_filter$Scenario <- factor(gdp_diff_filter$Scenario, levels = c("INV",
+                                "CAP",
+                                "LAB",
+                                "VAT",
+                                "BAU"))
+```
+
+
+```{r}
+#font_import(pattern = "lmroman*")
+#loadfonts()
+#font_import()
+#loadfonts(device = "win")
+# windowsFonts()
+```
+
+
+
+```{r}
+plot_gdp <- ggplot(data = filter(gdp_diff_filter, Year > 2022), aes(y = Scenario, x = Value))
+
+plot_gdp +
+  geom_point(alpha = 0.3, size = 2)+
+  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == "EU-28"), 
+             aes(fill = Region), 
+             colour = "blue",
+             alpha = 1, 
+             size = 3, 
+             shape = 21, 
+             stroke =2) +
+  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == "DEU"), 
+             aes(fill = Region), 
+             colour = "black",
+             alpha = 1, 
+             size = 3, 
+             stroke = 2, 
+             shape =21) +
+  facet_wrap(~Year, ncol =1) +
+  scale_x_continuous(name = "Difference to reference scenario [REF]",
+                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))+
+  labs(color = "Region",
+       shape = "Region",
+       fill = "Region")+
+  scale_shape_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("Germany" = 21, "EU-28" = 21)) +
+  scale_colour_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("red", "blue")) +
+  scale_fill_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("yellow", "blue")) +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+  
+ggsave(width = 6, height = 5, filename = "gdp_dev.png")
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

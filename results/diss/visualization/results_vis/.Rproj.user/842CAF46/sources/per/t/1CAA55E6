@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1613576782986.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "310353741",
+    "id" : "1CAA55E6",
+    "lastKnownWriteTime" : 1613579695,
+    "last_content_update" : 1613579695586,
+    "path" : "C:/GAMS/NEWAGE_dissertation/NEWAGE_diss/results/diss/visualization/results_vis/gva_dev.Rmd",
+    "project_path" : "gva_dev.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "101,3",
+        "scrollLine" : "50",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1613573977677.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "105856617",
+    "id" : "894BDC3",
+    "lastKnownWriteTime" : 1613576776,
+    "last_content_update" : 1613576776410,
+    "path" : "C:/GAMS/NEWAGE_dissertation/NEWAGE_diss/results/diss/visualization/results_vis/emp_vis.Rmd",
+    "project_path" : "emp_vis.Rmd",
+    "properties" : {
+        "cursorPosition" : "7,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
