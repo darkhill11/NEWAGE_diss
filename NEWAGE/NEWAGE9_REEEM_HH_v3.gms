@@ -161,7 +161,7 @@ SCALARS
          bta_rebate                                                                                         / 0 /
 
 * ----- Scenario switch
-         reference_scenario_2020                                                                            / 0 /
+         reference_scenario_2020                                                                            / 1 /
          corona_scenario_2020                                                                               / 0 /
 
          diss_ref                                                                                           / 0 /
@@ -169,7 +169,7 @@ SCALARS
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 1 /
+         diss_inv_payment                                                                                   / 0 /
 
          test_lower_tax /0/
 ;
@@ -1768,7 +1768,7 @@ trade_yr(yr)$after(yr)   = 0 ;
 * ------ Price targets
 share_vfm(i,r)$xe(i)    = vfm("res",i,r)/sum(s,vfm("res",i,s));
 
-pricetarget(i,r)$(xe(i) AND (share_vfm(i,r) > 0.03))    = 1 ;
+pricetarget(i,r)$(xe(i) AND (share_vfm(i,r) > 0.04))    = 1 ;
 
 
 *pricetarget(i,r)                 = 1 ;	// exogenous price path for crude oil, coal and gas
@@ -1776,7 +1776,7 @@ pricetarget(i,r)$(xe(i) AND (share_vfm(i,r) > 0.03))    = 1 ;
 *pricetarget("col",r)             = 0 ;	// exogenous price path for coal
 *pricetarget("gas",r)             = 0 ;	// exogenous price path for gas
 
-pricetarget(i,"EUS")             = 0 ;  // exogenous price path for gas
+*pricetarget(i,"EUS")             = 0 ;  // exogenous price path for gas
 * ------ 11.06.2014
 pytarget(i,r)$pricetarget(i,r)   = 1;	// needed for benchmark solve where all prices must equal 1
 
@@ -2293,10 +2293,11 @@ bta_reb_sec_reg(i,s,r)$(BTA_coa(s) AND NOT BTA_coa(r) and BTA_sec(i) and cc(i,s,
 
 * ----- 12.11.2020
 Parameter        e_sub(r)                       "elasticity of substitution between electricity and fossil fuels"
+                 cons_sub(r)
 ;
 
 e_sub(r) = 0.1;
-
+cons_sub(r) =1;
 
 
 *Execute_Unload 'cons_with_tax', cons_with_tax;
@@ -2461,7 +2462,7 @@ $auxiliary:
 * s = elasticity of substitution; c and e = nests of s; oil(e), col(e) and gas(e) = nests of e
 * for a more detailed explanation and illustration see Rutherford, Paltsev (2000): GTAPinGAMS and GTAP-EG - Global Datasets for Economic Research and Illustrative Models
 
-$prod:C(r)$(not HH_DISAG(r))       s:0.5   c:1     e:1     oil(e):0   col(e):0   gas(e):0
+$prod:C(r)$(not HH_DISAG(r))       s:0.5   c:1     e:cons_sub(r)     oil(e):0   col(e):0   gas(e):0
 
          o:PC(r)                 Q:(vom("c",r) + vom("g",r))
 
@@ -2717,7 +2718,7 @@ $prod:C_gov(r)$HH_DISAG(r)       s:0.5   c:1     e:1     oil(e):0   col(e):0   g
 * ----- 09.03.2020 - Classical consumption for disaggregated households
 * ---------------------------------------------------------------------
 
-$prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:1     oil(e):0   col(e):0   gas(e):0
+$prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:cons_sub(r)     oil(e):0   col(e):0   gas(e):0
 
          o:PC_hh(hh,r)                 Q:(vom("c",r) * hh_total_consumption_share(r,hh))
 
@@ -2777,7 +2778,7 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:1
 * ----- 09.03.2020 - Consumption with specified nests for heat and transportation
 * -------------------------------------------------------------------------------
 
-$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1  tr_o(tr_e):0   h:0.6   bd(h):0.1   e(h):1     oil(e):0   col(e):0   gas(e):0
+$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1  tr_o(tr_e):0   h:0.6   bd(h):0.1   e(h):cons_sub(r)     oil(e):0   col(e):0   gas(e):0
 
          o:PC_hh(hh,r)                 Q:(vom("c",r) * hh_total_consumption_share(r,hh))
 
@@ -4323,8 +4324,6 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
     row_notrade$(diss_BAU and after2020(yr))                  =   1;      // National reduction targets for non-EU countries
     notrad(r)$(NOT eu28(r) AND diss_BAU AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
 
-    e_sub(r)$(diss_BAU AND eu28(r) AND after2025(yr))         =   0.1;
-
 
 * ------ Scenario 3: New targets (ARIADNE 7) and per capita redistribution
     reference_scenario_2020$diss_CAP =   1;
@@ -4337,8 +4336,6 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
     notrad(r)$(NOT eu28(r) AND diss_CAP AND after2020(yr))    =   1;      // activating the co2 price for non-EU countries
 
     per_capita_dis_NETSr$(after2020(yr) AND diss_CAP)         =   1;      // activates per capita redistribution after 2020
-
-    e_sub(r)$(diss_CAP AND eu28(r) AND after2025(yr))         =   0.1;
 
 
 * ------ Scenario 4: New targets (ARIADNE 7) and lower VAT
@@ -4353,8 +4350,6 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
 
     no_vat$(after2020(yr) AND diss_VAT)                       =   1;      // activates redistribution by reducing VAT
 
-    e_sub(r)$(diss_VAT AND eu28(r) AND after2025(yr))         =   0.1;
-
 
 * ------ Scenario 5: New targets (ARIADNE 7) and lower LAbor tax
     reference_scenario_2020$diss_LAB =   1;
@@ -4368,9 +4363,6 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
 
     low_lab_tax$(after2020(yr) AND diss_LAB)                  =   1;      // activates redistribution by reducing VAT
 
-    e_sub(r)$(diss_LAB AND eu28(r) AND after2025(yr))         =   0.1;
-
-
 * ------ Scenario 6: New targets (ARIADNE 7) and co2 revenue inversely to expenditure
     reference_scenario_2020$diss_inv_payment =   1;
     corona_scenario_2020$diss_inv_payment    =   1;
@@ -4383,9 +4375,12 @@ c_hh0("ele",r)$h_t_cons_reg(r)             = hh_energy_share(r,"Electricity","Ot
 
     inverse_co2_pay$(after2020(yr) AND diss_inv_payment)              =   1;      // activates redistribution by reducing VAT
 
-    e_sub(r)$(diss_inv_payment AND eu28(r) AND after2025(yr))         =   0.1;
 
+    e_sub(r)$(eu28(r) AND yr2025(yr))         =   0.5;
+    e_sub(r)$(eu28(r) AND after2025(yr))         =   e_sub(r) + 0.5;
 
+    cons_sub(r)$(eu28(r) AND yr2025(yr))         =   1.5;
+    cons_sub(r)$(eu28(r) AND after2025(yr))         =   cons_sub(r) + 0.5;
 
 
 
@@ -4970,7 +4965,7 @@ carblim(r)$(BTA_coa(r) and bta_test) = carblim(r) * 0.8;
 
 * ------ Set iteration limit to a reasonable size, e.g. 2500:
 NEWAGE.iterlim =  5000;
-NEWAGE.iterlim = 60000;
+NEWAGE.iterlim = 100000;
 * ------ INCLUDE and SOLVE
 $include NEWAGE.gen
 SOLVE    NEWAGE    using   MCP;

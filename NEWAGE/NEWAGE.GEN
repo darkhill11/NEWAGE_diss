@@ -232,7 +232,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  152}    PUT /,'$PROD:C''.'R.TL;
 {  152}    IF ((ABS(0.5) GT MPSEPS),PUT /,'+S:'0.5;  );
 {  152}    PUT /,'+C:'1;
-{  152}    PUT /,'+E:'1;
+{  152}    PUT /,'+E:'CONS_SUB(R);
 {  152}    PUT /,'+OIL(E):'0;
 {  152}    PUT /,'+COL(E):'0;
 {  152}    PUT /,'+GAS(E):'0;
@@ -947,7 +947,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  408}    PUT /,'$PROD:C_HH''.'HH.TL'.'R.TL;
 {  408}    IF ((ABS(0.5) GT MPSEPS),PUT /,'+S:'0.5;  );
 {  408}    PUT /,'+C:'1;
-{  408}    PUT /,'+E:'1;
+{  408}    PUT /,'+E:'CONS_SUB(R);
 {  408}    PUT /,'+OIL(E):'0;
 {  408}    PUT /,'+COL(E):'0;
 {  408}    PUT /,'+GAS(E):'0;
@@ -1154,7 +1154,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  468}    PUT /,'+TR_O(TR_E):'0;
 {  468}    PUT /,'+H:'0.6;
 {  468}    PUT /,'+BD(H):'0.1;
-{  468}    PUT /,'+E(H):'1;
+{  468}    PUT /,'+E(H):'CONS_SUB(R);
 {  468}    PUT /,'+OIL(E):'0;
 {  468}    PUT /,'+COL(E):'0;
 {  468}    PUT /,'+GAS(E):'0;
@@ -3724,6 +3724,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 NEWAGE.INTEGER1 = NEWAGE.INTEGER1 + 1;
-$IF %NEWAGE%=="02/14/2120:51:58" $EXIT
+$IF %NEWAGE%=="02/19/2118:39:19" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked

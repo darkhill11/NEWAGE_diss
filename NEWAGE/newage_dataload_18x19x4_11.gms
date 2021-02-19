@@ -196,7 +196,7 @@ $libinclude      xlimport        aeei_c_ff             %xcel_datadir%aeei.xlsx  
 $libinclude      xlimport        AEEI_trans_ff         %xcel_datadir%aeei.xlsx       AEEI_ff!a25:j34
 $libinclude      xlimport        aeei_ser_ff           %xcel_datadir%aeei.xlsx       AEEI_ff!a37:j46
 
-$libinclude      xlimport        aeei_ff           %xcel_datadir%aeei.xlsx       AEEI_ff_2!a2:k137
+$libinclude      xlimport        aeei_ff           %xcel_datadir%aeei.xlsx       AEEI_ff_2!a2:k146
 $libinclude      xlimport        aeei_ele           %xcel_datadir%aeei.xlsx       AEEI_ele_2!a2:k137
 
 $call gdxxrw   %xcel_datadir%AEEI_hh.xlsx  par=AEEI_hh_transport  rng=AEEI_hh_transport!A1  rDim=2 cDim=1

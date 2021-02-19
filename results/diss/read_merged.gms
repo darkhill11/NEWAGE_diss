@@ -30,7 +30,7 @@ $onEcho > howToWrite.txt
 *par=vc_hh_pc_yr		rng=vc_hh_pc_yr!B2			cDim=0
 *par=gini				rng=gini!B2					cDim=0
 *par=emplmtno_yr		rng=emplmtno_yr!b2			cDim=0
-par=gva_real_yr			par=gva_real_yr!b2			cDim=0
+
 $offEcho
 
 
