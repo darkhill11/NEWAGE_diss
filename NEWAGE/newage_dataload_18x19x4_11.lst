@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 1
 Satellite code to transform LIBINCLUDE Data from Excel to GDX
 C o m p i l a t i o n
 
@@ -18,8 +18,8 @@ C o m p i l a t i o n
   21   
   24   
   26   
-INCLUDE    C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 2
+INCLUDE    C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 2
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -32,7 +32,7 @@ C o m p i l a t i o n
   37   
   40   
   41  set     g(*)    Goods plus C and G;
-GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.gdx
 --- LOAD  g = 1:g
   45   
   46  set     i(g)    Goods
@@ -77,7 +77,7 @@ GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
   80  if (nd>0,
   81          vfm(f,g,r) = vfm(f,g,r)$round(vfm(f,g,r),nd);
   82          vdfm(i,g,r) = vdfm(i,g,r)$round(vdfm(i,g,r),nd);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 3
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -135,7 +135,7 @@ C o m p i l a t i o n
  128          esubd(i)        Elasticity of substitution (M versus D),
  129          esubva(g)       Elasticity of substitution between factors
  130          esubm(i)        Intra-import elasticity of substitution,
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 4
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 4
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -193,7 +193,7 @@ C o m p i l a t i o n
  176  vom("i",r) = sum(i, vdfm(i,"i",r)*(1+rtfd0(i,"i",r)) + vifm(i,"i",r)*(1+rtfi0(i,"i",r)))/(1-rto("i",r));
  177   
  178  vdm("c",r) = vom("c",r);
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 5
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 5
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -239,7 +239,7 @@ C o m p i l a t i o n
  217  rnum(r) = yes$(vom("c",r)=smax(s,vom("c",s)));
  218  display rnum;
  219   
-EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+EXIT C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
  221   
  222   
  223  * ---------------------------------------------------------------------- *
@@ -251,7 +251,7 @@ EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
  229  SET      GEN             Stromerzeugungsarten /  bNUC, bBC,  bBIO, bGEO,  bHYDRO, bHC,  bGAS, bOIL, bCCS,
  230                                                   mHC, mGAS, mWIND, mSOLAR, mOIL, mCCS, pOIL, pGAS, pHYDRO,
  231                                                   HYDRO, GEO, BIO, SOLAR, WIND /;
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 6
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 6
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -309,7 +309,7 @@ C o m p i l a t i o n
  282           ursk0(*)                        Initial unemployment rate among skilled
  283           diffcost(gen,r)                 Differenzkosten
  284           diffcost_exogen(gen,r)          Differenzkosten
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 7
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 7
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -357,7 +357,7 @@ C o m p i l a t i o n
  325           ep(yr,r)                        Energy productivity development (BASELINE Database)
  326           tfp(yr,r)                       Total factor productivity development (BASELINE Database)
  327   
- 328           tfp_corona(r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
+ 328           tfp_corona(yr,r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
  329   
  330   
  331  * ------- 14.11.2017 data for PA pfad
@@ -367,7 +367,7 @@ C o m p i l a t i o n
  335           velen_pa_pfad(i,gen,yr)
  336   
  337  * ------- 18.10.2018 elasticities for energy
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 8
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 8
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -425,7 +425,7 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/19/21 18:38:32 Page 9
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/20/21 19:02:49 Page 9
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -434,7 +434,7 @@ C o m p i l a t i o n
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
  704   
-GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\AEEI_hh.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\AEEI_hh.gdx
 --- LOAD  AEEI_hh_transport = 1:AEEI_hh_transport
  709   
  710  ;
@@ -483,7 +483,7 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 1126   
 LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 10
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 10
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -499,7 +499,7 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 1291   
 1292  * ----- AP5 Paths
 1293   
-GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\European_Targets_ARIADNE.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\European_Targets_ARIADNE.gdx
 --- LOAD  CO2_AP5_sce3 = 1:CO2_AP5_sce3
 --- LOAD  CO2_AP5_sce4 = 2:CO2_AP5_sce4
 --- LOAD  CO2_AP5_sce5 = 3:CO2_AP5_sce5
@@ -513,7 +513,7 @@ GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\European_Targets_ARIADNE.
 1311   
 1312   
 1313   
-GDXIN   C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\world_CO2.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\world_CO2.gdx
 --- LOAD  CO2_AP5_world = 1:CO2_AP5_world
 1318   
 1319  * ---------------------------------------------------------------------------- *
@@ -541,7 +541,7 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 1434   
 1435  *diffcost(gen,r)=diffcost_exogen(gen,r);
 1436   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 11
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 11
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -599,7 +599,7 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 1673  * ---------------------------------------------------------------------------- *
 1674  *        READ specifiactions for unemployment and labor market modeling
 1675  * ---------------------------------------------------------------------------- *
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 12
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 12
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
@@ -657,129 +657,129 @@ LIBINCLUDE C:\GAMS\win64\24.7\inclib\xlimport.gms
 1943  * ############################################################################ *
 1944  *$offtext
 1945   
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 13
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 13
 GAMS Code to Read a GTAP 9 Dataset
 C o m p i l a t i o n
 
 
-EXIT C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 14
+EXIT C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 14
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-     2       27 INCLUDE        1      27  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
-     3       42 IF EXIST       2      15  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
-     4       43 IF EXIST       2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
-     5       43 GDXIN          2      16  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\data11\18x19x4_gtap9.gdx
-     6      220 EXIT           2     193  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\build\gtap9data_newage.gms
+     1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+     2       27 INCLUDE        1      27  .C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
+     3       42 IF EXIST       2      15  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
+     4       43 IF EXIST       2      16  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\18x19x4_gtap9.gdx
+     5       43 GDXIN          2      16  .C:\Users\Roland\Documents\NEWAGE_diss\data11\18x19x4_gtap9.gdx
+     6      220 EXIT           2     193  .C:\Users\Roland\Documents\NEWAGE_diss\build\gtap9data_newage.gms
      7      382 LIBINCLUDE     1     189  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-     8      389 IF EXIST       7       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+     8      389 IF EXIST       7       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
      9      407 CALL           7      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    10      411 GDXIN          7      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    10      411 GDXIN          7      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     11      414 LIBINCLUDE     1     190  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    12      421 IF EXIST      11       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    12      421 IF EXIST      11       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     13      439 CALL          11      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    14      443 GDXIN         11      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    14      443 GDXIN         11      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     15      446 LIBINCLUDE     1     191  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    16      453 IF EXIST      15       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    16      453 IF EXIST      15       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     17      471 CALL          15      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    18      475 GDXIN         15      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    18      475 GDXIN         15      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     19      478 LIBINCLUDE     1     192  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    20      485 IF EXIST      19       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    20      485 IF EXIST      19       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     21      503 CALL          19      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    22      507 GDXIN         19      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    22      507 GDXIN         19      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     23      511 LIBINCLUDE     1     194  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    24      518 IF EXIST      23       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    24      518 IF EXIST      23       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     25      536 CALL          23      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    26      540 GDXIN         23      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    26      540 GDXIN         23      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     27      543 LIBINCLUDE     1     195  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    28      550 IF EXIST      27       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    28      550 IF EXIST      27       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     29      568 CALL          27      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    30      572 GDXIN         27      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    30      572 GDXIN         27      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     31      575 LIBINCLUDE     1     196  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    32      582 IF EXIST      31       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    32      582 IF EXIST      31       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     33      600 CALL          31      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    34      604 GDXIN         31      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    34      604 GDXIN         31      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     35      607 LIBINCLUDE     1     197  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    36      614 IF EXIST      35       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    36      614 IF EXIST      35       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     37      632 CALL          35      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    38      636 GDXIN         35      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    38      636 GDXIN         35      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     39      640 LIBINCLUDE     1     199  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    40      647 IF EXIST      39       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    40      647 IF EXIST      39       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     41      665 CALL          39      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    42      669 GDXIN         39      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    42      669 GDXIN         39      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     43      672 LIBINCLUDE     1     200  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    44      679 IF EXIST      43       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\aeei.xlsx
+    44      679 IF EXIST      43       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\aeei.xlsx
     45      697 CALL          43      49  .gdxxrw "..\xcel_data\aeei.xlsx" @xllink.txt log=xllink.log
-    46      701 GDXIN         43      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    46      701 GDXIN         43      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     47      705 CALL           1     202  gdxxrw   ..\xcel_data\AEEI_hh.xlsx  par=AEEI_hh_transport  rng=AEEI_hh_transport!A1  rDim=2 cDim=1
-    48      706 GDXIN          1     203  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\AEEI_hh.gdx
+    48      706 GDXIN          1     203  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\AEEI_hh.gdx
     49      720 LIBINCLUDE     1     217  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    50      727 IF EXIST      49       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    50      727 IF EXIST      49       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
     51      745 CALL          49      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 15
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 15
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-    52      749 GDXIN         49      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    52      749 GDXIN         49      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     53      752 LIBINCLUDE     1     218  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    54      759 IF EXIST      53       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    54      759 IF EXIST      53       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
     55      777 CALL          53      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    56      781 GDXIN         53      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    56      781 GDXIN         53      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     57      787 LIBINCLUDE     1     222  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    58      794 IF EXIST      57       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    58      794 IF EXIST      57       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
     59      812 CALL          57      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    60      816 GDXIN         57      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    60      816 GDXIN         57      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     61      819 LIBINCLUDE     1     223  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    62      826 IF EXIST      61       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung.xlsx
+    62      826 IF EXIST      61       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung.xlsx
     63      844 CALL          61      49  .gdxxrw "..\xcel_data\abschreibung.xlsx" @xllink.txt log=xllink.log
-    64      848 GDXIN         61      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    64      848 GDXIN         61      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     65      853 LIBINCLUDE     1     226  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    66      860 IF EXIST      65       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
+    66      860 IF EXIST      65       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
     67      878 CALL          65      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
-    68      882 GDXIN         65      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    68      882 GDXIN         65      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     69      885 LIBINCLUDE     1     227  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    70      892 IF EXIST      69       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
+    70      892 IF EXIST      69       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\abschreibung_coal_decomission_DEU.xlsx
     71      910 CALL          69      49  .gdxxrw "..\xcel_data\abschreibung_coal_decomission_DEU.xlsx" @xllink.txt log=xllink.log
-    72      914 GDXIN         69      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    72      914 GDXIN         69      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     73      922 LIBINCLUDE     1     233  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    74      929 IF EXIST      73       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev_switch.xlsx
+    74      929 IF EXIST      73       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev_switch.xlsx
     75      947 CALL          73      49  .gdxxrw "..\xcel_data\ele_dev_switch.xlsx" @xllink.txt log=xllink.log
-    76      951 GDXIN         73      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    76      951 GDXIN         73      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     77      954 LIBINCLUDE     1     234  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    78      961 IF EXIST      77       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    78      961 IF EXIST      77       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
     79      979 CALL          77      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    80      983 GDXIN         77      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    80      983 GDXIN         77      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     81      986 LIBINCLUDE     1     235  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    82      993 IF EXIST      81       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    82      993 IF EXIST      81       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
     83     1011 CALL          81      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    84     1015 GDXIN         81      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    84     1015 GDXIN         81      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     85     1018 LIBINCLUDE     1     236  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    86     1025 IF EXIST      85       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    86     1025 IF EXIST      85       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
     87     1043 CALL          85      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    88     1047 GDXIN         85      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    88     1047 GDXIN         85      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     89     1050 LIBINCLUDE     1     237  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    90     1057 IF EXIST      89       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ele_dev.xlsx
+    90     1057 IF EXIST      89       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ele_dev.xlsx
     91     1075 CALL          89      49  .gdxxrw "..\xcel_data\ele_dev.xlsx" @xllink.txt log=xllink.log
-    92     1079 GDXIN         89      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    92     1079 GDXIN         89      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     93     1094 LIBINCLUDE     1     250  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    94     1101 IF EXIST      93       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+    94     1101 IF EXIST      93       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
     95     1119 CALL          93      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-    96     1123 GDXIN         93      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+    96     1123 GDXIN         93      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
     97     1127 LIBINCLUDE     1     252  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-    98     1134 IF EXIST      97       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+    98     1134 IF EXIST      97       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
     99     1152 CALL          97      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   100     1156 GDXIN         97      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   100     1156 GDXIN         97      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    101     1160 LIBINCLUDE     1     254  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   102     1167 IF EXIST     101       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 16
+   102     1167 IF EXIST     101       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 16
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
@@ -787,99 +787,99 @@ Include File Summary
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
    103     1185 CALL         101      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   104     1189 GDXIN        101      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   104     1189 GDXIN        101      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    105     1193 LIBINCLUDE     1     256  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   106     1200 IF EXIST     105       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   106     1200 IF EXIST     105       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
    107     1218 CALL         105      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   108     1222 GDXIN        105      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   108     1222 GDXIN        105      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    109     1226 LIBINCLUDE     1     258  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   110     1233 IF EXIST     109       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
+   110     1233 IF EXIST     109       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\150730_co2pfad_BMWi.xlsx
    111     1251 CALL         109      49  .gdxxrw "..\xcel_data\150730_co2pfad_BMWi.xlsx" @xllink.txt log=xllink.log
-   112     1255 GDXIN        109      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   112     1255 GDXIN        109      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    113     1259 LIBINCLUDE     1     260  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   114     1266 IF EXIST     113       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
+   114     1266 IF EXIST     113       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\160330_co2pfad.xlsx
    115     1284 CALL         113      49  .gdxxrw "..\xcel_data\160330_co2pfad.xlsx" @xllink.txt log=xllink.log
-   116     1288 GDXIN        113      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   116     1288 GDXIN        113      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    117     1304 CALL           1     274  gdxxrw   ..\xcel_data\European_Targets_ARIADNE.xlsx  @read_ARIADNE.txt
-   118     1305 GDXIN          1     275  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\European_Targets_ARIADNE.gdx
+   118     1305 GDXIN          1     275  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\European_Targets_ARIADNE.gdx
    119     1314 CALL           1     284  gdxxrw   ..\xcel_data\world_CO2.xlsx  par=CO2_AP5_world rng=NEWAGE_read!A15  rDim=1 cDim=1
-   120     1315 GDXIN          1     285  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\world_CO2.gdx
+   120     1315 GDXIN          1     285  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\world_CO2.gdx
    121     1323 LIBINCLUDE     1     293  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   122     1330 IF EXIST     121       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\cost_red.xlsx
+   122     1330 IF EXIST     121       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\cost_red.xlsx
    123     1348 CALL         121      49  .gdxxrw "..\xcel_data\cost_red.xlsx" @xllink.txt log=xllink.log
-   124     1352 GDXIN        121      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   124     1352 GDXIN        121      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    125     1367 LIBINCLUDE     1     306  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   126     1374 IF EXIST     125       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\diffcost.xlsx
+   126     1374 IF EXIST     125       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\diffcost.xlsx
    127     1392 CALL         125      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
-   128     1396 GDXIN        125      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   128     1396 GDXIN        125      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    129     1399 LIBINCLUDE     1     307  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   130     1406 IF EXIST     129       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\diffcost.xlsx
+   130     1406 IF EXIST     129       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\diffcost.xlsx
    131     1424 CALL         129      49  .gdxxrw "..\xcel_data\diffcost.xlsx" @xllink.txt log=xllink.log
-   132     1428 GDXIN        129      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   132     1428 GDXIN        129      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    133     1443 LIBINCLUDE     1     320  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   134     1450 IF EXIST     133       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\nucsize.xlsx
+   134     1450 IF EXIST     133       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\nucsize.xlsx
    135     1468 CALL         133      49  .gdxxrw "..\xcel_data\nucsize.xlsx" @xllink.txt log=xllink.log
-   136     1472 GDXIN        133      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   136     1472 GDXIN        133      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    137     1489 LIBINCLUDE     1     335  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   138     1496 IF EXIST     137       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\pytarget.xlsx
+   138     1496 IF EXIST     137       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\pytarget.xlsx
    139     1514 CALL         137      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
-   140     1518 GDXIN        137      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   140     1518 GDXIN        137      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    141     1521 LIBINCLUDE     1     336  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   142     1528 IF EXIST     141       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\pytarget.xlsx
+   142     1528 IF EXIST     141       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\pytarget.xlsx
    143     1546 CALL         141      49  .gdxxrw "..\xcel_data\pytarget.xlsx" @xllink.txt log=xllink.log
-   144     1550 GDXIN        141      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   144     1550 GDXIN        141      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    145     1562 LIBINCLUDE     1     346  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   146     1569 IF EXIST     145       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ressize.xlsx
+   146     1569 IF EXIST     145       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ressize.xlsx
    147     1587 CALL         145      49  .gdxxrw "..\xcel_data\ressize.xlsx" @xllink.txt log=xllink.log
-   148     1591 GDXIN        145      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   148     1591 GDXIN        145      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    149     1604 LIBINCLUDE     1     357  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   150     1611 IF EXIST     149       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
+   150     1611 IF EXIST     149       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
    151     1629 CALL         149      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
-   152     1633 GDXIN        149      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   152     1633 GDXIN        149      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    153     1636 LIBINCLUDE     1     358  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 17
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 17
 GAMS Code to Read a GTAP 9 Dataset
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-   154     1643 IF EXIST     153       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
+   154     1643 IF EXIST     153       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\size_18x18x4.xlsx
    155     1661 CALL         153      49  .gdxxrw "..\xcel_data\size_18x18x4.xlsx" @xllink.txt log=xllink.log
-   156     1665 GDXIN        153      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   156     1665 GDXIN        153      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    157     1679 LIBINCLUDE     1     370  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   158     1686 IF EXIST     157       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ursk0+urun0.xlsx
+   158     1686 IF EXIST     157       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ursk0+urun0.xlsx
    159     1704 CALL         157      49  .gdxxrw "..\xcel_data\ursk0+urun0.xlsx" @xllink.txt log=xllink.log
-   160     1708 GDXIN        157      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   160     1708 GDXIN        157      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    161     1725 LIBINCLUDE     1     385  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   162     1732 IF EXIST     161       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\wg.xlsx
+   162     1732 IF EXIST     161       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\wg.xlsx
    163     1750 CALL         161      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
-   164     1754 GDXIN        161      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   164     1754 GDXIN        161      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    165     1757 LIBINCLUDE     1     386  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   166     1764 IF EXIST     165       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\wg.xlsx
+   166     1764 IF EXIST     165       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\wg.xlsx
    167     1782 CALL         165      49  .gdxxrw "..\xcel_data\wg.xlsx" @xllink.txt log=xllink.log
-   168     1786 GDXIN        165      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   168     1786 GDXIN        165      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    169     1796 LIBINCLUDE     1     394  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   170     1803 IF EXIST     169       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\elast_ene.xlsx
+   170     1803 IF EXIST     169       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\elast_ene.xlsx
    171     1821 CALL         169      49  .gdxxrw "..\xcel_data\elast_ene.xlsx" @xllink.txt log=xllink.log
-   172     1825 GDXIN        169      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   172     1825 GDXIN        169      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    173     1833 LIBINCLUDE     1     400  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   174     1840 IF EXIST     173       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   174     1840 IF EXIST     173       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
    175     1858 CALL         173      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   176     1862 GDXIN        173      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   176     1862 GDXIN        173      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    177     1865 LIBINCLUDE     1     401  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   178     1872 IF EXIST     177       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   178     1872 IF EXIST     177       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
    179     1890 CALL         177      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   180     1894 GDXIN        177      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
+   180     1894 GDXIN        177      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
    181     1901 LIBINCLUDE     1     406  .C:\GAMS\win64\24.7\inclib\xlimport.gms
-   182     1908 IF EXIST     181       7  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\xcel_data\ep+tfp.xlsx
+   182     1908 IF EXIST     181       7  .C:\Users\Roland\Documents\NEWAGE_diss\xcel_data\ep+tfp.xlsx
    183     1926 CALL         181      49  .gdxxrw "..\xcel_data\ep+tfp.xlsx" @xllink.txt log=xllink.log
-   184     1930 GDXIN        181      53  .C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\xllink.gdx
-   185     1946 EXIT           1     420  C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+   184     1930 GDXIN        181      53  .C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\xllink.gdx
+   185     1946 EXIT           1     420  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
 
 
-COMPILATION TIME     =       36.068 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 18
+COMPILATION TIME     =       36.987 SECONDS      5 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 18
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -937,7 +937,7 @@ IND.mGAS         0.185       0.185       0.185       0.185       0.185       0.1
 IND.mWIND        0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.mSOLAR       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 IND.mOIL         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 19
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 19
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -995,7 +995,7 @@ DEU.mSOLAR 1.77636E-15 7.404117E-4       0.154       1.000
 DEU.mOIL         0.682       1.000
 DEU.pOIL         0.682       1.000
 DEU.pGAS         0.324       0.591       0.174       0.719       1.000                               1.000
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 20
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 20
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1053,7 +1053,7 @@ ESP.pHYDRO -2.04146E-5 -2.04142E-5 -1.02069E-5 -1.02068E-5 -1.02068E-5 -1.02068E
 RUS.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 21
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 21
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1111,7 +1111,7 @@ EUN.bNUC         0.185       0.185       0.185       0.185       0.185       0.1
 EUN.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 EUN.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 22
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 22
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1169,7 +1169,7 @@ BRZ.bBC          0.185       0.185       0.185       0.185       0.185       0.1
 BRZ.bBIO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 BRZ.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 23
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 23
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1227,7 +1227,7 @@ OPA.bBIO         0.185       0.185       0.185       0.185       0.185       0.1
 OPA.bGEO         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.bHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OPA.bHC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 24
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 24
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1285,7 +1285,7 @@ IND.pOIL         1.000       0.319       0.260       0.212       0.173       0.1
 IND.pGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 IND.pHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 USA.bNUC         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 25
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 25
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1343,7 +1343,7 @@ DEU.mSOLAR       1.000       1.000       0.999       0.846
 DEU.mOIL         1.000       0.318
 DEU.mCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 DEU.pOIL         1.000       0.318
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 26
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 26
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1401,7 +1401,7 @@ ESP.bOIL         1.000       0.616       0.509       0.385       0.231       0.1
 ESP.bCCS         1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
 ESP.mHC          1.000       0.861       0.861       0.027       0.027       0.027
 ESP.mGAS         1.000       0.955       0.955       0.911       0.911       0.911       0.726       0.279
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 27
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 27
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1459,7 +1459,7 @@ BNL.bHYDRO       1.000       1.000       0.984       0.984       0.984       0.9
 BNL.bHC          1.000       0.832       0.644       0.642       0.634       0.634       0.419       0.418       0.418
 BNL.bGAS         1.000       0.739       0.737       0.655       0.424       0.358
 BNL.bOIL         1.000       0.771       0.415       0.323       0.120       0.009       0.009
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 28
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 28
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1517,7 +1517,7 @@ EUS.pHYDRO       1.000       1.000       1.000       1.000       1.000       1.0
 OEC.bNUC         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 OEC.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 29
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 29
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1575,7 +1575,7 @@ RSA.bNUC         1.000       0.319       0.260       0.212       0.173       0.1
 RSA.bBC          1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bBIO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 RSA.bGEO         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 30
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 30
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1629,7 +1629,7 @@ ROW.pOIL         1.000       0.319       0.260       0.212       0.173       0.1
 ROW.pGAS         1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 ROW.pHYDRO       1.000       0.319       0.260       0.212       0.173       0.141       0.115       0.094       0.076
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 31
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 31
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1687,7 +1687,7 @@ RUS.pOIL         0.185       0.185       0.185       0.185       0.185       0.1
 RUS.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RUS.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 OEC.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 32
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 32
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1745,7 +1745,7 @@ CHI.pGAS         0.185       0.185       0.185       0.185       0.185       0.1
 CHI.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bNUC         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 RSA.bBC          0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 33
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 33
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1801,7 +1801,7 @@ ROW.pOIL         0.185       0.185       0.185       0.185       0.185       0.1
 ROW.pGAS         0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 ROW.pHYDRO       0.185       0.185       0.185       0.185       0.185       0.185       0.185       0.185
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 34
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 34
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1859,7 +1859,7 @@ RUS.pOIL         1.000       0.815       0.665       0.542       0.442       0.3
 RUS.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RUS.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 OEC.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 35
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 35
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1917,7 +1917,7 @@ CHI.pGAS         1.000       0.815       0.665       0.542       0.442       0.3
 CHI.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bNUC         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 RSA.bBC          1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 36
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 36
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -1973,7 +1973,7 @@ ROW.pOIL         1.000       0.815       0.665       0.542       0.442       0.3
 ROW.pGAS         1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 ROW.pHYDRO       1.000       0.815       0.665       0.542       0.442       0.360       0.294       0.240       0.195
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 37
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 37
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2031,7 +2031,7 @@ bHC   .UKI       1.000       0.065       0.067       0.068       0.068       0.0
 bHC   .BNL       1.000       1.091       0.785       0.910       0.249       0.101       0.019       0.011 7.789852E-4
 bHC   .EUN       1.000       1.525       1.551       1.499       0.758       0.291       0.161       0.095       0.012
 bHC   .EUS                   9.735       9.593       9.016       6.484       4.437       0.729       0.572       0.511
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 38
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 38
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2089,7 +2089,7 @@ mWIND .POL       1.000       3.312       3.312       3.313      10.453      11.8
 mWIND .ESP       1.000       1.150       1.577       1.722       2.248       2.504       2.809       2.886       4.349
 mWIND .UKI       1.000       2.379       4.435      12.120      13.116      13.362      15.892      20.649      21.491
 mWIND .BNL       1.000       2.120       4.190       9.555      17.136      19.460      27.824      32.525      41.352
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 39
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 39
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2147,7 +2147,7 @@ pGAS  .EUS       1.000       1.257       1.181       4.478       4.728       4.1
 pHYDRO.FRA       1.000       6.893       6.965       8.631       8.967       9.303       9.639       9.975      10.311
 pHYDRO.DEU       1.000       0.912       0.987       1.001       1.009       1.009       1.009       1.009       1.000
 pHYDRO.ITA       1.000      43.182      17.824      23.265      24.351      24.351      24.351      24.351      24.351
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 40
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 40
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2205,7 +2205,7 @@ USA       1.000       1.080       1.161       1.241       1.322       1.402     
 FRA       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 DEU       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
 ITA       1.000       1.055       1.109       1.164       1.218       1.273       1.328       1.382       1.437
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 41
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 41
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2263,7 +2263,7 @@ UKI.CRU       1.000       1.026       1.169       1.294       1.401       1.629 
 BNL.gas       1.000       0.925       1.141       1.178       1.221       1.329       1.420       1.469       1.542
 BNL.COL       1.000       0.898       1.104       1.155       1.156       1.235       1.295       1.367       1.435
 BNL.CRU       1.000       1.026       1.169       1.294       1.401       1.629       1.589       1.754       1.943
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 42
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 42
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2321,7 +2321,7 @@ ITA.bHYDRO       1.000       1.033       1.065       1.086       1.107       1.1
 ITA.mWIND        1.000       1.394       1.914       2.636       3.246       3.997       4.921       6.060       7.461
 ITA.pHYDRO       1.000       1.033       1.065       1.086       1.107       1.128       1.149       1.171       1.193
 POL.bBIO         1.000       4.766       8.900      16.301      23.702      34.463      50.110      72.860     105.940
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 43
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 43
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2375,7 +2375,7 @@ ROW.bBIO         1.000       8.608      16.216      29.836      43.457      63.2
 ROW.bHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 ROW.pHYDRO       1.000       1.190       1.380       1.577       1.774       1.996       2.245       2.526       2.841
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 44
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 44
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2427,7 +2427,7 @@ RSA       1.000       1.228       1.546       1.922       2.371       2.884     
 OPA       1.000       1.163       1.352       1.549       1.752       1.959       2.190       2.415       2.603
 ROW       1.000       1.193       1.465       1.786       2.167       2.607       3.100       3.638       4.225
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 45
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 45
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2481,7 +2481,7 @@ mOIL       0.355       0.353       0.353       0.260       0.353       0.353    
 pOIL       0.355       0.353       0.353       0.260       0.353       0.353       0.353       0.355       0.353       0.353       0.353       0.355       0.353       0.355       0.355       0.355       0.355       0.355
 pGAS       0.421       0.455       0.455       0.490       0.455       0.455       0.455       0.421       0.455       0.455       0.455       0.421       0.455       0.421       0.421       0.421       0.421       0.421
 
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 46
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 46
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2522,14 +2522,14 @@ pGAS       0.600       0.600       0.600       0.610       0.620       0.645    
              IND         USA         FRA         DEU         ITA         POL         ESP         RUS         UKI         BNL         EUN         EUS         OEC         BRZ         CHI         RSA         OPA         ROW
 
 2011       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000       1.000
-2015       1.170       0.986       0.934       1.061       0.827       0.886       0.754       1.062       1.046       0.887       1.103       0.960       0.976       1.110       1.428       0.872       1.134       1.008
-2020       1.626       1.030       0.851       1.115       0.749       1.092       0.838       0.730       0.872       0.991       1.106       1.345       0.904       1.215       2.350       0.615       1.104       0.996
-2025       2.398       1.100       0.907       1.191       0.742       1.194       0.857       0.667       0.890       1.055       1.132       0.985       0.878       1.236       2.574       0.430       1.124       1.031
-2030       3.522       1.209       0.922       1.201       0.683       1.229       0.866       0.506       0.959       1.055       1.128       1.029       0.874       1.370       3.081       0.253       1.212       1.064
-2035       4.203       1.305       0.985       1.203       0.649       1.253       0.879       0.416       1.032       1.078       1.177       1.104       0.876       1.664       3.209       0.223       1.447       1.056
-2040       5.163       1.414       1.039       1.217       0.628       1.245       0.918       0.380       1.078       1.140       1.219       1.113       0.898       2.002       3.489       0.222       1.931       1.057
-2045       6.566       1.556       1.138       1.212       0.633       1.194       0.957       0.387       1.112       1.173       1.269       1.120       0.934       2.378       3.910       0.234       2.398       1.139
-2050       8.492       1.710       1.231       1.221       0.670       1.156       1.042       0.427       1.189       1.234       1.333       1.149       0.982       2.828       4.481       0.290       2.987       1.276
+2015       1.177       0.986       0.936       1.094       0.837       0.888       0.753       1.062       1.083       0.893       1.144       0.962       0.976       1.123       1.443       0.872       1.147       1.008
+2020       1.626       1.030       0.845       1.083       0.738       1.045       0.825       0.730       0.858       0.954       1.089       1.338       0.904       1.215       2.350       0.603       1.104       0.996
+2025       2.398       1.100       0.885       1.134       0.733       1.135       0.838       0.697       0.859       0.997       1.114       0.971       0.878       1.236       2.574       0.419       1.124       1.031
+2030       3.522       1.209       0.900       1.138       0.683       1.176       0.851       0.545       0.915       0.990       1.112       1.015       0.874       1.370       3.081       0.243       1.212       1.064
+2035       4.203       1.305       0.957       1.152       0.649       1.204       0.879       0.452       0.986       1.037       1.161       1.097       0.876       1.664       3.209       0.213       1.471       1.056
+2040       5.163       1.414       1.024       1.165       0.628       1.196       0.918       0.411       1.045       1.090       1.211       1.113       0.898       2.002       3.489       0.211       1.952       1.057
+2045       6.566       1.556       1.119       1.175       0.633       1.160       0.957       0.419       1.096       1.102       1.263       1.120       0.934       2.378       3.910       0.224       2.425       1.139
+2050       8.492       1.710       1.213       1.186       0.680       1.136       1.049       0.458       1.182       1.165       1.333       1.149       0.982       2.828       4.481       0.279       3.003       1.276
 
 
 ----   1941 PARAMETER diffcost  Differenzkosten
@@ -2539,7 +2539,7 @@ pGAS       0.600       0.600       0.600       0.610       0.620       0.645    
 bBIO         2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156       2.156
 bGEO         3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333       3.333
 bHYDRO       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626       1.626
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/19/21 18:38:32 Page 47
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                02/20/21 19:02:49 Page 47
 GAMS Code to Read a GTAP 9 Dataset
 E x e c u t i o n
 
@@ -2553,7 +2553,7 @@ mSOLAR      11.287      11.287      11.287      11.287      11.287      11.287  
 
 
 
-EXECUTION TIME       =        0.046 SECONDS      8 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        0.063 SECONDS      8 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -2563,5 +2563,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
-Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.lst
+Input      C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.gms
+Output     C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\newage_dataload_18x19x4_11.lst

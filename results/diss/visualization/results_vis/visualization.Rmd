@@ -13,7 +13,7 @@ library(readxl)
 library(extrafont)
 library(showtext)
 
-ttf_import(pattern = "lmroman*")
+font_import()
 
 loadfonts()
 ```
@@ -64,8 +64,8 @@ gdp_diff_filter$Scenario <- factor(gdp_diff_filter$Scenario, levels = c("INV",
 #font_import(pattern = "lmroman*")
 #loadfonts()
 #font_import()
-#loadfonts(device = "win")
-# windowsFonts()
+loadfonts(device = "win")
+windowsFonts()
 ```
 
 

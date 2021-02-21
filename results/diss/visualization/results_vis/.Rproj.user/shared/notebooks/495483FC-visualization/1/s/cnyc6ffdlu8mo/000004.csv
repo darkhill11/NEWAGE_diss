@@ -1,0 +1,1746 @@
+"0","library(tidyverse)"
+"0","library(readxl)"
+"0","library(extrafont)"
+"0","library(showtext)"
+"0","font_import()"
+"0","y"
+"2","Scanning ttf files in C:\Windows\Fonts ...
+"
+"2","Extracting .afm files from .ttf files...
+"
+"2","C:\Windows\Fonts\AGENCYB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/AGENCYB
+"
+"2","C:\Windows\Fonts\AGENCYR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/AGENCYR
+"
+"2","C:\Windows\Fonts\ahronbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ahronbd
+"
+"2","C:\Windows\Fonts\ALGER.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ALGER
+"
+"2","C:\Windows\Fonts\andlso.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/andlso
+"
+"2","C:\Windows\Fonts\angsa.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsa
+"
+"2","C:\Windows\Fonts\angsab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsab
+"
+"2","C:\Windows\Fonts\angsai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsai
+"
+"2","C:\Windows\Fonts\angsau.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsau
+"
+"2","C:\Windows\Fonts\angsaub.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsaub
+"
+"2","C:\Windows\Fonts\angsaui.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsaui
+"
+"2","C:\Windows\Fonts\angsauz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsauz
+"
+"2","C:\Windows\Fonts\angsaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/angsaz
+"
+"2","C:\Windows\Fonts\ANTQUAB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ANTQUAB
+"
+"2","C:\Windows\Fonts\ANTQUABI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ANTQUABI
+"
+"2","C:\Windows\Fonts\ANTQUAI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ANTQUAI
+"
+"2","C:\Windows\Fonts\aparaj.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/aparaj
+"
+"2","C:\Windows\Fonts\aparajb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/aparajb
+"
+"2","C:\Windows\Fonts\aparajbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/aparajbi
+"
+"2","C:\Windows\Fonts\aparaji.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/aparaji
+"
+"2","C:\Windows\Fonts\arabtype.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/arabtype
+"
+"2","C:\Windows\Fonts\arial.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/arial
+"
+"2","C:\Windows\Fonts\arialbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/arialbd
+"
+"2","C:\Windows\Fonts\arialbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/arialbi
+"
+"2","C:\Windows\Fonts\ariali.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ariali
+"
+"2","C:\Windows\Fonts\ARIALN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARIALN
+"
+"2","C:\Windows\Fonts\ARIALNB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARIALNB
+"
+"2","C:\Windows\Fonts\ARIALNBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARIALNBI
+"
+"2","C:\Windows\Fonts\ARIALNI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARIALNI
+"
+"2","C:\Windows\Fonts\ARIALUNI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARIALUNI
+"
+"2","C:\Windows\Fonts\ariblk.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ariblk
+"
+"2","C:\Windows\Fonts\ARLRDBD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ARLRDBD
+"
+"2","C:\Windows\Fonts\BASKVILL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BASKVILL
+"
+"2","C:\Windows\Fonts\BAUHS93.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BAUHS93
+"
+"2","C:\Windows\Fonts\BELL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BELL
+"
+"2","C:\Windows\Fonts\BELLB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BELLB
+"
+"2","C:\Windows\Fonts\BELLI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BELLI
+"
+"2","C:\Windows\Fonts\BERNHC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BERNHC
+"
+"2","C:\Windows\Fonts\BKANT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BKANT
+"
+"2","C:\Windows\Fonts\BOD_B.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_B
+"
+"2","C:\Windows\Fonts\BOD_BI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_BI
+"
+"2","C:\Windows\Fonts\BOD_BLAI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_BLAI
+"
+"2","C:\Windows\Fonts\BOD_BLAR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_BLAR
+"
+"2","C:\Windows\Fonts\BOD_CB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_CB
+"
+"2","C:\Windows\Fonts\BOD_CBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_CBI
+"
+"2","C:\Windows\Fonts\BOD_CI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_CI
+"
+"2","C:\Windows\Fonts\BOD_CR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_CR
+"
+"2","C:\Windows\Fonts\BOD_I.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_I
+"
+"2","C:\Windows\Fonts\BOD_PSTC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_PSTC
+"
+"2","C:\Windows\Fonts\BOD_R.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOD_R
+"
+"2","C:\Windows\Fonts\BOOKOS.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOOKOS
+"
+"2","C:\Windows\Fonts\BOOKOSB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOOKOSB
+"
+"2","C:\Windows\Fonts\BOOKOSBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOOKOSBI
+"
+"2","C:\Windows\Fonts\BOOKOSI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BOOKOSI
+"
+"2","C:\Windows\Fonts\BRADHITC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRADHITC
+"
+"2","C:\Windows\Fonts\BRITANIC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRITANIC
+"
+"2","C:\Windows\Fonts\BRLNSB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRLNSB
+"
+"2","C:\Windows\Fonts\BRLNSDB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRLNSDB
+"
+"2","C:\Windows\Fonts\BRLNSR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRLNSR
+"
+"2","C:\Windows\Fonts\BROADW.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BROADW
+"
+"2","C:\Windows\Fonts\browa.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browa
+"
+"2","C:\Windows\Fonts\browab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browab
+"
+"2","C:\Windows\Fonts\browai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browai
+"
+"2","C:\Windows\Fonts\browau.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browau
+"
+"2","C:\Windows\Fonts\browaub.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browaub
+"
+"2","C:\Windows\Fonts\browaui.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browaui
+"
+"2","C:\Windows\Fonts\browauz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browauz
+"
+"2","C:\Windows\Fonts\browaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/browaz
+"
+"2","C:\Windows\Fonts\BRUSHSCI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BRUSHSCI
+"
+"2","C:\Windows\Fonts\BSSYM7.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/BSSYM7
+"
+"2","C:\Windows\Fonts\calibri.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibri
+"
+"2","C:\Windows\Fonts\calibrib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibrib
+"
+"2","C:\Windows\Fonts\calibrii.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibrii
+"
+"2","C:\Windows\Fonts\calibril.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibril
+"
+"2","C:\Windows\Fonts\calibrili.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibrili
+"
+"2","C:\Windows\Fonts\calibriz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/calibriz
+"
+"2","C:\Windows\Fonts\CALIFB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALIFB
+"
+"2","C:\Windows\Fonts\CALIFI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALIFI
+"
+"2","C:\Windows\Fonts\CALIFR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALIFR
+"
+"2","C:\Windows\Fonts\CALIST.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALIST
+"
+"2","C:\Windows\Fonts\CALISTB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALISTB
+"
+"2","C:\Windows\Fonts\CALISTBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALISTBI
+"
+"2","C:\Windows\Fonts\CALISTI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CALISTI
+"
+"2","C:\Windows\Fonts\cambriab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cambriab
+"
+"2","C:\Windows\Fonts\cambriai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cambriai
+"
+"2","C:\Windows\Fonts\cambriaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cambriaz
+"
+"2","C:\Windows\Fonts\Candara.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Candara
+"
+"2","C:\Windows\Fonts\Candarab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Candarab
+"
+"2","C:\Windows\Fonts\Candarai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Candarai
+"
+"2","C:\Windows\Fonts\Candaraz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Candaraz
+"
+"2","C:\Windows\Fonts\CASTELAR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CASTELAR
+"
+"2","C:\Windows\Fonts\CENSCBK.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CENSCBK
+"
+"2","C:\Windows\Fonts\CENTAUR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CENTAUR
+"
+"2","C:\Windows\Fonts\CENTURY.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CENTURY
+"
+"2","C:\Windows\Fonts\CHILLER.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CHILLER
+"
+"2","C:\Windows\Fonts\COLONNA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/COLONNA
+"
+"2","C:\Windows\Fonts\comic.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/comic
+"
+"2","C:\Windows\Fonts\comicbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/comicbd
+"
+"2","C:\Windows\Fonts\consola.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/consola
+"
+"2","C:\Windows\Fonts\consolab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/consolab
+"
+"2","C:\Windows\Fonts\consolai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/consolai
+"
+"2","C:\Windows\Fonts\consolaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/consolaz
+"
+"2","C:\Windows\Fonts\constan.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/constan
+"
+"2","C:\Windows\Fonts\constanb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/constanb
+"
+"2","C:\Windows\Fonts\constani.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/constani
+"
+"2","C:\Windows\Fonts\constanz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/constanz
+"
+"2","C:\Windows\Fonts\COOPBL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/COOPBL
+"
+"2","C:\Windows\Fonts\COPRGTB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/COPRGTB
+"
+"2","C:\Windows\Fonts\COPRGTL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/COPRGTL
+"
+"2","C:\Windows\Fonts\corbel.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/corbel
+"
+"2","C:\Windows\Fonts\corbelb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/corbelb
+"
+"2","C:\Windows\Fonts\corbeli.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/corbeli
+"
+"2","C:\Windows\Fonts\corbelz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/corbelz
+"
+"2","C:\Windows\Fonts\cordia.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordia
+"
+"2","C:\Windows\Fonts\cordiab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiab
+"
+"2","C:\Windows\Fonts\cordiai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiai
+"
+"2","C:\Windows\Fonts\cordiau.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiau
+"
+"2","C:\Windows\Fonts\cordiaub.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiaub
+"
+"2","C:\Windows\Fonts\cordiaui.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiaui
+"
+"2","C:\Windows\Fonts\cordiauz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiauz
+"
+"2","C:\Windows\Fonts\cordiaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cordiaz
+"
+"2","C:\Windows\Fonts\cour.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/cour
+"
+"2","C:\Windows\Fonts\courbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/courbd
+"
+"2","C:\Windows\Fonts\courbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/courbi
+"
+"2","C:\Windows\Fonts\couri.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/couri
+"
+"2","C:\Windows\Fonts\CURLZ___.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/CURLZ___
+"
+"2","C:\Windows\Fonts\daunpenh.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/daunpenh
+"
+"2","C:\Windows\Fonts\david.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/david
+"
+"2","C:\Windows\Fonts\davidbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/davidbd
+"
+"2","C:\Windows\Fonts\dokchamp.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/dokchamp
+"
+"2","C:\Windows\Fonts\ebrima.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ebrima
+"
+"2","C:\Windows\Fonts\ebrimabd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ebrimabd
+"
+"2","C:\Windows\Fonts\ELEPHNT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ELEPHNT
+"
+"2","C:\Windows\Fonts\ELEPHNTI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ELEPHNTI
+"
+"2","C:\Windows\Fonts\ENGR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ENGR
+"
+"2","C:\Windows\Fonts\ERASBD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ERASBD
+"
+"2","C:\Windows\Fonts\ERASDEMI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ERASDEMI
+"
+"2","C:\Windows\Fonts\ERASLGHT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ERASLGHT
+"
+"2","C:\Windows\Fonts\ERASMD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ERASMD
+"
+"2","C:\Windows\Fonts\estre.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/estre
+"
+"2","C:\Windows\Fonts\euphemia.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/euphemia
+"
+"2","C:\Windows\Fonts\FELIXTI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FELIXTI
+"
+"2","C:\Windows\Fonts\FORTE.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FORTE
+"
+"2","C:\Windows\Fonts\FRABK.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRABK
+"
+"2","C:\Windows\Fonts\FRABKIT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRABKIT
+"
+"2","C:\Windows\Fonts\FRADM.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRADM
+"
+"2","C:\Windows\Fonts\FRADMCN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRADMCN
+"
+"2","C:\Windows\Fonts\FRADMIT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRADMIT
+"
+"2","C:\Windows\Fonts\FRAHV.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRAHV
+"
+"2","C:\Windows\Fonts\FRAHVIT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRAHVIT
+"
+"2","C:\Windows\Fonts\framd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/framd
+"
+"2","C:\Windows\Fonts\FRAMDCN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRAMDCN
+"
+"2","C:\Windows\Fonts\framdit.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/framdit
+"
+"2","C:\Windows\Fonts\frank.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/frank
+"
+"2","C:\Windows\Fonts\FREESCPT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FREESCPT
+"
+"2","C:\Windows\Fonts\FRSCRIPT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FRSCRIPT
+"
+"2","C:\Windows\Fonts\FTLTLT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/FTLTLT
+"
+"2","C:\Windows\Fonts\Gabriola.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Gabriola
+"
+"2","C:\Windows\Fonts\GADUGI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GADUGI
+"
+"2","C:\Windows\Fonts\GADUGIB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GADUGIB
+"
+"2","C:\Windows\Fonts\GARA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GARA
+"
+"2","C:\Windows\Fonts\GARABD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GARABD
+"
+"2","C:\Windows\Fonts\GARAIT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GARAIT
+"
+"2","C:\Windows\Fonts\gautami.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/gautami
+"
+"2","C:\Windows\Fonts\gautamib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/gautamib
+"
+"2","C:\Windows\Fonts\georgia.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/georgia
+"
+"2","C:\Windows\Fonts\georgiab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/georgiab
+"
+"2","C:\Windows\Fonts\georgiai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/georgiai
+"
+"2","C:\Windows\Fonts\georgiaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/georgiaz
+"
+"2","C:\Windows\Fonts\GIGI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GIGI
+"
+"2","C:\Windows\Fonts\GIL_____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GIL_____
+"
+"2","C:\Windows\Fonts\GILB____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILB____
+"
+"2","C:\Windows\Fonts\GILBI___.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILBI___
+"
+"2","C:\Windows\Fonts\GILC____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILC____
+"
+"2","C:\Windows\Fonts\GILI____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILI____
+"
+"2","C:\Windows\Fonts\GILLUBCD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILLUBCD
+"
+"2","C:\Windows\Fonts\GILSANUB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GILSANUB
+"
+"2","C:\Windows\Fonts\gisha.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/gisha
+"
+"2","C:\Windows\Fonts\gishabd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/gishabd
+"
+"2","C:\Windows\Fonts\GLECB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GLECB
+"
+"2","C:\Windows\Fonts\GLSNECB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GLSNECB
+"
+"2","C:\Windows\Fonts\GOTHIC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOTHIC
+"
+"2","C:\Windows\Fonts\GOTHICB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOTHICB
+"
+"2","C:\Windows\Fonts\GOTHICBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOTHICBI
+"
+"2","C:\Windows\Fonts\GOTHICI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOTHICI
+"
+"2","C:\Windows\Fonts\GOUDOS.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOUDOS
+"
+"2","C:\Windows\Fonts\GOUDOSB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOUDOSB
+"
+"2","C:\Windows\Fonts\GOUDOSI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOUDOSI
+"
+"2","C:\Windows\Fonts\GOUDYSTO.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/GOUDYSTO
+"
+"2","C:\Windows\Fonts\HARLOWSI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/HARLOWSI
+"
+"2","C:\Windows\Fonts\HARNGTON.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/HARNGTON
+"
+"2","C:\Windows\Fonts\HATTEN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/HATTEN
+"
+"2","C:\Windows\Fonts\himalaya.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/himalaya
+"
+"2","C:\Windows\Fonts\HTOWERT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/HTOWERT
+"
+"2","C:\Windows\Fonts\HTOWERTI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/HTOWERTI
+"
+"2","C:\Windows\Fonts\impact.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/impact
+"
+"2","C:\Windows\Fonts\IMPRISHA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/IMPRISHA
+"
+"2","C:\Windows\Fonts\INFROMAN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/INFROMAN
+"
+"2","C:\Windows\Fonts\iskpota.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/iskpota
+"
+"2","C:\Windows\Fonts\iskpotab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/iskpotab
+"
+"2","C:\Windows\Fonts\ITCBLKAD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ITCBLKAD
+"
+"2","C:\Windows\Fonts\ITCEDSCR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ITCEDSCR
+"
+"2","C:\Windows\Fonts\ITCKRIST.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ITCKRIST
+"
+"2","C:\Windows\Fonts\JOKERMAN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/JOKERMAN
+"
+"2","C:\Windows\Fonts\JUICE___.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/JUICE___
+"
+"2","C:\Windows\Fonts\kaiu.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kaiu
+"
+"2","C:\Windows\Fonts\kalinga.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kalinga
+"
+"2","C:\Windows\Fonts\kalingab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kalingab
+"
+"2","C:\Windows\Fonts\kartika.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kartika
+"
+"2","C:\Windows\Fonts\kartikab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kartikab
+"
+"2","C:\Windows\Fonts\KhmerUI.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/KhmerUI
+"
+"2","C:\Windows\Fonts\KhmerUIb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/KhmerUIb
+"
+"2","C:\Windows\Fonts\kokila.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kokila
+"
+"2","C:\Windows\Fonts\kokilab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kokilab
+"
+"2","C:\Windows\Fonts\kokilabi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kokilabi
+"
+"2","C:\Windows\Fonts\kokilai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/kokilai
+"
+"2","C:\Windows\Fonts\KUNSTLER.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/KUNSTLER
+"
+"2","C:\Windows\Fonts\l_10646.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/l_10646
+"
+"2","C:\Windows\Fonts\LaoUI.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LaoUI
+"
+"2","C:\Windows\Fonts\LaoUIb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LaoUIb
+"
+"2","C:\Windows\Fonts\latha.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/latha
+"
+"2","C:\Windows\Fonts\lathab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/lathab
+"
+"2","C:\Windows\Fonts\LATINWD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LATINWD
+"
+"2","C:\Windows\Fonts\LBRITE.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LBRITE
+"
+"2","C:\Windows\Fonts\LBRITED.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LBRITED
+"
+"2","C:\Windows\Fonts\LBRITEDI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LBRITEDI
+"
+"2","C:\Windows\Fonts\LBRITEI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LBRITEI
+"
+"2","C:\Windows\Fonts\LCALLIG.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LCALLIG
+"
+"2","C:\Windows\Fonts\leelawad.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/leelawad
+"
+"2","C:\Windows\Fonts\leelawdb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/leelawdb
+"
+"2","C:\Windows\Fonts\LFAX.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LFAX
+"
+"2","C:\Windows\Fonts\LFAXD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LFAXD
+"
+"2","C:\Windows\Fonts\LFAXDI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LFAXDI
+"
+"2","C:\Windows\Fonts\LFAXI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LFAXI
+"
+"2","C:\Windows\Fonts\LHANDW.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LHANDW
+"
+"2","C:\Windows\Fonts\LSANS.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LSANS
+"
+"2","C:\Windows\Fonts\LSANSD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LSANSD
+"
+"2","C:\Windows\Fonts\LSANSDI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LSANSDI
+"
+"2","C:\Windows\Fonts\LSANSI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LSANSI
+"
+"2","C:\Windows\Fonts\LTYPE.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LTYPE
+"
+"2","C:\Windows\Fonts\LTYPEB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LTYPEB
+"
+"2","C:\Windows\Fonts\LTYPEBO.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LTYPEBO
+"
+"2","C:\Windows\Fonts\LTYPEO.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/LTYPEO
+"
+"2","C:\Windows\Fonts\lucon.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/lucon
+"
+"2","C:\Windows\Fonts\lvnm.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/lvnm
+"
+"2","C:\Windows\Fonts\lvnmbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/lvnmbd
+"
+"2","C:\Windows\Fonts\MAGNETOB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MAGNETOB
+"
+"2","C:\Windows\Fonts\MAIAN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MAIAN
+"
+"2","C:\Windows\Fonts\majalla.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/majalla
+"
+"2","C:\Windows\Fonts\majallab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/majallab
+"
+"2","C:\Windows\Fonts\malgun.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/malgun
+"
+"2","C:\Windows\Fonts\malgunbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/malgunbd
+"
+"2","C:\Windows\Fonts\mangal.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/mangal
+"
+"2","C:\Windows\Fonts\mangalb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/mangalb
+"
+"2","C:\Windows\Fonts\marlett.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/marlett
+"
+"2","C:\Windows\Fonts\MATURASC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MATURASC
+"
+"2","C:\Windows\Fonts\micross.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/micross
+"
+"2","C:\Windows\Fonts\MISTRAL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MISTRAL
+"
+"2","C:\Windows\Fonts\MOD20.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MOD20
+"
+"2","C:\Windows\Fonts\monbaiti.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/monbaiti
+"
+"2","C:\Windows\Fonts\moolbor.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/moolbor
+"
+"2","C:\Windows\Fonts\mriam.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/mriam
+"
+"2","C:\Windows\Fonts\mriamc.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/mriamc
+"
+"2","C:\Windows\Fonts\msjh.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msjh
+"
+"2","C:\Windows\Fonts\msjhbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msjhbd
+"
+"2","C:\Windows\Fonts\MSUIGHUB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MSUIGHUB
+"
+"2","C:\Windows\Fonts\msuighur.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msuighur
+"
+"2","C:\Windows\Fonts\msyh.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msyh
+"
+"2","C:\Windows\Fonts\msyhbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msyhbd
+"
+"2","C:\Windows\Fonts\msyi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/msyi
+"
+"2","C:\Windows\Fonts\MTCORSVA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MTCORSVA
+"
+"2","C:\Windows\Fonts\MTEXTRA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/MTEXTRA
+"
+"2","C:\Windows\Fonts\mvboli.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/mvboli
+"
+"2","C:\Windows\Fonts\NIAGENG.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/NIAGENG
+"
+"2","C:\Windows\Fonts\NIAGSOL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/NIAGSOL
+"
+"2","C:\Windows\Fonts\NIRMALA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/NIRMALA
+"
+"2","C:\Windows\Fonts\NIRMALAB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/NIRMALAB
+"
+"2","C:\Windows\Fonts\nrkis.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/nrkis
+"
+"2","C:\Windows\Fonts\ntailu.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ntailu
+"
+"2","C:\Windows\Fonts\ntailub.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ntailub
+"
+"2","C:\Windows\Fonts\nyala.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/nyala
+"
+"2","C:\Windows\Fonts\OCRAEXT.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/OCRAEXT
+"
+"2","C:\Windows\Fonts\OLDENGL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/OLDENGL
+"
+"2","C:\Windows\Fonts\ONYX.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ONYX
+"
+"2","C:\Windows\Fonts\OUTLOOK.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/OUTLOOK
+"
+"2","C:\Windows\Fonts\pala.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/pala
+"
+"2","C:\Windows\Fonts\palab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/palab
+"
+"2","C:\Windows\Fonts\palabi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/palabi
+"
+"2","C:\Windows\Fonts\palai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/palai
+"
+"2","C:\Windows\Fonts\PALSCRI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PALSCRI
+"
+"2","C:\Windows\Fonts\PAPYRUS.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PAPYRUS
+"
+"2","C:\Windows\Fonts\PARCHM.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PARCHM
+"
+"2","C:\Windows\Fonts\PER_____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PER_____
+"
+"2","C:\Windows\Fonts\PERB____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PERB____
+"
+"2","C:\Windows\Fonts\PERBI___.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PERBI___
+"
+"2","C:\Windows\Fonts\PERI____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PERI____
+"
+"2","C:\Windows\Fonts\PERTIBD.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PERTIBD
+"
+"2","C:\Windows\Fonts\PERTILI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PERTILI
+"
+"2","C:\Windows\Fonts\phagspa.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/phagspa
+"
+"2","C:\Windows\Fonts\phagspab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/phagspab
+"
+"2","C:\Windows\Fonts\plantc.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/plantc
+"
+"2","C:\Windows\Fonts\PLAYBILL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PLAYBILL
+"
+"2","C:\Windows\Fonts\POORICH.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/POORICH
+"
+"2","C:\Windows\Fonts\PRISTINA.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/PRISTINA
+"
+"2","C:\Windows\Fonts\raavi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/raavi
+"
+"2","C:\Windows\Fonts\raavib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/raavib
+"
+"2","C:\Windows\Fonts\RAGE.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/RAGE
+"
+"2","C:\Windows\Fonts\RAVIE.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/RAVIE
+"
+"2","C:\Windows\Fonts\REFSAN.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/REFSAN
+"
+"2","C:\Windows\Fonts\REFSPCL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/REFSPCL
+"
+"2","C:\Windows\Fonts\ROCC____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCC____
+"
+"2","C:\Windows\Fonts\ROCCB___.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCCB___
+"
+"2","C:\Windows\Fonts\ROCK.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCK
+"
+"2","C:\Windows\Fonts\ROCKB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCKB
+"
+"2","C:\Windows\Fonts\ROCKBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCKBI
+"
+"2","C:\Windows\Fonts\ROCKEB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCKEB
+"
+"2","C:\Windows\Fonts\ROCKI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/ROCKI
+"
+"2","C:\Windows\Fonts\rod.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/rod
+"
+"2","C:\Windows\Fonts\SCHLBKB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SCHLBKB
+"
+"2","C:\Windows\Fonts\SCHLBKBI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SCHLBKBI
+"
+"2","C:\Windows\Fonts\SCHLBKI.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SCHLBKI
+"
+"2","C:\Windows\Fonts\SCRIPTBL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SCRIPTBL
+"
+"2","C:\Windows\Fonts\segoepr.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoepr
+"
+"2","C:\Windows\Fonts\segoeprb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeprb
+"
+"2","C:\Windows\Fonts\segoesc.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoesc
+"
+"2","C:\Windows\Fonts\segoescb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoescb
+"
+"2","C:\Windows\Fonts\segoeui.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeui
+"
+"2","C:\Windows\Fonts\segoeuib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeuib
+"
+"2","C:\Windows\Fonts\segoeuii.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeuii
+"
+"2","C:\Windows\Fonts\segoeuil.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeuil
+"
+"2","C:\Windows\Fonts\SEGOEUISL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SEGOEUISL
+"
+"2","C:\Windows\Fonts\segoeuiz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/segoeuiz
+"
+"2","C:\Windows\Fonts\seguisb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/seguisb
+"
+"2","C:\Windows\Fonts\seguisym.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/seguisym
+"
+"2","C:\Windows\Fonts\Shonar.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Shonar
+"
+"2","C:\Windows\Fonts\Shonarb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Shonarb
+"
+"2","C:\Windows\Fonts\SHOWG.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SHOWG
+"
+"2","C:\Windows\Fonts\shruti.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/shruti
+"
+"2","C:\Windows\Fonts\shrutib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/shrutib
+"
+"2","C:\Windows\Fonts\simfang.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simfang
+"
+"2","C:\Windows\Fonts\simhei.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simhei
+"
+"2","C:\Windows\Fonts\simkai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simkai
+"
+"2","C:\Windows\Fonts\simpbdo.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simpbdo
+"
+"2","C:\Windows\Fonts\simpfxo.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simpfxo
+"
+"2","C:\Windows\Fonts\simpo.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simpo
+"
+"2","C:\Windows\Fonts\simsunb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/simsunb
+"
+"2","C:\Windows\Fonts\SNAP____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/SNAP____
+"
+"2","C:\Windows\Fonts\STENCIL.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/STENCIL
+"
+"2","C:\Windows\Fonts\sylfaen.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/sylfaen
+"
+"2","C:\Windows\Fonts\symbol.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/symbol
+"
+"2","C:\Windows\Fonts\tahoma.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/tahoma
+"
+"2","C:\Windows\Fonts\tahomabd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/tahomabd
+"
+"2","C:\Windows\Fonts\taile.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/taile
+"
+"2","C:\Windows\Fonts\taileb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/taileb
+"
+"2","C:\Windows\Fonts\TCB_____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCB_____
+"
+"2","C:\Windows\Fonts\TCBI____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCBI____
+"
+"2","C:\Windows\Fonts\TCCB____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCCB____
+"
+"2","C:\Windows\Fonts\TCCEB.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCCEB
+"
+"2","C:\Windows\Fonts\TCCM____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCCM____
+"
+"2","C:\Windows\Fonts\TCM_____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCM_____
+"
+"2","C:\Windows\Fonts\TCMI____.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TCMI____
+"
+"2","C:\Windows\Fonts\TEMPSITC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/TEMPSITC
+"
+"2","C:\Windows\Fonts\times.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/times
+"
+"2","C:\Windows\Fonts\timesbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/timesbd
+"
+"2","C:\Windows\Fonts\timesbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/timesbi
+"
+"2","C:\Windows\Fonts\timesi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/timesi
+"
+"2","C:\Windows\Fonts\tradbdo.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/tradbdo
+"
+"2","C:\Windows\Fonts\trado.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/trado
+"
+"2","C:\Windows\Fonts\trebuc.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/trebuc
+"
+"2","C:\Windows\Fonts\trebucbd.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/trebucbd
+"
+"2","C:\Windows\Fonts\trebucbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/trebucbi
+"
+"2","C:\Windows\Fonts\trebucit.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/trebucit
+"
+"2","C:\Windows\Fonts\tunga.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/tunga
+"
+"2","C:\Windows\Fonts\tungab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/tungab
+"
+"2","C:\Windows\Fonts\upcdb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcdb
+"
+"2","C:\Windows\Fonts\upcdbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcdbi
+"
+"2","C:\Windows\Fonts\upcdi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcdi
+"
+"2","C:\Windows\Fonts\upcdl.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcdl
+"
+"2","C:\Windows\Fonts\upceb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upceb
+"
+"2","C:\Windows\Fonts\upcebi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcebi
+"
+"2","C:\Windows\Fonts\upcei.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcei
+"
+"2","C:\Windows\Fonts\upcel.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcel
+"
+"2","C:\Windows\Fonts\upcfb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcfb
+"
+"2","C:\Windows\Fonts\upcfbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcfbi
+"
+"2","C:\Windows\Fonts\upcfi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcfi
+"
+"2","C:\Windows\Fonts\upcfl.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcfl
+"
+"2","C:\Windows\Fonts\upcib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcib
+"
+"2","C:\Windows\Fonts\upcibi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcibi
+"
+"2","C:\Windows\Fonts\upcii.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcii
+"
+"2","C:\Windows\Fonts\upcil.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcil
+"
+"2","C:\Windows\Fonts\upcjb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcjb
+"
+"2","C:\Windows\Fonts\upcjbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcjbi
+"
+"2","C:\Windows\Fonts\upcji.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcji
+"
+"2","C:\Windows\Fonts\upcjl.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcjl
+"
+"2","C:\Windows\Fonts\upckb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upckb
+"
+"2","C:\Windows\Fonts\upckbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upckbi
+"
+"2","C:\Windows\Fonts\upcki.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcki
+"
+"2","C:\Windows\Fonts\upckl.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upckl
+"
+"2","C:\Windows\Fonts\upclb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upclb
+"
+"2","C:\Windows\Fonts\upclbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upclbi
+"
+"2","C:\Windows\Fonts\upcli.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcli
+"
+"2","C:\Windows\Fonts\upcll.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/upcll
+"
+"2","C:\Windows\Fonts\utsaah.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/utsaah
+"
+"2","C:\Windows\Fonts\utsaahb.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/utsaahb
+"
+"2","C:\Windows\Fonts\utsaahbi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/utsaahbi
+"
+"2","C:\Windows\Fonts\utsaahi.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/utsaahi
+"
+"2","C:\Windows\Fonts\Vani.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Vani
+"
+"2","C:\Windows\Fonts\Vanib.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/Vanib
+"
+"2","C:\Windows\Fonts\verdana.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/verdana
+"
+"2","C:\Windows\Fonts\verdanab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/verdanab
+"
+"2","C:\Windows\Fonts\verdanai.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/verdanai
+"
+"2","C:\Windows\Fonts\verdanaz.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/verdanaz
+"
+"2","C:\Windows\Fonts\vijaya.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/vijaya
+"
+"2","C:\Windows\Fonts\vijayab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/vijayab
+"
+"2","C:\Windows\Fonts\VINERITC.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/VINERITC
+"
+"2","C:\Windows\Fonts\VIVALDII.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/VIVALDII
+"
+"2","C:\Windows\Fonts\VLADIMIR.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/VLADIMIR
+"
+"2","C:\Windows\Fonts\vrinda.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/vrinda
+"
+"2","C:\Windows\Fonts\vrindab.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/vrindab
+"
+"2","C:\Windows\Fonts\webdings.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/webdings
+"
+"2","C:\Windows\Fonts\wingding.ttf"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/wingding
+"
+"2","C:\Windows\Fonts\WINGDNG2.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/WINGDNG2
+"
+"2","C:\Windows\Fonts\WINGDNG3.TTF"
+"2"," => D:/R-3.5.1/library/extrafontdb/metrics/WINGDNG3
+"
+"2","Found FontName for 423 fonts.
+"
+"2","Scanning afm files in D:/R-3.5.1/library/extrafontdb/metrics
+"
+"2","Writing font table in D:/R-3.5.1/library/extrafontdb/fontmap/fonttable.csv
+"
+"2","Writing Fontmap to D:/R-3.5.1/library/extrafontdb/fontmap/Fontmap...
+"
+"0","loadfonts()"
+"2","Registering font with R using pdfFonts(): Agency FB
+"
+"2","No regular (non-bold, non-italic) version of Aharoni. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Algerian
+"
+"2","Registering font with R using pdfFonts(): Andalus
+"
+"2","Registering font with R using pdfFonts(): Angsana New
+"
+"2","Registering font with R using pdfFonts(): AngsanaUPC
+"
+"2","Registering font with R using pdfFonts(): Aparajita
+"
+"2","Registering font with R using pdfFonts(): Arabic Typesetting
+"
+"2","Registering font with R using pdfFonts(): Arial Black
+"
+"2","Registering font with R using pdfFonts(): Arial
+"
+"2","Registering font with R using pdfFonts(): Arial Narrow
+"
+"2","Registering font with R using pdfFonts(): Arial Rounded MT Bold
+"
+"2","Registering font with R using pdfFonts(): Arial Unicode MS
+"
+"2","Registering font with R using pdfFonts(): Baskerville Old Face
+"
+"2","Registering font with R using pdfFonts(): Bauhaus 93
+"
+"2","Registering font with R using pdfFonts(): Bell MT
+"
+"2","Registering font with R using pdfFonts(): Berlin Sans FB
+"
+"2","No regular (non-bold, non-italic) version of Berlin Sans FB Demi. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Bernard MT Condensed
+"
+"2","Registering font with R using pdfFonts(): Blackadder ITC
+"
+"2","Registering font with R using pdfFonts(): Bodoni MT
+"
+"2","Registering font with R using pdfFonts(): Bodoni MT Black
+"
+"2","Registering font with R using pdfFonts(): Bodoni MT Condensed
+"
+"2","Registering font with R using pdfFonts(): Bodoni MT Poster Compressed
+"
+"2","Registering font with R using pdfFonts(): Book Antiqua
+"
+"2","Registering font with R using pdfFonts(): Bookman Old Style
+"
+"2","Registering font with R using pdfFonts(): Bookshelf Symbol 7
+"
+"2","Registering font with R using pdfFonts(): Bradley Hand ITC
+"
+"2","Registering font with R using pdfFonts(): Britannic Bold
+"
+"2","Registering font with R using pdfFonts(): Broadway
+"
+"2","Registering font with R using pdfFonts(): Browallia New
+"
+"2","Registering font with R using pdfFonts(): BrowalliaUPC
+"
+"2","No regular (non-bold, non-italic) version of Brush Script MT. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Calibri
+"
+"2","Registering font with R using pdfFonts(): Calibri Light
+"
+"2","Registering font with R using pdfFonts(): Californian FB
+"
+"2","Registering font with R using pdfFonts(): Calisto MT
+"
+"2","No regular (non-bold, non-italic) version of Cambria. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Candara
+"
+"2","Registering font with R using pdfFonts(): Castellar
+"
+"2","Registering font with R using pdfFonts(): Centaur
+"
+"2","Registering font with R using pdfFonts(): Century
+"
+"2","Registering font with R using pdfFonts(): Century Gothic
+"
+"2","Registering font with R using pdfFonts(): Century Schoolbook
+"
+"2","Registering font with R using pdfFonts(): Chiller
+"
+"2","Registering font with R using pdfFonts(): Colonna MT
+"
+"2","Registering font with R using pdfFonts(): Comic Sans MS
+"
+"2","Registering font with R using pdfFonts(): Consolas
+"
+"2","Registering font with R using pdfFonts(): Constantia
+"
+"2","Registering font with R using pdfFonts(): Cooper Black
+"
+"2","Registering font with R using pdfFonts(): Copperplate Gothic Bold
+"
+"2","Registering font with R using pdfFonts(): Copperplate Gothic Light
+"
+"2","Registering font with R using pdfFonts(): Corbel
+"
+"2","Registering font with R using pdfFonts(): Cordia New
+"
+"2","Registering font with R using pdfFonts(): CordiaUPC
+"
+"2","Registering font with R using pdfFonts(): Courier New
+"
+"2","Registering font with R using pdfFonts(): Curlz MT
+"
+"2","Registering font with R using pdfFonts(): DaunPenh
+"
+"2","Registering font with R using pdfFonts(): David
+"
+"2","Registering font with R using pdfFonts(): DFKai-SB
+"
+"2","Registering font with R using pdfFonts(): DilleniaUPC
+"
+"2","Registering font with R using pdfFonts(): DokChampa
+"
+"2","Registering font with R using pdfFonts(): Ebrima
+"
+"2","Registering font with R using pdfFonts(): Edwardian Script ITC
+"
+"2","Registering font with R using pdfFonts(): Elephant
+"
+"2","Registering font with R using pdfFonts(): Engravers MT
+"
+"2","Registering font with R using pdfFonts(): Eras Bold ITC
+"
+"2","Registering font with R using pdfFonts(): Eras Demi ITC
+"
+"2","Registering font with R using pdfFonts(): Eras Light ITC
+"
+"2","Registering font with R using pdfFonts(): Eras Medium ITC
+"
+"2","Registering font with R using pdfFonts(): Estrangelo Edessa
+"
+"2","Registering font with R using pdfFonts(): EucrosiaUPC
+"
+"2","Registering font with R using pdfFonts(): Euphemia
+"
+"2","Registering font with R using pdfFonts(): FangSong
+"
+"2","Registering font with R using pdfFonts(): Felix Titling
+"
+"2","Registering font with R using pdfFonts(): Footlight MT Light
+"
+"2","Registering font with R using pdfFonts(): Forte
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Book
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Demi
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Demi Cond
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Heavy
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Medium
+"
+"2","Registering font with R using pdfFonts(): Franklin Gothic Medium Cond
+"
+"2","Registering font with R using pdfFonts(): FrankRuehl
+"
+"2","Registering font with R using pdfFonts(): FreesiaUPC
+"
+"2","Registering font with R using pdfFonts(): Freestyle Script
+"
+"2","Registering font with R using pdfFonts(): French Script MT
+"
+"2","Registering font with R using pdfFonts(): Gabriola
+"
+"2","Registering font with R using pdfFonts(): Gadugi
+"
+"2","Registering font with R using pdfFonts(): Garamond
+"
+"2","Registering font with R using pdfFonts(): Gautami
+"
+"2","Registering font with R using pdfFonts(): Georgia
+"
+"2","Registering font with R using pdfFonts(): Gigi
+"
+"2","Registering font with R using pdfFonts(): Gill Sans Ultra Bold
+"
+"2","Registering font with R using pdfFonts(): Gill Sans Ultra Bold Condensed
+"
+"2","Registering font with R using pdfFonts(): Gill Sans MT
+"
+"2","Registering font with R using pdfFonts(): Gill Sans MT Condensed
+"
+"2","Registering font with R using pdfFonts(): Gill Sans MT Ext Condensed Bold
+"
+"2","Registering font with R using pdfFonts(): Gisha
+"
+"2","Registering font with R using pdfFonts(): Gloucester MT Extra Condensed
+"
+"2","Registering font with R using pdfFonts(): Goudy Old Style
+"
+"2","Registering font with R using pdfFonts(): Goudy Stout
+"
+"2","Registering font with R using pdfFonts(): Haettenschweiler
+"
+"2","No regular (non-bold, non-italic) version of Harlow Solid Italic. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Harrington
+"
+"2","Registering font with R using pdfFonts(): High Tower Text
+"
+"2","Registering font with R using pdfFonts(): Impact
+"
+"2","Registering font with R using pdfFonts(): Imprint MT Shadow
+"
+"2","Registering font with R using pdfFonts(): Informal Roman
+"
+"2","Registering font with R using pdfFonts(): IrisUPC
+"
+"2","Registering font with R using pdfFonts(): Iskoola Pota
+"
+"2","Registering font with R using pdfFonts(): JasmineUPC
+"
+"2","Registering font with R using pdfFonts(): Jokerman
+"
+"2","Registering font with R using pdfFonts(): Juice ITC
+"
+"2","Registering font with R using pdfFonts(): KaiTi
+"
+"2","Registering font with R using pdfFonts(): Kalinga
+"
+"2","Registering font with R using pdfFonts(): Kartika
+"
+"2","Registering font with R using pdfFonts(): Khmer UI
+"
+"2","Registering font with R using pdfFonts(): KodchiangUPC
+"
+"2","Registering font with R using pdfFonts(): Kokila
+"
+"2","Registering font with R using pdfFonts(): Kristen ITC
+"
+"2","Registering font with R using pdfFonts(): Kunstler Script
+"
+"2","Registering font with R using pdfFonts(): Lao UI
+"
+"2","Registering font with R using pdfFonts(): Latha
+"
+"2","Registering font with R using pdfFonts(): Wide Latin
+"
+"2","Registering font with R using pdfFonts(): Leelawadee
+"
+"2","Registering font with R using pdfFonts(): Levenim MT
+"
+"2","Registering font with R using pdfFonts(): LilyUPC
+"
+"2","More than one version of regular/bold/italic found for Lucida Bright. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Lucida Calligraphy. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Lucida Console
+"
+"2","More than one version of regular/bold/italic found for Lucida Fax. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Lucida Handwriting. Skipping setup for this font.
+"
+"2","More than one version of regular/bold/italic found for Lucida Sans. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Lucida Sans Typewriter
+"
+"2","Registering font with R using pdfFonts(): Lucida Sans Unicode
+"
+"2","No regular (non-bold, non-italic) version of Magneto. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Maiandra GD
+"
+"2","Registering font with R using pdfFonts(): Malgun Gothic
+"
+"2","Registering font with R using pdfFonts(): Mangal
+"
+"2","Registering font with R using pdfFonts(): Marlett
+"
+"2","Registering font with R using pdfFonts(): Matura MT Script Capitals
+"
+"2","Registering font with R using pdfFonts(): Microsoft Yi Baiti
+"
+"2","Registering font with R using pdfFonts(): Microsoft Himalaya
+"
+"2","Registering font with R using pdfFonts(): Microsoft JhengHei
+"
+"2","Registering font with R using pdfFonts(): Microsoft New Tai Lue
+"
+"2","Registering font with R using pdfFonts(): Microsoft PhagsPa
+"
+"2","Registering font with R using pdfFonts(): Microsoft Sans Serif
+"
+"2","Registering font with R using pdfFonts(): Microsoft Tai Le
+"
+"2","Registering font with R using pdfFonts(): Microsoft Uighur
+"
+"2","Registering font with R using pdfFonts(): Microsoft YaHei
+"
+"2","Registering font with R using pdfFonts(): Miriam
+"
+"2","Registering font with R using pdfFonts(): Miriam Fixed
+"
+"2","Registering font with R using pdfFonts(): Mistral
+"
+"2","Registering font with R using pdfFonts(): Modern No. 20
+"
+"2","Registering font with R using pdfFonts(): Mongolian Baiti
+"
+"2","Registering font with R using pdfFonts(): Monotype Corsiva
+"
+"2","Registering font with R using pdfFonts(): MoolBoran
+"
+"2","Registering font with R using pdfFonts(): MS Outlook
+"
+"2","Registering font with R using pdfFonts(): MS Reference Sans Serif
+"
+"2","Registering font with R using pdfFonts(): MS Reference Specialty
+"
+"2","Registering font with R using pdfFonts(): MT Extra
+"
+"2","Registering font with R using pdfFonts(): MV Boli
+"
+"2","Registering font with R using pdfFonts(): Narkisim
+"
+"2","Registering font with R using pdfFonts(): Niagara Engraved
+"
+"2","Registering font with R using pdfFonts(): Niagara Solid
+"
+"2","Registering font with R using pdfFonts(): Nirmala UI
+"
+"2","Registering font with R using pdfFonts(): Nyala
+"
+"2","Registering font with R using pdfFonts(): OCR A Extended
+"
+"2","Registering font with R using pdfFonts(): Old English Text MT
+"
+"2","Registering font with R using pdfFonts(): Onyx
+"
+"2","Registering font with R using pdfFonts(): Palace Script MT
+"
+"2","Registering font with R using pdfFonts(): Palatino Linotype
+"
+"2","Registering font with R using pdfFonts(): Papyrus
+"
+"2","Registering font with R using pdfFonts(): Parchment
+"
+"2","Registering font with R using pdfFonts(): Perpetua
+"
+"2","Registering font with R using pdfFonts(): Perpetua Titling MT
+"
+"2","Registering font with R using pdfFonts(): Plantagenet Cherokee
+"
+"2","Registering font with R using pdfFonts(): Playbill
+"
+"2","Registering font with R using pdfFonts(): Poor Richard
+"
+"2","Registering font with R using pdfFonts(): Pristina
+"
+"2","More than one version of regular/bold/italic found for Raavi. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Rage Italic. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Ravie
+"
+"2","Registering font with R using pdfFonts(): Rockwell
+"
+"2","Registering font with R using pdfFonts(): Rockwell Condensed
+"
+"2","Registering font with R using pdfFonts(): Rockwell Extra Bold
+"
+"2","Registering font with R using pdfFonts(): Rod
+"
+"2","Registering font with R using pdfFonts(): Sakkal Majalla
+"
+"2","Registering font with R using pdfFonts(): Script MT Bold
+"
+"2","Registering font with R using pdfFonts(): Segoe Print
+"
+"2","Registering font with R using pdfFonts(): Segoe Script
+"
+"2","Registering font with R using pdfFonts(): Segoe UI
+"
+"2","Registering font with R using pdfFonts(): Segoe UI Light
+"
+"2","Registering font with R using pdfFonts(): Segoe UI Semibold
+"
+"2","Registering font with R using pdfFonts(): Segoe UI Semilight
+"
+"2","Registering font with R using pdfFonts(): Segoe UI Symbol
+"
+"2","Registering font with R using pdfFonts(): Shonar Bangla
+"
+"2","Registering font with R using pdfFonts(): Showcard Gothic
+"
+"2","Registering font with R using pdfFonts(): Shruti
+"
+"2","Registering font with R using pdfFonts(): SimHei
+"
+"2","Registering font with R using pdfFonts(): Simplified Arabic
+"
+"2","Registering font with R using pdfFonts(): Simplified Arabic Fixed
+"
+"2","Registering font with R using pdfFonts(): SimSun-ExtB
+"
+"2","Registering font with R using pdfFonts(): Snap ITC
+"
+"2","Registering font with R using pdfFonts(): Stencil
+"
+"2","Registering font with R using pdfFonts(): Sylfaen
+"
+"2","Registering font with R using pdfFonts(): Symbol
+"
+"2","Registering font with R using pdfFonts(): Tahoma
+"
+"2","Registering font with R using pdfFonts(): Tempus Sans ITC
+"
+"2","Registering font with R using pdfFonts(): Times New Roman
+"
+"2","Registering font with R using pdfFonts(): Traditional Arabic
+"
+"2","Registering font with R using pdfFonts(): Trebuchet MS
+"
+"2","Registering font with R using pdfFonts(): Tunga
+"
+"2","Registering font with R using pdfFonts(): Tw Cen MT
+"
+"2","Registering font with R using pdfFonts(): Tw Cen MT Condensed
+"
+"2","Registering font with R using pdfFonts(): Tw Cen MT Condensed Extra Bold
+"
+"2","Registering font with R using pdfFonts(): Utsaah
+"
+"2","Registering font with R using pdfFonts(): Vani
+"
+"2","Registering font with R using pdfFonts(): Verdana
+"
+"2","Registering font with R using pdfFonts(): Vijaya
+"
+"2","Registering font with R using pdfFonts(): Viner Hand ITC
+"
+"2","No regular (non-bold, non-italic) version of Vivaldi. Skipping setup for this font.
+"
+"2","Registering font with R using pdfFonts(): Vladimir Script
+"
+"2","Registering font with R using pdfFonts(): Vrinda
+"
+"2","Registering font with R using pdfFonts(): Webdings
+"
+"2","Registering font with R using pdfFonts(): Wingdings
+"
+"2","Registering font with R using pdfFonts(): Wingdings 2
+"
+"2","Registering font with R using pdfFonts(): Wingdings 3
+"

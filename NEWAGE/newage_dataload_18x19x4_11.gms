@@ -132,7 +132,7 @@ PARAMETER
          ep(yr,r)                        Energy productivity development (BASELINE Database)
          tfp(yr,r)                       Total factor productivity development (BASELINE Database)
 
-         tfp_corona(r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
+         tfp_corona(yr,r)                   Multiplier for TFP to match the GDP development affected by the COVID-19 pandemic
 
 
 * ------- 14.11.2017 data for PA pfad
@@ -398,7 +398,7 @@ $libinclude      xlimport        elast_ene_yr           %xcel_datadir%elast_ene.
 * ---------------------------------------------------------------------------- *
 
 $libinclude      xlimport        tfp            %xcel_datadir%ep+tfp.xlsx       tfp_newage!A32:s41
-$libinclude      xlimport        tfp_corona     %xcel_datadir%ep+tfp.xlsx       tfp_corona!A1:r2
+$libinclude      xlimport        tfp_corona     %xcel_datadir%ep+tfp.xlsx       tfp_corona!A32:s41
 
 * ------ 16.07.2014 ORIGINAL
 *$libinclude      xlimport         ep     %xcel_datadir%ep+tfp.xlsx        ep_newage!A30:R40
