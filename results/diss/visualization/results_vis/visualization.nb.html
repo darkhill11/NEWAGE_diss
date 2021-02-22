@@ -240,43 +240,286 @@ summary {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHJlYWR4bClcbmxpYnJhcnkoZXh0cmFmb250KVxubGlicmFyeShzaG93dGV4dClcbnR0Zl9pbXBvcnQocGF0dGVybiA9IFwibG1yb21hbipcIilcbmBgYCJ9 -->
-<pre class="r"><code>library(tidyverse)
-library(readxl)
-library(extrafont)
-library(showtext)
-ttf_import(pattern = &quot;lmroman*&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2Nhbm5pbmcgdHRmIGZpbGVzIGluIEM6XFxXaW5kb3dzXFxGb250cyAuLi5cbkV4dHJhY3RpbmcgLmFmbSBmaWxlcyBmcm9tIC50dGYgZmlsZXMuLi5cbkM6XFxXaW5kb3dzXFxGb250c1xcbG1yb21hbjEwLWJvbGQtd2ViZm9udC50dGYgOiBMTVJvbWFuMTAtQm9sZCBhbHJlYWR5IHJlZ2lzdGVyZWQgaW4gZm9udHMgZGF0YWJhc2UuIFNraXBwaW5nLlxuQzpcXFdpbmRvd3NcXEZvbnRzXFxsbXJvbWFuMTAtYm9sZC13ZWJmb250XzAudHRmIDogTE1Sb21hbjEwLUJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIGluIGZvbnRzIGRhdGFiYXNlLiBTa2lwcGluZy5cbkM6XFxXaW5kb3dzXFxGb250c1xcbG1yb21hbjEwLWJvbGRpdGFsaWMtd2ViZm9udC50dGYgPT4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3MvbG1yb21hbjEwLWJvbGRpdGFsaWMtd2ViZm9udFxuQzpcXFdpbmRvd3NcXEZvbnRzXFxsbXJvbWFuMTAtaXRhbGljLXdlYmZvbnQudHRmID0+IEQ6L1ItMy41LjEvbGlicmFyeS9leHRyYWZvbnRkYi9tZXRyaWNzL2xtcm9tYW4xMC1pdGFsaWMtd2ViZm9udFxuQzpcXFdpbmRvd3NcXEZvbnRzXFxsbXJvbWFuMTAtcmVndWxhci13ZWJmb250LnR0ZiA9PiBEOi9SLTMuNS4xL2xpYnJhcnkvZXh0cmFmb250ZGIvbWV0cmljcy9sbXJvbWFuMTAtcmVndWxhci13ZWJmb250XG5DOlxcV2luZG93c1xcRm9udHNcXGxtcm9tYW5jYXBzMTAtb2JsaXF1ZS13ZWJmb250LnR0ZiA9PiBEOi9SLTMuNS4xL2xpYnJhcnkvZXh0cmFmb250ZGIvbWV0cmljcy9sbXJvbWFuY2FwczEwLW9ibGlxdWUtd2ViZm9udFxuQzpcXFdpbmRvd3NcXEZvbnRzXFxsbXJvbWFuY2FwczEwLXJlZ3VsYXItd2ViZm9udC50dGYgPT4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3MvbG1yb21hbmNhcHMxMC1yZWd1bGFyLXdlYmZvbnRcbkM6XFxXaW5kb3dzXFxGb250c1xcbG1yb21hbmRlbWkxMC1vYmxpcXVlLXdlYmZvbnQudHRmID0+IEQ6L1ItMy41LjEvbGlicmFyeS9leHRyYWZvbnRkYi9tZXRyaWNzL2xtcm9tYW5kZW1pMTAtb2JsaXF1ZS13ZWJmb250XG5DOlxcV2luZG93c1xcRm9udHNcXGxtcm9tYW5kZW1pMTAtcmVndWxhci13ZWJmb250LnR0ZiA9PiBEOi9SLTMuNS4xL2xpYnJhcnkvZXh0cmFmb250ZGIvbWV0cmljcy9sbXJvbWFuZGVtaTEwLXJlZ3VsYXItd2ViZm9udFxuQzpcXFdpbmRvd3NcXEZvbnRzXFxsbXJvbWFuZHVuaDEwLW9ibGlxdWUtd2ViZm9udC50dGYgPT4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3MvbG1yb21hbmR1bmgxMC1vYmxpcXVlLXdlYmZvbnRcbkM6XFxXaW5kb3dzXFxGb250c1xcbG1yb21hbmR1bmgxMC1yZWd1bGFyLXdlYmZvbnQudHRmID0+IEQ6L1ItMy41LjEvbGlicmFyeS9leHRyYWZvbnRkYi9tZXRyaWNzL2xtcm9tYW5kdW5oMTAtcmVndWxhci13ZWJmb250XG5DOlxcV2luZG93c1xcRm9udHNcXGxtcm9tYW5zbGFudDEwLWJvbGQtd2ViZm9udC50dGYgPT4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3MvbG1yb21hbnNsYW50MTAtYm9sZC13ZWJmb250XG5DOlxcV2luZG93c1xcRm9udHNcXGxtcm9tYW5zbGFudDEwLXJlZ3VsYXItd2ViZm9udC50dGYgPT4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3MvbG1yb21hbnNsYW50MTAtcmVndWxhci13ZWJmb250XG5Gb3VuZCBGb250TmFtZSBmb3IgMTEgZm9udHMuXG5TY2FubmluZyBhZm0gZmlsZXMgaW4gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL21ldHJpY3NcbldyaXRpbmcgZm9udCB0YWJsZSBpbiBEOi9SLTMuNS4xL2xpYnJhcnkvZXh0cmFmb250ZGIvZm9udG1hcC9mb250dGFibGUuY3N2XG5Xcml0aW5nIEZvbnRtYXAgdG8gRDovUi0zLjUuMS9saWJyYXJ5L2V4dHJhZm9udGRiL2ZvbnRtYXAvRm9udG1hcC4uLlxuIn0= -->
-<pre><code>Scanning ttf files in C:\Windows\Fonts ...
-Extracting .afm files from .ttf files...
-C:\Windows\Fonts\lmroman10-bold-webfont.ttf : LMRoman10-Bold already registered in fonts database. Skipping.
-C:\Windows\Fonts\lmroman10-bold-webfont_0.ttf : LMRoman10-Bold already registered in fonts database. Skipping.
-C:\Windows\Fonts\lmroman10-bolditalic-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmroman10-bolditalic-webfont
-C:\Windows\Fonts\lmroman10-italic-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmroman10-italic-webfont
-C:\Windows\Fonts\lmroman10-regular-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmroman10-regular-webfont
-C:\Windows\Fonts\lmromancaps10-oblique-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromancaps10-oblique-webfont
-C:\Windows\Fonts\lmromancaps10-regular-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromancaps10-regular-webfont
-C:\Windows\Fonts\lmromandemi10-oblique-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromandemi10-oblique-webfont
-C:\Windows\Fonts\lmromandemi10-regular-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromandemi10-regular-webfont
-C:\Windows\Fonts\lmromandunh10-oblique-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromandunh10-oblique-webfont
-C:\Windows\Fonts\lmromandunh10-regular-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromandunh10-regular-webfont
-C:\Windows\Fonts\lmromanslant10-bold-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromanslant10-bold-webfont
-C:\Windows\Fonts\lmromanslant10-regular-webfont.ttf =&gt; D:/R-3.5.1/library/extrafontdb/metrics/lmromanslant10-regular-webfont
-Found FontName for 11 fonts.
-Scanning afm files in D:/R-3.5.1/library/extrafontdb/metrics
-Writing font table in D:/R-3.5.1/library/extrafontdb/fontmap/fonttable.csv
-Writing Fontmap to D:/R-3.5.1/library/extrafontdb/fontmap/Fontmap...</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiUGFrZXQgkXRpZHl2ZXJzZZIgd3VyZGUgdW50ZXIgUiBWZXJzaW9uIDMuNS4zIGVyc3RlbGx0XHUwMDFiWzMwbS0tIFx1MDAxYlsxbUF0dGFjaGluZyBwYWNrYWdlc1x1MDAxYlsyMm0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlIDEuMy4wIC0tXHUwMDFiWzM5bVxuXHUwMDFiWzMwbVx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtZ2dwbG90Mlx1MDAxYlszMG0gMy4zLjMgICAgIFx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtcHVycnIgIFx1MDAxYlszMG0gMC4zLjRcblx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtdGliYmxlIFx1MDAxYlszMG0gMy4wLjYgICAgIFx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtZHBseXIgIFx1MDAxYlszMG0gMS4wLjRcblx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtdGlkeXIgIFx1MDAxYlszMG0gMS4xLjIgICAgIFx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtc3RyaW5nclx1MDAxYlszMG0gMS40LjBcblx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtcmVhZHIgIFx1MDAxYlszMG0gMS40LjAgICAgIFx1MDAxYlszMm12XHUwMDFiWzMwbSBcdTAwMWJbMzRtZm9yY2F0c1x1MDAxYlszMG0gMC41LjFcdTAwMWJbMzltXG5QYWtldCCRcHVycnKSIHd1cmRlIHVudGVyIFIgVmVyc2lvbiAzLjUuMyBlcnN0ZWxsdFBha2V0IJFzdHJpbmdykiB3dXJkZSB1bnRlciBSIFZlcnNpb24gMy41LjMgZXJzdGVsbHRcdTAwMWJbMzBtLS0gXHUwMDFiWzFtQ29uZmxpY3RzXHUwMDFiWzIybSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSB0aWR5dmVyc2VfY29uZmxpY3RzKCkgLS1cblx1MDAxYlszMW14XHUwMDFiWzMwbSBcdTAwMWJbMzRtZHBseXJcdTAwMWJbMzBtOjpcdTAwMWJbMzJtZmlsdGVyKClcdTAwMWJbMzBtIG1hc2tzIFx1MDAxYlszNG1zdGF0c1x1MDAxYlszMG06OmZpbHRlcigpXG5cdTAwMWJbMzFteFx1MDAxYlszMG0gXHUwMDFiWzM0bWRwbHlyXHUwMDFiWzMwbTo6XHUwMDFiWzMybWxhZygpXHUwMDFiWzMwbSAgICBtYXNrcyBcdTAwMWJbMzRtc3RhdHNcdTAwMWJbMzBtOjpsYWcoKVx1MDAxYlszOW1cbiJ9 -->
+<pre><code>Paket 㤼㸱tidyverse㤼㸲 wurde unter R Version 3.5.3 erstellt[30m-- [1mAttaching packages[22m ----------------------------------------------------------------------- tidyverse 1.3.0 --[39m
+[30m[32mv[30m [34mggplot2[30m 3.3.3     [32mv[30m [34mpurrr  [30m 0.3.4
+[32mv[30m [34mtibble [30m 3.0.6     [32mv[30m [34mdplyr  [30m 1.0.4
+[32mv[30m [34mtidyr  [30m 1.1.2     [32mv[30m [34mstringr[30m 1.4.0
+[32mv[30m [34mreadr  [30m 1.4.0     [32mv[30m [34mforcats[30m 0.5.1[39m
+Paket 㤼㸱purrr㤼㸲 wurde unter R Version 3.5.3 erstelltPaket 㤼㸱stringr㤼㸲 wurde unter R Version 3.5.3 erstellt[30m-- [1mConflicts[22m -------------------------------------------------------------------------- tidyverse_conflicts() --
+[31mx[30m [34mdplyr[30m::[32mfilter()[30m masks [34mstats[30m::filter()
+[31mx[30m [34mdplyr[30m::[32mlag()[30m    masks [34mstats[30m::lag()[39m</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZGZvbnRzKClcbmBgYCJ9 -->
-<pre class="r"><code>loadfonts()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyZWFkeGwpXG5gYGAifQ== -->
+<pre class="r"><code>library(readxl)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJpbmcgZm9udCB3aXRoIFIgdXNpbmcgcGRmRm9udHMoKTogTE0gUm9tYW4gMTBcblJlZ2lzdGVyaW5nIGZvbnQgd2l0aCBSIHVzaW5nIHBkZkZvbnRzKCk6IExNIFJvbWFuIENhcHMgMTBcblJlZ2lzdGVyaW5nIGZvbnQgd2l0aCBSIHVzaW5nIHBkZkZvbnRzKCk6IExNIFJvbWFuIERlbWkgMTBcblJlZ2lzdGVyaW5nIGZvbnQgd2l0aCBSIHVzaW5nIHBkZkZvbnRzKCk6IExNIFJvbWFuIER1bmhpbGwgMTBcblJlZ2lzdGVyaW5nIGZvbnQgd2l0aCBSIHVzaW5nIHBkZkZvbnRzKCk6IExNIFJvbWFuIFNsYW50ZWQgMTBcbiJ9 -->
-<pre><code>Registering font with R using pdfFonts(): LM Roman 10
-Registering font with R using pdfFonts(): LM Roman Caps 10
-Registering font with R using pdfFonts(): LM Roman Demi 10
-Registering font with R using pdfFonts(): LM Roman Dunhill 10
-Registering font with R using pdfFonts(): LM Roman Slanted 10</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiUGFrZXQg46S847ixcmVhZHhs46S847iyIHd1cmRlIHVudGVyIFIgVmVyc2lvbiAzLjUuMyBlcnN0ZWxsdFxuIn0= -->
+<pre><code>Paket 㤼㸱readxl㤼㸲 wurde unter R Version 3.5.3 erstellt</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShleHRyYWZvbnQpXG5gYGAifQ== -->
+<pre class="r"><code>library(extrafont)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFrZXQgkWV4dHJhZm9udJIgd3VyZGUgdW50ZXIgUiBWZXJzaW9uIDMuNS4zIGVyc3RlbGx0UmVnaXN0ZXJpbmcgZm9udHMgd2l0aCBSXG4ifQ== -->
+<pre><code>Paket 㤼㸱extrafont㤼㸲 wurde unter R Version 3.5.3 erstelltRegistering fonts with R</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzaG93dGV4dClcbmBgYCJ9 -->
+<pre class="r"><code>library(showtext)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTGFkZSBu5pi847i2dGlnZXMgUGFrZXQ6IHN5c2ZvbnRzXG5MYWRlIG7mmLzjuLZ0aWdlcyBQYWtldDogc2hvd3RleHRkYlxuXG5BdHRhY2hlIFBha2V0OiDjpLzjuLFzaG93dGV4dGRi46S847iyXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0IGlzIG1hc2tlZCBmcm9tIOOkvOO4sXBhY2thZ2U6ZXh0cmFmb25046S847iyOlxuXG4gICAgZm9udF9pbnN0YWxsXG4ifQ== -->
+<pre><code>Lade n昼㸶tiges Paket: sysfonts
+Lade n昼㸶tiges Paket: showtextdb
+
+Attache Paket: 㤼㸱showtextdb㤼㸲
+
+The following object is masked from 㤼㸱package:extrafont㤼㸲:
+
+    font_install</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ZvbnRfaW1wb3J0KClcbmxvYWRmb250cygpXG5gYGAifQ== -->
+<pre class="r"><code>#font_import()
+loadfonts()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTE0gUm9tYW4gMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxNIFJvbWFuIENhcHMgMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxNIFJvbWFuIERlbWkgMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxNIFJvbWFuIER1bmhpbGwgMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxNIFJvbWFuIFNsYW50ZWQgMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkFnZW5jeSBGQiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgQWhhcm9uaS4gU2tpcHBpbmcgc2V0dXAgZm9yIHRoaXMgZm9udC5cbkFsZ2VyaWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5BbmRhbHVzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5BbmdzYW5hIE5ldyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQW5nc2FuYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQXBhcmFqaXRhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5BcmFiaWMgVHlwZXNldHRpbmcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkFyaWFsIEJsYWNrIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5BcmlhbCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQXJpYWwgTmFycm93IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5BcmlhbCBSb3VuZGVkIE1UIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkFyaWFsIFVuaWNvZGUgTVMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkJhc2tlcnZpbGxlIE9sZCBGYWNlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5CYXVoYXVzIDkzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5CZWxsIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5CZXJsaW4gU2FucyBGQiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgQmVybGluIFNhbnMgRkIgRGVtaS4gU2tpcHBpbmcgc2V0dXAgZm9yIHRoaXMgZm9udC5cbkJlcm5hcmQgTVQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5CbGFja2FkZGVyIElUQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQm9kb25pIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Cb2RvbmkgTVQgQmxhY2sgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkJvZG9uaSBNVCBDb25kZW5zZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkJvZG9uaSBNVCBQb3N0ZXIgQ29tcHJlc3NlZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQm9vayBBbnRpcXVhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Cb29rbWFuIE9sZCBTdHlsZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQm9va3NoZWxmIFN5bWJvbCA3IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5CcmFkbGV5IEhhbmQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Ccml0YW5uaWMgQm9sZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQnJvYWR3YXkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkJyb3dhbGxpYSBOZXcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkJyb3dhbGxpYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgQnJ1c2ggU2NyaXB0IE1ULiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuQ2FsaWJyaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQ2FsaWJyaSBMaWdodCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQ2FsaWZvcm5pYW4gRkIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNhbGlzdG8gTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk5vIHJlZ3VsYXIgKG5vbi1ib2xkLCBub24taXRhbGljKSB2ZXJzaW9uIG9mIENhbWJyaWEuIFNraXBwaW5nIHNldHVwIGZvciB0aGlzIGZvbnQuXG5DYW5kYXJhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5DYXN0ZWxsYXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNlbnRhdXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNlbnR1cnkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNlbnR1cnkgR290aGljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5DZW50dXJ5IFNjaG9vbGJvb2sgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNoaWxsZXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNvbG9ubmEgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNvbWljIFNhbnMgTVMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNvbnNvbGFzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Db25zdGFudGlhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Db29wZXIgQmxhY2sgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNvcHBlcnBsYXRlIEdvdGhpYyBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Db3BwZXJwbGF0ZSBHb3RoaWMgTGlnaHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkNvcmJlbCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQ29yZGlhIE5ldyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQ29yZGlhVVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Db3VyaWVyIE5ldyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuQ3VybHogTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkRhdW5QZW5oIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5EYXZpZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuREZLYWktU0IgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkRpbGxlbmlhVVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Eb2tDaGFtcGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVicmltYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuRWR3YXJkaWFuIFNjcmlwdCBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVsZXBoYW50IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5FbmdyYXZlcnMgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVyYXMgQm9sZCBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVyYXMgRGVtaSBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVyYXMgTGlnaHQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5FcmFzIE1lZGl1bSBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkVzdHJhbmdlbG8gRWRlc3NhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5FdWNyb3NpYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuRXVwaGVtaWEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkZhbmdTb25nIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GZWxpeCBUaXRsaW5nIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Gb290bGlnaHQgTVQgTGlnaHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkZvcnRlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GcmFua2xpbiBHb3RoaWMgQm9vayBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuRnJhbmtsaW4gR290aGljIERlbWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkZyYW5rbGluIEdvdGhpYyBEZW1pIENvbmQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkZyYW5rbGluIEdvdGhpYyBIZWF2eSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuRnJhbmtsaW4gR290aGljIE1lZGl1bSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuRnJhbmtsaW4gR290aGljIE1lZGl1bSBDb25kIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GcmFua1J1ZWhsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GcmVlc2lhVVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GcmVlc3R5bGUgU2NyaXB0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5GcmVuY2ggU2NyaXB0IE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5HYWJyaW9sYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2FkdWdpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5HYXJhbW9uZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2F1dGFtaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2VvcmdpYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2lnaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2lsbCBTYW5zIFVsdHJhIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkdpbGwgU2FucyBVbHRyYSBCb2xkIENvbmRlbnNlZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2lsbCBTYW5zIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5HaWxsIFNhbnMgTVQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5HaWxsIFNhbnMgTVQgRXh0IENvbmRlbnNlZCBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5HaXNoYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR2xvdWNlc3RlciBNVCBFeHRyYSBDb25kZW5zZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkdvdWR5IE9sZCBTdHlsZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuR291ZHkgU3RvdXQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkhhZXR0ZW5zY2h3ZWlsZXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk5vIHJlZ3VsYXIgKG5vbi1ib2xkLCBub24taXRhbGljKSB2ZXJzaW9uIG9mIEhhcmxvdyBTb2xpZCBJdGFsaWMuIFNraXBwaW5nIHNldHVwIGZvciB0aGlzIGZvbnQuXG5IYXJyaW5ndG9uIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5IaWdoIFRvd2VyIFRleHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkltcGFjdCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuSW1wcmludCBNVCBTaGFkb3cgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkluZm9ybWFsIFJvbWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5JcmlzVVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Jc2tvb2xhIFBvdGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkphc21pbmVVUEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkpva2VybWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5KdWljZSBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkthaVRpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5LYWxpbmdhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5LYXJ0aWthIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5LaG1lciBVSSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuS29kY2hpYW5nVVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Lb2tpbGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbktyaXN0ZW4gSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5LdW5zdGxlciBTY3JpcHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxhbyBVSSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTGF0aGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbldpZGUgTGF0aW4gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxlZWxhd2FkZWUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxldmVuaW0gTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbkxpbHlVUEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1vcmUgdGhhbiBvbmUgdmVyc2lvbiBvZiByZWd1bGFyL2JvbGQvaXRhbGljIGZvdW5kIGZvciBMdWNpZGEgQnJpZ2h0LiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgTHVjaWRhIENhbGxpZ3JhcGh5LiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuTHVjaWRhIENvbnNvbGUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1vcmUgdGhhbiBvbmUgdmVyc2lvbiBvZiByZWd1bGFyL2JvbGQvaXRhbGljIGZvdW5kIGZvciBMdWNpZGEgRmF4LiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgTHVjaWRhIEhhbmR3cml0aW5nLiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuTW9yZSB0aGFuIG9uZSB2ZXJzaW9uIG9mIHJlZ3VsYXIvYm9sZC9pdGFsaWMgZm91bmQgZm9yIEx1Y2lkYSBTYW5zLiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuTHVjaWRhIFNhbnMgVHlwZXdyaXRlciBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTHVjaWRhIFNhbnMgVW5pY29kZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgTWFnbmV0by4gU2tpcHBpbmcgc2V0dXAgZm9yIHRoaXMgZm9udC5cbk1haWFuZHJhIEdEIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NYWxndW4gR290aGljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NYW5nYWwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1hcmxldHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1hdHVyYSBNVCBTY3JpcHQgQ2FwaXRhbHMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1pY3Jvc29mdCBZaSBCYWl0aSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTWljcm9zb2Z0IEhpbWFsYXlhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NaWNyb3NvZnQgSmhlbmdIZWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1pY3Jvc29mdCBOZXcgVGFpIEx1ZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTWljcm9zb2Z0IFBoYWdzUGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1pY3Jvc29mdCBTYW5zIFNlcmlmIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NaWNyb3NvZnQgVGFpIExlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NaWNyb3NvZnQgVWlnaHVyIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NaWNyb3NvZnQgWWFIZWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1pcmlhbSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTWlyaWFtIEZpeGVkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5NaXN0cmFsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Nb2Rlcm4gTm8uIDIwIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Nb25nb2xpYW4gQmFpdGkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1vbm90eXBlIENvcnNpdmEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1vb2xCb3JhbiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTVMgT3V0bG9vayBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTVMgUmVmZXJlbmNlIFNhbnMgU2VyaWYgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1TIFJlZmVyZW5jZSBTcGVjaWFsdHkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1WIEJvbGkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk5hcmtpc2ltIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5OaWFnYXJhIEVuZ3JhdmVkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5OaWFnYXJhIFNvbGlkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5OaXJtYWxhIFVJIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5OeWFsYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuT0NSIEEgRXh0ZW5kZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk9sZCBFbmdsaXNoIFRleHQgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk9ueXggYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblBhbGFjZSBTY3JpcHQgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblBhbGF0aW5vIExpbm90eXBlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5QYXB5cnVzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5QYXJjaG1lbnQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblBlcnBldHVhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5QZXJwZXR1YSBUaXRsaW5nIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5QbGFudGFnZW5ldCBDaGVyb2tlZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuUGxheWJpbGwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblBvb3IgUmljaGFyZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuUHJpc3RpbmEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cbk1vcmUgdGhhbiBvbmUgdmVyc2lvbiBvZiByZWd1bGFyL2JvbGQvaXRhbGljIGZvdW5kIGZvciBSYWF2aS4gU2tpcHBpbmcgc2V0dXAgZm9yIHRoaXMgZm9udC5cbk5vIHJlZ3VsYXIgKG5vbi1ib2xkLCBub24taXRhbGljKSB2ZXJzaW9uIG9mIFJhZ2UgSXRhbGljLiBTa2lwcGluZyBzZXR1cCBmb3IgdGhpcyBmb250LlxuUmF2aWUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblJvY2t3ZWxsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Sb2Nrd2VsbCBDb25kZW5zZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblJvY2t3ZWxsIEV4dHJhIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblJvZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2Fra2FsIE1hamFsbGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblNjcmlwdCBNVCBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5TZWdvZSBQcmludCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2Vnb2UgU2NyaXB0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5TZWdvZSBVSSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2Vnb2UgVUkgTGlnaHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblNlZ29lIFVJIFNlbWlib2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5TZWdvZSBVSSBTZW1pbGlnaHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblNlZ29lIFVJIFN5bWJvbCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2hvbmFyIEJhbmdsYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2hvd2NhcmQgR290aGljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5TaHJ1dGkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblNpbUhlaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU2ltcGxpZmllZCBBcmFiaWMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblNpbXBsaWZpZWQgQXJhYmljIEZpeGVkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5TaW1TdW4tRXh0QiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuU25hcCBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblN0ZW5jaWwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblN5bGZhZW4gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblN5bWJvbCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVGFob21hIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5UZW1wdXMgU2FucyBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblRpbWVzIE5ldyBSb21hbiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVHJhZGl0aW9uYWwgQXJhYmljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5UcmVidWNoZXQgTVMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblR1bmdhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5UdyBDZW4gTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblR3IENlbiBNVCBDb25kZW5zZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblR3IENlbiBNVCBDb25kZW5zZWQgRXh0cmEgQm9sZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVW5pdmVycyBmb3IgVW5pUzQ1TGlnaHRPYmxpcXVlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Vbml2ZXJzIGZvciBVbmlTIDU1IFJvbWFuIFJnIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5Vbml2ZXJzIGZvciBVbmlTIDY1IEJvbGQgUmcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblV0c2FhaCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVmFuaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVmVyZGFuYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVmlqYXlhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5WaW5lciBIYW5kIElUQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuTm8gcmVndWxhciAobm9uLWJvbGQsIG5vbi1pdGFsaWMpIHZlcnNpb24gb2YgVml2YWxkaS4gU2tpcHBpbmcgc2V0dXAgZm9yIHRoaXMgZm9udC5cblZsYWRpbWlyIFNjcmlwdCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuVnJpbmRhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5XZWJkaW5ncyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuV2luZ2RpbmdzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG5XaW5nZGluZ3MgMiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCBwZGZGb250cygpLlxuV2luZ2RpbmdzIDMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggcGRmRm9udHMoKS5cblpXQWRvYmVGIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHBkZkZvbnRzKCkuXG4ifQ== -->
+<pre><code>LM Roman 10 already registered with pdfFonts().
+LM Roman Caps 10 already registered with pdfFonts().
+LM Roman Demi 10 already registered with pdfFonts().
+LM Roman Dunhill 10 already registered with pdfFonts().
+LM Roman Slanted 10 already registered with pdfFonts().
+Agency FB already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Aharoni. Skipping setup for this font.
+Algerian already registered with pdfFonts().
+Andalus already registered with pdfFonts().
+Angsana New already registered with pdfFonts().
+AngsanaUPC already registered with pdfFonts().
+Aparajita already registered with pdfFonts().
+Arabic Typesetting already registered with pdfFonts().
+Arial Black already registered with pdfFonts().
+Arial already registered with pdfFonts().
+Arial Narrow already registered with pdfFonts().
+Arial Rounded MT Bold already registered with pdfFonts().
+Arial Unicode MS already registered with pdfFonts().
+Baskerville Old Face already registered with pdfFonts().
+Bauhaus 93 already registered with pdfFonts().
+Bell MT already registered with pdfFonts().
+Berlin Sans FB already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Berlin Sans FB Demi. Skipping setup for this font.
+Bernard MT Condensed already registered with pdfFonts().
+Blackadder ITC already registered with pdfFonts().
+Bodoni MT already registered with pdfFonts().
+Bodoni MT Black already registered with pdfFonts().
+Bodoni MT Condensed already registered with pdfFonts().
+Bodoni MT Poster Compressed already registered with pdfFonts().
+Book Antiqua already registered with pdfFonts().
+Bookman Old Style already registered with pdfFonts().
+Bookshelf Symbol 7 already registered with pdfFonts().
+Bradley Hand ITC already registered with pdfFonts().
+Britannic Bold already registered with pdfFonts().
+Broadway already registered with pdfFonts().
+Browallia New already registered with pdfFonts().
+BrowalliaUPC already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Brush Script MT. Skipping setup for this font.
+Calibri already registered with pdfFonts().
+Calibri Light already registered with pdfFonts().
+Californian FB already registered with pdfFonts().
+Calisto MT already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Cambria. Skipping setup for this font.
+Candara already registered with pdfFonts().
+Castellar already registered with pdfFonts().
+Centaur already registered with pdfFonts().
+Century already registered with pdfFonts().
+Century Gothic already registered with pdfFonts().
+Century Schoolbook already registered with pdfFonts().
+Chiller already registered with pdfFonts().
+Colonna MT already registered with pdfFonts().
+Comic Sans MS already registered with pdfFonts().
+Consolas already registered with pdfFonts().
+Constantia already registered with pdfFonts().
+Cooper Black already registered with pdfFonts().
+Copperplate Gothic Bold already registered with pdfFonts().
+Copperplate Gothic Light already registered with pdfFonts().
+Corbel already registered with pdfFonts().
+Cordia New already registered with pdfFonts().
+CordiaUPC already registered with pdfFonts().
+Courier New already registered with pdfFonts().
+Curlz MT already registered with pdfFonts().
+DaunPenh already registered with pdfFonts().
+David already registered with pdfFonts().
+DFKai-SB already registered with pdfFonts().
+DilleniaUPC already registered with pdfFonts().
+DokChampa already registered with pdfFonts().
+Ebrima already registered with pdfFonts().
+Edwardian Script ITC already registered with pdfFonts().
+Elephant already registered with pdfFonts().
+Engravers MT already registered with pdfFonts().
+Eras Bold ITC already registered with pdfFonts().
+Eras Demi ITC already registered with pdfFonts().
+Eras Light ITC already registered with pdfFonts().
+Eras Medium ITC already registered with pdfFonts().
+Estrangelo Edessa already registered with pdfFonts().
+EucrosiaUPC already registered with pdfFonts().
+Euphemia already registered with pdfFonts().
+FangSong already registered with pdfFonts().
+Felix Titling already registered with pdfFonts().
+Footlight MT Light already registered with pdfFonts().
+Forte already registered with pdfFonts().
+Franklin Gothic Book already registered with pdfFonts().
+Franklin Gothic Demi already registered with pdfFonts().
+Franklin Gothic Demi Cond already registered with pdfFonts().
+Franklin Gothic Heavy already registered with pdfFonts().
+Franklin Gothic Medium already registered with pdfFonts().
+Franklin Gothic Medium Cond already registered with pdfFonts().
+FrankRuehl already registered with pdfFonts().
+FreesiaUPC already registered with pdfFonts().
+Freestyle Script already registered with pdfFonts().
+French Script MT already registered with pdfFonts().
+Gabriola already registered with pdfFonts().
+Gadugi already registered with pdfFonts().
+Garamond already registered with pdfFonts().
+Gautami already registered with pdfFonts().
+Georgia already registered with pdfFonts().
+Gigi already registered with pdfFonts().
+Gill Sans Ultra Bold already registered with pdfFonts().
+Gill Sans Ultra Bold Condensed already registered with pdfFonts().
+Gill Sans MT already registered with pdfFonts().
+Gill Sans MT Condensed already registered with pdfFonts().
+Gill Sans MT Ext Condensed Bold already registered with pdfFonts().
+Gisha already registered with pdfFonts().
+Gloucester MT Extra Condensed already registered with pdfFonts().
+Goudy Old Style already registered with pdfFonts().
+Goudy Stout already registered with pdfFonts().
+Haettenschweiler already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Harlow Solid Italic. Skipping setup for this font.
+Harrington already registered with pdfFonts().
+High Tower Text already registered with pdfFonts().
+Impact already registered with pdfFonts().
+Imprint MT Shadow already registered with pdfFonts().
+Informal Roman already registered with pdfFonts().
+IrisUPC already registered with pdfFonts().
+Iskoola Pota already registered with pdfFonts().
+JasmineUPC already registered with pdfFonts().
+Jokerman already registered with pdfFonts().
+Juice ITC already registered with pdfFonts().
+KaiTi already registered with pdfFonts().
+Kalinga already registered with pdfFonts().
+Kartika already registered with pdfFonts().
+Khmer UI already registered with pdfFonts().
+KodchiangUPC already registered with pdfFonts().
+Kokila already registered with pdfFonts().
+Kristen ITC already registered with pdfFonts().
+Kunstler Script already registered with pdfFonts().
+Lao UI already registered with pdfFonts().
+Latha already registered with pdfFonts().
+Wide Latin already registered with pdfFonts().
+Leelawadee already registered with pdfFonts().
+Levenim MT already registered with pdfFonts().
+LilyUPC already registered with pdfFonts().
+More than one version of regular/bold/italic found for Lucida Bright. Skipping setup for this font.
+No regular (non-bold, non-italic) version of Lucida Calligraphy. Skipping setup for this font.
+Lucida Console already registered with pdfFonts().
+More than one version of regular/bold/italic found for Lucida Fax. Skipping setup for this font.
+No regular (non-bold, non-italic) version of Lucida Handwriting. Skipping setup for this font.
+More than one version of regular/bold/italic found for Lucida Sans. Skipping setup for this font.
+Lucida Sans Typewriter already registered with pdfFonts().
+Lucida Sans Unicode already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Magneto. Skipping setup for this font.
+Maiandra GD already registered with pdfFonts().
+Malgun Gothic already registered with pdfFonts().
+Mangal already registered with pdfFonts().
+Marlett already registered with pdfFonts().
+Matura MT Script Capitals already registered with pdfFonts().
+Microsoft Yi Baiti already registered with pdfFonts().
+Microsoft Himalaya already registered with pdfFonts().
+Microsoft JhengHei already registered with pdfFonts().
+Microsoft New Tai Lue already registered with pdfFonts().
+Microsoft PhagsPa already registered with pdfFonts().
+Microsoft Sans Serif already registered with pdfFonts().
+Microsoft Tai Le already registered with pdfFonts().
+Microsoft Uighur already registered with pdfFonts().
+Microsoft YaHei already registered with pdfFonts().
+Miriam already registered with pdfFonts().
+Miriam Fixed already registered with pdfFonts().
+Mistral already registered with pdfFonts().
+Modern No. 20 already registered with pdfFonts().
+Mongolian Baiti already registered with pdfFonts().
+Monotype Corsiva already registered with pdfFonts().
+MoolBoran already registered with pdfFonts().
+MS Outlook already registered with pdfFonts().
+MS Reference Sans Serif already registered with pdfFonts().
+MS Reference Specialty already registered with pdfFonts().
+MV Boli already registered with pdfFonts().
+Narkisim already registered with pdfFonts().
+Niagara Engraved already registered with pdfFonts().
+Niagara Solid already registered with pdfFonts().
+Nirmala UI already registered with pdfFonts().
+Nyala already registered with pdfFonts().
+OCR A Extended already registered with pdfFonts().
+Old English Text MT already registered with pdfFonts().
+Onyx already registered with pdfFonts().
+Palace Script MT already registered with pdfFonts().
+Palatino Linotype already registered with pdfFonts().
+Papyrus already registered with pdfFonts().
+Parchment already registered with pdfFonts().
+Perpetua already registered with pdfFonts().
+Perpetua Titling MT already registered with pdfFonts().
+Plantagenet Cherokee already registered with pdfFonts().
+Playbill already registered with pdfFonts().
+Poor Richard already registered with pdfFonts().
+Pristina already registered with pdfFonts().
+More than one version of regular/bold/italic found for Raavi. Skipping setup for this font.
+No regular (non-bold, non-italic) version of Rage Italic. Skipping setup for this font.
+Ravie already registered with pdfFonts().
+Rockwell already registered with pdfFonts().
+Rockwell Condensed already registered with pdfFonts().
+Rockwell Extra Bold already registered with pdfFonts().
+Rod already registered with pdfFonts().
+Sakkal Majalla already registered with pdfFonts().
+Script MT Bold already registered with pdfFonts().
+Segoe Print already registered with pdfFonts().
+Segoe Script already registered with pdfFonts().
+Segoe UI already registered with pdfFonts().
+Segoe UI Light already registered with pdfFonts().
+Segoe UI Semibold already registered with pdfFonts().
+Segoe UI Semilight already registered with pdfFonts().
+Segoe UI Symbol already registered with pdfFonts().
+Shonar Bangla already registered with pdfFonts().
+Showcard Gothic already registered with pdfFonts().
+Shruti already registered with pdfFonts().
+SimHei already registered with pdfFonts().
+Simplified Arabic already registered with pdfFonts().
+Simplified Arabic Fixed already registered with pdfFonts().
+SimSun-ExtB already registered with pdfFonts().
+Snap ITC already registered with pdfFonts().
+Stencil already registered with pdfFonts().
+Sylfaen already registered with pdfFonts().
+Symbol already registered with pdfFonts().
+Tahoma already registered with pdfFonts().
+Tempus Sans ITC already registered with pdfFonts().
+Times New Roman already registered with pdfFonts().
+Traditional Arabic already registered with pdfFonts().
+Trebuchet MS already registered with pdfFonts().
+Tunga already registered with pdfFonts().
+Tw Cen MT already registered with pdfFonts().
+Tw Cen MT Condensed already registered with pdfFonts().
+Tw Cen MT Condensed Extra Bold already registered with pdfFonts().
+Univers for UniS45LightOblique already registered with pdfFonts().
+Univers for UniS 55 Roman Rg already registered with pdfFonts().
+Univers for UniS 65 Bold Rg already registered with pdfFonts().
+Utsaah already registered with pdfFonts().
+Vani already registered with pdfFonts().
+Verdana already registered with pdfFonts().
+Vijaya already registered with pdfFonts().
+Viner Hand ITC already registered with pdfFonts().
+No regular (non-bold, non-italic) version of Vivaldi. Skipping setup for this font.
+Vladimir Script already registered with pdfFonts().
+Vrinda already registered with pdfFonts().
+Webdings already registered with pdfFonts().
+Wingdings already registered with pdfFonts().
+Wingdings 2 already registered with pdfFonts().
+Wingdings 3 already registered with pdfFonts().
+ZWAdobeF already registered with pdfFonts().</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -304,9 +547,9 @@ gdp_diff &lt;- gdp_diff %&gt;% mutate(vat = (vat-ref)/ref)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBkcm9wIG5vbi1FVSByZWdpb25zLCB5ZWFycyBhZnRlciAyMDMwIGFuZCBjYXRlZ29yaWVzIHRoYXQgYXJlIG5vdCAndG90YWwnXG5nZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmLCBncmVwbCgnREVVfEZSQXxJVEF8VUtJfFBPTHxCTkx8RVNQfEVVTnxFVVN8RVUtMjgnLCBSZWdpb24pKVxuZ2RwX2RpZmZfZmlsdGVyIDwtIGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIGdyZXBsKCcyMDExfDIwMTV8MjAyMHwyMDI1fDIwMzAnLCBZZWFyKSlcbmdkcF9kaWZmX2ZpbHRlciA8LSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBUeXBlID09ICd0b3RhbCcpXG4jIGRyb3AgcmVmXG5nZHBfZGlmZl9maWx0ZXIgPC0gc3Vic2V0KGdkcF9kaWZmX2ZpbHRlciwgc2VsZWN0ID0gLWMocmVmLCBUeXBlKSlcbiMgZ2F0aGVyIHNjZW5hcmlvc1xuZ2RwX2RpZmZfZmlsdGVyIDwtIGdhdGhlcihnZHBfZGlmZl9maWx0ZXIsICdiYXUnLCAnY0FQJywgJ2ludicsICd2YXQnLCAnbGFiJywga2V5ID0gJ1NjZW5hcmlvJywgdmFsdWUgPSAnVmFsdWUnKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBkcm9wIG5vbi1FVSByZWdpb25zLCB5ZWFycyBhZnRlciAyMDMwIGFuZCBjYXRlZ29yaWVzIHRoYXQgYXJlIG5vdCAndG90YWwnXG5nZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmLCBncmVwbCgnREVVfEZSQXxJVEF8VUtJfFBPTHxCTkx8RVNQfEVVTnxFVVN8RVUyOCcsIFJlZ2lvbikpXG5nZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmX2ZpbHRlciwgZ3JlcGwoJzIwMTF8MjAxNXwyMDIwfDIwMjV8MjAzMCcsIFllYXIpKVxuZ2RwX2RpZmZfZmlsdGVyIDwtIGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIFR5cGUgPT0gJ3RvdGFsJylcbiMgZHJvcCByZWZcbmdkcF9kaWZmX2ZpbHRlciA8LSBzdWJzZXQoZ2RwX2RpZmZfZmlsdGVyLCBzZWxlY3QgPSAtYyhyZWYsIFR5cGUpKVxuIyBnYXRoZXIgc2NlbmFyaW9zXG5nZHBfZGlmZl9maWx0ZXIgPC0gZ2F0aGVyKGdkcF9kaWZmX2ZpbHRlciwgJ2JhdScsICdjQVAnLCAnaW52JywgJ3ZhdCcsICdsYWInLCBrZXkgPSAnU2NlbmFyaW8nLCB2YWx1ZSA9ICdWYWx1ZScpXG5gYGAifQ== -->
 <pre class="r"><code># drop non-EU regions, years after 2030 and categories that are not 'total'
-gdp_diff_filter &lt;- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU-28', Region))
+gdp_diff_filter &lt;- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU28', Region))
 gdp_diff_filter &lt;- filter(gdp_diff_filter, grepl('2011|2015|2020|2025|2030', Year))
 gdp_diff_filter &lt;- filter(gdp_diff_filter, Type == 'total')
 # drop ref
@@ -330,22 +573,984 @@ gdp_diff_filter$Scenario &lt;- factor(gdp_diff_filter$Scenario, levels = c(&quot
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ZvbnRfaW1wb3J0KHBhdHRlcm4gPSBcImxtcm9tYW4qXCIpXG4jbG9hZGZvbnRzKClcbiNmb250X2ltcG9ydCgpXG4jbG9hZGZvbnRzKGRldmljZSA9IFwid2luXCIpXG4jIHdpbmRvd3NGb250cygpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ZvbnRfaW1wb3J0KHBhdHRlcm4gPSBcImxtcm9tYW4qXCIpXG4jbG9hZGZvbnRzKClcbiNmb250X2ltcG9ydCgpXG5sb2FkZm9udHMoZGV2aWNlID0gXCJ3aW5cIilcbmBgYCJ9 -->
 <pre class="r"><code>#font_import(pattern = &quot;lmroman*&quot;)
 #loadfonts()
 #font_import()
-#loadfonts(device = &quot;win&quot;)
-# windowsFonts()</code></pre>
+loadfonts(device = &quot;win&quot;)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTE0gUm9tYW4gMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5MTSBSb21hbiBDYXBzIDEwIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTE0gUm9tYW4gRGVtaSAxMCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkxNIFJvbWFuIER1bmhpbGwgMTAgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5MTSBSb21hbiBTbGFudGVkIDEwIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQWdlbmN5IEZCIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQWhhcm9uaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkFsZ2VyaWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQW5kYWx1cyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkFuZ3NhbmEgTmV3IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQW5nc2FuYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkFwYXJhaml0YSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkFyYWJpYyBUeXBlc2V0dGluZyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkFyaWFsIEJsYWNrIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQXJpYWwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5BcmlhbCBOYXJyb3cgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5BcmlhbCBSb3VuZGVkIE1UIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5BcmlhbCBVbmljb2RlIE1TIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQmFza2VydmlsbGUgT2xkIEZhY2UgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5CYXVoYXVzIDkzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQmVsbCBNVCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkJlcmxpbiBTYW5zIEZCIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQmVybGluIFNhbnMgRkIgRGVtaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkJlcm5hcmQgTVQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQmxhY2thZGRlciBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Cb2RvbmkgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Cb2RvbmkgTVQgQmxhY2sgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Cb2RvbmkgTVQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQm9kb25pIE1UIFBvc3RlciBDb21wcmVzc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQm9vayBBbnRpcXVhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQm9va21hbiBPbGQgU3R5bGUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Cb29rc2hlbGYgU3ltYm9sIDcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5CcmFkbGV5IEhhbmQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQnJpdGFubmljIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Ccm9hZHdheSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkJyb3dhbGxpYSBOZXcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Ccm93YWxsaWFVUEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5CcnVzaCBTY3JpcHQgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5DYWxpYnJpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ2FsaWJyaSBMaWdodCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNhbGlmb3JuaWFuIEZCIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ2FsaXN0byBNVCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNhbWJyaWEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5DYW5kYXJhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ2FzdGVsbGFyIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ2VudGF1ciBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNlbnR1cnkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5DZW50dXJ5IEdvdGhpYyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNlbnR1cnkgU2Nob29sYm9vayBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNoaWxsZXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Db2xvbm5hIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ29taWMgU2FucyBNUyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNvbnNvbGFzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ29uc3RhbnRpYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNvb3BlciBCbGFjayBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNvcHBlcnBsYXRlIEdvdGhpYyBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ29wcGVycGxhdGUgR290aGljIExpZ2h0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ29yYmVsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ29yZGlhIE5ldyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNvcmRpYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkNvdXJpZXIgTmV3IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuQ3VybHogTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5EYXVuUGVuaCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkRhdmlkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuREZLYWktU0IgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5EaWxsZW5pYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkRva0NoYW1wYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkVicmltYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkVkd2FyZGlhbiBTY3JpcHQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRWxlcGhhbnQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5FbmdyYXZlcnMgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5FcmFzIEJvbGQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRXJhcyBEZW1pIElUQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkVyYXMgTGlnaHQgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRXJhcyBNZWRpdW0gSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRXN0cmFuZ2VsbyBFZGVzc2EgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5FdWNyb3NpYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkV1cGhlbWlhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRmFuZ1NvbmcgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5GZWxpeCBUaXRsaW5nIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRm9vdGxpZ2h0IE1UIExpZ2h0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRm9ydGUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5GcmFua2xpbiBHb3RoaWMgQm9vayBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkZyYW5rbGluIEdvdGhpYyBEZW1pIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRnJhbmtsaW4gR290aGljIERlbWkgQ29uZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkZyYW5rbGluIEdvdGhpYyBIZWF2eSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkZyYW5rbGluIEdvdGhpYyBNZWRpdW0gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5GcmFua2xpbiBHb3RoaWMgTWVkaXVtIENvbmQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5GcmFua1J1ZWhsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuRnJlZXNpYVVQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkZyZWVzdHlsZSBTY3JpcHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5GcmVuY2ggU2NyaXB0IE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR2FicmlvbGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5HYWR1Z2kgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5HYXJhbW9uZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkdhdXRhbWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5HZW9yZ2lhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR2lnaSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkdpbGwgU2FucyBVbHRyYSBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR2lsbCBTYW5zIFVsdHJhIEJvbGQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR2lsbCBTYW5zIE1UIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR2lsbCBTYW5zIE1UIENvbmRlbnNlZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkdpbGwgU2FucyBNVCBFeHQgQ29uZGVuc2VkIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5HaXNoYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkdsb3VjZXN0ZXIgTVQgRXh0cmEgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR291ZHkgT2xkIFN0eWxlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuR291ZHkgU3RvdXQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5IYWV0dGVuc2Nod2VpbGVyIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuSGFybG93IFNvbGlkIEl0YWxpYyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkhhcnJpbmd0b24gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5IaWdoIFRvd2VyIFRleHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5JbXBhY3QgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5JbXByaW50IE1UIFNoYWRvdyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkluZm9ybWFsIFJvbWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuSXJpc1VQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbklza29vbGEgUG90YSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkphc21pbmVVUEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Kb2tlcm1hbiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkp1aWNlIElUQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkthaVRpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuS2FsaW5nYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkthcnRpa2EgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5LaG1lciBVSSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbktvZGNoaWFuZ1VQQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbktva2lsYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbktyaXN0ZW4gSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuS3Vuc3RsZXIgU2NyaXB0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTGFvIFVJIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTGF0aGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5XaWRlIExhdGluIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTGVlbGF3YWRlZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkxldmVuaW0gTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5MaWx5VVBDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTHVjaWRhIEJyaWdodCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkx1Y2lkYSBDYWxsaWdyYXBoeSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkx1Y2lkYSBDb25zb2xlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTHVjaWRhIEZheCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkx1Y2lkYSBIYW5kd3JpdGluZyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkx1Y2lkYSBTYW5zIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTHVjaWRhIFNhbnMgVHlwZXdyaXRlciBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbkx1Y2lkYSBTYW5zIFVuaWNvZGUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NYWduZXRvIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTWFpYW5kcmEgR0QgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NYWxndW4gR290aGljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTWFuZ2FsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTWFybGV0dCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk1hdHVyYSBNVCBTY3JpcHQgQ2FwaXRhbHMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgWWkgQmFpdGkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgSGltYWxheWEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgSmhlbmdIZWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgTmV3IFRhaSBMdWUgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgUGhhZ3NQYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk1pY3Jvc29mdCBTYW5zIFNlcmlmIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTWljcm9zb2Z0IFRhaSBMZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk1pY3Jvc29mdCBVaWdodXIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaWNyb3NvZnQgWWFIZWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaXJpYW0gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaXJpYW0gRml4ZWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NaXN0cmFsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTW9kZXJuIE5vLiAyMCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk1vbmdvbGlhbiBCYWl0aSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk1vbm90eXBlIENvcnNpdmEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Nb29sQm9yYW4gYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NUyBPdXRsb29rIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTVMgUmVmZXJlbmNlIFNhbnMgU2VyaWYgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5NUyBSZWZlcmVuY2UgU3BlY2lhbHR5IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTVYgQm9saSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk5hcmtpc2ltIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTmlhZ2FyYSBFbmdyYXZlZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk5pYWdhcmEgU29saWQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5OaXJtYWxhIFVJIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuTnlhbGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5PQ1IgQSBFeHRlbmRlZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbk9sZCBFbmdsaXNoIFRleHQgTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Pbnl4IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUGFsYWNlIFNjcmlwdCBNVCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblBhbGF0aW5vIExpbm90eXBlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUGFweXJ1cyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblBhcmNobWVudCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblBlcnBldHVhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUGVycGV0dWEgVGl0bGluZyBNVCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblBsYW50YWdlbmV0IENoZXJva2VlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUGxheWJpbGwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5Qb29yIFJpY2hhcmQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5QcmlzdGluYSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblJhYXZpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUmFnZSBJdGFsaWMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5SYXZpZSBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblJvY2t3ZWxsIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUm9ja3dlbGwgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuUm9ja3dlbGwgRXh0cmEgQm9sZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblJvZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNha2thbCBNYWphbGxhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuU2NyaXB0IE1UIEJvbGQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TZWdvZSBQcmludCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNlZ29lIFNjcmlwdCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNlZ29lIFVJIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuU2Vnb2UgVUkgTGlnaHQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TZWdvZSBVSSBTZW1pYm9sZCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNlZ29lIFVJIFNlbWlsaWdodCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNlZ29lIFVJIFN5bWJvbCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNob25hciBCYW5nbGEgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TaG93Y2FyZCBHb3RoaWMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TaHJ1dGkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TaW1IZWkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TaW1wbGlmaWVkIEFyYWJpYyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblNpbXBsaWZpZWQgQXJhYmljIEZpeGVkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuU2ltU3VuLUV4dEIgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TbmFwIElUQyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblN0ZW5jaWwgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5TeWxmYWVuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuU3ltYm9sIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVGFob21hIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVGVtcHVzIFNhbnMgSVRDIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVGltZXMgTmV3IFJvbWFuIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVHJhZGl0aW9uYWwgQXJhYmljIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVHJlYnVjaGV0IE1TIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVHVuZ2EgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5UdyBDZW4gTVQgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5UdyBDZW4gTVQgQ29uZGVuc2VkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVHcgQ2VuIE1UIENvbmRlbnNlZCBFeHRyYSBCb2xkIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVW5pdmVycyBmb3IgVW5pUzQ1TGlnaHRPYmxpcXVlIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVW5pdmVycyBmb3IgVW5pUyA1NSBSb21hbiBSZyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblVuaXZlcnMgZm9yIFVuaVMgNjUgQm9sZCBSZyBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblV0c2FhaCBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cblZhbmkgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5WZXJkYW5hIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVmlqYXlhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVmluZXIgSGFuZCBJVEMgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5WaXZhbGRpIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVmxhZGltaXIgU2NyaXB0IGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuVnJpbmRhIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuV2ViZGluZ3MgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5XaW5nZGluZ3MgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG5XaW5nZGluZ3MgMiBhbHJlYWR5IHJlZ2lzdGVyZWQgd2l0aCB3aW5kb3dzRm9udHMoKS5cbldpbmdkaW5ncyAzIGFscmVhZHkgcmVnaXN0ZXJlZCB3aXRoIHdpbmRvd3NGb250cygpLlxuWldBZG9iZUYgYWxyZWFkeSByZWdpc3RlcmVkIHdpdGggd2luZG93c0ZvbnRzKCkuXG4ifQ== -->
+<pre><code>LM Roman 10 already registered with windowsFonts().
+LM Roman Caps 10 already registered with windowsFonts().
+LM Roman Demi 10 already registered with windowsFonts().
+LM Roman Dunhill 10 already registered with windowsFonts().
+LM Roman Slanted 10 already registered with windowsFonts().
+Agency FB already registered with windowsFonts().
+Aharoni already registered with windowsFonts().
+Algerian already registered with windowsFonts().
+Andalus already registered with windowsFonts().
+Angsana New already registered with windowsFonts().
+AngsanaUPC already registered with windowsFonts().
+Aparajita already registered with windowsFonts().
+Arabic Typesetting already registered with windowsFonts().
+Arial Black already registered with windowsFonts().
+Arial already registered with windowsFonts().
+Arial Narrow already registered with windowsFonts().
+Arial Rounded MT Bold already registered with windowsFonts().
+Arial Unicode MS already registered with windowsFonts().
+Baskerville Old Face already registered with windowsFonts().
+Bauhaus 93 already registered with windowsFonts().
+Bell MT already registered with windowsFonts().
+Berlin Sans FB already registered with windowsFonts().
+Berlin Sans FB Demi already registered with windowsFonts().
+Bernard MT Condensed already registered with windowsFonts().
+Blackadder ITC already registered with windowsFonts().
+Bodoni MT already registered with windowsFonts().
+Bodoni MT Black already registered with windowsFonts().
+Bodoni MT Condensed already registered with windowsFonts().
+Bodoni MT Poster Compressed already registered with windowsFonts().
+Book Antiqua already registered with windowsFonts().
+Bookman Old Style already registered with windowsFonts().
+Bookshelf Symbol 7 already registered with windowsFonts().
+Bradley Hand ITC already registered with windowsFonts().
+Britannic Bold already registered with windowsFonts().
+Broadway already registered with windowsFonts().
+Browallia New already registered with windowsFonts().
+BrowalliaUPC already registered with windowsFonts().
+Brush Script MT already registered with windowsFonts().
+Calibri already registered with windowsFonts().
+Calibri Light already registered with windowsFonts().
+Californian FB already registered with windowsFonts().
+Calisto MT already registered with windowsFonts().
+Cambria already registered with windowsFonts().
+Candara already registered with windowsFonts().
+Castellar already registered with windowsFonts().
+Centaur already registered with windowsFonts().
+Century already registered with windowsFonts().
+Century Gothic already registered with windowsFonts().
+Century Schoolbook already registered with windowsFonts().
+Chiller already registered with windowsFonts().
+Colonna MT already registered with windowsFonts().
+Comic Sans MS already registered with windowsFonts().
+Consolas already registered with windowsFonts().
+Constantia already registered with windowsFonts().
+Cooper Black already registered with windowsFonts().
+Copperplate Gothic Bold already registered with windowsFonts().
+Copperplate Gothic Light already registered with windowsFonts().
+Corbel already registered with windowsFonts().
+Cordia New already registered with windowsFonts().
+CordiaUPC already registered with windowsFonts().
+Courier New already registered with windowsFonts().
+Curlz MT already registered with windowsFonts().
+DaunPenh already registered with windowsFonts().
+David already registered with windowsFonts().
+DFKai-SB already registered with windowsFonts().
+DilleniaUPC already registered with windowsFonts().
+DokChampa already registered with windowsFonts().
+Ebrima already registered with windowsFonts().
+Edwardian Script ITC already registered with windowsFonts().
+Elephant already registered with windowsFonts().
+Engravers MT already registered with windowsFonts().
+Eras Bold ITC already registered with windowsFonts().
+Eras Demi ITC already registered with windowsFonts().
+Eras Light ITC already registered with windowsFonts().
+Eras Medium ITC already registered with windowsFonts().
+Estrangelo Edessa already registered with windowsFonts().
+EucrosiaUPC already registered with windowsFonts().
+Euphemia already registered with windowsFonts().
+FangSong already registered with windowsFonts().
+Felix Titling already registered with windowsFonts().
+Footlight MT Light already registered with windowsFonts().
+Forte already registered with windowsFonts().
+Franklin Gothic Book already registered with windowsFonts().
+Franklin Gothic Demi already registered with windowsFonts().
+Franklin Gothic Demi Cond already registered with windowsFonts().
+Franklin Gothic Heavy already registered with windowsFonts().
+Franklin Gothic Medium already registered with windowsFonts().
+Franklin Gothic Medium Cond already registered with windowsFonts().
+FrankRuehl already registered with windowsFonts().
+FreesiaUPC already registered with windowsFonts().
+Freestyle Script already registered with windowsFonts().
+French Script MT already registered with windowsFonts().
+Gabriola already registered with windowsFonts().
+Gadugi already registered with windowsFonts().
+Garamond already registered with windowsFonts().
+Gautami already registered with windowsFonts().
+Georgia already registered with windowsFonts().
+Gigi already registered with windowsFonts().
+Gill Sans Ultra Bold already registered with windowsFonts().
+Gill Sans Ultra Bold Condensed already registered with windowsFonts().
+Gill Sans MT already registered with windowsFonts().
+Gill Sans MT Condensed already registered with windowsFonts().
+Gill Sans MT Ext Condensed Bold already registered with windowsFonts().
+Gisha already registered with windowsFonts().
+Gloucester MT Extra Condensed already registered with windowsFonts().
+Goudy Old Style already registered with windowsFonts().
+Goudy Stout already registered with windowsFonts().
+Haettenschweiler already registered with windowsFonts().
+Harlow Solid Italic already registered with windowsFonts().
+Harrington already registered with windowsFonts().
+High Tower Text already registered with windowsFonts().
+Impact already registered with windowsFonts().
+Imprint MT Shadow already registered with windowsFonts().
+Informal Roman already registered with windowsFonts().
+IrisUPC already registered with windowsFonts().
+Iskoola Pota already registered with windowsFonts().
+JasmineUPC already registered with windowsFonts().
+Jokerman already registered with windowsFonts().
+Juice ITC already registered with windowsFonts().
+KaiTi already registered with windowsFonts().
+Kalinga already registered with windowsFonts().
+Kartika already registered with windowsFonts().
+Khmer UI already registered with windowsFonts().
+KodchiangUPC already registered with windowsFonts().
+Kokila already registered with windowsFonts().
+Kristen ITC already registered with windowsFonts().
+Kunstler Script already registered with windowsFonts().
+Lao UI already registered with windowsFonts().
+Latha already registered with windowsFonts().
+Wide Latin already registered with windowsFonts().
+Leelawadee already registered with windowsFonts().
+Levenim MT already registered with windowsFonts().
+LilyUPC already registered with windowsFonts().
+Lucida Bright already registered with windowsFonts().
+Lucida Calligraphy already registered with windowsFonts().
+Lucida Console already registered with windowsFonts().
+Lucida Fax already registered with windowsFonts().
+Lucida Handwriting already registered with windowsFonts().
+Lucida Sans already registered with windowsFonts().
+Lucida Sans Typewriter already registered with windowsFonts().
+Lucida Sans Unicode already registered with windowsFonts().
+Magneto already registered with windowsFonts().
+Maiandra GD already registered with windowsFonts().
+Malgun Gothic already registered with windowsFonts().
+Mangal already registered with windowsFonts().
+Marlett already registered with windowsFonts().
+Matura MT Script Capitals already registered with windowsFonts().
+Microsoft Yi Baiti already registered with windowsFonts().
+Microsoft Himalaya already registered with windowsFonts().
+Microsoft JhengHei already registered with windowsFonts().
+Microsoft New Tai Lue already registered with windowsFonts().
+Microsoft PhagsPa already registered with windowsFonts().
+Microsoft Sans Serif already registered with windowsFonts().
+Microsoft Tai Le already registered with windowsFonts().
+Microsoft Uighur already registered with windowsFonts().
+Microsoft YaHei already registered with windowsFonts().
+Miriam already registered with windowsFonts().
+Miriam Fixed already registered with windowsFonts().
+Mistral already registered with windowsFonts().
+Modern No. 20 already registered with windowsFonts().
+Mongolian Baiti already registered with windowsFonts().
+Monotype Corsiva already registered with windowsFonts().
+MoolBoran already registered with windowsFonts().
+MS Outlook already registered with windowsFonts().
+MS Reference Sans Serif already registered with windowsFonts().
+MS Reference Specialty already registered with windowsFonts().
+MV Boli already registered with windowsFonts().
+Narkisim already registered with windowsFonts().
+Niagara Engraved already registered with windowsFonts().
+Niagara Solid already registered with windowsFonts().
+Nirmala UI already registered with windowsFonts().
+Nyala already registered with windowsFonts().
+OCR A Extended already registered with windowsFonts().
+Old English Text MT already registered with windowsFonts().
+Onyx already registered with windowsFonts().
+Palace Script MT already registered with windowsFonts().
+Palatino Linotype already registered with windowsFonts().
+Papyrus already registered with windowsFonts().
+Parchment already registered with windowsFonts().
+Perpetua already registered with windowsFonts().
+Perpetua Titling MT already registered with windowsFonts().
+Plantagenet Cherokee already registered with windowsFonts().
+Playbill already registered with windowsFonts().
+Poor Richard already registered with windowsFonts().
+Pristina already registered with windowsFonts().
+Raavi already registered with windowsFonts().
+Rage Italic already registered with windowsFonts().
+Ravie already registered with windowsFonts().
+Rockwell already registered with windowsFonts().
+Rockwell Condensed already registered with windowsFonts().
+Rockwell Extra Bold already registered with windowsFonts().
+Rod already registered with windowsFonts().
+Sakkal Majalla already registered with windowsFonts().
+Script MT Bold already registered with windowsFonts().
+Segoe Print already registered with windowsFonts().
+Segoe Script already registered with windowsFonts().
+Segoe UI already registered with windowsFonts().
+Segoe UI Light already registered with windowsFonts().
+Segoe UI Semibold already registered with windowsFonts().
+Segoe UI Semilight already registered with windowsFonts().
+Segoe UI Symbol already registered with windowsFonts().
+Shonar Bangla already registered with windowsFonts().
+Showcard Gothic already registered with windowsFonts().
+Shruti already registered with windowsFonts().
+SimHei already registered with windowsFonts().
+Simplified Arabic already registered with windowsFonts().
+Simplified Arabic Fixed already registered with windowsFonts().
+SimSun-ExtB already registered with windowsFonts().
+Snap ITC already registered with windowsFonts().
+Stencil already registered with windowsFonts().
+Sylfaen already registered with windowsFonts().
+Symbol already registered with windowsFonts().
+Tahoma already registered with windowsFonts().
+Tempus Sans ITC already registered with windowsFonts().
+Times New Roman already registered with windowsFonts().
+Traditional Arabic already registered with windowsFonts().
+Trebuchet MS already registered with windowsFonts().
+Tunga already registered with windowsFonts().
+Tw Cen MT already registered with windowsFonts().
+Tw Cen MT Condensed already registered with windowsFonts().
+Tw Cen MT Condensed Extra Bold already registered with windowsFonts().
+Univers for UniS45LightOblique already registered with windowsFonts().
+Univers for UniS 55 Roman Rg already registered with windowsFonts().
+Univers for UniS 65 Bold Rg already registered with windowsFonts().
+Utsaah already registered with windowsFonts().
+Vani already registered with windowsFonts().
+Verdana already registered with windowsFonts().
+Vijaya already registered with windowsFonts().
+Viner Hand ITC already registered with windowsFonts().
+Vivaldi already registered with windowsFonts().
+Vladimir Script already registered with windowsFonts().
+Vrinda already registered with windowsFonts().
+Webdings already registered with windowsFonts().
+Wingdings already registered with windowsFonts().
+Wingdings 2 already registered with windowsFonts().
+Wingdings 3 already registered with windowsFonts().
+ZWAdobeF already registered with windowsFonts().</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2luZG93c0ZvbnRzKClcbmBgYCJ9 -->
+<pre class="r"><code>windowsFonts()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGBzZXJpZmBcblsxXSBcIlRUIFRpbWVzIE5ldyBSb21hblwiXG5cbiRzYW5zXG5bMV0gXCJUVCBBcmlhbFwiXG5cbiRtb25vXG5bMV0gXCJUVCBDb3VyaWVyIE5ld1wiXG5cbiRgTE0gUm9tYW4gMTBgXG5bMV0gXCJMTSBSb21hbiAxMFwiXG5cbiRgTE0gUm9tYW4gQ2FwcyAxMGBcblsxXSBcIkxNIFJvbWFuIENhcHMgMTBcIlxuXG4kYExNIFJvbWFuIERlbWkgMTBgXG5bMV0gXCJMTSBSb21hbiBEZW1pIDEwXCJcblxuJGBMTSBSb21hbiBEdW5oaWxsIDEwYFxuWzFdIFwiTE0gUm9tYW4gRHVuaGlsbCAxMFwiXG5cbiRgTE0gUm9tYW4gU2xhbnRlZCAxMGBcblsxXSBcIkxNIFJvbWFuIFNsYW50ZWQgMTBcIlxuXG4kYEFnZW5jeSBGQmBcblsxXSBcIkFnZW5jeSBGQlwiXG5cbiRBaGFyb25pXG5bMV0gXCJBaGFyb25pXCJcblxuJEFsZ2VyaWFuXG5bMV0gXCJBbGdlcmlhblwiXG5cbiRBbmRhbHVzXG5bMV0gXCJBbmRhbHVzXCJcblxuJGBBbmdzYW5hIE5ld2BcblsxXSBcIkFuZ3NhbmEgTmV3XCJcblxuJEFuZ3NhbmFVUENcblsxXSBcIkFuZ3NhbmFVUENcIlxuXG4kQXBhcmFqaXRhXG5bMV0gXCJBcGFyYWppdGFcIlxuXG4kYEFyYWJpYyBUeXBlc2V0dGluZ2BcblsxXSBcIkFyYWJpYyBUeXBlc2V0dGluZ1wiXG5cbiRgQXJpYWwgQmxhY2tgXG5bMV0gXCJBcmlhbCBCbGFja1wiXG5cbiRBcmlhbFxuWzFdIFwiQXJpYWxcIlxuXG4kYEFyaWFsIE5hcnJvd2BcblsxXSBcIkFyaWFsIE5hcnJvd1wiXG5cbiRgQXJpYWwgUm91bmRlZCBNVCBCb2xkYFxuWzFdIFwiQXJpYWwgUm91bmRlZCBNVCBCb2xkXCJcblxuJGBBcmlhbCBVbmljb2RlIE1TYFxuWzFdIFwiQXJpYWwgVW5pY29kZSBNU1wiXG5cbiRgQmFza2VydmlsbGUgT2xkIEZhY2VgXG5bMV0gXCJCYXNrZXJ2aWxsZSBPbGQgRmFjZVwiXG5cbiRgQmF1aGF1cyA5M2BcblsxXSBcIkJhdWhhdXMgOTNcIlxuXG4kYEJlbGwgTVRgXG5bMV0gXCJCZWxsIE1UXCJcblxuJGBCZXJsaW4gU2FucyBGQmBcblsxXSBcIkJlcmxpbiBTYW5zIEZCXCJcblxuJGBCZXJsaW4gU2FucyBGQiBEZW1pYFxuWzFdIFwiQmVybGluIFNhbnMgRkIgRGVtaVwiXG5cbiRgQmVybmFyZCBNVCBDb25kZW5zZWRgXG5bMV0gXCJCZXJuYXJkIE1UIENvbmRlbnNlZFwiXG5cbiRgQmxhY2thZGRlciBJVENgXG5bMV0gXCJCbGFja2FkZGVyIElUQ1wiXG5cbiRgQm9kb25pIE1UYFxuWzFdIFwiQm9kb25pIE1UXCJcblxuJGBCb2RvbmkgTVQgQmxhY2tgXG5bMV0gXCJCb2RvbmkgTVQgQmxhY2tcIlxuXG4kYEJvZG9uaSBNVCBDb25kZW5zZWRgXG5bMV0gXCJCb2RvbmkgTVQgQ29uZGVuc2VkXCJcblxuJGBCb2RvbmkgTVQgUG9zdGVyIENvbXByZXNzZWRgXG5bMV0gXCJCb2RvbmkgTVQgUG9zdGVyIENvbXByZXNzZWRcIlxuXG4kYEJvb2sgQW50aXF1YWBcblsxXSBcIkJvb2sgQW50aXF1YVwiXG5cbiRgQm9va21hbiBPbGQgU3R5bGVgXG5bMV0gXCJCb29rbWFuIE9sZCBTdHlsZVwiXG5cbiRgQm9va3NoZWxmIFN5bWJvbCA3YFxuWzFdIFwiQm9va3NoZWxmIFN5bWJvbCA3XCJcblxuJGBCcmFkbGV5IEhhbmQgSVRDYFxuWzFdIFwiQnJhZGxleSBIYW5kIElUQ1wiXG5cbiRgQnJpdGFubmljIEJvbGRgXG5bMV0gXCJCcml0YW5uaWMgQm9sZFwiXG5cbiRCcm9hZHdheVxuWzFdIFwiQnJvYWR3YXlcIlxuXG4kYEJyb3dhbGxpYSBOZXdgXG5bMV0gXCJCcm93YWxsaWEgTmV3XCJcblxuJEJyb3dhbGxpYVVQQ1xuWzFdIFwiQnJvd2FsbGlhVVBDXCJcblxuJGBCcnVzaCBTY3JpcHQgTVRgXG5bMV0gXCJCcnVzaCBTY3JpcHQgTVRcIlxuXG4kQ2FsaWJyaVxuWzFdIFwiQ2FsaWJyaVwiXG5cbiRgQ2FsaWJyaSBMaWdodGBcblsxXSBcIkNhbGlicmkgTGlnaHRcIlxuXG4kYENhbGlmb3JuaWFuIEZCYFxuWzFdIFwiQ2FsaWZvcm5pYW4gRkJcIlxuXG4kYENhbGlzdG8gTVRgXG5bMV0gXCJDYWxpc3RvIE1UXCJcblxuJENhbWJyaWFcblsxXSBcIkNhbWJyaWFcIlxuXG4kQ2FuZGFyYVxuWzFdIFwiQ2FuZGFyYVwiXG5cbiRDYXN0ZWxsYXJcblsxXSBcIkNhc3RlbGxhclwiXG5cbiRDZW50YXVyXG5bMV0gXCJDZW50YXVyXCJcblxuJENlbnR1cnlcblsxXSBcIkNlbnR1cnlcIlxuXG4kYENlbnR1cnkgR290aGljYFxuWzFdIFwiQ2VudHVyeSBHb3RoaWNcIlxuXG4kYENlbnR1cnkgU2Nob29sYm9va2BcblsxXSBcIkNlbnR1cnkgU2Nob29sYm9va1wiXG5cbiRDaGlsbGVyXG5bMV0gXCJDaGlsbGVyXCJcblxuJGBDb2xvbm5hIE1UYFxuWzFdIFwiQ29sb25uYSBNVFwiXG5cbiRgQ29taWMgU2FucyBNU2BcblsxXSBcIkNvbWljIFNhbnMgTVNcIlxuXG4kQ29uc29sYXNcblsxXSBcIkNvbnNvbGFzXCJcblxuJENvbnN0YW50aWFcblsxXSBcIkNvbnN0YW50aWFcIlxuXG4kYENvb3BlciBCbGFja2BcblsxXSBcIkNvb3BlciBCbGFja1wiXG5cbiRgQ29wcGVycGxhdGUgR290aGljIEJvbGRgXG5bMV0gXCJDb3BwZXJwbGF0ZSBHb3RoaWMgQm9sZFwiXG5cbiRgQ29wcGVycGxhdGUgR290aGljIExpZ2h0YFxuWzFdIFwiQ29wcGVycGxhdGUgR290aGljIExpZ2h0XCJcblxuJENvcmJlbFxuWzFdIFwiQ29yYmVsXCJcblxuJGBDb3JkaWEgTmV3YFxuWzFdIFwiQ29yZGlhIE5ld1wiXG5cbiRDb3JkaWFVUENcblsxXSBcIkNvcmRpYVVQQ1wiXG5cbiRgQ291cmllciBOZXdgXG5bMV0gXCJDb3VyaWVyIE5ld1wiXG5cbiRgQ3VybHogTVRgXG5bMV0gXCJDdXJseiBNVFwiXG5cbiREYXVuUGVuaFxuWzFdIFwiRGF1blBlbmhcIlxuXG4kRGF2aWRcblsxXSBcIkRhdmlkXCJcblxuJGBERkthaS1TQmBcblsxXSBcIkRGS2FpLVNCXCJcblxuJERpbGxlbmlhVVBDXG5bMV0gXCJEaWxsZW5pYVVQQ1wiXG5cbiREb2tDaGFtcGFcblsxXSBcIkRva0NoYW1wYVwiXG5cbiRFYnJpbWFcblsxXSBcIkVicmltYVwiXG5cbiRgRWR3YXJkaWFuIFNjcmlwdCBJVENgXG5bMV0gXCJFZHdhcmRpYW4gU2NyaXB0IElUQ1wiXG5cbiRFbGVwaGFudFxuWzFdIFwiRWxlcGhhbnRcIlxuXG4kYEVuZ3JhdmVycyBNVGBcblsxXSBcIkVuZ3JhdmVycyBNVFwiXG5cbiRgRXJhcyBCb2xkIElUQ2BcblsxXSBcIkVyYXMgQm9sZCBJVENcIlxuXG4kYEVyYXMgRGVtaSBJVENgXG5bMV0gXCJFcmFzIERlbWkgSVRDXCJcblxuJGBFcmFzIExpZ2h0IElUQ2BcblsxXSBcIkVyYXMgTGlnaHQgSVRDXCJcblxuJGBFcmFzIE1lZGl1bSBJVENgXG5bMV0gXCJFcmFzIE1lZGl1bSBJVENcIlxuXG4kYEVzdHJhbmdlbG8gRWRlc3NhYFxuWzFdIFwiRXN0cmFuZ2VsbyBFZGVzc2FcIlxuXG4kRXVjcm9zaWFVUENcblsxXSBcIkV1Y3Jvc2lhVVBDXCJcblxuJEV1cGhlbWlhXG5bMV0gXCJFdXBoZW1pYVwiXG5cbiRGYW5nU29uZ1xuWzFdIFwiRmFuZ1NvbmdcIlxuXG4kYEZlbGl4IFRpdGxpbmdgXG5bMV0gXCJGZWxpeCBUaXRsaW5nXCJcblxuJGBGb290bGlnaHQgTVQgTGlnaHRgXG5bMV0gXCJGb290bGlnaHQgTVQgTGlnaHRcIlxuXG4kRm9ydGVcblsxXSBcIkZvcnRlXCJcblxuJGBGcmFua2xpbiBHb3RoaWMgQm9va2BcblsxXSBcIkZyYW5rbGluIEdvdGhpYyBCb29rXCJcblxuJGBGcmFua2xpbiBHb3RoaWMgRGVtaWBcblsxXSBcIkZyYW5rbGluIEdvdGhpYyBEZW1pXCJcblxuJGBGcmFua2xpbiBHb3RoaWMgRGVtaSBDb25kYFxuWzFdIFwiRnJhbmtsaW4gR290aGljIERlbWkgQ29uZFwiXG5cbiRgRnJhbmtsaW4gR290aGljIEhlYXZ5YFxuWzFdIFwiRnJhbmtsaW4gR290aGljIEhlYXZ5XCJcblxuJGBGcmFua2xpbiBHb3RoaWMgTWVkaXVtYFxuWzFdIFwiRnJhbmtsaW4gR290aGljIE1lZGl1bVwiXG5cbiRgRnJhbmtsaW4gR290aGljIE1lZGl1bSBDb25kYFxuWzFdIFwiRnJhbmtsaW4gR290aGljIE1lZGl1bSBDb25kXCJcblxuJEZyYW5rUnVlaGxcblsxXSBcIkZyYW5rUnVlaGxcIlxuXG4kRnJlZXNpYVVQQ1xuWzFdIFwiRnJlZXNpYVVQQ1wiXG5cbiRgRnJlZXN0eWxlIFNjcmlwdGBcblsxXSBcIkZyZWVzdHlsZSBTY3JpcHRcIlxuXG4kYEZyZW5jaCBTY3JpcHQgTVRgXG5bMV0gXCJGcmVuY2ggU2NyaXB0IE1UXCJcblxuJEdhYnJpb2xhXG5bMV0gXCJHYWJyaW9sYVwiXG5cbiRHYWR1Z2lcblsxXSBcIkdhZHVnaVwiXG5cbiRHYXJhbW9uZFxuWzFdIFwiR2FyYW1vbmRcIlxuXG4kR2F1dGFtaVxuWzFdIFwiR2F1dGFtaVwiXG5cbiRHZW9yZ2lhXG5bMV0gXCJHZW9yZ2lhXCJcblxuJEdpZ2lcblsxXSBcIkdpZ2lcIlxuXG4kYEdpbGwgU2FucyBVbHRyYSBCb2xkYFxuWzFdIFwiR2lsbCBTYW5zIFVsdHJhIEJvbGRcIlxuXG4kYEdpbGwgU2FucyBVbHRyYSBCb2xkIENvbmRlbnNlZGBcblsxXSBcIkdpbGwgU2FucyBVbHRyYSBCb2xkIENvbmRlbnNlZFwiXG5cbiRgR2lsbCBTYW5zIE1UYFxuWzFdIFwiR2lsbCBTYW5zIE1UXCJcblxuJGBHaWxsIFNhbnMgTVQgQ29uZGVuc2VkYFxuWzFdIFwiR2lsbCBTYW5zIE1UIENvbmRlbnNlZFwiXG5cbiRgR2lsbCBTYW5zIE1UIEV4dCBDb25kZW5zZWQgQm9sZGBcblsxXSBcIkdpbGwgU2FucyBNVCBFeHQgQ29uZGVuc2VkIEJvbGRcIlxuXG4kR2lzaGFcblsxXSBcIkdpc2hhXCJcblxuJGBHbG91Y2VzdGVyIE1UIEV4dHJhIENvbmRlbnNlZGBcblsxXSBcIkdsb3VjZXN0ZXIgTVQgRXh0cmEgQ29uZGVuc2VkXCJcblxuJGBHb3VkeSBPbGQgU3R5bGVgXG5bMV0gXCJHb3VkeSBPbGQgU3R5bGVcIlxuXG4kYEdvdWR5IFN0b3V0YFxuWzFdIFwiR291ZHkgU3RvdXRcIlxuXG4kSGFldHRlbnNjaHdlaWxlclxuWzFdIFwiSGFldHRlbnNjaHdlaWxlclwiXG5cbiRgSGFybG93IFNvbGlkIEl0YWxpY2BcblsxXSBcIkhhcmxvdyBTb2xpZCBJdGFsaWNcIlxuXG4kSGFycmluZ3RvblxuWzFdIFwiSGFycmluZ3RvblwiXG5cbiRgSGlnaCBUb3dlciBUZXh0YFxuWzFdIFwiSGlnaCBUb3dlciBUZXh0XCJcblxuJEltcGFjdFxuWzFdIFwiSW1wYWN0XCJcblxuJGBJbXByaW50IE1UIFNoYWRvd2BcblsxXSBcIkltcHJpbnQgTVQgU2hhZG93XCJcblxuJGBJbmZvcm1hbCBSb21hbmBcblsxXSBcIkluZm9ybWFsIFJvbWFuXCJcblxuJElyaXNVUENcblsxXSBcIklyaXNVUENcIlxuXG4kYElza29vbGEgUG90YWBcblsxXSBcIklza29vbGEgUG90YVwiXG5cbiRKYXNtaW5lVVBDXG5bMV0gXCJKYXNtaW5lVVBDXCJcblxuJEpva2VybWFuXG5bMV0gXCJKb2tlcm1hblwiXG5cbiRgSnVpY2UgSVRDYFxuWzFdIFwiSnVpY2UgSVRDXCJcblxuJEthaVRpXG5bMV0gXCJLYWlUaVwiXG5cbiRLYWxpbmdhXG5bMV0gXCJLYWxpbmdhXCJcblxuJEthcnRpa2FcblsxXSBcIkthcnRpa2FcIlxuXG4kYEtobWVyIFVJYFxuWzFdIFwiS2htZXIgVUlcIlxuXG4kS29kY2hpYW5nVVBDXG5bMV0gXCJLb2RjaGlhbmdVUENcIlxuXG4kS29raWxhXG5bMV0gXCJLb2tpbGFcIlxuXG4kYEtyaXN0ZW4gSVRDYFxuWzFdIFwiS3Jpc3RlbiBJVENcIlxuXG4kYEt1bnN0bGVyIFNjcmlwdGBcblsxXSBcIkt1bnN0bGVyIFNjcmlwdFwiXG5cbiRgTGFvIFVJYFxuWzFdIFwiTGFvIFVJXCJcblxuJExhdGhhXG5bMV0gXCJMYXRoYVwiXG5cbiRgV2lkZSBMYXRpbmBcblsxXSBcIldpZGUgTGF0aW5cIlxuXG4kTGVlbGF3YWRlZVxuWzFdIFwiTGVlbGF3YWRlZVwiXG5cbiRgTGV2ZW5pbSBNVGBcblsxXSBcIkxldmVuaW0gTVRcIlxuXG4kTGlseVVQQ1xuWzFdIFwiTGlseVVQQ1wiXG5cbiRgTHVjaWRhIEJyaWdodGBcblsxXSBcIkx1Y2lkYSBCcmlnaHRcIlxuXG4kYEx1Y2lkYSBDYWxsaWdyYXBoeWBcblsxXSBcIkx1Y2lkYSBDYWxsaWdyYXBoeVwiXG5cbiRgTHVjaWRhIENvbnNvbGVgXG5bMV0gXCJMdWNpZGEgQ29uc29sZVwiXG5cbiRgTHVjaWRhIEZheGBcblsxXSBcIkx1Y2lkYSBGYXhcIlxuXG4kYEx1Y2lkYSBIYW5kd3JpdGluZ2BcblsxXSBcIkx1Y2lkYSBIYW5kd3JpdGluZ1wiXG5cbiRgTHVjaWRhIFNhbnNgXG5bMV0gXCJMdWNpZGEgU2Fuc1wiXG5cbiRgTHVjaWRhIFNhbnMgVHlwZXdyaXRlcmBcblsxXSBcIkx1Y2lkYSBTYW5zIFR5cGV3cml0ZXJcIlxuXG4kYEx1Y2lkYSBTYW5zIFVuaWNvZGVgXG5bMV0gXCJMdWNpZGEgU2FucyBVbmljb2RlXCJcblxuJE1hZ25ldG9cblsxXSBcIk1hZ25ldG9cIlxuXG4kYE1haWFuZHJhIEdEYFxuWzFdIFwiTWFpYW5kcmEgR0RcIlxuXG4kYE1hbGd1biBHb3RoaWNgXG5bMV0gXCJNYWxndW4gR290aGljXCJcblxuJE1hbmdhbFxuWzFdIFwiTWFuZ2FsXCJcblxuJE1hcmxldHRcblsxXSBcIk1hcmxldHRcIlxuXG4kYE1hdHVyYSBNVCBTY3JpcHQgQ2FwaXRhbHNgXG5bMV0gXCJNYXR1cmEgTVQgU2NyaXB0IENhcGl0YWxzXCJcblxuJGBNaWNyb3NvZnQgWWkgQmFpdGlgXG5bMV0gXCJNaWNyb3NvZnQgWWkgQmFpdGlcIlxuXG4kYE1pY3Jvc29mdCBIaW1hbGF5YWBcblsxXSBcIk1pY3Jvc29mdCBIaW1hbGF5YVwiXG5cbiRgTWljcm9zb2Z0IEpoZW5nSGVpYFxuWzFdIFwiTWljcm9zb2Z0IEpoZW5nSGVpXCJcblxuJGBNaWNyb3NvZnQgTmV3IFRhaSBMdWVgXG5bMV0gXCJNaWNyb3NvZnQgTmV3IFRhaSBMdWVcIlxuXG4kYE1pY3Jvc29mdCBQaGFnc1BhYFxuWzFdIFwiTWljcm9zb2Z0IFBoYWdzUGFcIlxuXG4kYE1pY3Jvc29mdCBTYW5zIFNlcmlmYFxuWzFdIFwiTWljcm9zb2Z0IFNhbnMgU2VyaWZcIlxuXG4kYE1pY3Jvc29mdCBUYWkgTGVgXG5bMV0gXCJNaWNyb3NvZnQgVGFpIExlXCJcblxuJGBNaWNyb3NvZnQgVWlnaHVyYFxuWzFdIFwiTWljcm9zb2Z0IFVpZ2h1clwiXG5cbiRgTWljcm9zb2Z0IFlhSGVpYFxuWzFdIFwiTWljcm9zb2Z0IFlhSGVpXCJcblxuJE1pcmlhbVxuWzFdIFwiTWlyaWFtXCJcblxuJGBNaXJpYW0gRml4ZWRgXG5bMV0gXCJNaXJpYW0gRml4ZWRcIlxuXG4kTWlzdHJhbFxuWzFdIFwiTWlzdHJhbFwiXG5cbiRgTW9kZXJuIE5vLiAyMGBcblsxXSBcIk1vZGVybiBOby4gMjBcIlxuXG4kYE1vbmdvbGlhbiBCYWl0aWBcblsxXSBcIk1vbmdvbGlhbiBCYWl0aVwiXG5cbiRgTW9ub3R5cGUgQ29yc2l2YWBcblsxXSBcIk1vbm90eXBlIENvcnNpdmFcIlxuXG4kTW9vbEJvcmFuXG5bMV0gXCJNb29sQm9yYW5cIlxuXG4kYE1TIE91dGxvb2tgXG5bMV0gXCJNUyBPdXRsb29rXCJcblxuJGBNUyBSZWZlcmVuY2UgU2FucyBTZXJpZmBcblsxXSBcIk1TIFJlZmVyZW5jZSBTYW5zIFNlcmlmXCJcblxuJGBNUyBSZWZlcmVuY2UgU3BlY2lhbHR5YFxuWzFdIFwiTVMgUmVmZXJlbmNlIFNwZWNpYWx0eVwiXG5cbiRgTVYgQm9saWBcblsxXSBcIk1WIEJvbGlcIlxuXG4kTmFya2lzaW1cblsxXSBcIk5hcmtpc2ltXCJcblxuJGBOaWFnYXJhIEVuZ3JhdmVkYFxuWzFdIFwiTmlhZ2FyYSBFbmdyYXZlZFwiXG5cbiRgTmlhZ2FyYSBTb2xpZGBcblsxXSBcIk5pYWdhcmEgU29saWRcIlxuXG4kYE5pcm1hbGEgVUlgXG5bMV0gXCJOaXJtYWxhIFVJXCJcblxuJE55YWxhXG5bMV0gXCJOeWFsYVwiXG5cbiRgT0NSIEEgRXh0ZW5kZWRgXG5bMV0gXCJPQ1IgQSBFeHRlbmRlZFwiXG5cbiRgT2xkIEVuZ2xpc2ggVGV4dCBNVGBcblsxXSBcIk9sZCBFbmdsaXNoIFRleHQgTVRcIlxuXG4kT255eFxuWzFdIFwiT255eFwiXG5cbiRgUGFsYWNlIFNjcmlwdCBNVGBcblsxXSBcIlBhbGFjZSBTY3JpcHQgTVRcIlxuXG4kYFBhbGF0aW5vIExpbm90eXBlYFxuWzFdIFwiUGFsYXRpbm8gTGlub3R5cGVcIlxuXG4kUGFweXJ1c1xuWzFdIFwiUGFweXJ1c1wiXG5cbiRQYXJjaG1lbnRcblsxXSBcIlBhcmNobWVudFwiXG5cbiRQZXJwZXR1YVxuWzFdIFwiUGVycGV0dWFcIlxuXG4kYFBlcnBldHVhIFRpdGxpbmcgTVRgXG5bMV0gXCJQZXJwZXR1YSBUaXRsaW5nIE1UXCJcblxuJGBQbGFudGFnZW5ldCBDaGVyb2tlZWBcblsxXSBcIlBsYW50YWdlbmV0IENoZXJva2VlXCJcblxuJFBsYXliaWxsXG5bMV0gXCJQbGF5YmlsbFwiXG5cbiRgUG9vciBSaWNoYXJkYFxuWzFdIFwiUG9vciBSaWNoYXJkXCJcblxuJFByaXN0aW5hXG5bMV0gXCJQcmlzdGluYVwiXG5cbiRSYWF2aVxuWzFdIFwiUmFhdmlcIlxuXG4kYFJhZ2UgSXRhbGljYFxuWzFdIFwiUmFnZSBJdGFsaWNcIlxuXG4kUmF2aWVcblsxXSBcIlJhdmllXCJcblxuJFJvY2t3ZWxsXG5bMV0gXCJSb2Nrd2VsbFwiXG5cbiRgUm9ja3dlbGwgQ29uZGVuc2VkYFxuWzFdIFwiUm9ja3dlbGwgQ29uZGVuc2VkXCJcblxuJGBSb2Nrd2VsbCBFeHRyYSBCb2xkYFxuWzFdIFwiUm9ja3dlbGwgRXh0cmEgQm9sZFwiXG5cbiRSb2RcblsxXSBcIlJvZFwiXG5cbiRgU2Fra2FsIE1hamFsbGFgXG5bMV0gXCJTYWtrYWwgTWFqYWxsYVwiXG5cbiRgU2NyaXB0IE1UIEJvbGRgXG5bMV0gXCJTY3JpcHQgTVQgQm9sZFwiXG5cbiRgU2Vnb2UgUHJpbnRgXG5bMV0gXCJTZWdvZSBQcmludFwiXG5cbiRgU2Vnb2UgU2NyaXB0YFxuWzFdIFwiU2Vnb2UgU2NyaXB0XCJcblxuJGBTZWdvZSBVSWBcblsxXSBcIlNlZ29lIFVJXCJcblxuJGBTZWdvZSBVSSBMaWdodGBcblsxXSBcIlNlZ29lIFVJIExpZ2h0XCJcblxuJGBTZWdvZSBVSSBTZW1pYm9sZGBcblsxXSBcIlNlZ29lIFVJIFNlbWlib2xkXCJcblxuJGBTZWdvZSBVSSBTZW1pbGlnaHRgXG5bMV0gXCJTZWdvZSBVSSBTZW1pbGlnaHRcIlxuXG4kYFNlZ29lIFVJIFN5bWJvbGBcblsxXSBcIlNlZ29lIFVJIFN5bWJvbFwiXG5cbiRgU2hvbmFyIEJhbmdsYWBcblsxXSBcIlNob25hciBCYW5nbGFcIlxuXG4kYFNob3djYXJkIEdvdGhpY2BcblsxXSBcIlNob3djYXJkIEdvdGhpY1wiXG5cbiRTaHJ1dGlcblsxXSBcIlNocnV0aVwiXG5cbiRTaW1IZWlcblsxXSBcIlNpbUhlaVwiXG5cbiRgU2ltcGxpZmllZCBBcmFiaWNgXG5bMV0gXCJTaW1wbGlmaWVkIEFyYWJpY1wiXG5cbiRgU2ltcGxpZmllZCBBcmFiaWMgRml4ZWRgXG5bMV0gXCJTaW1wbGlmaWVkIEFyYWJpYyBGaXhlZFwiXG5cbiRgU2ltU3VuLUV4dEJgXG5bMV0gXCJTaW1TdW4tRXh0QlwiXG5cbiRgU25hcCBJVENgXG5bMV0gXCJTbmFwIElUQ1wiXG5cbiRTdGVuY2lsXG5bMV0gXCJTdGVuY2lsXCJcblxuJFN5bGZhZW5cblsxXSBcIlN5bGZhZW5cIlxuXG4kU3ltYm9sXG5bMV0gXCJTeW1ib2xcIlxuXG4kVGFob21hXG5bMV0gXCJUYWhvbWFcIlxuXG4kYFRlbXB1cyBTYW5zIElUQ2BcblsxXSBcIlRlbXB1cyBTYW5zIElUQ1wiXG5cbiRgVGltZXMgTmV3IFJvbWFuYFxuWzFdIFwiVGltZXMgTmV3IFJvbWFuXCJcblxuJGBUcmFkaXRpb25hbCBBcmFiaWNgXG5bMV0gXCJUcmFkaXRpb25hbCBBcmFiaWNcIlxuXG4kYFRyZWJ1Y2hldCBNU2BcblsxXSBcIlRyZWJ1Y2hldCBNU1wiXG5cbiRUdW5nYVxuWzFdIFwiVHVuZ2FcIlxuXG4kYFR3IENlbiBNVGBcblsxXSBcIlR3IENlbiBNVFwiXG5cbiRgVHcgQ2VuIE1UIENvbmRlbnNlZGBcblsxXSBcIlR3IENlbiBNVCBDb25kZW5zZWRcIlxuXG4kYFR3IENlbiBNVCBDb25kZW5zZWQgRXh0cmEgQm9sZGBcblsxXSBcIlR3IENlbiBNVCBDb25kZW5zZWQgRXh0cmEgQm9sZFwiXG5cbiRgVW5pdmVycyBmb3IgVW5pUzQ1TGlnaHRPYmxpcXVlYFxuWzFdIFwiVW5pdmVycyBmb3IgVW5pUzQ1TGlnaHRPYmxpcXVlXCJcblxuJGBVbml2ZXJzIGZvciBVbmlTIDU1IFJvbWFuIFJnYFxuWzFdIFwiVW5pdmVycyBmb3IgVW5pUyA1NSBSb21hbiBSZ1wiXG5cbiRgVW5pdmVycyBmb3IgVW5pUyA2NSBCb2xkIFJnYFxuWzFdIFwiVW5pdmVycyBmb3IgVW5pUyA2NSBCb2xkIFJnXCJcblxuJFV0c2FhaFxuWzFdIFwiVXRzYWFoXCJcblxuJFZhbmlcblsxXSBcIlZhbmlcIlxuXG4kVmVyZGFuYVxuWzFdIFwiVmVyZGFuYVwiXG5cbiRWaWpheWFcblsxXSBcIlZpamF5YVwiXG5cbiRgVmluZXIgSGFuZCBJVENgXG5bMV0gXCJWaW5lciBIYW5kIElUQ1wiXG5cbiRWaXZhbGRpXG5bMV0gXCJWaXZhbGRpXCJcblxuJGBWbGFkaW1pciBTY3JpcHRgXG5bMV0gXCJWbGFkaW1pciBTY3JpcHRcIlxuXG4kVnJpbmRhXG5bMV0gXCJWcmluZGFcIlxuXG4kV2ViZGluZ3NcblsxXSBcIldlYmRpbmdzXCJcblxuJFdpbmdkaW5nc1xuWzFdIFwiV2luZ2RpbmdzXCJcblxuJGBXaW5nZGluZ3MgMmBcblsxXSBcIldpbmdkaW5ncyAyXCJcblxuJGBXaW5nZGluZ3MgM2BcblsxXSBcIldpbmdkaW5ncyAzXCJcblxuJFpXQWRvYmVGXG5bMV0gXCJaV0Fkb2JlRlwiXG4ifQ== -->
+<pre><code>$`serif`
+[1] &quot;TT Times New Roman&quot;
+
+$sans
+[1] &quot;TT Arial&quot;
+
+$mono
+[1] &quot;TT Courier New&quot;
+
+$`LM Roman 10`
+[1] &quot;LM Roman 10&quot;
+
+$`LM Roman Caps 10`
+[1] &quot;LM Roman Caps 10&quot;
+
+$`LM Roman Demi 10`
+[1] &quot;LM Roman Demi 10&quot;
+
+$`LM Roman Dunhill 10`
+[1] &quot;LM Roman Dunhill 10&quot;
+
+$`LM Roman Slanted 10`
+[1] &quot;LM Roman Slanted 10&quot;
+
+$`Agency FB`
+[1] &quot;Agency FB&quot;
+
+$Aharoni
+[1] &quot;Aharoni&quot;
+
+$Algerian
+[1] &quot;Algerian&quot;
+
+$Andalus
+[1] &quot;Andalus&quot;
+
+$`Angsana New`
+[1] &quot;Angsana New&quot;
+
+$AngsanaUPC
+[1] &quot;AngsanaUPC&quot;
+
+$Aparajita
+[1] &quot;Aparajita&quot;
+
+$`Arabic Typesetting`
+[1] &quot;Arabic Typesetting&quot;
+
+$`Arial Black`
+[1] &quot;Arial Black&quot;
+
+$Arial
+[1] &quot;Arial&quot;
+
+$`Arial Narrow`
+[1] &quot;Arial Narrow&quot;
+
+$`Arial Rounded MT Bold`
+[1] &quot;Arial Rounded MT Bold&quot;
+
+$`Arial Unicode MS`
+[1] &quot;Arial Unicode MS&quot;
+
+$`Baskerville Old Face`
+[1] &quot;Baskerville Old Face&quot;
+
+$`Bauhaus 93`
+[1] &quot;Bauhaus 93&quot;
+
+$`Bell MT`
+[1] &quot;Bell MT&quot;
+
+$`Berlin Sans FB`
+[1] &quot;Berlin Sans FB&quot;
+
+$`Berlin Sans FB Demi`
+[1] &quot;Berlin Sans FB Demi&quot;
+
+$`Bernard MT Condensed`
+[1] &quot;Bernard MT Condensed&quot;
+
+$`Blackadder ITC`
+[1] &quot;Blackadder ITC&quot;
+
+$`Bodoni MT`
+[1] &quot;Bodoni MT&quot;
+
+$`Bodoni MT Black`
+[1] &quot;Bodoni MT Black&quot;
+
+$`Bodoni MT Condensed`
+[1] &quot;Bodoni MT Condensed&quot;
+
+$`Bodoni MT Poster Compressed`
+[1] &quot;Bodoni MT Poster Compressed&quot;
+
+$`Book Antiqua`
+[1] &quot;Book Antiqua&quot;
+
+$`Bookman Old Style`
+[1] &quot;Bookman Old Style&quot;
+
+$`Bookshelf Symbol 7`
+[1] &quot;Bookshelf Symbol 7&quot;
+
+$`Bradley Hand ITC`
+[1] &quot;Bradley Hand ITC&quot;
+
+$`Britannic Bold`
+[1] &quot;Britannic Bold&quot;
+
+$Broadway
+[1] &quot;Broadway&quot;
+
+$`Browallia New`
+[1] &quot;Browallia New&quot;
+
+$BrowalliaUPC
+[1] &quot;BrowalliaUPC&quot;
+
+$`Brush Script MT`
+[1] &quot;Brush Script MT&quot;
+
+$Calibri
+[1] &quot;Calibri&quot;
+
+$`Calibri Light`
+[1] &quot;Calibri Light&quot;
+
+$`Californian FB`
+[1] &quot;Californian FB&quot;
+
+$`Calisto MT`
+[1] &quot;Calisto MT&quot;
+
+$Cambria
+[1] &quot;Cambria&quot;
+
+$Candara
+[1] &quot;Candara&quot;
+
+$Castellar
+[1] &quot;Castellar&quot;
+
+$Centaur
+[1] &quot;Centaur&quot;
+
+$Century
+[1] &quot;Century&quot;
+
+$`Century Gothic`
+[1] &quot;Century Gothic&quot;
+
+$`Century Schoolbook`
+[1] &quot;Century Schoolbook&quot;
+
+$Chiller
+[1] &quot;Chiller&quot;
+
+$`Colonna MT`
+[1] &quot;Colonna MT&quot;
+
+$`Comic Sans MS`
+[1] &quot;Comic Sans MS&quot;
+
+$Consolas
+[1] &quot;Consolas&quot;
+
+$Constantia
+[1] &quot;Constantia&quot;
+
+$`Cooper Black`
+[1] &quot;Cooper Black&quot;
+
+$`Copperplate Gothic Bold`
+[1] &quot;Copperplate Gothic Bold&quot;
+
+$`Copperplate Gothic Light`
+[1] &quot;Copperplate Gothic Light&quot;
+
+$Corbel
+[1] &quot;Corbel&quot;
+
+$`Cordia New`
+[1] &quot;Cordia New&quot;
+
+$CordiaUPC
+[1] &quot;CordiaUPC&quot;
+
+$`Courier New`
+[1] &quot;Courier New&quot;
+
+$`Curlz MT`
+[1] &quot;Curlz MT&quot;
+
+$DaunPenh
+[1] &quot;DaunPenh&quot;
+
+$David
+[1] &quot;David&quot;
+
+$`DFKai-SB`
+[1] &quot;DFKai-SB&quot;
+
+$DilleniaUPC
+[1] &quot;DilleniaUPC&quot;
+
+$DokChampa
+[1] &quot;DokChampa&quot;
+
+$Ebrima
+[1] &quot;Ebrima&quot;
+
+$`Edwardian Script ITC`
+[1] &quot;Edwardian Script ITC&quot;
+
+$Elephant
+[1] &quot;Elephant&quot;
+
+$`Engravers MT`
+[1] &quot;Engravers MT&quot;
+
+$`Eras Bold ITC`
+[1] &quot;Eras Bold ITC&quot;
+
+$`Eras Demi ITC`
+[1] &quot;Eras Demi ITC&quot;
+
+$`Eras Light ITC`
+[1] &quot;Eras Light ITC&quot;
+
+$`Eras Medium ITC`
+[1] &quot;Eras Medium ITC&quot;
+
+$`Estrangelo Edessa`
+[1] &quot;Estrangelo Edessa&quot;
+
+$EucrosiaUPC
+[1] &quot;EucrosiaUPC&quot;
+
+$Euphemia
+[1] &quot;Euphemia&quot;
+
+$FangSong
+[1] &quot;FangSong&quot;
+
+$`Felix Titling`
+[1] &quot;Felix Titling&quot;
+
+$`Footlight MT Light`
+[1] &quot;Footlight MT Light&quot;
+
+$Forte
+[1] &quot;Forte&quot;
+
+$`Franklin Gothic Book`
+[1] &quot;Franklin Gothic Book&quot;
+
+$`Franklin Gothic Demi`
+[1] &quot;Franklin Gothic Demi&quot;
+
+$`Franklin Gothic Demi Cond`
+[1] &quot;Franklin Gothic Demi Cond&quot;
+
+$`Franklin Gothic Heavy`
+[1] &quot;Franklin Gothic Heavy&quot;
+
+$`Franklin Gothic Medium`
+[1] &quot;Franklin Gothic Medium&quot;
+
+$`Franklin Gothic Medium Cond`
+[1] &quot;Franklin Gothic Medium Cond&quot;
+
+$FrankRuehl
+[1] &quot;FrankRuehl&quot;
+
+$FreesiaUPC
+[1] &quot;FreesiaUPC&quot;
+
+$`Freestyle Script`
+[1] &quot;Freestyle Script&quot;
+
+$`French Script MT`
+[1] &quot;French Script MT&quot;
+
+$Gabriola
+[1] &quot;Gabriola&quot;
+
+$Gadugi
+[1] &quot;Gadugi&quot;
+
+$Garamond
+[1] &quot;Garamond&quot;
+
+$Gautami
+[1] &quot;Gautami&quot;
+
+$Georgia
+[1] &quot;Georgia&quot;
+
+$Gigi
+[1] &quot;Gigi&quot;
+
+$`Gill Sans Ultra Bold`
+[1] &quot;Gill Sans Ultra Bold&quot;
+
+$`Gill Sans Ultra Bold Condensed`
+[1] &quot;Gill Sans Ultra Bold Condensed&quot;
+
+$`Gill Sans MT`
+[1] &quot;Gill Sans MT&quot;
+
+$`Gill Sans MT Condensed`
+[1] &quot;Gill Sans MT Condensed&quot;
+
+$`Gill Sans MT Ext Condensed Bold`
+[1] &quot;Gill Sans MT Ext Condensed Bold&quot;
+
+$Gisha
+[1] &quot;Gisha&quot;
+
+$`Gloucester MT Extra Condensed`
+[1] &quot;Gloucester MT Extra Condensed&quot;
+
+$`Goudy Old Style`
+[1] &quot;Goudy Old Style&quot;
+
+$`Goudy Stout`
+[1] &quot;Goudy Stout&quot;
+
+$Haettenschweiler
+[1] &quot;Haettenschweiler&quot;
+
+$`Harlow Solid Italic`
+[1] &quot;Harlow Solid Italic&quot;
+
+$Harrington
+[1] &quot;Harrington&quot;
+
+$`High Tower Text`
+[1] &quot;High Tower Text&quot;
+
+$Impact
+[1] &quot;Impact&quot;
+
+$`Imprint MT Shadow`
+[1] &quot;Imprint MT Shadow&quot;
+
+$`Informal Roman`
+[1] &quot;Informal Roman&quot;
+
+$IrisUPC
+[1] &quot;IrisUPC&quot;
+
+$`Iskoola Pota`
+[1] &quot;Iskoola Pota&quot;
+
+$JasmineUPC
+[1] &quot;JasmineUPC&quot;
+
+$Jokerman
+[1] &quot;Jokerman&quot;
+
+$`Juice ITC`
+[1] &quot;Juice ITC&quot;
+
+$KaiTi
+[1] &quot;KaiTi&quot;
+
+$Kalinga
+[1] &quot;Kalinga&quot;
+
+$Kartika
+[1] &quot;Kartika&quot;
+
+$`Khmer UI`
+[1] &quot;Khmer UI&quot;
+
+$KodchiangUPC
+[1] &quot;KodchiangUPC&quot;
+
+$Kokila
+[1] &quot;Kokila&quot;
+
+$`Kristen ITC`
+[1] &quot;Kristen ITC&quot;
+
+$`Kunstler Script`
+[1] &quot;Kunstler Script&quot;
+
+$`Lao UI`
+[1] &quot;Lao UI&quot;
+
+$Latha
+[1] &quot;Latha&quot;
+
+$`Wide Latin`
+[1] &quot;Wide Latin&quot;
+
+$Leelawadee
+[1] &quot;Leelawadee&quot;
+
+$`Levenim MT`
+[1] &quot;Levenim MT&quot;
+
+$LilyUPC
+[1] &quot;LilyUPC&quot;
+
+$`Lucida Bright`
+[1] &quot;Lucida Bright&quot;
+
+$`Lucida Calligraphy`
+[1] &quot;Lucida Calligraphy&quot;
+
+$`Lucida Console`
+[1] &quot;Lucida Console&quot;
+
+$`Lucida Fax`
+[1] &quot;Lucida Fax&quot;
+
+$`Lucida Handwriting`
+[1] &quot;Lucida Handwriting&quot;
+
+$`Lucida Sans`
+[1] &quot;Lucida Sans&quot;
+
+$`Lucida Sans Typewriter`
+[1] &quot;Lucida Sans Typewriter&quot;
+
+$`Lucida Sans Unicode`
+[1] &quot;Lucida Sans Unicode&quot;
+
+$Magneto
+[1] &quot;Magneto&quot;
+
+$`Maiandra GD`
+[1] &quot;Maiandra GD&quot;
+
+$`Malgun Gothic`
+[1] &quot;Malgun Gothic&quot;
+
+$Mangal
+[1] &quot;Mangal&quot;
+
+$Marlett
+[1] &quot;Marlett&quot;
+
+$`Matura MT Script Capitals`
+[1] &quot;Matura MT Script Capitals&quot;
+
+$`Microsoft Yi Baiti`
+[1] &quot;Microsoft Yi Baiti&quot;
+
+$`Microsoft Himalaya`
+[1] &quot;Microsoft Himalaya&quot;
+
+$`Microsoft JhengHei`
+[1] &quot;Microsoft JhengHei&quot;
+
+$`Microsoft New Tai Lue`
+[1] &quot;Microsoft New Tai Lue&quot;
+
+$`Microsoft PhagsPa`
+[1] &quot;Microsoft PhagsPa&quot;
+
+$`Microsoft Sans Serif`
+[1] &quot;Microsoft Sans Serif&quot;
+
+$`Microsoft Tai Le`
+[1] &quot;Microsoft Tai Le&quot;
+
+$`Microsoft Uighur`
+[1] &quot;Microsoft Uighur&quot;
+
+$`Microsoft YaHei`
+[1] &quot;Microsoft YaHei&quot;
+
+$Miriam
+[1] &quot;Miriam&quot;
+
+$`Miriam Fixed`
+[1] &quot;Miriam Fixed&quot;
+
+$Mistral
+[1] &quot;Mistral&quot;
+
+$`Modern No. 20`
+[1] &quot;Modern No. 20&quot;
+
+$`Mongolian Baiti`
+[1] &quot;Mongolian Baiti&quot;
+
+$`Monotype Corsiva`
+[1] &quot;Monotype Corsiva&quot;
+
+$MoolBoran
+[1] &quot;MoolBoran&quot;
+
+$`MS Outlook`
+[1] &quot;MS Outlook&quot;
+
+$`MS Reference Sans Serif`
+[1] &quot;MS Reference Sans Serif&quot;
+
+$`MS Reference Specialty`
+[1] &quot;MS Reference Specialty&quot;
+
+$`MV Boli`
+[1] &quot;MV Boli&quot;
+
+$Narkisim
+[1] &quot;Narkisim&quot;
+
+$`Niagara Engraved`
+[1] &quot;Niagara Engraved&quot;
+
+$`Niagara Solid`
+[1] &quot;Niagara Solid&quot;
+
+$`Nirmala UI`
+[1] &quot;Nirmala UI&quot;
+
+$Nyala
+[1] &quot;Nyala&quot;
+
+$`OCR A Extended`
+[1] &quot;OCR A Extended&quot;
+
+$`Old English Text MT`
+[1] &quot;Old English Text MT&quot;
+
+$Onyx
+[1] &quot;Onyx&quot;
+
+$`Palace Script MT`
+[1] &quot;Palace Script MT&quot;
+
+$`Palatino Linotype`
+[1] &quot;Palatino Linotype&quot;
+
+$Papyrus
+[1] &quot;Papyrus&quot;
+
+$Parchment
+[1] &quot;Parchment&quot;
+
+$Perpetua
+[1] &quot;Perpetua&quot;
+
+$`Perpetua Titling MT`
+[1] &quot;Perpetua Titling MT&quot;
+
+$`Plantagenet Cherokee`
+[1] &quot;Plantagenet Cherokee&quot;
+
+$Playbill
+[1] &quot;Playbill&quot;
+
+$`Poor Richard`
+[1] &quot;Poor Richard&quot;
+
+$Pristina
+[1] &quot;Pristina&quot;
+
+$Raavi
+[1] &quot;Raavi&quot;
+
+$`Rage Italic`
+[1] &quot;Rage Italic&quot;
+
+$Ravie
+[1] &quot;Ravie&quot;
+
+$Rockwell
+[1] &quot;Rockwell&quot;
+
+$`Rockwell Condensed`
+[1] &quot;Rockwell Condensed&quot;
+
+$`Rockwell Extra Bold`
+[1] &quot;Rockwell Extra Bold&quot;
+
+$Rod
+[1] &quot;Rod&quot;
+
+$`Sakkal Majalla`
+[1] &quot;Sakkal Majalla&quot;
+
+$`Script MT Bold`
+[1] &quot;Script MT Bold&quot;
+
+$`Segoe Print`
+[1] &quot;Segoe Print&quot;
+
+$`Segoe Script`
+[1] &quot;Segoe Script&quot;
+
+$`Segoe UI`
+[1] &quot;Segoe UI&quot;
+
+$`Segoe UI Light`
+[1] &quot;Segoe UI Light&quot;
+
+$`Segoe UI Semibold`
+[1] &quot;Segoe UI Semibold&quot;
+
+$`Segoe UI Semilight`
+[1] &quot;Segoe UI Semilight&quot;
+
+$`Segoe UI Symbol`
+[1] &quot;Segoe UI Symbol&quot;
+
+$`Shonar Bangla`
+[1] &quot;Shonar Bangla&quot;
+
+$`Showcard Gothic`
+[1] &quot;Showcard Gothic&quot;
+
+$Shruti
+[1] &quot;Shruti&quot;
+
+$SimHei
+[1] &quot;SimHei&quot;
+
+$`Simplified Arabic`
+[1] &quot;Simplified Arabic&quot;
+
+$`Simplified Arabic Fixed`
+[1] &quot;Simplified Arabic Fixed&quot;
+
+$`SimSun-ExtB`
+[1] &quot;SimSun-ExtB&quot;
+
+$`Snap ITC`
+[1] &quot;Snap ITC&quot;
+
+$Stencil
+[1] &quot;Stencil&quot;
+
+$Sylfaen
+[1] &quot;Sylfaen&quot;
+
+$Symbol
+[1] &quot;Symbol&quot;
+
+$Tahoma
+[1] &quot;Tahoma&quot;
+
+$`Tempus Sans ITC`
+[1] &quot;Tempus Sans ITC&quot;
+
+$`Times New Roman`
+[1] &quot;Times New Roman&quot;
+
+$`Traditional Arabic`
+[1] &quot;Traditional Arabic&quot;
+
+$`Trebuchet MS`
+[1] &quot;Trebuchet MS&quot;
+
+$Tunga
+[1] &quot;Tunga&quot;
+
+$`Tw Cen MT`
+[1] &quot;Tw Cen MT&quot;
+
+$`Tw Cen MT Condensed`
+[1] &quot;Tw Cen MT Condensed&quot;
+
+$`Tw Cen MT Condensed Extra Bold`
+[1] &quot;Tw Cen MT Condensed Extra Bold&quot;
+
+$`Univers for UniS45LightOblique`
+[1] &quot;Univers for UniS45LightOblique&quot;
+
+$`Univers for UniS 55 Roman Rg`
+[1] &quot;Univers for UniS 55 Roman Rg&quot;
+
+$`Univers for UniS 65 Bold Rg`
+[1] &quot;Univers for UniS 65 Bold Rg&quot;
+
+$Utsaah
+[1] &quot;Utsaah&quot;
+
+$Vani
+[1] &quot;Vani&quot;
+
+$Verdana
+[1] &quot;Verdana&quot;
+
+$Vijaya
+[1] &quot;Vijaya&quot;
+
+$`Viner Hand ITC`
+[1] &quot;Viner Hand ITC&quot;
+
+$Vivaldi
+[1] &quot;Vivaldi&quot;
+
+$`Vladimir Script`
+[1] &quot;Vladimir Script&quot;
+
+$Vrinda
+[1] &quot;Vrinda&quot;
+
+$Webdings
+[1] &quot;Webdings&quot;
+
+$Wingdings
+[1] &quot;Wingdings&quot;
+
+$`Wingdings 2`
+[1] &quot;Wingdings 2&quot;
+
+$`Wingdings 3`
+[1] &quot;Wingdings 3&quot;
+
+$ZWAdobeF
+[1] &quot;ZWAdobeF&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdF9nZHAgPC0gZ2dwbG90KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiksIGFlcyh5ID0gU2NlbmFyaW8sIHggPSBWYWx1ZSkpXG5wbG90X2dkcCArXG4gIGdlb21fcG9pbnQoYWxwaGEgPSAwLjMsIHNpemUgPSAyKStcbiAgZ2VvbV9wb2ludChkYXRhID0gZmlsdGVyKGdkcF9kaWZmX2ZpbHRlciwgWWVhciA+IDIwMjIgJiBSZWdpb24gPT0gXCJFVS0yOFwiKSwgXG4gICAgICAgICAgICAgYWVzKGZpbGwgPSBSZWdpb24pLCBcbiAgICAgICAgICAgICBjb2xvdXIgPSBcImJsdWVcIixcbiAgICAgICAgICAgICBhbHBoYSA9IDEsIFxuICAgICAgICAgICAgIHNpemUgPSAzLCBcbiAgICAgICAgICAgICBzaGFwZSA9IDIxLCBcbiAgICAgICAgICAgICBzdHJva2UgPTIpICtcbiAgZ2VvbV9wb2ludChkYXRhID0gZmlsdGVyKGdkcF9kaWZmX2ZpbHRlciwgWWVhciA+IDIwMjIgJiBSZWdpb24gPT0gXCJERVVcIiksIFxuICAgICAgICAgICAgIGFlcyhmaWxsID0gUmVnaW9uKSwgXG4gICAgICAgICAgICAgY29sb3VyID0gXCJibGFja1wiLFxuICAgICAgICAgICAgIGFscGhhID0gMSwgXG4gICAgICAgICAgICAgc2l6ZSA9IDMsIFxuICAgICAgICAgICAgIHN0cm9rZSA9IDIsIFxuICAgICAgICAgICAgIHNoYXBlID0yMSkgK1xuICBmYWNldF93cmFwKH5ZZWFyLCBuY29sID0xKSArXG4gIHNjYWxlX3hfY29udGludW91cyhuYW1lID0gXCJEaWZmZXJlbmNlIHRvIHJlZmVyZW5jZSBzY2VuYXJpbyBbUkVGXVwiLFxuICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gc2NhbGVzOjpsYWJlbF9wZXJjZW50KGFjY3VyYWN5ID0gMUwpLCBicmVha3MgPSBzZXEoLTAuMiwgMC4xLDAuMDUpKStcbiAgbGFicyhjb2xvciA9IFwiUmVnaW9uXCIsXG4gICAgICAgc2hhcGUgPSBcIlJlZ2lvblwiLFxuICAgICAgIGZpbGwgPSBcIlJlZ2lvblwiKStcbiAgc2NhbGVfc2hhcGVfbWFudWFsKG5hbWUgPSBcIlJlZ2lvbnNcIixcbiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoXCJHZXJtYW55XCIsIFwiRVUtMjhcIiksXG4gICAgICAgICAgICAgICAgICAgICB2YWx1ZXMgPSBjKFwiR2VybWFueVwiID0gMjEsIFwiRVUtMjhcIiA9IDIxKSkgK1xuICBzY2FsZV9jb2xvdXJfbWFudWFsKG5hbWUgPSBcIlJlZ2lvbnNcIixcbiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoXCJHZXJtYW55XCIsIFwiRVUtMjhcIiksXG4gICAgICAgICAgICAgICAgICAgICB2YWx1ZXMgPSBjKFwicmVkXCIsIFwiYmx1ZVwiKSkgK1xuICBzY2FsZV9maWxsX21hbnVhbChuYW1lID0gXCJSZWdpb25zXCIsXG4gICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKFwiR2VybWFueVwiLCBcIkVVLTI4XCIpLFxuICAgICAgICAgICAgICAgICAgICAgdmFsdWVzID0gYyhcInllbGxvd1wiLCBcImJsdWVcIikpICtcbiAgdGhlbWVfYncoKStcbiAgdGhlbWUodGV4dCAgICAgICAgID0gZWxlbWVudF90ZXh0KHNpemU9MTAsIGZhbWlseT1cIlBhbGF0aW5vIExpbm90eXBlXCIpLFxuICAgICAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTApLFxuICAgICAgICBheGlzLnRleHQueSA9IGVsZW1lbnRfdGV4dChzaXplID0gMTApLFxuICAgICAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksXG4gICAgICAgIHN0cmlwLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSxcbiAgICAgICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSxcbiAgICAgICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksXG4gICAgICAgIGxlZ2VuZC5wb3NpdGlvbiA9IFwiYm90dG9tXCIpXG4gIFxuZ2dzYXZlKHdpZHRoID0gNiwgaGVpZ2h0ID0gNSwgZmlsZW5hbWUgPSBcImdkcF9kZXYucG5nXCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdF9nZHAgPC0gZ2dwbG90KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiksIGFlcyh5ID0gU2NlbmFyaW8sIHggPSBWYWx1ZSkpXG5wbG90X2dkcCArXG4gIGdlb21fcG9pbnQoYWxwaGEgPSAwLjMsIHNpemUgPSAyKStcbiAgZ2VvbV9wb2ludChkYXRhID0gZmlsdGVyKGdkcF9kaWZmX2ZpbHRlciwgWWVhciA+IDIwMjIgJiBSZWdpb24gPT0gXCJFVTI4XCIpLCBcbiAgICAgICAgICAgICBhZXMoZmlsbCA9IFJlZ2lvbiksIFxuICAgICAgICAgICAgIGNvbG91ciA9IFwiYmx1ZVwiLFxuICAgICAgICAgICAgIGFscGhhID0gMSwgXG4gICAgICAgICAgICAgc2l6ZSA9IDMsIFxuICAgICAgICAgICAgIHNoYXBlID0gMjEsIFxuICAgICAgICAgICAgIHN0cm9rZSA9MikgK1xuICBnZW9tX3BvaW50KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiAmIFJlZ2lvbiA9PSBcIkRFVVwiKSwgXG4gICAgICAgICAgICAgYWVzKGZpbGwgPSBSZWdpb24pLCBcbiAgICAgICAgICAgICBjb2xvdXIgPSBcImJsYWNrXCIsXG4gICAgICAgICAgICAgYWxwaGEgPSAxLCBcbiAgICAgICAgICAgICBzaXplID0gMywgXG4gICAgICAgICAgICAgc3Ryb2tlID0gMiwgXG4gICAgICAgICAgICAgc2hhcGUgPTIxKSArXG4gIGZhY2V0X3dyYXAoflllYXIsIG5jb2wgPTEpICtcbiAgc2NhbGVfeF9jb250aW51b3VzKG5hbWUgPSBcIkRpZmZlcmVuY2UgdG8gcmVmZXJlbmNlIHNjZW5hcmlvIFtSRUZdXCIsXG4gICAgICAgICAgICAgICAgICAgICAjbGFiZWxzID0gc2NhbGVzOjpsYWJlbF9wZXJjZW50KGFjY3VyYWN5ID0gMUwpLCBicmVha3MgPSBzZXEoLTAuMiwgMC4wNSwwLjA1KSkrXG4gICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBzY2FsZXM6OmxhYmVsX3BlcmNlbnQoKSwgYnJlYWtzID0gc2VxKC0wLjIsIDAuMDIsMC4wMSkpK1xuICBsYWJzKGNvbG9yID0gXCJSZWdpb25cIixcbiAgICAgICBzaGFwZSA9IFwiUmVnaW9uXCIsXG4gICAgICAgZmlsbCA9IFwiUmVnaW9uXCIpK1xuICBzY2FsZV9zaGFwZV9tYW51YWwobmFtZSA9IFwiUmVnaW9uc1wiLFxuICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYyhcIkdlcm1hbnlcIiwgXCJFVS0yOFwiKSxcbiAgICAgICAgICAgICAgICAgICAgIHZhbHVlcyA9IGMoXCJHZXJtYW55XCIgPSAyMSwgXCJFVS0yOFwiID0gMjEpKSArXG4gIHNjYWxlX2NvbG91cl9tYW51YWwobmFtZSA9IFwiUmVnaW9uc1wiLFxuICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYyhcIkdlcm1hbnlcIiwgXCJFVS0yOFwiKSxcbiAgICAgICAgICAgICAgICAgICAgIHZhbHVlcyA9IGMoXCJyZWRcIiwgXCJibHVlXCIpKSArXG4gIHNjYWxlX2ZpbGxfbWFudWFsKG5hbWUgPSBcIlJlZ2lvbnNcIixcbiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoXCJHZXJtYW55XCIsIFwiRVUtMjhcIiksXG4gICAgICAgICAgICAgICAgICAgICB2YWx1ZXMgPSBjKFwieWVsbG93XCIsIFwiYmx1ZVwiKSkgK1xuICB0aGVtZV9idygpK1xuICB0aGVtZSh0ZXh0ICAgICAgICAgPSBlbGVtZW50X3RleHQoc2l6ZT0xMCwgZmFtaWx5PVwiUGFsYXRpbm8gTGlub3R5cGVcIiksXG4gICAgICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMCksXG4gICAgICAgIGF4aXMudGV4dC55ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMCksXG4gICAgICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSxcbiAgICAgICAgc3RyaXAudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTIpLFxuICAgICAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTIpLFxuICAgICAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSxcbiAgICAgICAgbGVnZW5kLnBvc2l0aW9uID0gXCJib3R0b21cIilcbiAgXG5nZ3NhdmUod2lkdGggPSA2LCBoZWlnaHQgPSA1LCBmaWxlbmFtZSA9IFwiZ2RwX2Rldi5wbmdcIilcbmBgYCJ9 -->
 <pre class="r"><code>plot_gdp &lt;- ggplot(data = filter(gdp_diff_filter, Year &gt; 2022), aes(y = Scenario, x = Value))
 plot_gdp +
   geom_point(alpha = 0.3, size = 2)+
-  geom_point(data = filter(gdp_diff_filter, Year &gt; 2022 &amp; Region == &quot;EU-28&quot;), 
+  geom_point(data = filter(gdp_diff_filter, Year &gt; 2022 &amp; Region == &quot;EU28&quot;), 
              aes(fill = Region), 
              colour = &quot;blue&quot;,
              alpha = 1, 
@@ -361,7 +1566,8 @@ plot_gdp +
              shape =21) +
   facet_wrap(~Year, ncol =1) +
   scale_x_continuous(name = &quot;Difference to reference scenario [REF]&quot;,
-                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))+
+                     #labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.05,0.05))+
+                     labels = scales::label_percent(), breaks = seq(-0.2, 0.02,0.01))+
   labs(color = &quot;Region&quot;,
        shape = &quot;Region&quot;,
        fill = &quot;Region&quot;)+
@@ -387,7 +1593,7 @@ plot_gdp +
 ggsave(width = 6, height = 5, filename = &quot;gdp_dev.png&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-plot-begin eyJjb25kaXRpb25zIjpbXSwiaGVpZ2h0Ijo0MzIuNjMyOSwic2l6ZV9iZWhhdmlvciI6MCwid2lkdGgiOjcwMH0= -->
-<p><img src="data:image/png;base64,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" /></p>
+<p><img src="data:image/png;base64,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" /></p>
 <!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -396,7 +1602,7 @@ ggsave(width = 6, height = 5, filename = &quot;gdp_dev.png&quot;)</code></pre>
 <p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KbGlicmFyeShleHRyYWZvbnQpDQpsaWJyYXJ5KHNob3d0ZXh0KQ0KDQp0dGZfaW1wb3J0KHBhdHRlcm4gPSAibG1yb21hbioiKQ0KDQpsb2FkZm9udHMoKQ0KYGBgDQoNCg0KYGBge3J9DQojcmVhZCBnZHAgZGF0YSBmcm9tIHJlc3VsdHMNCmdkcF9kaXNhZyA8LSByZWFkX2V4Y2VsKCJyZXBvcnRfcGl2b3RfbWVyZ2VkLnhsc3giLCBzaGVldCA9ICJnZHByZWFsX2Rpc2FnX3lyIikNCg0KYGBgDQoNCmBgYHtyfQ0KIyBTcHJlYWQgc2NlbmFyaW9zIHRvIGJlIGFibGUgdG8gY2hhbmdlIHRoZW0NCmdkcF9kaWZmIDwtIHNwcmVhZChnZHBfZGlzYWcsIGtleSA9ICJTY2VuYXJpbyIsIHZhbHVlID0gIlZhbHVlIikNCg0KIyBUcmFuc2Zvcm0gZWFjaCBzY2VuYXJpbyBpbnRvIHRoZSByZWxhdGl2ZSBkaWZmZXJlbmNlIHRvIHJlZmVyZW5jZSBzY2VuYXJpbw0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShiYXUgPSAoYmF1LXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShjQVAgPSAoY0FQLXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShpbnYgPSAoaW52LXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShsYWIgPSAobGFiLXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZSh2YXQgPSAodmF0LXJlZikvcmVmKQ0KYGBgDQoNCmBgYHtyfQ0KIyBkcm9wIG5vbi1FVSByZWdpb25zLCB5ZWFycyBhZnRlciAyMDMwIGFuZCBjYXRlZ29yaWVzIHRoYXQgYXJlIG5vdCAndG90YWwnDQpnZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmLCBncmVwbCgnREVVfEZSQXxJVEF8VUtJfFBPTHxCTkx8RVNQfEVVTnxFVVN8RVUtMjgnLCBSZWdpb24pKQ0KZ2RwX2RpZmZfZmlsdGVyIDwtIGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIGdyZXBsKCcyMDExfDIwMTV8MjAyMHwyMDI1fDIwMzAnLCBZZWFyKSkNCmdkcF9kaWZmX2ZpbHRlciA8LSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBUeXBlID09ICd0b3RhbCcpDQojIGRyb3AgcmVmDQpnZHBfZGlmZl9maWx0ZXIgPC0gc3Vic2V0KGdkcF9kaWZmX2ZpbHRlciwgc2VsZWN0ID0gLWMocmVmLCBUeXBlKSkNCg0KIyBnYXRoZXIgc2NlbmFyaW9zDQpnZHBfZGlmZl9maWx0ZXIgPC0gZ2F0aGVyKGdkcF9kaWZmX2ZpbHRlciwgJ2JhdScsICdjQVAnLCAnaW52JywgJ3ZhdCcsICdsYWInLCBrZXkgPSAnU2NlbmFyaW8nLCB2YWx1ZSA9ICdWYWx1ZScpDQpgYGANCg0KYGBge3J9DQpnZHBfZGlmZl9maWx0ZXJbWzNdXSA9IHRvdXBwZXIoZ2RwX2RpZmZfZmlsdGVyW1szXV0pDQoNCmdkcF9kaWZmX2ZpbHRlciRTY2VuYXJpbyA8LSBmYWN0b3IoZ2RwX2RpZmZfZmlsdGVyJFNjZW5hcmlvLCBsZXZlbHMgPSBjKCJJTlYiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQ0FQIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkxBQiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJWQVQiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQkFVIikpDQpgYGANCg0KDQpgYGB7cn0NCiNmb250X2ltcG9ydChwYXR0ZXJuID0gImxtcm9tYW4qIikNCiNsb2FkZm9udHMoKQ0KI2ZvbnRfaW1wb3J0KCkNCiNsb2FkZm9udHMoZGV2aWNlID0gIndpbiIpDQojIHdpbmRvd3NGb250cygpDQpgYGANCg0KDQoNCmBgYHtyfQ0KcGxvdF9nZHAgPC0gZ2dwbG90KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiksIGFlcyh5ID0gU2NlbmFyaW8sIHggPSBWYWx1ZSkpDQoNCnBsb3RfZ2RwICsNCiAgZ2VvbV9wb2ludChhbHBoYSA9IDAuMywgc2l6ZSA9IDIpKw0KICBnZW9tX3BvaW50KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiAmIFJlZ2lvbiA9PSAiRVUtMjgiKSwgDQogICAgICAgICAgICAgYWVzKGZpbGwgPSBSZWdpb24pLCANCiAgICAgICAgICAgICBjb2xvdXIgPSAiYmx1ZSIsDQogICAgICAgICAgICAgYWxwaGEgPSAxLCANCiAgICAgICAgICAgICBzaXplID0gMywgDQogICAgICAgICAgICAgc2hhcGUgPSAyMSwgDQogICAgICAgICAgICAgc3Ryb2tlID0yKSArDQogIGdlb21fcG9pbnQoZGF0YSA9IGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIFllYXIgPiAyMDIyICYgUmVnaW9uID09ICJERVUiKSwgDQogICAgICAgICAgICAgYWVzKGZpbGwgPSBSZWdpb24pLCANCiAgICAgICAgICAgICBjb2xvdXIgPSAiYmxhY2siLA0KICAgICAgICAgICAgIGFscGhhID0gMSwgDQogICAgICAgICAgICAgc2l6ZSA9IDMsIA0KICAgICAgICAgICAgIHN0cm9rZSA9IDIsIA0KICAgICAgICAgICAgIHNoYXBlID0yMSkgKw0KICBmYWNldF93cmFwKH5ZZWFyLCBuY29sID0xKSArDQogIHNjYWxlX3hfY29udGludW91cyhuYW1lID0gIkRpZmZlcmVuY2UgdG8gcmVmZXJlbmNlIHNjZW5hcmlvIFtSRUZdIiwNCiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IHNjYWxlczo6bGFiZWxfcGVyY2VudChhY2N1cmFjeSA9IDFMKSwgYnJlYWtzID0gc2VxKC0wLjIsIDAuMSwwLjA1KSkrDQogIGxhYnMoY29sb3IgPSAiUmVnaW9uIiwNCiAgICAgICBzaGFwZSA9ICJSZWdpb24iLA0KICAgICAgIGZpbGwgPSAiUmVnaW9uIikrDQogIHNjYWxlX3NoYXBlX21hbnVhbChuYW1lID0gIlJlZ2lvbnMiLA0KICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygiR2VybWFueSIsICJFVS0yOCIpLA0KICAgICAgICAgICAgICAgICAgICAgdmFsdWVzID0gYygiR2VybWFueSIgPSAyMSwgIkVVLTI4IiA9IDIxKSkgKw0KICBzY2FsZV9jb2xvdXJfbWFudWFsKG5hbWUgPSAiUmVnaW9ucyIsDQogICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCJHZXJtYW55IiwgIkVVLTI4IiksDQogICAgICAgICAgICAgICAgICAgICB2YWx1ZXMgPSBjKCJyZWQiLCAiYmx1ZSIpKSArDQogIHNjYWxlX2ZpbGxfbWFudWFsKG5hbWUgPSAiUmVnaW9ucyIsDQogICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBjKCJHZXJtYW55IiwgIkVVLTI4IiksDQogICAgICAgICAgICAgICAgICAgICB2YWx1ZXMgPSBjKCJ5ZWxsb3ciLCAiYmx1ZSIpKSArDQogIHRoZW1lX2J3KCkrDQogIHRoZW1lKHRleHQgICAgICAgICA9IGVsZW1lbnRfdGV4dChzaXplPTEwLCBmYW1pbHk9IlBhbGF0aW5vIExpbm90eXBlIiksDQogICAgICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMCksDQogICAgICAgIGF4aXMudGV4dC55ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMCksDQogICAgICAgIGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSwNCiAgICAgICAgc3RyaXAudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTIpLA0KICAgICAgICBsZWdlbmQudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTIpLA0KICAgICAgICBsZWdlbmQudGl0bGUgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSwNCiAgICAgICAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIpDQogIA0KZ2dzYXZlKHdpZHRoID0gNiwgaGVpZ2h0ID0gNSwgZmlsZW5hbWUgPSAiZ2RwX2Rldi5wbmciKQ0KDQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KbGlicmFyeShleHRyYWZvbnQpDQpsaWJyYXJ5KHNob3d0ZXh0KQ0KDQojZm9udF9pbXBvcnQoKQ0KDQpsb2FkZm9udHMoKQ0KYGBgDQoNCg0KYGBge3J9DQojcmVhZCBnZHAgZGF0YSBmcm9tIHJlc3VsdHMNCmdkcF9kaXNhZyA8LSByZWFkX2V4Y2VsKCJyZXBvcnRfcGl2b3RfbWVyZ2VkLnhsc3giLCBzaGVldCA9ICJnZHByZWFsX2Rpc2FnX3lyIikNCg0KYGBgDQoNCmBgYHtyfQ0KIyBTcHJlYWQgc2NlbmFyaW9zIHRvIGJlIGFibGUgdG8gY2hhbmdlIHRoZW0NCmdkcF9kaWZmIDwtIHNwcmVhZChnZHBfZGlzYWcsIGtleSA9ICJTY2VuYXJpbyIsIHZhbHVlID0gIlZhbHVlIikNCg0KIyBUcmFuc2Zvcm0gZWFjaCBzY2VuYXJpbyBpbnRvIHRoZSByZWxhdGl2ZSBkaWZmZXJlbmNlIHRvIHJlZmVyZW5jZSBzY2VuYXJpbw0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShiYXUgPSAoYmF1LXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShjQVAgPSAoY0FQLXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShpbnYgPSAoaW52LXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZShsYWIgPSAobGFiLXJlZikvcmVmKQ0KZ2RwX2RpZmYgPC0gZ2RwX2RpZmYgJT4lIG11dGF0ZSh2YXQgPSAodmF0LXJlZikvcmVmKQ0KYGBgDQoNCmBgYHtyfQ0KIyBkcm9wIG5vbi1FVSByZWdpb25zLCB5ZWFycyBhZnRlciAyMDMwIGFuZCBjYXRlZ29yaWVzIHRoYXQgYXJlIG5vdCAndG90YWwnDQpnZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmLCBncmVwbCgnREVVfEZSQXxJVEF8VUtJfFBPTHxCTkx8RVNQfEVVTnxFVVN8RVUyOCcsIFJlZ2lvbikpDQpnZHBfZGlmZl9maWx0ZXIgPC0gZmlsdGVyKGdkcF9kaWZmX2ZpbHRlciwgZ3JlcGwoJzIwMTF8MjAxNXwyMDIwfDIwMjV8MjAzMCcsIFllYXIpKQ0KZ2RwX2RpZmZfZmlsdGVyIDwtIGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIFR5cGUgPT0gJ3RvdGFsJykNCiMgZHJvcCByZWYNCmdkcF9kaWZmX2ZpbHRlciA8LSBzdWJzZXQoZ2RwX2RpZmZfZmlsdGVyLCBzZWxlY3QgPSAtYyhyZWYsIFR5cGUpKQ0KDQojIGdhdGhlciBzY2VuYXJpb3MNCmdkcF9kaWZmX2ZpbHRlciA8LSBnYXRoZXIoZ2RwX2RpZmZfZmlsdGVyLCAnYmF1JywgJ2NBUCcsICdpbnYnLCAndmF0JywgJ2xhYicsIGtleSA9ICdTY2VuYXJpbycsIHZhbHVlID0gJ1ZhbHVlJykNCmBgYA0KDQpgYGB7cn0NCmdkcF9kaWZmX2ZpbHRlcltbM11dID0gdG91cHBlcihnZHBfZGlmZl9maWx0ZXJbWzNdXSkNCg0KZ2RwX2RpZmZfZmlsdGVyJFNjZW5hcmlvIDwtIGZhY3RvcihnZHBfZGlmZl9maWx0ZXIkU2NlbmFyaW8sIGxldmVscyA9IGMoIklOViIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJDQVAiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiTEFCIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlZBVCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJCQVUiKSkNCmBgYA0KDQoNCmBgYHtyfQ0KI2ZvbnRfaW1wb3J0KHBhdHRlcm4gPSAibG1yb21hbioiKQ0KI2xvYWRmb250cygpDQojZm9udF9pbXBvcnQoKQ0KbG9hZGZvbnRzKGRldmljZSA9ICJ3aW4iKQ0Kd2luZG93c0ZvbnRzKCkNCmBgYA0KDQoNCg0KYGBge3J9DQpwbG90X2dkcCA8LSBnZ3Bsb3QoZGF0YSA9IGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIFllYXIgPiAyMDIyKSwgYWVzKHkgPSBTY2VuYXJpbywgeCA9IFZhbHVlKSkNCg0KcGxvdF9nZHAgKw0KICBnZW9tX3BvaW50KGFscGhhID0gMC4zLCBzaXplID0gMikrDQogIGdlb21fcG9pbnQoZGF0YSA9IGZpbHRlcihnZHBfZGlmZl9maWx0ZXIsIFllYXIgPiAyMDIyICYgUmVnaW9uID09ICJFVTI4IiksIA0KICAgICAgICAgICAgIGFlcyhmaWxsID0gUmVnaW9uKSwgDQogICAgICAgICAgICAgY29sb3VyID0gImJsdWUiLA0KICAgICAgICAgICAgIGFscGhhID0gMSwgDQogICAgICAgICAgICAgc2l6ZSA9IDMsIA0KICAgICAgICAgICAgIHNoYXBlID0gMjEsIA0KICAgICAgICAgICAgIHN0cm9rZSA9MikgKw0KICBnZW9tX3BvaW50KGRhdGEgPSBmaWx0ZXIoZ2RwX2RpZmZfZmlsdGVyLCBZZWFyID4gMjAyMiAmIFJlZ2lvbiA9PSAiREVVIiksIA0KICAgICAgICAgICAgIGFlcyhmaWxsID0gUmVnaW9uKSwgDQogICAgICAgICAgICAgY29sb3VyID0gImJsYWNrIiwNCiAgICAgICAgICAgICBhbHBoYSA9IDEsIA0KICAgICAgICAgICAgIHNpemUgPSAzLCANCiAgICAgICAgICAgICBzdHJva2UgPSAyLCANCiAgICAgICAgICAgICBzaGFwZSA9MjEpICsNCiAgZmFjZXRfd3JhcCh+WWVhciwgbmNvbCA9MSkgKw0KICBzY2FsZV94X2NvbnRpbnVvdXMobmFtZSA9ICJEaWZmZXJlbmNlIHRvIHJlZmVyZW5jZSBzY2VuYXJpbyBbUkVGXSIsDQogICAgICAgICAgICAgICAgICAgICAjbGFiZWxzID0gc2NhbGVzOjpsYWJlbF9wZXJjZW50KGFjY3VyYWN5ID0gMUwpLCBicmVha3MgPSBzZXEoLTAuMiwgMC4wNSwwLjA1KSkrDQogICAgICAgICAgICAgICAgICAgICBsYWJlbHMgPSBzY2FsZXM6OmxhYmVsX3BlcmNlbnQoKSwgYnJlYWtzID0gc2VxKC0wLjIsIDAuMDIsMC4wMSkpKw0KICBsYWJzKGNvbG9yID0gIlJlZ2lvbiIsDQogICAgICAgc2hhcGUgPSAiUmVnaW9uIiwNCiAgICAgICBmaWxsID0gIlJlZ2lvbiIpKw0KICBzY2FsZV9zaGFwZV9tYW51YWwobmFtZSA9ICJSZWdpb25zIiwNCiAgICAgICAgICAgICAgICAgICAgIGxhYmVscyA9IGMoIkdlcm1hbnkiLCAiRVUtMjgiKSwNCiAgICAgICAgICAgICAgICAgICAgIHZhbHVlcyA9IGMoIkdlcm1hbnkiID0gMjEsICJFVS0yOCIgPSAyMSkpICsNCiAgc2NhbGVfY29sb3VyX21hbnVhbChuYW1lID0gIlJlZ2lvbnMiLA0KICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygiR2VybWFueSIsICJFVS0yOCIpLA0KICAgICAgICAgICAgICAgICAgICAgdmFsdWVzID0gYygicmVkIiwgImJsdWUiKSkgKw0KICBzY2FsZV9maWxsX21hbnVhbChuYW1lID0gIlJlZ2lvbnMiLA0KICAgICAgICAgICAgICAgICAgICAgbGFiZWxzID0gYygiR2VybWFueSIsICJFVS0yOCIpLA0KICAgICAgICAgICAgICAgICAgICAgdmFsdWVzID0gYygieWVsbG93IiwgImJsdWUiKSkgKw0KICB0aGVtZV9idygpKw0KICB0aGVtZSh0ZXh0ICAgICAgICAgPSBlbGVtZW50X3RleHQoc2l6ZT0xMCwgZmFtaWx5PSJQYWxhdGlubyBMaW5vdHlwZSIpLA0KICAgICAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTApLA0KICAgICAgICBheGlzLnRleHQueSA9IGVsZW1lbnRfdGV4dChzaXplID0gMTApLA0KICAgICAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksDQogICAgICAgIHN0cmlwLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSwNCiAgICAgICAgbGVnZW5kLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDEyKSwNCiAgICAgICAgbGVnZW5kLnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksDQogICAgICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJib3R0b20iKQ0KICANCmdnc2F2ZSh3aWR0aCA9IDYsIGhlaWdodCA9IDUsIGZpbGVuYW1lID0gImdkcF9kZXYucG5nIikNCg0KYGBgDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg==</div>
 
 
 

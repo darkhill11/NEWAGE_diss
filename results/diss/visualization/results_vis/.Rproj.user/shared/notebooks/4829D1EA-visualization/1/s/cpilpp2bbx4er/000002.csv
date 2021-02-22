@@ -1,0 +1,511 @@
+"0","library(tidyverse)"
+"2","Paket ‘tidyverse’ wurde unter R Version 3.5.3 erstellt"
+"2","[30m-- [1mAttaching packages[22m ----------------------------------------------------------------------- tidyverse 1.3.0 --[39m
+"
+"2","[30m[32mv[30m [34mggplot2[30m 3.3.3     [32mv[30m [34mpurrr  [30m 0.3.4
+[32mv[30m [34mtibble [30m 3.0.6     [32mv[30m [34mdplyr  [30m 1.0.4
+[32mv[30m [34mtidyr  [30m 1.1.2     [32mv[30m [34mstringr[30m 1.4.0
+[32mv[30m [34mreadr  [30m 1.4.0     [32mv[30m [34mforcats[30m 0.5.1[39m
+"
+"2","Paket ‘purrr’ wurde unter R Version 3.5.3 erstellt"
+"2","Paket ‘stringr’ wurde unter R Version 3.5.3 erstellt"
+"2","[30m-- [1mConflicts[22m -------------------------------------------------------------------------- tidyverse_conflicts() --
+[31mx[30m [34mdplyr[30m::[32mfilter()[30m masks [34mstats[30m::filter()
+[31mx[30m [34mdplyr[30m::[32mlag()[30m    masks [34mstats[30m::lag()[39m
+"
+"0","library(readxl)"
+"2","Paket ‘readxl’ wurde unter R Version 3.5.3 erstellt"
+"0","library(extrafont)"
+"2","Paket ‘extrafont’ wurde unter R Version 3.5.3 erstellt"
+"2","Registering fonts with R
+"
+"0","library(showtext)"
+"2","Lade nötiges Paket: sysfonts
+"
+"2","Lade nötiges Paket: showtextdb
+"
+"2","
+Attache Paket: ‘showtextdb’
+
+"
+"2","The following object is masked from ‘package:extrafont’:
+
+    font_install
+
+"
+"0","#font_import()"
+"0","loadfonts()"
+"2","LM Roman 10 already registered with pdfFonts().
+"
+"2","LM Roman Caps 10 already registered with pdfFonts().
+"
+"2","LM Roman Demi 10 already registered with pdfFonts().
+"
+"2","LM Roman Dunhill 10 already registered with pdfFonts().
+"
+"2","LM Roman Slanted 10 already registered with pdfFonts().
+"
+"2","Agency FB already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Aharoni. Skipping setup for this font.
+"
+"2","Algerian already registered with pdfFonts().
+"
+"2","Andalus already registered with pdfFonts().
+"
+"2","Angsana New already registered with pdfFonts().
+"
+"2","AngsanaUPC already registered with pdfFonts().
+"
+"2","Aparajita already registered with pdfFonts().
+"
+"2","Arabic Typesetting already registered with pdfFonts().
+"
+"2","Arial Black already registered with pdfFonts().
+"
+"2","Arial already registered with pdfFonts().
+"
+"2","Arial Narrow already registered with pdfFonts().
+"
+"2","Arial Rounded MT Bold already registered with pdfFonts().
+"
+"2","Arial Unicode MS already registered with pdfFonts().
+"
+"2","Baskerville Old Face already registered with pdfFonts().
+"
+"2","Bauhaus 93 already registered with pdfFonts().
+"
+"2","Bell MT already registered with pdfFonts().
+"
+"2","Berlin Sans FB already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Berlin Sans FB Demi. Skipping setup for this font.
+"
+"2","Bernard MT Condensed already registered with pdfFonts().
+"
+"2","Blackadder ITC already registered with pdfFonts().
+"
+"2","Bodoni MT already registered with pdfFonts().
+"
+"2","Bodoni MT Black already registered with pdfFonts().
+"
+"2","Bodoni MT Condensed already registered with pdfFonts().
+"
+"2","Bodoni MT Poster Compressed already registered with pdfFonts().
+"
+"2","Book Antiqua already registered with pdfFonts().
+"
+"2","Bookman Old Style already registered with pdfFonts().
+"
+"2","Bookshelf Symbol 7 already registered with pdfFonts().
+"
+"2","Bradley Hand ITC already registered with pdfFonts().
+"
+"2","Britannic Bold already registered with pdfFonts().
+"
+"2","Broadway already registered with pdfFonts().
+"
+"2","Browallia New already registered with pdfFonts().
+"
+"2","BrowalliaUPC already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Brush Script MT. Skipping setup for this font.
+"
+"2","Calibri already registered with pdfFonts().
+"
+"2","Calibri Light already registered with pdfFonts().
+"
+"2","Californian FB already registered with pdfFonts().
+"
+"2","Calisto MT already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Cambria. Skipping setup for this font.
+"
+"2","Candara already registered with pdfFonts().
+"
+"2","Castellar already registered with pdfFonts().
+"
+"2","Centaur already registered with pdfFonts().
+"
+"2","Century already registered with pdfFonts().
+"
+"2","Century Gothic already registered with pdfFonts().
+"
+"2","Century Schoolbook already registered with pdfFonts().
+"
+"2","Chiller already registered with pdfFonts().
+"
+"2","Colonna MT already registered with pdfFonts().
+"
+"2","Comic Sans MS already registered with pdfFonts().
+"
+"2","Consolas already registered with pdfFonts().
+"
+"2","Constantia already registered with pdfFonts().
+"
+"2","Cooper Black already registered with pdfFonts().
+"
+"2","Copperplate Gothic Bold already registered with pdfFonts().
+"
+"2","Copperplate Gothic Light already registered with pdfFonts().
+"
+"2","Corbel already registered with pdfFonts().
+"
+"2","Cordia New already registered with pdfFonts().
+"
+"2","CordiaUPC already registered with pdfFonts().
+"
+"2","Courier New already registered with pdfFonts().
+"
+"2","Curlz MT already registered with pdfFonts().
+"
+"2","DaunPenh already registered with pdfFonts().
+"
+"2","David already registered with pdfFonts().
+"
+"2","DFKai-SB already registered with pdfFonts().
+"
+"2","DilleniaUPC already registered with pdfFonts().
+"
+"2","DokChampa already registered with pdfFonts().
+"
+"2","Ebrima already registered with pdfFonts().
+"
+"2","Edwardian Script ITC already registered with pdfFonts().
+"
+"2","Elephant already registered with pdfFonts().
+"
+"2","Engravers MT already registered with pdfFonts().
+"
+"2","Eras Bold ITC already registered with pdfFonts().
+"
+"2","Eras Demi ITC already registered with pdfFonts().
+"
+"2","Eras Light ITC already registered with pdfFonts().
+"
+"2","Eras Medium ITC already registered with pdfFonts().
+"
+"2","Estrangelo Edessa already registered with pdfFonts().
+"
+"2","EucrosiaUPC already registered with pdfFonts().
+"
+"2","Euphemia already registered with pdfFonts().
+"
+"2","FangSong already registered with pdfFonts().
+"
+"2","Felix Titling already registered with pdfFonts().
+"
+"2","Footlight MT Light already registered with pdfFonts().
+"
+"2","Forte already registered with pdfFonts().
+"
+"2","Franklin Gothic Book already registered with pdfFonts().
+"
+"2","Franklin Gothic Demi already registered with pdfFonts().
+"
+"2","Franklin Gothic Demi Cond already registered with pdfFonts().
+"
+"2","Franklin Gothic Heavy already registered with pdfFonts().
+"
+"2","Franklin Gothic Medium already registered with pdfFonts().
+"
+"2","Franklin Gothic Medium Cond already registered with pdfFonts().
+"
+"2","FrankRuehl already registered with pdfFonts().
+"
+"2","FreesiaUPC already registered with pdfFonts().
+"
+"2","Freestyle Script already registered with pdfFonts().
+"
+"2","French Script MT already registered with pdfFonts().
+"
+"2","Gabriola already registered with pdfFonts().
+"
+"2","Gadugi already registered with pdfFonts().
+"
+"2","Garamond already registered with pdfFonts().
+"
+"2","Gautami already registered with pdfFonts().
+"
+"2","Georgia already registered with pdfFonts().
+"
+"2","Gigi already registered with pdfFonts().
+"
+"2","Gill Sans Ultra Bold already registered with pdfFonts().
+"
+"2","Gill Sans Ultra Bold Condensed already registered with pdfFonts().
+"
+"2","Gill Sans MT already registered with pdfFonts().
+"
+"2","Gill Sans MT Condensed already registered with pdfFonts().
+"
+"2","Gill Sans MT Ext Condensed Bold already registered with pdfFonts().
+"
+"2","Gisha already registered with pdfFonts().
+"
+"2","Gloucester MT Extra Condensed already registered with pdfFonts().
+"
+"2","Goudy Old Style already registered with pdfFonts().
+"
+"2","Goudy Stout already registered with pdfFonts().
+"
+"2","Haettenschweiler already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Harlow Solid Italic. Skipping setup for this font.
+"
+"2","Harrington already registered with pdfFonts().
+"
+"2","High Tower Text already registered with pdfFonts().
+"
+"2","Impact already registered with pdfFonts().
+"
+"2","Imprint MT Shadow already registered with pdfFonts().
+"
+"2","Informal Roman already registered with pdfFonts().
+"
+"2","IrisUPC already registered with pdfFonts().
+"
+"2","Iskoola Pota already registered with pdfFonts().
+"
+"2","JasmineUPC already registered with pdfFonts().
+"
+"2","Jokerman already registered with pdfFonts().
+"
+"2","Juice ITC already registered with pdfFonts().
+"
+"2","KaiTi already registered with pdfFonts().
+"
+"2","Kalinga already registered with pdfFonts().
+"
+"2","Kartika already registered with pdfFonts().
+"
+"2","Khmer UI already registered with pdfFonts().
+"
+"2","KodchiangUPC already registered with pdfFonts().
+"
+"2","Kokila already registered with pdfFonts().
+"
+"2","Kristen ITC already registered with pdfFonts().
+"
+"2","Kunstler Script already registered with pdfFonts().
+"
+"2","Lao UI already registered with pdfFonts().
+"
+"2","Latha already registered with pdfFonts().
+"
+"2","Wide Latin already registered with pdfFonts().
+"
+"2","Leelawadee already registered with pdfFonts().
+"
+"2","Levenim MT already registered with pdfFonts().
+"
+"2","LilyUPC already registered with pdfFonts().
+"
+"2","More than one version of regular/bold/italic found for Lucida Bright. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Lucida Calligraphy. Skipping setup for this font.
+"
+"2","Lucida Console already registered with pdfFonts().
+"
+"2","More than one version of regular/bold/italic found for Lucida Fax. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Lucida Handwriting. Skipping setup for this font.
+"
+"2","More than one version of regular/bold/italic found for Lucida Sans. Skipping setup for this font.
+"
+"2","Lucida Sans Typewriter already registered with pdfFonts().
+"
+"2","Lucida Sans Unicode already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Magneto. Skipping setup for this font.
+"
+"2","Maiandra GD already registered with pdfFonts().
+"
+"2","Malgun Gothic already registered with pdfFonts().
+"
+"2","Mangal already registered with pdfFonts().
+"
+"2","Marlett already registered with pdfFonts().
+"
+"2","Matura MT Script Capitals already registered with pdfFonts().
+"
+"2","Microsoft Yi Baiti already registered with pdfFonts().
+"
+"2","Microsoft Himalaya already registered with pdfFonts().
+"
+"2","Microsoft JhengHei already registered with pdfFonts().
+"
+"2","Microsoft New Tai Lue already registered with pdfFonts().
+"
+"2","Microsoft PhagsPa already registered with pdfFonts().
+"
+"2","Microsoft Sans Serif already registered with pdfFonts().
+"
+"2","Microsoft Tai Le already registered with pdfFonts().
+"
+"2","Microsoft Uighur already registered with pdfFonts().
+"
+"2","Microsoft YaHei already registered with pdfFonts().
+"
+"2","Miriam already registered with pdfFonts().
+"
+"2","Miriam Fixed already registered with pdfFonts().
+"
+"2","Mistral already registered with pdfFonts().
+"
+"2","Modern No. 20 already registered with pdfFonts().
+"
+"2","Mongolian Baiti already registered with pdfFonts().
+"
+"2","Monotype Corsiva already registered with pdfFonts().
+"
+"2","MoolBoran already registered with pdfFonts().
+"
+"2","MS Outlook already registered with pdfFonts().
+"
+"2","MS Reference Sans Serif already registered with pdfFonts().
+"
+"2","MS Reference Specialty already registered with pdfFonts().
+"
+"2","MV Boli already registered with pdfFonts().
+"
+"2","Narkisim already registered with pdfFonts().
+"
+"2","Niagara Engraved already registered with pdfFonts().
+"
+"2","Niagara Solid already registered with pdfFonts().
+"
+"2","Nirmala UI already registered with pdfFonts().
+"
+"2","Nyala already registered with pdfFonts().
+"
+"2","OCR A Extended already registered with pdfFonts().
+"
+"2","Old English Text MT already registered with pdfFonts().
+"
+"2","Onyx already registered with pdfFonts().
+"
+"2","Palace Script MT already registered with pdfFonts().
+"
+"2","Palatino Linotype already registered with pdfFonts().
+"
+"2","Papyrus already registered with pdfFonts().
+"
+"2","Parchment already registered with pdfFonts().
+"
+"2","Perpetua already registered with pdfFonts().
+"
+"2","Perpetua Titling MT already registered with pdfFonts().
+"
+"2","Plantagenet Cherokee already registered with pdfFonts().
+"
+"2","Playbill already registered with pdfFonts().
+"
+"2","Poor Richard already registered with pdfFonts().
+"
+"2","Pristina already registered with pdfFonts().
+"
+"2","More than one version of regular/bold/italic found for Raavi. Skipping setup for this font.
+"
+"2","No regular (non-bold, non-italic) version of Rage Italic. Skipping setup for this font.
+"
+"2","Ravie already registered with pdfFonts().
+"
+"2","Rockwell already registered with pdfFonts().
+"
+"2","Rockwell Condensed already registered with pdfFonts().
+"
+"2","Rockwell Extra Bold already registered with pdfFonts().
+"
+"2","Rod already registered with pdfFonts().
+"
+"2","Sakkal Majalla already registered with pdfFonts().
+"
+"2","Script MT Bold already registered with pdfFonts().
+"
+"2","Segoe Print already registered with pdfFonts().
+"
+"2","Segoe Script already registered with pdfFonts().
+"
+"2","Segoe UI already registered with pdfFonts().
+"
+"2","Segoe UI Light already registered with pdfFonts().
+"
+"2","Segoe UI Semibold already registered with pdfFonts().
+"
+"2","Segoe UI Semilight already registered with pdfFonts().
+"
+"2","Segoe UI Symbol already registered with pdfFonts().
+"
+"2","Shonar Bangla already registered with pdfFonts().
+"
+"2","Showcard Gothic already registered with pdfFonts().
+"
+"2","Shruti already registered with pdfFonts().
+"
+"2","SimHei already registered with pdfFonts().
+"
+"2","Simplified Arabic already registered with pdfFonts().
+"
+"2","Simplified Arabic Fixed already registered with pdfFonts().
+"
+"2","SimSun-ExtB already registered with pdfFonts().
+"
+"2","Snap ITC already registered with pdfFonts().
+"
+"2","Stencil already registered with pdfFonts().
+"
+"2","Sylfaen already registered with pdfFonts().
+"
+"2","Symbol already registered with pdfFonts().
+"
+"2","Tahoma already registered with pdfFonts().
+"
+"2","Tempus Sans ITC already registered with pdfFonts().
+"
+"2","Times New Roman already registered with pdfFonts().
+"
+"2","Traditional Arabic already registered with pdfFonts().
+"
+"2","Trebuchet MS already registered with pdfFonts().
+"
+"2","Tunga already registered with pdfFonts().
+"
+"2","Tw Cen MT already registered with pdfFonts().
+"
+"2","Tw Cen MT Condensed already registered with pdfFonts().
+"
+"2","Tw Cen MT Condensed Extra Bold already registered with pdfFonts().
+"
+"2","Univers for UniS45LightOblique already registered with pdfFonts().
+"
+"2","Univers for UniS 55 Roman Rg already registered with pdfFonts().
+"
+"2","Univers for UniS 65 Bold Rg already registered with pdfFonts().
+"
+"2","Utsaah already registered with pdfFonts().
+"
+"2","Vani already registered with pdfFonts().
+"
+"2","Verdana already registered with pdfFonts().
+"
+"2","Vijaya already registered with pdfFonts().
+"
+"2","Viner Hand ITC already registered with pdfFonts().
+"
+"2","No regular (non-bold, non-italic) version of Vivaldi. Skipping setup for this font.
+"
+"2","Vladimir Script already registered with pdfFonts().
+"
+"2","Vrinda already registered with pdfFonts().
+"
+"2","Webdings already registered with pdfFonts().
+"
+"2","Wingdings already registered with pdfFonts().
+"
+"2","Wingdings 2 already registered with pdfFonts().
+"
+"2","Wingdings 3 already registered with pdfFonts().
+"
+"2","ZWAdobeF already registered with pdfFonts().
+"

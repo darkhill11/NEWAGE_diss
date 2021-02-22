@@ -13,7 +13,7 @@ library(readxl)
 library(extrafont)
 library(showtext)
 
-font_import()
+#font_import()
 
 loadfonts()
 ```
@@ -39,7 +39,7 @@ gdp_diff <- gdp_diff %>% mutate(vat = (vat-ref)/ref)
 
 ```{r}
 # drop non-EU regions, years after 2030 and categories that are not 'total'
-gdp_diff_filter <- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU-28', Region))
+gdp_diff_filter <- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU28', Region))
 gdp_diff_filter <- filter(gdp_diff_filter, grepl('2011|2015|2020|2025|2030', Year))
 gdp_diff_filter <- filter(gdp_diff_filter, Type == 'total')
 # drop ref
@@ -75,7 +75,7 @@ plot_gdp <- ggplot(data = filter(gdp_diff_filter, Year > 2022), aes(y = Scenario
 
 plot_gdp +
   geom_point(alpha = 0.3, size = 2)+
-  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == "EU-28"), 
+  geom_point(data = filter(gdp_diff_filter, Year > 2022 & Region == "EU28"), 
              aes(fill = Region), 
              colour = "blue",
              alpha = 1, 
@@ -91,7 +91,8 @@ plot_gdp +
              shape =21) +
   facet_wrap(~Year, ncol =1) +
   scale_x_continuous(name = "Difference to reference scenario [REF]",
-                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))+
+                     #labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.05,0.05))+
+                     labels = scales::label_percent(), breaks = seq(-0.2, 0.02,0.01))+
   labs(color = "Region",
        shape = "Region",
        fill = "Region")+
