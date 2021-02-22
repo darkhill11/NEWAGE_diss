@@ -1,0 +1,135 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(extrafont)
+library(showtext)
+
+loadfonts(device = "win")
+```
+
+```{r}
+#read emplyment data from results
+gva_real <- read_excel("report_pivot_merged.xlsx", sheet = "gva_real_yr")
+```
+
+```{r}
+
+# Spread scenarios to be able to change them
+gva_diff <- spread(gva_real, key = "Scenario", value = "Value")
+
+# Transform each scenario into the relative difference to reference scenario
+gva_diff <- gva_diff %>% mutate(bau = (bau-ref)/ref)
+gva_diff <- gva_diff %>% mutate(cAP = (cAP-ref)/ref)
+gva_diff <- gva_diff %>% mutate(inv = (inv-ref)/ref)
+gva_diff <- gva_diff %>% mutate(lab = (lab-ref)/ref)
+gva_diff <- gva_diff %>% mutate(vat = (vat-ref)/ref)
+```
+
+```{r}
+# drop non-EU regions, years after 2030 and categories that are not 'total'
+gva_secs <- filter(gva_diff, grepl('DEU|EU28', Region))
+gva_secs <- filter(gva_secs, grepl('2030', Year))
+gva_secs <- filter(gva_secs, grepl('Energy Intensive Ind|non-Energy Intensive Ind|Other Sectors|SER', Sector))
+# drop ref
+gva_secs <- subset(gva_secs, select = -c(ref))
+
+# gather scenarios
+gva_secs <- gather(gva_secs, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+
+# update scenario names and change order
+gva_secs[[4]] = toupper(gva_secs[[4]])
+
+gva_secs$Scenario <- factor(gva_secs$Scenario, levels = c("INV",
+                                "CAP",
+                                "LAB",
+                                "VAT",
+                                "BAU"))
+
+gva_secs$Sector <- factor(gva_secs$Sector, levels = c("Energy Intensive Ind",
+                                "non-Energy Intensive Ind",
+                                "SER",
+                                "Other Sectors"))
+```
+
+```{r}
+gva_secs <- gva_secs %>%
+  mutate(Sector = str_replace(Sector, "SER", "Services")) %>%
+  mutate(Sector = str_replace(Sector, "non-Energy Intensive Ind", "Other Industries")) %>%
+  mutate(Sector = str_replace(Sector, "Energy Intensive Ind", "Energy Intensive \nIndustries")) %>%
+  mutate(Region = str_replace(Region, "DEU", "Germany")) %>%
+  mutate(Region = str_replace(Region, "EU28", "EU-28"))
+```
+
+```{r}
+plot_gva <- ggplot(data = gva_secs, aes(x = Scenario, y = Value))
+
+plot_gva +
+  geom_bar(stat='identity', aes(fill =  Scenario), color = "black") +
+  facet_grid(Region ~ factor(Sector, levels = c("Energy Intensive \nIndustries",
+                                "Other Industries",
+                                "Services",
+                                "Other Sectors"))) +
+  scale_y_continuous(name = "Difference to reference scenario [REF]",
+                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.025, 0.02,0.01)) +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+  
+```
+  geom_point(data = filter(gva_secs, Year > 2022 & Region == "EU28"), 
+             aes(fill = Region), 
+             colour = "blue",
+             alpha = 1, 
+             size = 3, 
+             shape = 21, 
+             stroke =2) +
+  geom_point(data = filter(gva_secs, Year > 2022 & Region == "DEU"), 
+             aes(fill = Region), 
+             colour = "black",
+             alpha = 1, 
+             size = 3, 
+             stroke = 2, 
+             shape =21) +
+  facet_wrap(~Year, ncol =1) +
+  scale_x_continuous(name = "Difference to reference scenario [REF]",
+                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))+
+  labs(color = "Region",
+       shape = "Region",
+       fill = "Region")+
+  scale_shape_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("Germany" = 21, "EU-28" = 21)) +
+  scale_colour_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("red", "blue")) +
+  scale_fill_manual(name = "Regions",
+                     labels = c("Germany", "EU-28"),
+                     values = c("yellow", "blue")) +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+  
+ggsave(width = 6, height = 5, filename = "gva_dev.png")
+```
