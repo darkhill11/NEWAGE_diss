@@ -84,7 +84,7 @@ windowsFonts()
 plot_gdp <- ggplot(data = gdp_diff_filter_2, aes(x = Scenario, y = Value))
 
 plot_gdp +
-  geom_bar(stat="identity",aes(fill = Scenario)) +
+  geom_bar(stat="identity",aes(fill = Scenario), color = "black") +
   facet_grid( Region ~ Type) + 
   scale_y_continuous(name = "Difference to reference scenario [REF]",
                      labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.15,0.05)) +
