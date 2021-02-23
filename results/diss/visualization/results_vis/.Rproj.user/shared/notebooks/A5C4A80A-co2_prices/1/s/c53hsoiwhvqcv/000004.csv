@@ -1,0 +1,1 @@
+"0","all_prices <- rbind(ets_prices, netsr_prices)"

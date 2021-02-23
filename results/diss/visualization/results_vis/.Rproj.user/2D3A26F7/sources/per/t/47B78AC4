@@ -14,9 +14,9 @@
     "properties" : {
         "chunk_output_type" : "inline",
         "cursorPosition" : "82,13",
-        "scrollLine" : "50"
+        "scrollLine" : "0"
     },
-    "relative_order" : 5,
+    "relative_order" : 3,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_markdown"

@@ -1,0 +1,2 @@
+"0","ets_prices <-  read_excel(""report_pivot_merged.xlsx"", sheet = ""pco2_ets_yr"")"
+"0","netsr_prices <- read_excel(""report_pivot_merged.xlsx"", sheet = ""pco2_netsr_yr"")"

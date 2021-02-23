@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614110155066.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "55DCF849",
+    "lastKnownWriteTime" : 32370073299845215,
+    "last_content_update" : 1614110155066,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "C821D1B4",
+        "caption" : "ets_prices",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ets_prices&cache_key=C821D1B4",
+        "displayedObservations" : 54,
+        "environment" : "",
+        "object" : "ets_prices",
+        "preview" : 0,
+        "totalObservations" : 54,
+        "variables" : 3
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

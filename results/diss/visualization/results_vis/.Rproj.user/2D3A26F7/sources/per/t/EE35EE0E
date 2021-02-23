@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614109654815.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "461405629",
+    "id" : "EE35EE0E",
+    "lastKnownWriteTime" : 1614114479,
+    "last_content_update" : 1614114479083,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/co2_prices.Rmd",
+    "project_path" : "co2_prices.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "79,43",
+        "scrollLine" : "49",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,7 +1,0 @@
-"0","gdp_diff_filter_2 <- gdp_diff_filter_2 %>%"
-"0","  mutate(Type = str_replace(Type, ""cons_gov"", ""Government's \nConsumption"")) %>%"
-"0","  mutate(Type = str_replace(Type, ""cons_hh"", ""Households' \nConsumption"")) %>%"
-"0","  mutate(Type = str_replace(Type, ""inv"", ""Investments"")) %>%"
-"0","  mutate(Type = str_replace(Type, ""trade"", ""Trade"")) %>%"
-"0","  mutate(Region = str_replace(Region, ""DEU"", ""Germany"")) %>%"
-"0","  mutate(Region = str_replace(Region, ""EU28"", ""EU-28""))"
