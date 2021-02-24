@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614200874127.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3870575167",
+    "id" : "567B736",
+    "lastKnownWriteTime" : 1614024793,
+    "last_content_update" : 1614200915555,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/visualization.Rmd",
+    "project_path" : "visualization.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "117,0",
+        "scrollLine" : "63",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

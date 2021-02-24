@@ -1,4 +1,0 @@
-"0","levels(factor(all_prices_filter$Scenario))"
-"2","Error: Can't combine `Scenario` <character> and `Value` <double>.
-[90mRun `rlang::last_error()` to see where the error occurred.[39m
-"

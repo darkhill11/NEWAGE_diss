@@ -1,0 +1,8 @@
+"0","```r
+gdp_diff_filter[[3]] = toupper(gdp_diff_filter[[3]])
+gdp_diff_filter$Scenario <- factor(gdp_diff_filter$Scenario, levels = c(\"INV\",
+                                \"CAP\",
+                                \"LAB\",
+                                \"VAT\",
+                                \"BAU\"))
+```"

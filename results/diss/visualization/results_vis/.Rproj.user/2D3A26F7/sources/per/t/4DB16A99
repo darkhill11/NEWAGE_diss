@@ -12,15 +12,15 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "F2C7576E",
+        "cacheKey" : "B9CF5534",
         "caption" : "all_prices_filter",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=all_prices_filter&cache_key=F2C7576E",
-        "displayedObservations" : 60,
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=all_prices_filter&cache_key=B9CF5534",
+        "displayedObservations" : "51",
         "environment" : "",
         "object" : "all_prices_filter",
-        "preview" : 0,
-        "totalObservations" : 60,
-        "variables" : 4
+        "preview" : "0",
+        "totalObservations" : "51",
+        "variables" : "4"
     },
     "relative_order" : 8,
     "source_on_save" : false,

@@ -1,0 +1,4 @@
+"0","```r
+#read gdp data from results
+gdp_disag <- read_excel(\"report_pivot_merged.xlsx\", sheet = \"gdpreal_disag_yr\")
+```"

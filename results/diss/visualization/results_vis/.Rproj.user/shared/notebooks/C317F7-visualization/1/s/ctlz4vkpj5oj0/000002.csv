@@ -1,0 +1,967 @@
+"0","```r
+#font_import(pattern = \"lmroman*\")
+#loadfonts()
+#font_import()
+loadfonts(device = \"win\")
+```"
+"1","LM Roman 10 already registered with windowsFonts().
+LM Roman Caps 10 already registered with windowsFonts().
+LM Roman Demi 10 already registered with windowsFonts().
+LM Roman Dunhill 10 already registered with windowsFonts().
+LM Roman Slanted 10 already registered with windowsFonts().
+Agency FB already registered with windowsFonts().
+Aharoni already registered with windowsFonts().
+Algerian already registered with windowsFonts().
+Andalus already registered with windowsFonts().
+Angsana New already registered with windowsFonts().
+AngsanaUPC already registered with windowsFonts().
+Aparajita already registered with windowsFonts().
+Arabic Typesetting already registered with windowsFonts().
+Arial Black already registered with windowsFonts().
+Arial already registered with windowsFonts().
+Arial Narrow already registered with windowsFonts().
+Arial Rounded MT Bold already registered with windowsFonts().
+Arial Unicode MS already registered with windowsFonts().
+Baskerville Old Face already registered with windowsFonts().
+Bauhaus 93 already registered with windowsFonts().
+Bell MT already registered with windowsFonts().
+Berlin Sans FB already registered with windowsFonts().
+Berlin Sans FB Demi already registered with windowsFonts().
+Bernard MT Condensed already registered with windowsFonts().
+Blackadder ITC already registered with windowsFonts().
+Bodoni MT already registered with windowsFonts().
+Bodoni MT Black already registered with windowsFonts().
+Bodoni MT Condensed already registered with windowsFonts().
+Bodoni MT Poster Compressed already registered with windowsFonts().
+Book Antiqua already registered with windowsFonts().
+Bookman Old Style already registered with windowsFonts().
+Bookshelf Symbol 7 already registered with windowsFonts().
+Bradley Hand ITC already registered with windowsFonts().
+Britannic Bold already registered with windowsFonts().
+Broadway already registered with windowsFonts().
+Browallia New already registered with windowsFonts().
+BrowalliaUPC already registered with windowsFonts().
+Brush Script MT already registered with windowsFonts().
+Calibri already registered with windowsFonts().
+Calibri Light already registered with windowsFonts().
+Californian FB already registered with windowsFonts().
+Calisto MT already registered with windowsFonts().
+Cambria already registered with windowsFonts().
+Candara already registered with windowsFonts().
+Castellar already registered with windowsFonts().
+Centaur already registered with windowsFonts().
+Century already registered with windowsFonts().
+Century Gothic already registered with windowsFonts().
+Century Schoolbook already registered with windowsFonts().
+Chiller already registered with windowsFonts().
+Colonna MT already registered with windowsFonts().
+Comic Sans MS already registered with windowsFonts().
+Consolas already registered with windowsFonts().
+Constantia already registered with windowsFonts().
+Cooper Black already registered with windowsFonts().
+Copperplate Gothic Bold already registered with windowsFonts().
+Copperplate Gothic Light already registered with windowsFonts().
+Corbel already registered with windowsFonts().
+Cordia New already registered with windowsFonts().
+CordiaUPC already registered with windowsFonts().
+Courier New already registered with windowsFonts().
+Curlz MT already registered with windowsFonts().
+DaunPenh already registered with windowsFonts().
+David already registered with windowsFonts().
+DFKai-SB already registered with windowsFonts().
+DilleniaUPC already registered with windowsFonts().
+DokChampa already registered with windowsFonts().
+Ebrima already registered with windowsFonts().
+Edwardian Script ITC already registered with windowsFonts().
+Elephant already registered with windowsFonts().
+Engravers MT already registered with windowsFonts().
+Eras Bold ITC already registered with windowsFonts().
+Eras Demi ITC already registered with windowsFonts().
+Eras Light ITC already registered with windowsFonts().
+Eras Medium ITC already registered with windowsFonts().
+Estrangelo Edessa already registered with windowsFonts().
+EucrosiaUPC already registered with windowsFonts().
+Euphemia already registered with windowsFonts().
+FangSong already registered with windowsFonts().
+Felix Titling already registered with windowsFonts().
+Footlight MT Light already registered with windowsFonts().
+Forte already registered with windowsFonts().
+Franklin Gothic Book already registered with windowsFonts().
+Franklin Gothic Demi already registered with windowsFonts().
+Franklin Gothic Demi Cond already registered with windowsFonts().
+Franklin Gothic Heavy already registered with windowsFonts().
+Franklin Gothic Medium already registered with windowsFonts().
+Franklin Gothic Medium Cond already registered with windowsFonts().
+FrankRuehl already registered with windowsFonts().
+FreesiaUPC already registered with windowsFonts().
+Freestyle Script already registered with windowsFonts().
+French Script MT already registered with windowsFonts().
+Gabriola already registered with windowsFonts().
+Gadugi already registered with windowsFonts().
+Garamond already registered with windowsFonts().
+Gautami already registered with windowsFonts().
+Georgia already registered with windowsFonts().
+Gigi already registered with windowsFonts().
+Gill Sans Ultra Bold already registered with windowsFonts().
+Gill Sans Ultra Bold Condensed already registered with windowsFonts().
+Gill Sans MT already registered with windowsFonts().
+Gill Sans MT Condensed already registered with windowsFonts().
+Gill Sans MT Ext Condensed Bold already registered with windowsFonts().
+Gisha already registered with windowsFonts().
+Gloucester MT Extra Condensed already registered with windowsFonts().
+Goudy Old Style already registered with windowsFonts().
+Goudy Stout already registered with windowsFonts().
+Haettenschweiler already registered with windowsFonts().
+Harlow Solid Italic already registered with windowsFonts().
+Harrington already registered with windowsFonts().
+High Tower Text already registered with windowsFonts().
+Impact already registered with windowsFonts().
+Imprint MT Shadow already registered with windowsFonts().
+Informal Roman already registered with windowsFonts().
+IrisUPC already registered with windowsFonts().
+Iskoola Pota already registered with windowsFonts().
+JasmineUPC already registered with windowsFonts().
+Jokerman already registered with windowsFonts().
+Juice ITC already registered with windowsFonts().
+KaiTi already registered with windowsFonts().
+Kalinga already registered with windowsFonts().
+Kartika already registered with windowsFonts().
+Khmer UI already registered with windowsFonts().
+KodchiangUPC already registered with windowsFonts().
+Kokila already registered with windowsFonts().
+Kristen ITC already registered with windowsFonts().
+Kunstler Script already registered with windowsFonts().
+Lao UI already registered with windowsFonts().
+Latha already registered with windowsFonts().
+Wide Latin already registered with windowsFonts().
+Leelawadee already registered with windowsFonts().
+Levenim MT already registered with windowsFonts().
+LilyUPC already registered with windowsFonts().
+Lucida Bright already registered with windowsFonts().
+Lucida Calligraphy already registered with windowsFonts().
+Lucida Console already registered with windowsFonts().
+Lucida Fax already registered with windowsFonts().
+Lucida Handwriting already registered with windowsFonts().
+Lucida Sans already registered with windowsFonts().
+Lucida Sans Typewriter already registered with windowsFonts().
+Lucida Sans Unicode already registered with windowsFonts().
+Magneto already registered with windowsFonts().
+Maiandra GD already registered with windowsFonts().
+Malgun Gothic already registered with windowsFonts().
+Mangal already registered with windowsFonts().
+Marlett already registered with windowsFonts().
+Matura MT Script Capitals already registered with windowsFonts().
+Microsoft Yi Baiti already registered with windowsFonts().
+Microsoft Himalaya already registered with windowsFonts().
+Microsoft JhengHei already registered with windowsFonts().
+Microsoft New Tai Lue already registered with windowsFonts().
+Microsoft PhagsPa already registered with windowsFonts().
+Microsoft Sans Serif already registered with windowsFonts().
+Microsoft Tai Le already registered with windowsFonts().
+Microsoft Uighur already registered with windowsFonts().
+Microsoft YaHei already registered with windowsFonts().
+Miriam already registered with windowsFonts().
+Miriam Fixed already registered with windowsFonts().
+Mistral already registered with windowsFonts().
+Modern No. 20 already registered with windowsFonts().
+Mongolian Baiti already registered with windowsFonts().
+Monotype Corsiva already registered with windowsFonts().
+MoolBoran already registered with windowsFonts().
+MS Outlook already registered with windowsFonts().
+MS Reference Sans Serif already registered with windowsFonts().
+MS Reference Specialty already registered with windowsFonts().
+MV Boli already registered with windowsFonts().
+Narkisim already registered with windowsFonts().
+Niagara Engraved already registered with windowsFonts().
+Niagara Solid already registered with windowsFonts().
+Nirmala UI already registered with windowsFonts().
+Nyala already registered with windowsFonts().
+OCR A Extended already registered with windowsFonts().
+Old English Text MT already registered with windowsFonts().
+Onyx already registered with windowsFonts().
+Palace Script MT already registered with windowsFonts().
+Palatino Linotype already registered with windowsFonts().
+Papyrus already registered with windowsFonts().
+Parchment already registered with windowsFonts().
+Perpetua already registered with windowsFonts().
+Perpetua Titling MT already registered with windowsFonts().
+Plantagenet Cherokee already registered with windowsFonts().
+Playbill already registered with windowsFonts().
+Poor Richard already registered with windowsFonts().
+Pristina already registered with windowsFonts().
+Raavi already registered with windowsFonts().
+Rage Italic already registered with windowsFonts().
+Ravie already registered with windowsFonts().
+Rockwell already registered with windowsFonts().
+Rockwell Condensed already registered with windowsFonts().
+Rockwell Extra Bold already registered with windowsFonts().
+Rod already registered with windowsFonts().
+Sakkal Majalla already registered with windowsFonts().
+Script MT Bold already registered with windowsFonts().
+Segoe Print already registered with windowsFonts().
+Segoe Script already registered with windowsFonts().
+Segoe UI already registered with windowsFonts().
+Segoe UI Light already registered with windowsFonts().
+Segoe UI Semibold already registered with windowsFonts().
+Segoe UI Semilight already registered with windowsFonts().
+Segoe UI Symbol already registered with windowsFonts().
+Shonar Bangla already registered with windowsFonts().
+Showcard Gothic already registered with windowsFonts().
+Shruti already registered with windowsFonts().
+SimHei already registered with windowsFonts().
+Simplified Arabic already registered with windowsFonts().
+Simplified Arabic Fixed already registered with windowsFonts().
+SimSun-ExtB already registered with windowsFonts().
+Snap ITC already registered with windowsFonts().
+Stencil already registered with windowsFonts().
+Sylfaen already registered with windowsFonts().
+Symbol already registered with windowsFonts().
+Tahoma already registered with windowsFonts().
+Tempus Sans ITC already registered with windowsFonts().
+Times New Roman already registered with windowsFonts().
+Traditional Arabic already registered with windowsFonts().
+Trebuchet MS already registered with windowsFonts().
+Tunga already registered with windowsFonts().
+Tw Cen MT already registered with windowsFonts().
+Tw Cen MT Condensed already registered with windowsFonts().
+Tw Cen MT Condensed Extra Bold already registered with windowsFonts().
+Univers for UniS45LightOblique already registered with windowsFonts().
+Univers for UniS 55 Roman Rg already registered with windowsFonts().
+Univers for UniS 65 Bold Rg already registered with windowsFonts().
+Utsaah already registered with windowsFonts().
+Vani already registered with windowsFonts().
+Verdana already registered with windowsFonts().
+Vijaya already registered with windowsFonts().
+Viner Hand ITC already registered with windowsFonts().
+Vivaldi already registered with windowsFonts().
+Vladimir Script already registered with windowsFonts().
+Vrinda already registered with windowsFonts().
+Webdings already registered with windowsFonts().
+Wingdings already registered with windowsFonts().
+Wingdings 2 already registered with windowsFonts().
+Wingdings 3 already registered with windowsFonts().
+ZWAdobeF already registered with windowsFonts().
+"
+"0","```r
+windowsFonts()
+```"
+"1","$`serif`
+[1] \"TT Times New Roman\"
+
+$sans
+[1] \"TT Arial\"
+
+$mono
+[1] \"TT Courier New\"
+
+$`LM Roman 10`
+[1] \"LM Roman 10\"
+
+$`LM Roman Caps 10`
+[1] \"LM Roman Caps 10\"
+
+$`LM Roman Demi 10`
+[1] \"LM Roman Demi 10\"
+
+$`LM Roman Dunhill 10`
+[1] \"LM Roman Dunhill 10\"
+
+$`LM Roman Slanted 10`
+[1] \"LM Roman Slanted 10\"
+
+$`Agency FB`
+[1] \"Agency FB\"
+
+$Aharoni
+[1] \"Aharoni\"
+
+$Algerian
+[1] \"Algerian\"
+
+$Andalus
+[1] \"Andalus\"
+
+$`Angsana New`
+[1] \"Angsana New\"
+
+$AngsanaUPC
+[1] \"AngsanaUPC\"
+
+$Aparajita
+[1] \"Aparajita\"
+
+$`Arabic Typesetting`
+[1] \"Arabic Typesetting\"
+
+$`Arial Black`
+[1] \"Arial Black\"
+
+$Arial
+[1] \"Arial\"
+
+$`Arial Narrow`
+[1] \"Arial Narrow\"
+
+$`Arial Rounded MT Bold`
+[1] \"Arial Rounded MT Bold\"
+
+$`Arial Unicode MS`
+[1] \"Arial Unicode MS\"
+
+$`Baskerville Old Face`
+[1] \"Baskerville Old Face\"
+
+$`Bauhaus 93`
+[1] \"Bauhaus 93\"
+
+$`Bell MT`
+[1] \"Bell MT\"
+
+$`Berlin Sans FB`
+[1] \"Berlin Sans FB\"
+
+$`Berlin Sans FB Demi`
+[1] \"Berlin Sans FB Demi\"
+
+$`Bernard MT Condensed`
+[1] \"Bernard MT Condensed\"
+
+$`Blackadder ITC`
+[1] \"Blackadder ITC\"
+
+$`Bodoni MT`
+[1] \"Bodoni MT\"
+
+$`Bodoni MT Black`
+[1] \"Bodoni MT Black\"
+
+$`Bodoni MT Condensed`
+[1] \"Bodoni MT Condensed\"
+
+$`Bodoni MT Poster Compressed`
+[1] \"Bodoni MT Poster Compressed\"
+
+$`Book Antiqua`
+[1] \"Book Antiqua\"
+
+$`Bookman Old Style`
+[1] \"Bookman Old Style\"
+
+$`Bookshelf Symbol 7`
+[1] \"Bookshelf Symbol 7\"
+
+$`Bradley Hand ITC`
+[1] \"Bradley Hand ITC\"
+
+$`Britannic Bold`
+[1] \"Britannic Bold\"
+
+$Broadway
+[1] \"Broadway\"
+
+$`Browallia New`
+[1] \"Browallia New\"
+
+$BrowalliaUPC
+[1] \"BrowalliaUPC\"
+
+$`Brush Script MT`
+[1] \"Brush Script MT\"
+
+$Calibri
+[1] \"Calibri\"
+
+$`Calibri Light`
+[1] \"Calibri Light\"
+
+$`Californian FB`
+[1] \"Californian FB\"
+
+$`Calisto MT`
+[1] \"Calisto MT\"
+
+$Cambria
+[1] \"Cambria\"
+
+$Candara
+[1] \"Candara\"
+
+$Castellar
+[1] \"Castellar\"
+
+$Centaur
+[1] \"Centaur\"
+
+$Century
+[1] \"Century\"
+
+$`Century Gothic`
+[1] \"Century Gothic\"
+
+$`Century Schoolbook`
+[1] \"Century Schoolbook\"
+
+$Chiller
+[1] \"Chiller\"
+
+$`Colonna MT`
+[1] \"Colonna MT\"
+
+$`Comic Sans MS`
+[1] \"Comic Sans MS\"
+
+$Consolas
+[1] \"Consolas\"
+
+$Constantia
+[1] \"Constantia\"
+
+$`Cooper Black`
+[1] \"Cooper Black\"
+
+$`Copperplate Gothic Bold`
+[1] \"Copperplate Gothic Bold\"
+
+$`Copperplate Gothic Light`
+[1] \"Copperplate Gothic Light\"
+
+$Corbel
+[1] \"Corbel\"
+
+$`Cordia New`
+[1] \"Cordia New\"
+
+$CordiaUPC
+[1] \"CordiaUPC\"
+
+$`Courier New`
+[1] \"Courier New\"
+
+$`Curlz MT`
+[1] \"Curlz MT\"
+
+$DaunPenh
+[1] \"DaunPenh\"
+
+$David
+[1] \"David\"
+
+$`DFKai-SB`
+[1] \"DFKai-SB\"
+
+$DilleniaUPC
+[1] \"DilleniaUPC\"
+
+$DokChampa
+[1] \"DokChampa\"
+
+$Ebrima
+[1] \"Ebrima\"
+
+$`Edwardian Script ITC`
+[1] \"Edwardian Script ITC\"
+
+$Elephant
+[1] \"Elephant\"
+
+$`Engravers MT`
+[1] \"Engravers MT\"
+
+$`Eras Bold ITC`
+[1] \"Eras Bold ITC\"
+
+$`Eras Demi ITC`
+[1] \"Eras Demi ITC\"
+
+$`Eras Light ITC`
+[1] \"Eras Light ITC\"
+
+$`Eras Medium ITC`
+[1] \"Eras Medium ITC\"
+
+$`Estrangelo Edessa`
+[1] \"Estrangelo Edessa\"
+
+$EucrosiaUPC
+[1] \"EucrosiaUPC\"
+
+$Euphemia
+[1] \"Euphemia\"
+
+$FangSong
+[1] \"FangSong\"
+
+$`Felix Titling`
+[1] \"Felix Titling\"
+
+$`Footlight MT Light`
+[1] \"Footlight MT Light\"
+
+$Forte
+[1] \"Forte\"
+
+$`Franklin Gothic Book`
+[1] \"Franklin Gothic Book\"
+
+$`Franklin Gothic Demi`
+[1] \"Franklin Gothic Demi\"
+
+$`Franklin Gothic Demi Cond`
+[1] \"Franklin Gothic Demi Cond\"
+
+$`Franklin Gothic Heavy`
+[1] \"Franklin Gothic Heavy\"
+
+$`Franklin Gothic Medium`
+[1] \"Franklin Gothic Medium\"
+
+$`Franklin Gothic Medium Cond`
+[1] \"Franklin Gothic Medium Cond\"
+
+$FrankRuehl
+[1] \"FrankRuehl\"
+
+$FreesiaUPC
+[1] \"FreesiaUPC\"
+
+$`Freestyle Script`
+[1] \"Freestyle Script\"
+
+$`French Script MT`
+[1] \"French Script MT\"
+
+$Gabriola
+[1] \"Gabriola\"
+
+$Gadugi
+[1] \"Gadugi\"
+
+$Garamond
+[1] \"Garamond\"
+
+$Gautami
+[1] \"Gautami\"
+
+$Georgia
+[1] \"Georgia\"
+
+$Gigi
+[1] \"Gigi\"
+
+$`Gill Sans Ultra Bold`
+[1] \"Gill Sans Ultra Bold\"
+
+$`Gill Sans Ultra Bold Condensed`
+[1] \"Gill Sans Ultra Bold Condensed\"
+
+$`Gill Sans MT`
+[1] \"Gill Sans MT\"
+
+$`Gill Sans MT Condensed`
+[1] \"Gill Sans MT Condensed\"
+
+$`Gill Sans MT Ext Condensed Bold`
+[1] \"Gill Sans MT Ext Condensed Bold\"
+
+$Gisha
+[1] \"Gisha\"
+
+$`Gloucester MT Extra Condensed`
+[1] \"Gloucester MT Extra Condensed\"
+
+$`Goudy Old Style`
+[1] \"Goudy Old Style\"
+
+$`Goudy Stout`
+[1] \"Goudy Stout\"
+
+$Haettenschweiler
+[1] \"Haettenschweiler\"
+
+$`Harlow Solid Italic`
+[1] \"Harlow Solid Italic\"
+
+$Harrington
+[1] \"Harrington\"
+
+$`High Tower Text`
+[1] \"High Tower Text\"
+
+$Impact
+[1] \"Impact\"
+
+$`Imprint MT Shadow`
+[1] \"Imprint MT Shadow\"
+
+$`Informal Roman`
+[1] \"Informal Roman\"
+
+$IrisUPC
+[1] \"IrisUPC\"
+
+$`Iskoola Pota`
+[1] \"Iskoola Pota\"
+
+$JasmineUPC
+[1] \"JasmineUPC\"
+
+$Jokerman
+[1] \"Jokerman\"
+
+$`Juice ITC`
+[1] \"Juice ITC\"
+
+$KaiTi
+[1] \"KaiTi\"
+
+$Kalinga
+[1] \"Kalinga\"
+
+$Kartika
+[1] \"Kartika\"
+
+$`Khmer UI`
+[1] \"Khmer UI\"
+
+$KodchiangUPC
+[1] \"KodchiangUPC\"
+
+$Kokila
+[1] \"Kokila\"
+
+$`Kristen ITC`
+[1] \"Kristen ITC\"
+
+$`Kunstler Script`
+[1] \"Kunstler Script\"
+
+$`Lao UI`
+[1] \"Lao UI\"
+
+$Latha
+[1] \"Latha\"
+
+$`Wide Latin`
+[1] \"Wide Latin\"
+
+$Leelawadee
+[1] \"Leelawadee\"
+
+$`Levenim MT`
+[1] \"Levenim MT\"
+
+$LilyUPC
+[1] \"LilyUPC\"
+
+$`Lucida Bright`
+[1] \"Lucida Bright\"
+
+$`Lucida Calligraphy`
+[1] \"Lucida Calligraphy\"
+
+$`Lucida Console`
+[1] \"Lucida Console\"
+
+$`Lucida Fax`
+[1] \"Lucida Fax\"
+
+$`Lucida Handwriting`
+[1] \"Lucida Handwriting\"
+
+$`Lucida Sans`
+[1] \"Lucida Sans\"
+
+$`Lucida Sans Typewriter`
+[1] \"Lucida Sans Typewriter\"
+
+$`Lucida Sans Unicode`
+[1] \"Lucida Sans Unicode\"
+
+$Magneto
+[1] \"Magneto\"
+
+$`Maiandra GD`
+[1] \"Maiandra GD\"
+
+$`Malgun Gothic`
+[1] \"Malgun Gothic\"
+
+$Mangal
+[1] \"Mangal\"
+
+$Marlett
+[1] \"Marlett\"
+
+$`Matura MT Script Capitals`
+[1] \"Matura MT Script Capitals\"
+
+$`Microsoft Yi Baiti`
+[1] \"Microsoft Yi Baiti\"
+
+$`Microsoft Himalaya`
+[1] \"Microsoft Himalaya\"
+
+$`Microsoft JhengHei`
+[1] \"Microsoft JhengHei\"
+
+$`Microsoft New Tai Lue`
+[1] \"Microsoft New Tai Lue\"
+
+$`Microsoft PhagsPa`
+[1] \"Microsoft PhagsPa\"
+
+$`Microsoft Sans Serif`
+[1] \"Microsoft Sans Serif\"
+
+$`Microsoft Tai Le`
+[1] \"Microsoft Tai Le\"
+
+$`Microsoft Uighur`
+[1] \"Microsoft Uighur\"
+
+$`Microsoft YaHei`
+[1] \"Microsoft YaHei\"
+
+$Miriam
+[1] \"Miriam\"
+
+$`Miriam Fixed`
+[1] \"Miriam Fixed\"
+
+$Mistral
+[1] \"Mistral\"
+
+$`Modern No. 20`
+[1] \"Modern No. 20\"
+
+$`Mongolian Baiti`
+[1] \"Mongolian Baiti\"
+
+$`Monotype Corsiva`
+[1] \"Monotype Corsiva\"
+
+$MoolBoran
+[1] \"MoolBoran\"
+
+$`MS Outlook`
+[1] \"MS Outlook\"
+
+$`MS Reference Sans Serif`
+[1] \"MS Reference Sans Serif\"
+
+$`MS Reference Specialty`
+[1] \"MS Reference Specialty\"
+
+$`MV Boli`
+[1] \"MV Boli\"
+
+$Narkisim
+[1] \"Narkisim\"
+
+$`Niagara Engraved`
+[1] \"Niagara Engraved\"
+
+$`Niagara Solid`
+[1] \"Niagara Solid\"
+
+$`Nirmala UI`
+[1] \"Nirmala UI\"
+
+$Nyala
+[1] \"Nyala\"
+
+$`OCR A Extended`
+[1] \"OCR A Extended\"
+
+$`Old English Text MT`
+[1] \"Old English Text MT\"
+
+$Onyx
+[1] \"Onyx\"
+
+$`Palace Script MT`
+[1] \"Palace Script MT\"
+
+$`Palatino Linotype`
+[1] \"Palatino Linotype\"
+
+$Papyrus
+[1] \"Papyrus\"
+
+$Parchment
+[1] \"Parchment\"
+
+$Perpetua
+[1] \"Perpetua\"
+
+$`Perpetua Titling MT`
+[1] \"Perpetua Titling MT\"
+
+$`Plantagenet Cherokee`
+[1] \"Plantagenet Cherokee\"
+
+$Playbill
+[1] \"Playbill\"
+
+$`Poor Richard`
+[1] \"Poor Richard\"
+
+$Pristina
+[1] \"Pristina\"
+
+$Raavi
+[1] \"Raavi\"
+
+$`Rage Italic`
+[1] \"Rage Italic\"
+
+$Ravie
+[1] \"Ravie\"
+
+$Rockwell
+[1] \"Rockwell\"
+
+$`Rockwell Condensed`
+[1] \"Rockwell Condensed\"
+
+$`Rockwell Extra Bold`
+[1] \"Rockwell Extra Bold\"
+
+$Rod
+[1] \"Rod\"
+
+$`Sakkal Majalla`
+[1] \"Sakkal Majalla\"
+
+$`Script MT Bold`
+[1] \"Script MT Bold\"
+
+$`Segoe Print`
+[1] \"Segoe Print\"
+
+$`Segoe Script`
+[1] \"Segoe Script\"
+
+$`Segoe UI`
+[1] \"Segoe UI\"
+
+$`Segoe UI Light`
+[1] \"Segoe UI Light\"
+
+$`Segoe UI Semibold`
+[1] \"Segoe UI Semibold\"
+
+$`Segoe UI Semilight`
+[1] \"Segoe UI Semilight\"
+
+$`Segoe UI Symbol`
+[1] \"Segoe UI Symbol\"
+
+$`Shonar Bangla`
+[1] \"Shonar Bangla\"
+
+$`Showcard Gothic`
+[1] \"Showcard Gothic\"
+
+$Shruti
+[1] \"Shruti\"
+
+$SimHei
+[1] \"SimHei\"
+
+$`Simplified Arabic`
+[1] \"Simplified Arabic\"
+
+$`Simplified Arabic Fixed`
+[1] \"Simplified Arabic Fixed\"
+
+$`SimSun-ExtB`
+[1] \"SimSun-ExtB\"
+
+$`Snap ITC`
+[1] \"Snap ITC\"
+
+$Stencil
+[1] \"Stencil\"
+
+$Sylfaen
+[1] \"Sylfaen\"
+
+$Symbol
+[1] \"Symbol\"
+
+$Tahoma
+[1] \"Tahoma\"
+
+$`Tempus Sans ITC`
+[1] \"Tempus Sans ITC\"
+
+$`Times New Roman`
+[1] \"Times New Roman\"
+
+$`Traditional Arabic`
+[1] \"Traditional Arabic\"
+
+$`Trebuchet MS`
+[1] \"Trebuchet MS\"
+
+$Tunga
+[1] \"Tunga\"
+
+$`Tw Cen MT`
+[1] \"Tw Cen MT\"
+
+$`Tw Cen MT Condensed`
+[1] \"Tw Cen MT Condensed\"
+
+$`Tw Cen MT Condensed Extra Bold`
+[1] \"Tw Cen MT Condensed Extra Bold\"
+
+$`Univers for UniS45LightOblique`
+[1] \"Univers for UniS45LightOblique\"
+
+$`Univers for UniS 55 Roman Rg`
+[1] \"Univers for UniS 55 Roman Rg\"
+
+$`Univers for UniS 65 Bold Rg`
+[1] \"Univers for UniS 65 Bold Rg\"
+
+$Utsaah
+[1] \"Utsaah\"
+
+$Vani
+[1] \"Vani\"
+
+$Verdana
+[1] \"Verdana\"
+
+$Vijaya
+[1] \"Vijaya\"
+
+$`Viner Hand ITC`
+[1] \"Viner Hand ITC\"
+
+$Vivaldi
+[1] \"Vivaldi\"
+
+$`Vladimir Script`
+[1] \"Vladimir Script\"
+
+$Vrinda
+[1] \"Vrinda\"
+
+$Webdings
+[1] \"Webdings\"
+
+$Wingdings
+[1] \"Wingdings\"
+
+$`Wingdings 2`
+[1] \"Wingdings 2\"
+
+$`Wingdings 3`
+[1] \"Wingdings 3\"
+
+$ZWAdobeF
+[1] \"ZWAdobeF\"
+"

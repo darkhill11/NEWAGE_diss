@@ -1,0 +1,10 @@
+"0","```r
+# Spread scenarios to be able to change them
+gdp_diff <- spread(gdp_disag, key = \"Scenario\", value = \"Value\")
+# Transform each scenario into the relative difference to reference scenario
+gdp_diff <- gdp_diff %>% mutate(bau = (bau-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(cAP = (cAP-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(inv = (inv-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(lab = (lab-ref)/ref)
+gdp_diff <- gdp_diff %>% mutate(vat = (vat-ref)/ref)
+```"

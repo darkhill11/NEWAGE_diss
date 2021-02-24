@@ -1,0 +1,10 @@
+"0","```r
+# drop non-EU regions, years after 2030 and categories that are not 'total'
+gdp_diff_filter <- filter(gdp_diff, grepl('DEU|FRA|ITA|UKI|POL|BNL|ESP|EUN|EUS|EU28', Region))
+gdp_diff_filter <- filter(gdp_diff_filter, grepl('2011|2015|2020|2025|2030', Year))
+gdp_diff_filter <- filter(gdp_diff_filter, Type == 'total')
+# drop ref
+gdp_diff_filter <- subset(gdp_diff_filter, select = -c(ref, Type))
+# gather scenarios
+gdp_diff_filter <- gather(gdp_diff_filter, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+```"

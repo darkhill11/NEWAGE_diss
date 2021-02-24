@@ -53,46 +53,85 @@ all_prices_filter[[1]] = toupper(all_prices_filter[[1]])
 ```
 
 ```{r}
-#ref_prices <- filter(all_prices_filter, Scenario == "REF" & Region == "EU28")
+ref_prices <- filter(all_prices_filter, Scenario == "REF" & Region == "EU28")
 
-#all_prices_filter <- filter(all_prices_filter, Scenario != "REF")
+all_prices_filter <- filter(all_prices_filter, Scenario != "REF")
 
-#all_prices_filter <- rbind(all_prices_filter, ref_prices)
+all_prices_filter <- rbind(all_prices_filter, ref_prices)
 
-all_prices_filter$Scenario <- all_prices_filter %>%
-  arrange(Scenario) %>%
-  mutate(Scenario =factor(Scenario, levels = c("INV",
-                                                "CAP",
-                                                "LAB",
-                                                "VAT",
-                                                "BAU",
-                                                "REF")))
+#all_prices_filter <- all_prices_filter %>%
+  #arrange(Region) %>%
+  #arrange(Scenario) %>%
+  #mutate(Scenario =factor(Scenario, 
+  #                        levels = c(
+  #                          "REF",
+  #                          "BAU",
+  #                          "VAT",
+  #                         "LAB",
+  #                         "CAP",
+  #                          "INV")))
 
 ```
 
 ```{r}
-levels(factor(all_prices_filter$Scenario))
+all_prices_filter_1 <- all_prices_filter
+
+
+all_prices_filter_1$Region <- gsub("EU28","ETS", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("DEU","Germany", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("FRA","France", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("ITA","Italy", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("UKI","UK", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("POL","Poland", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("ESP","Spain and \nPortugal", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("BNL","Benelux", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("EUN","Northern EU", all_prices_filter_1$Region)
+all_prices_filter_1$Region <- gsub("EUS","Central and \nSoutheastern EU", all_prices_filter_1$Region)
+  
+  
+all_prices_filter_1$Region <- ordered(all_prices_filter_1$Region, levels = c("ETS",
+                            "Germany",
+                            "France",
+                            "Italy",
+                            "UK",
+                            "Poland",
+                            "Spain and \nPortugal",
+                            "Benelux",
+                            "Northern EU",
+                            "Central and \nSoutheastern EU"))
+
+all_prices_filter_1$Scenario <- ordered(all_prices_filter_1$Scenario, levels = c("REF",
+                            "BAU",
+                            "VAT",
+                            "LAB",
+                            "CAP",
+                            "INV"))
+
 ```
 
 ```{r}
-plot_price <-ggplot(all_prices_filter, aes(x=Scenario, y = Value))
+plot_price <-ggplot(all_prices_filter_1, aes(x=Scenario, y = Value))
 
 plot_price +
-  geom_point()
-  #geom_boxplot(data = filter(all_prices_filter, Region != "EU28"), aes(fill = Scenario)) 
-  
-  #geom_point(data = filter(all_prices_filter, Region == "EU28" | Region == "DEU"), aes(shape = Region), size = 3) +
-  #scale_y_continuous(name = "Price of t.eqCO2 [€ 2011]",
-  #                   breaks = seq(0, 600,100)) +
-  #theme_bw() +
-  #theme(text         = element_text(size=10, family="Palatino Linotype"),
-  #      axis.text.x = element_text(size = 10),
-  #      axis.text.y = element_text(size = 10),
-  #      axis.title = element_text(size = 12),
-  #      strip.text = element_text(size = 12),
-  #      legend.text = element_text(size = 12),
-  #      legend.title = element_text(size = 12),
-  #      legend.position = "bottom")
+  #geom_boxplot(data = filter(all_prices_filter_1, Region != "EU28"))+
+  geom_jitter(data = all_prices_filter_1, aes(color = Region), size = 4, alpha=1, width = 0.2) +
+  scale_y_continuous(name = "Price of t.eqCO2 [€ 2011]",
+                     breaks = seq(0, 600,100)) +
+  scale_color_brewer(palette="Paired", name = "CO2-Price") +
+  theme_bw() +
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+
+ggsave(width = 7, height = 4, filename = "co2_prices.png")
+```
+```{r}
+
 ```
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 

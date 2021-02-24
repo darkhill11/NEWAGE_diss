@@ -1,6 +1,0 @@
-"0","plot_price <-ggplot(all_prices_filter, aes(x=Scenario, y = Value))"
-"0","plot_price +"
-"0","  geom_point()"
-"2","Error: Aesthetics must be either length 1 or the same as the data (60): x
-[90mRun `rlang::last_error()` to see where the error occurred.[39m
-"
