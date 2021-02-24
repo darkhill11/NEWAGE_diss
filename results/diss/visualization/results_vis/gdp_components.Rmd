@@ -55,7 +55,8 @@ gdp_diff_filter_2$Scenario <- factor(gdp_diff_filter_2$Scenario, levels = c("INV
                                 "CAP",
                                 "LAB",
                                 "VAT",
-                                "BAU"))
+                                "BAU",
+                                "REF"))
 ```
 
 ```{r}

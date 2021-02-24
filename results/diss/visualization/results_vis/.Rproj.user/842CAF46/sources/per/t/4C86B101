@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614181197873.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4C86B101",
+    "lastKnownWriteTime" : 28147905697480775,
+    "last_content_update" : 1614181197873,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8DE36499",
+        "caption" : "all_prices_filter",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=all_prices_filter&cache_key=8DE36499",
+        "displayedObservations" : 51,
+        "environment" : "",
+        "object" : "all_prices_filter",
+        "preview" : 0,
+        "totalObservations" : 51,
+        "variables" : 4
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
