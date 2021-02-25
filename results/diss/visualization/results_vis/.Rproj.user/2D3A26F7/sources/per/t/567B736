@@ -8,13 +8,13 @@
     "hash" : "3870575167",
     "id" : "567B736",
     "lastKnownWriteTime" : 1614024793,
-    "last_content_update" : 1614200915555,
+    "last_content_update" : 1614284798502,
     "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/visualization.Rmd",
     "project_path" : "visualization.Rmd",
     "properties" : {
         "chunk_output_type" : "inline",
-        "cursorPosition" : "117,0",
-        "scrollLine" : "63",
+        "cursorPosition" : "94,84",
+        "scrollLine" : "82",
         "tempName" : "Untitled1"
     },
     "relative_order" : 5,

@@ -138,7 +138,7 @@ SCALARS
          REEEM_calib    Force NEWAGE to produce the same electricity as EUROSTAT in 2015                    / 1 /   
 
 * ------ Technology specifc scenarios
-         noCOAL_DEU     switch for coal decomissioning in germany till 2035                                 / 0 / // if (1) = coal decomissioning till 2035; else = NO coal decomissioning till 2035
+         noCOAL_DEU     switch for coal decomissioning in germany till 2035                                 / 1 / // if (1) = coal decomissioning till 2035; else = NO coal decomissioning till 2035
          DEU_CCS        Switch that enable (1) or desable (0) CCS in Germany                                / 0 /         
 
 * ------ NEWAGE structure
@@ -158,12 +158,12 @@ SCALARS
          bta_test                                                                                           / 0 /
          bta_rebate                                                                                         / 0 /
 
-* ------ carbon tax switch
          carbon_tax_de                                                                                      / 0 /
 
 * ----- Scenario switch
          reference_scenario_2020                                                                            / 1 /
-         corona_scenario_2020                                                                               / 0 /
+* ------ carbon tax switch
+         corona_scenario_2020                                                                               / 1 /
          germany_reference_nEHS                                                                             / 0 /
 
          diss_ref                                                                                           / 0 /
@@ -4691,7 +4691,7 @@ ELEn.UP(gen,r)$(bnuc(gen) and fra(r) and after2020(yr))  = ((-1.13 * log(ord(yr)
 ELEn.UP(gen,r)$(bnuc(gen) and pol(r) and before2035(yr))  = 0;
 ELEn.UP(gen,r)$(bnuc(gen) and pol(r) and after2030(yr))  = 10000;
 ELEx.UP(gen,r)$(bnuc(gen) and pol(r))  = 0;
-ELEn.UP(gen,r)$(bnuc(gen) and esp(r))  = 0;
+*ELEn.UP(gen,r)$(bnuc(gen) and esp(r))  = 0;
 ELEn.UP(gen,r)$(bnuc(gen) and bnl(r))  = 0;
  
 ELEn.UP(gen,r)$(bnuc(gen) and eus(r) and after2030(yr))  = 0.9 * elen.l(gen,r);
@@ -4710,14 +4710,23 @@ ELEn.up(gen,r)$(bbc(gen)  and uki(r) and after2015(yr)) = 0;
 ELEx.up(gen,r)$(bbc(gen)  and eus(r) and after2015(yr)) = ((-0.287 * log(ord(yr) - 2)) + 0.5644) * elex.l(gen,r);
 ELEn.up(gen,r)$(bbc(gen)  and eus(r) and after2025(yr)) = ((-0.493 * log(ord(yr) - 4)) + 1.1759) * elen.l(gen,r);
 
+ELEn.up(gen,r)$(FOScoalh(gen) AND UKI(r) AND yr2020(yr)) = 4 * ELEN.l(gen,r);
+ELEn.up(gen,r)$(FOScoalh(gen) AND UKI(r) AND after2020(yr)) = 0.5 * ELEN.l(gen,r);
+ELEn.up(gen,r)$(FOScoalh(gen) AND UKI(r) AND after2035(yr)) = 0;
+
 ELEn.up(gen,r)$(FOSoil(gen) AND eu28(r) AND after2020(yr)) = 0.9 * ELEN.l(gen,r);
 
 * ------ 10.12.2014 Hydro, Bio and Geo
 
 ELEn.UP(gen,r)$(bhydro(gen)          and after(yr) AND NOT (REEEM_calib AND yr2015(yr)))      = 0.75 * gen_limit_yr(r,gen,yr);
 ELEn.UP(gen,r)$(bhydro(gen)          and after2030(yr))  = 1.10 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bhydro(gen) AND EU28(r) and yr2020(yr))  = 1.7 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bhydro(gen) AND (ITA(r) OR ESP(r) OR EUN(r) OR EUS(r)) and yr2020(yr))  = 1.9 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bhydro(gen) AND EU28(r) and after2020(yr))  = 1.2 * ELEn.L(gen,r);
 
-ELEn.UP(gen,r)$(phydro(gen)  AND eu28(r) AND after2015(yr))  = 1.05 * ELEn.L(gen,r);
+
+ELEn.UP(gen,r)$(phydro(gen)  AND eu28(r) AND after2020(yr))  = 1.25 * ELEn.L(gen,r);
+*ELEn.UP(gen,r)$(phydro(gen)  AND EUS(r) AND after2015(yr))  = 1.1 * ELEn.L(gen,r);
 
 ELEn.UP(gen,r)$(bbio(gen)     and fra(r)     and after2020(yr))  = ELEn.L(gen,r);
 
@@ -4727,43 +4736,40 @@ ELEn.UP(gen,r)$(bhydro(gen) and eun(r) and after2040(yr))  = 0.98;
 
 
 ELEn.UP(gen,r)$(bbio(gen) and esp(r) and after2040(yr))      =  ELEn.L(gen,r);
-ELEn.UP(gen,r)$(bbio(gen) and ita(r) and after2025(yr))      = 1.1 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and ita(r) and after2025(yr))      = 1.2 * ELEn.L(gen,r);
 ELEn.UP(gen,r)$(bbio(gen) and ita(r) and yr2050(yr))      =  ELEn.L(gen,r);
-ELEn.UP(gen,r)$(bbio(gen) and pol(r) and after2020(yr))      = ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and pol(r) and after2020(yr))      = 1.1 * ELEn.L(gen,r);
 ELEn.UP(gen,r)$(bbio(gen) and bnl(r) and after2030(yr))      = 1.1 * ELEn.L(gen,r);
 
-ELEn.UP(gen,r)$(bbio(gen) and eus(r) and after2030(yr))      = ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and eus(r) and after2030(yr))      = 1.35 * ELEn.L(gen,r);
 
-ELEn.UP(gen,r)$(bbio(gen) and eun(r) and after2015(yr))      = 1.12 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and eun(r) and after2015(yr))      = 1.4 * ELEn.L(gen,r);
 
-ELEn.UP(gen,r)$(bbio(gen) and uki(r) and after2025(yr))      = 1.1 * ELEn.L(gen,r);
-
-ELEn.UP(gen,r)$(bgeo(gen)            and after2015(yr))  = 1.25 * ELEn.L(gen,r);
-*ELEn.UP(gen,r)$(bgeo(gen) and ita(r) and after2020(yr))  = ELEn.L(gen,r);
-
-
-
-
+ELEn.UP(gen,r)$(bbio(gen) and uki(r) and after2015(yr))      = 1.2 * ELEn.L(gen,r);
 
 ELEn.fx(gen,r)$(bbio(gen) and deu(r) and yr2015(yr))      = 0.59;
 ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2015(yr))      = 1.3 * ELEn.L(gen,r);
 ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2025(yr))      = 1.005 * ELEn.L(gen,r);
-*ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2040(yr))      = 1 * ELEn.L(gen,r);
-ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2040(yr))      = 1.6 * ELEn.L(gen,r);
-ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2045(yr))      = 1.05 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2040(yr))      = 1.7 * ELEn.L(gen,r);
+ELEn.UP(gen,r)$(bbio(gen) and deu(r) and after2045(yr))      = 1.15 * ELEn.L(gen,r);
+
+ELEn.UP(gen,r)$(bgeo(gen)            and after2015(yr))  = 1.25 * ELEn.L(gen,r);
 
 * ------ mWIND and mSOLAR
 
-ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2015(yr))= 2.2 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
-ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2015(yr))= 2.2 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
+ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2015(yr))= 2.2 * ((ord(yr) - 2)**(-0.41)) * elen.l(gen,r);
+ELEn.up(gen,r)$(mwind(gen)   and deu(r) and after2015(yr))= 1.6 * ((ord(yr) - 2)**(-0.2)) * elen.l(gen,r);
+ELEn.up(gen,r)$(mwind(gen)   and deu(r) and yr2020(yr))= 3.5 * elen.l(gen,r);
+ //
+ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2015(yr))= 2.4 * ((ord(yr) - 2)**(-0.31)) * elen.l(gen,r);
+ELEn.up(gen,r)$(msolar(gen)  and (fra(r)) and after2015(yr))= 2.4 * ((ord(yr) - 2)**(-0.21)) * elen.l(gen,r);
+ELEn.up(gen,r)$(msolar(gen)  and (ITA(r)) and after2015(yr))= 2.4 * ((ord(yr) - 2)**(-0.40)) * elen.l(gen,r);
 ELEn.up(gen,r)$(msolar(gen)  and deu(r)  and after2020(yr))= ((-0.293 * log(ord(yr) - 3)) + 1.5979) * elen.l(gen,r);
 
-ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and yr2020(yr) and corona_scenario_2020)= 2.5 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
-ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and yr2020(yr) and corona_scenario_2020)= 2.5 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
+ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP or diss_inv_payment))= 2.45 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
+ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP or diss_inv_payment))= 2.45 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
+ELEn.up(gen,r)$(msolar(gen)  and deu(r)  and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP or diss_inv_payment))= ((-0.293 * log(ord(yr) - 3)) + 1.69) * elen.l(gen,r);
 
-ELEn.up(gen,r)$(mwind(gen)   and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP OR diss_inv_payment))= 2.45 * ((ord(yr) - 2)**(-0.39)) * elen.l(gen,r); //
-ELEn.up(gen,r)$(msolar(gen)  and eu28(r) and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP OR diss_inv_payment))= 2.45 * ((ord(yr) - 2)**(-0.33)) * elen.l(gen,r);
-ELEn.up(gen,r)$(msolar(gen)  and deu(r)  and after2020(yr) AND (diss_BAU OR diss_LAB OR diss_VAT OR diss_CAP OR diss_inv_payment))= ((-0.293 * log(ord(yr) - 3)) + 1.69) * elen.l(gen,r);
 
 check_nuc = ELEn.UP("bNUC","EUS");
 display "check_nuc 2. ",yr, ">>" ,check_nuc;
