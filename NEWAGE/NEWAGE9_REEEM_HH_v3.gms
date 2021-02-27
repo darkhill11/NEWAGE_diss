@@ -161,9 +161,9 @@ SCALARS
          carbon_tax_de                                                                                      / 0 /
 
 * ----- Scenario switch
-         reference_scenario_2020                                                                            / 1 /
+         reference_scenario_2020                                                                            / 0 /
 * ------ carbon tax switch
-         corona_scenario_2020                                                                               / 1 /
+         corona_scenario_2020                                                                               / 0 /
          germany_reference_nEHS                                                                             / 0 /
 
          diss_ref                                                                                           / 0 /
@@ -171,7 +171,7 @@ SCALARS
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 0 /
+         diss_inv_payment                                                                                   / 1 /
 
          test_lower_tax /0/
 ;
@@ -2260,7 +2260,7 @@ Parameters
     cons_hh_accounts(r,hh,*,yr)  accounts from consumption per household
     cons_gov_accounts(r,*,yr)    accounts from government consumption
 
-    taxes_region(*,r,yr)         list of taxes being paid per region
+    taxes_region(*,*,yr)         list of taxes being paid per region
 ;
 
 * =========================================================================== *
@@ -3915,6 +3915,8 @@ ur("total",r) = (emplmt("skl",r) * URSK.L(r) + emplmt("usk",r) * URUN.L(r)) / em
 
 * ----- Energy Euro rate
 energy_euro_rate(e,"c+g",r) = (evd(e,"c",r) + evd(e,"g",r) ) / (vafm(e,"c",r) + vafm(e,"g",r)) * 1000;
+energy_euro_rate(e,"c",r)$(vafm(e,"c",r)) = (evd(e,"c",r)) / (vafm(e,"c",r)) * 1000;
+energy_euro_rate(e,"g",r)$(vafm(e,"g",r)) = (evd(e,"g",r)) / (vafm(e,"g",r)) * 1000;
 energy_euro_rate(e,i,r)$vafm(e,i,r) = (evd(e,i,r) ) / vafm(e,i,r) * 1000;
 
 
@@ -4156,7 +4158,7 @@ PARAMETERS
          welf_hh_yr(hh,r,yr)
          gdpreal_yr(*,yr)
          gdpreal_disag_yr(*,*,yr)
-         share_co2_gdp(r,*,yr)
+         share_co2_gdp(*,*,yr)
          gdprealcum_yr(*,yr)
          gdpnom_yr(*,yr)
          gdpreal5_yr
@@ -6067,40 +6069,65 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
 
 * ---- Production
     taxes_region("prod_input",r,yr)                 = sum(i$(NOT ele(i)), prod_accounts(r,i,"tax_input",yr));
+    taxes_region("prod_input","eu28",yr)            = sum(r$eu28(r), taxes_region("prod_input",r,yr));
+
     taxes_region("prod_output",r,yr)                = sum(i, prod_accounts(r,i,"tax_output",yr));
+    taxes_region("prod_output","eu28",yr)           = sum(r$eu28(r), taxes_region("prod_output",r,yr));
+
     taxes_region("ele_rebate",r,yr)$diffrebate(r)   = prod_accounts(r,"ele","rebate",yr);
+    taxes_region("ele_rebate","eu28",yr)            = sum(r$eu28(r), taxes_region("ele_rebate",r,yr));
+
     taxes_region("prod_CO2",r,yr)                   = sum(i, prod_accounts(r,i,"CO2",yr) + prod_accounts(r,i,"CO2W",yr) + prod_accounts(r,i,"CO2_NETS",yr) +  prod_accounts(r,i,"CO2_NETSr",yr) + prod_accounts(r,i,"CO2_ETS",yr));
+    taxes_region("prod_CO2","eu28",yr)              = sum(r$eu28(r), taxes_region("prod_CO2",r,yr));
 
 * ---- ELEx
     taxes_region("ELEx_input",r,yr)                 = sum(gen$(out_gen(gen,r) AND ks_x(gen,r)), elex_accounts(r,gen,"tax_input",yr));
+    taxes_region("ELEx_input","eu28",yr)            = sum(r$eu28(r), taxes_region("ELEx_input",r,yr));
+
     taxes_region("ELEx_CO2",r,yr)                   = sum(gen, elex_accounts(r,gen,"CO2",yr) + elex_accounts(r,gen,"CO2W",yr) + elex_accounts(r,gen,"CO2_ETS",yr));
+    taxes_region("ELEx_CO2","eu28",yr)           = sum(r$eu28(r), taxes_region("ELEx_CO2",r,yr));
 
 * ---- ELEn
     taxes_region("ELEn_input",r,yr)                 = sum(gen$(out_gen(gen,r) AND ks_x(gen,r)), elen_accounts(r,gen,"tax_input",yr));
-    taxes_region("ELEn_diffcost",r,yr)              = sum(gen$(out_gen(gen,r) AND ks_x(gen,r) AND reg(gen)), elen_accounts(r,gen,"diffcost",yr));
-    taxes_region("ELEn_CO2",r,yr)                   = sum(gen, elen_accounts(r,gen,"CO2",yr) + elen_accounts(r,gen,"CO2W",yr) + elen_accounts(r,gen,"CO2_ETS",yr));
+    taxes_region("ELEn_input","eu28",yr)           = sum(r$eu28(r), taxes_region("ELEn_input",r,yr));
 
+    taxes_region("ELEn_diffcost",r,yr)              = sum(gen$(out_gen(gen,r) AND ks_x(gen,r) AND reg(gen)), elen_accounts(r,gen,"diffcost",yr));
+    taxes_region("ELEn_diffcost","eu28",yr)         = sum(r$eu28(r), taxes_region("ELEn_diffcost",r,yr));
+
+    taxes_region("ELEn_CO2",r,yr)                   = sum(gen, elen_accounts(r,gen,"CO2",yr) + elen_accounts(r,gen,"CO2W",yr) + elen_accounts(r,gen,"CO2_ETS",yr));
+    taxes_region("ELEn_CO2","eu28",yr)               = sum(r$eu28(r), taxes_region("ELEn_CO2",r,yr));
 * ---- Investments
     taxes_region("investments",r,yr)                = inv_accounts(r,"tax_input",yr);
+    taxes_region("investments","eu28",yr)           = sum(r$eu28(r), taxes_region("investments",r,yr));
 
 * ---- Armington
     taxes_region("transport",r,yr)                  = sum(i,armi_accounts(r,i,"tax_transport",yr));
+    taxes_region("transport","eu28",yr)             = sum(r$eu28(r), taxes_region("transport",r,yr));
+
     taxes_region("imports",r,yr)                    = sum(i, armi_accounts(r,i,"tax_import_r",yr));
+    taxes_region("imports","eu28",yr)           = sum(r$eu28(r), taxes_region("imports",r,yr));
 
 * ---- Production Factors by firms
     taxes_region("Capital",r,yr)$(HH_DISAG(r) AND diss_factor_tax)              = sum(i,prod_accounts(r,i,"tax_capital",yr)) + sum(gen, elex_accounts(r,gen,"tax_capital",yr) + elen_accounts(r,gen,"tax_capital",yr));
-    taxes_region("SKL",r,yr)$(HH_DISAG(r) AND diss_factor_tax)                  = sum(i,prod_accounts(r,i,"tax_SKL",yr)) + sum(gen, elex_accounts(r,gen,"tax_skl",yr) + elen_accounts(r,gen,"tax_skl",yr));
-    taxes_region("USK",r,yr)$(HH_DISAG(r) AND diss_factor_tax)                  = sum(i,prod_accounts(r,i,"tax_USK",yr)) + sum(gen, elex_accounts(r,gen,"tax_usk",yr) + elen_accounts(r,gen,"tax_usk",yr));
+    taxes_region("Capital","eu28",yr)$(diss_factor_tax)                     = sum(r$eu28(r), taxes_region("Capital",r,yr));
 
+    taxes_region("SKL",r,yr)$(HH_DISAG(r) AND diss_factor_tax)                  = sum(i,prod_accounts(r,i,"tax_SKL",yr)) + sum(gen, elex_accounts(r,gen,"tax_skl",yr) + elen_accounts(r,gen,"tax_skl",yr));
+    taxes_region("SKL","eu28",yr)$(diss_factor_tax)                         = sum(r$eu28(r), taxes_region("SKL",r,yr));
+
+    taxes_region("USK",r,yr)$(HH_DISAG(r) AND diss_factor_tax)                  = sum(i,prod_accounts(r,i,"tax_USK",yr)) + sum(gen, elex_accounts(r,gen,"tax_usk",yr) + elen_accounts(r,gen,"tax_usk",yr));
+    taxes_region("USK","eu28",yr)$(diss_factor_tax)                         = sum(r$eu28(r), taxes_region("USK",r,yr));
 
 * ---- Sum
-    taxes_region("sum_CO2",r,yr)    =       taxes_region("cons_CO2",r,yr) + taxes_region("prod_CO2",r,yr) + taxes_region("ELEx_CO2",r,yr) + taxes_region("ELEn_CO2",r,yr);
+    taxes_region("sum_CO2",r,yr)        =       taxes_region("cons_CO2",r,yr) + taxes_region("prod_CO2",r,yr) + taxes_region("ELEx_CO2",r,yr) + taxes_region("ELEn_CO2",r,yr);
+    taxes_region("sum_CO2","eu28",yr)   =       sum(r$eu28(r), taxes_region("sum_CO2",r,yr));
+
     taxes_region("sum_parts",r,yr)  =       taxes_region("cons_RA",r,yr) + taxes_region("cons_HH",r,yr) + taxes_region("cons_gov",r,yr) + taxes_region("cons_CO2",r,yr) +  
                                             taxes_region("prod_input",r,yr) + taxes_region("prod_output",r,yr) + taxes_region("ele_rebate",r,yr) + taxes_region("prod_CO2",r,yr) +
                                             taxes_region("ELEx_CO2",r,yr) + taxes_region("ELEx_input",r,yr) +
                                             taxes_region("ELEn_input",r,yr) + taxes_region("ELEn_diffcost",r,yr) + taxes_region("ELEn_CO2",r,yr) +
                                             taxes_region("investments",r,yr) + taxes_region("transport",r,yr) + taxes_region("imports",r,yr) + 
                                            ( taxes_region("Capital",r,yr) + taxes_region("SKL",r,yr) +  taxes_region("USK",r,yr))$(HH_DISAG(r) AND diss_factor_tax);               
+    taxes_region("sum_parts","eu28",yr) =   sum(r$eu28(r), taxes_region("sum_parts",r,yr));
 
 * ---- GDP Composites
     gdpreal_disag_yr("trade",r,yr)      = trdblnc_yr(r,"total",yr);
@@ -6132,10 +6159,17 @@ c_hh_yr(r,hh,yr)$HH_DISAG(r) = c_hh.l(hh,r);
 
 
 * ---- Share of GDP for CO2 payments
-    share_co2_gdp(r,"consumpiton",yr) =  taxes_region("cons_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
-    share_co2_gdp(r,"production",yr)  =  taxes_region("prod_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
-    share_co2_gdp(r,"electricity",yr) =  (taxes_region("ELEx_CO2",r,yr) + taxes_region("ELEn_CO2",r,yr)) / gdpreal_disag_yr("total", r, yr);
-    share_co2_gdp(r,"total",yr)       =  taxes_region("sum_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
+    share_co2_gdp(r,"consumpiton",yr)       =  taxes_region("cons_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
+    share_co2_gdp("eu28","consumpiton",yr)  =  taxes_region("cons_CO2","eu28",yr) / gdpreal_disag_yr("total", "eu28", yr);
+
+    share_co2_gdp(r,"production",yr)        =  taxes_region("prod_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
+    share_co2_gdp("eu28","production",yr)   =  taxes_region("prod_CO2","eu28",yr) / gdpreal_disag_yr("total", "eu28", yr);
+
+    share_co2_gdp(r,"electricity",yr)       =  (taxes_region("ELEx_CO2",r,yr) + taxes_region("ELEn_CO2",r,yr)) / gdpreal_disag_yr("total", r, yr);
+    share_co2_gdp("eu28","electricity",yr)  =  (taxes_region("ELEx_CO2","eu28",yr) + taxes_region("ELEn_CO2","eu28",yr)) / gdpreal_disag_yr("total", "eu28", yr);
+
+    share_co2_gdp(r,"total",yr)             =  taxes_region("sum_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);
+    share_co2_gdp("eu28","total",yr)        =  taxes_region("sum_CO2","eu28",yr) / gdpreal_disag_yr("total", "eu28", yr);
 
 
 * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -6598,6 +6632,26 @@ energy_cons_sec_yr(e,"c+g","EU28",yr) = sum(r$eu28_eu(r), energy_cons_sec_yr(e,"
 
 energy_cons_sec_yr("total",i,"EU28",yr) = sum(e, energy_cons_sec_yr(e,i,"EU28",yr));
 energy_cons_sec_yr("total","c+g","EU28",yr) = sum(e, energy_cons_sec_yr(e,"c+g","EU28",yr));
+
+* ------ Energy demand for household disaggregation case
+
+energy_cons_sec_yr(e,hh,r,yr)$(energy_euro_rate(e,"c",r) AND HH_disag(r))   = vc_hh_pa_yr(e,hh,r,yr) * energy_euro_rate(e,"c",r);
+energy_cons_sec_yr("total",hh,r,yr)$HH_disag(r)                             = sum(e,energy_cons_sec_yr(e,hh,r,yr));
+
+energy_cons_sec_yr(e,"sum_hh",r,yr)$HH_disag(r)         = sum(hh,energy_cons_sec_yr(e,hh,r,yr));
+energy_cons_sec_yr("total","sum_hh",r,yr)$HH_disag(r)   = sum((e,hh),energy_cons_sec_yr(e,hh,r,yr));
+
+energy_cons_sec_yr(e,"gov",r,yr)$(energy_euro_rate(e,"g",r) AND HH_disag(r))    = vc_gov_pa_yr(e,r,yr) * energy_euro_rate(e,"g",r);
+energy_cons_sec_yr("total","gov",r,yr)$HH_disag(r)                              = sum(e,energy_cons_sec_yr(e,"gov",r,yr));
+
+energy_cons_sec_yr(e,hh,"EU28",yr)$sum(r$eu28(r), energy_cons_sec_yr(e,hh,r,yr))     = sum(r$eu28_eu(r), energy_cons_sec_yr(e,hh,r,yr));
+energy_cons_sec_yr("total",hh,"EU28",yr)$sum(e,energy_cons_sec_yr(e,hh,"eu28",yr))   = sum(e, energy_cons_sec_yr(e,hh,"eu28",yr));
+
+energy_cons_sec_yr(e,"gov","EU28",yr)$sum(r$eu28(r),energy_cons_sec_yr(e,"gov",r,yr))       = sum(r$eu28_eu(r), energy_cons_sec_yr(e,"gov",r,yr));
+energy_cons_sec_yr("total","gov","EU28",yr)$sum(e, energy_cons_sec_yr(e,"gov","EU28",yr))   = sum(e, energy_cons_sec_yr(e,"gov","eu28",yr));
+
+energy_cons_sec_yr(e,"sum_hh","EU28",yr)$sum(r$eu28_eu(r), energy_cons_sec_yr(e,"sum_hh",r,yr))       = sum(r$eu28_eu(r), energy_cons_sec_yr(e,"sum_hh",r,yr));
+energy_cons_sec_yr("total","sum_hh","EU28",yr)$sum(e, energy_cons_sec_yr(e,"sum_hh","EU28",yr))       = sum(e, energy_cons_sec_yr(e,"sum_hh","eu28",yr));
 
 
 * ---------------------------------------------------------------------- *

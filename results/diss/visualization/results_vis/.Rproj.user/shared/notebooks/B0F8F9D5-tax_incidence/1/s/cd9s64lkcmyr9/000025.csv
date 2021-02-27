@@ -1,0 +1,5 @@
+"0","incidence_plot <- ggplot(tax_incidence, aes(x=HH, y=incidence, color = Region, group = Region))"
+"0","incidence_plot +"
+"0","  geom_point() +"
+"0","  geom_line()+"
+"0","  facet_wrap(~Scenario, ncol = 3)"

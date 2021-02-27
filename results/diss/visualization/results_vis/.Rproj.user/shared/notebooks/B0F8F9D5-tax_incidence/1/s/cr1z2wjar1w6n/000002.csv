@@ -1,0 +1,3 @@
+"0","ra_hh_par_filter <- ra_hh_par %>%"
+"0","  filter(Sector == ""net_income"", Scenario != ""ref"", Year == 2030)"
+"0","ra_hh_par_filter <- ra_hh_par_filter[-c(2)] %>% rename(ra_hh = Value)"

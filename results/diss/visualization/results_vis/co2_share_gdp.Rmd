@@ -34,7 +34,8 @@ co2_gdp_share_filter <- co2_gdp_share %>%
                        "ESP",
                        "BNL",
                        "EUN",
-                       "EUS"))
+                       "EUS",
+                       "EU28"))
 
 co2_gdp_share_filter$Region <- gsub("DEU","Germany", co2_gdp_share_filter$Region)
 co2_gdp_share_filter$Region <- gsub("FRA","France", co2_gdp_share_filter$Region)
@@ -45,8 +46,9 @@ co2_gdp_share_filter$Region <- gsub("ESP","Spain and \nPortugal", co2_gdp_share_
 co2_gdp_share_filter$Region <- gsub("BNL","Benelux", co2_gdp_share_filter$Region)
 co2_gdp_share_filter$Region <- gsub("EUN","Northern EU", co2_gdp_share_filter$Region)
 co2_gdp_share_filter$Region <- gsub("EUS","Central and \nSoutheastern EU", co2_gdp_share_filter$Region)
+co2_gdp_share_filter$Region <- gsub("EU28","EU-28 \naverage", co2_gdp_share_filter$Region)
 
-co2_gdp_share_filter$Region <- ordered(co2_gdp_share_filter$Region, levels = c(
+co2_gdp_share_filter$Region <- ordered(co2_gdp_share_filter$Region, levels = c("EU28","EU-28 \naverage",
                             "Germany",
                             "France",
                             "Italy",

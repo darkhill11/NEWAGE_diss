@@ -1,6 +1,6 @@
 $TITLE merge GDX files
 
-$if not set resultsdir   $set resultsdir "..\results\diss\210221\"
+$if not set resultsdir   $set resultsdir "..\results\diss\210227\"
 
 * ------ Read results from GDX-files
 

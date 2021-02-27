@@ -1,0 +1,6 @@
+"0","energy_cons_filter <- energy_cons %>%"
+"0","  filter(Year == 2030, Sector %in% c(""hh1"", ""hh2"", ""hh3"", ""hh4"", ""hh5"", ""sum_hh""))"
+"0","energy_cons_filter <- energy_cons_filter %>%"
+"0","  spread(key = ""Fuel"", value = ""Value"") %>%"
+"0","  mutate(FF = oil + gas + COL + CRU) %>%"
+"0","  gather(""oil"", ""gas"", ""COL"", ""CRU"", ""FF"", ""ele"", ""total"", key = ""Fuel"", value = ""Value"")"

@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/22/21 17:49:49 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:54:29 Page 1
 merge GDX files
 C o m p i l a t i o n
 
@@ -6,11 +6,11 @@ C o m p i l a t i o n
    2   
    4  * ------ Read results from GDX-files
    5   
-  37   
   38   
-  39  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-  40  Execute 'gdxxrw.exe i=210221/merged_results.gdx  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
-  41   
+  39   
+  40  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
+  41  Execute 'gdxxrw.exe i=210227/merged_results.gdx  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
+  42   
       SETS
       	r  /DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW/,
       	hh /hh1, hh2, hh3, hh4, hh5/,
@@ -50,12 +50,12 @@ C o m p i l a t i o n
       gini(sce,"total", "gini", r, yr) = 2 * (0.5 - sum(hh_,gini(sce,"total_area", hh_, r, yr)));
        
       display gini;
-  81  *gini(sce,"net", hh, r, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr(sce,"net_income", r, hh_, yr)) / sum( hh_, RA_hh_par_yr(sce,"net_income", r, hh_, yr));
-  82   
-  83  *Execute_unload   "201201/gini.gdx"
-  84   
-  85  *Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini  rng=gini!B2     cDim=0'
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/22/21 17:49:49 Page 2
+  82  *gini(sce,"net", hh, r, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr(sce,"net_income", r, hh_, yr)) / sum( hh_, RA_hh_par_yr(sce,"net_income", r, hh_, yr));
+  83   
+  84  *Execute_unload   "201201/gini.gdx"
+  85   
+  86  *Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini  rng=gini!B2     cDim=0'
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:54:29 Page 2
 merge GDX files
 C o m p i l a t i o n
 
@@ -63,12 +63,12 @@ C o m p i l a t i o n
 
 
 COMPILATION TIME     =        0.000 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/22/21 17:49:49 Page 3
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:54:29 Page 3
 merge GDX files
 E x e c u t i o n
 
 
-EXECUTION TIME       =       73.367 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =       76.799 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN
@@ -78,5 +78,5 @@ USER: IER                                            S151125:0513AO-WIN
 
 **** FILE SUMMARY
 
-Input      C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\results\diss\read_merged.gms
-Output     C:\GAMS\NEWAGE_dissertation\NEWAGE_diss\results\diss\read_merged.lst
+Input      C:\Users\Roland\Documents\NEWAGE_diss\results\diss\read_merged.gms
+Output     C:\Users\Roland\Documents\NEWAGE_diss\results\diss\read_merged.lst

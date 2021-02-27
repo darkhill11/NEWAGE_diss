@@ -1,0 +1,2 @@
+"0","tax_incidence <- full_join(ra_hh_par_filter, cons_hh_filter, by=c(""Region"", ""Scenario"", ""Year"", ""HH""))"
+"0","tax_incidence <- tax_incidence %>% mutate(incidence = cons_hh/ra_hh)"

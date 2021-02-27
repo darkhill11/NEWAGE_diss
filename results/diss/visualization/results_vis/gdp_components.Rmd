@@ -51,12 +51,11 @@ gdp_diff_filter_2 <- gather(gdp_diff_filter_2, 'bau', 'cAP', 'inv', 'vat', 'lab'
 
 gdp_diff_filter_2[[4]] = toupper(gdp_diff_filter_2[[4]])
 
-gdp_diff_filter_2$Scenario <- factor(gdp_diff_filter_2$Scenario, levels = c("INV",
-                                "CAP",
-                                "LAB",
-                                "VAT",
-                                "BAU",
-                                "REF"))
+gdp_diff_filter_2$Scenario <- factor(gdp_diff_filter_2$Scenario, levels = c("BAU",
+                                                                            "VAT",
+                                                                            "LAB",
+                                                                            "CAP",
+                                                                            "INV"))
 ```
 
 ```{r}

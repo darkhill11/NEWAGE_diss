@@ -1,0 +1,2 @@
+"0","#read emplyment data from results"
+"0","energy_cons <- read_excel(""report_pivot_merged.xlsx"", sheet = ""energy_cons_sec_yr"")"

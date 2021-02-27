@@ -74,7 +74,7 @@ plot_emp +
              shape =21) +
   facet_wrap(~Year, ncol =1) +
   scale_x_continuous(name = "Difference to reference scenario [REF]",
-                     labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.1,0.05))+
+                     labels = scales::label_percent(), breaks = seq(-0.02, 0.01,0.002))+
   labs(color = "Region",
        shape = "Region",
        fill = "Region")+
@@ -97,7 +97,7 @@ plot_emp +
         legend.title = element_text(size = 12),
         legend.position = "bottom")
   
-ggsave(width = 6, height = 5, filename = "emp_dev.png")
+ggsave(width = 7, height = 5, filename = "emp_dev.png")
 
 ```
 

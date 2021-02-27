@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/21/21 22:40:12 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:51:21 Page 1
 merge GDX files
 C o m p i l a t i o n
 
@@ -7,15 +7,15 @@ C o m p i l a t i o n
    4   
    5  * ------ Read results from GDX-files
    6   
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\ref.gdx
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\bau.gdx
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\vat.gdx
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\lab.gdx
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\cap.gdx
-GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\inv.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\ref.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\bau.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\vat.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\lab.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\cap.gdx
+GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\inv.gdx
   13   
   14  * ------ Create merged.gdx
-  15  Execute 'gdxmerge ..\results\diss\210221\ref.gdx ..\results\diss\210221\bau.gdx  ..\results\diss\210221\vat.gdx  ..\results\diss\210221\lab.gdx  ..\results\diss\210221\cap.gdx  ..\results\diss\210221\inv.gdx  output=..\results\diss\210221\merged_res
+  15  Execute 'gdxmerge ..\results\diss\210227\ref.gdx ..\results\diss\210227\bau.gdx  ..\results\diss\210227\vat.gdx  ..\results\diss\210227\lab.gdx  ..\results\diss\210227\cap.gdx  ..\results\diss\210227\inv.gdx  output=..\results\diss\210227\merged_res
       ults.gdx';
   16   
   17  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
@@ -27,7 +27,7 @@ GDXIN   C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\inv.gdx
   23   
   24  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITHOUT bottom-up household energy demand
   25  *Execute 'gdxxrw.exe i=merged.gdx  o=%resultsdir%report_pivot_merged.xlsx  epsout=0  @dumppar_extra.txt'
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/21/21 22:40:12 Page 2
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:51:21 Page 2
 merge GDX files
 Include File Summary
 
@@ -35,21 +35,21 @@ Include File Summary
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
      1        1 INPUT          0       0  C:\Users\Roland\Documents\NEWAGE_diss\NEWAGE\GDXmerge_v57.gms
-     2        7 GDXIN          1       7  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\ref.gdx
-     3        8 GDXIN          1       8  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\bau.gdx
-     4        9 GDXIN          1       9  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\vat.gdx
-     5       10 GDXIN          1      10  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\lab.gdx
-     6       11 GDXIN          1      11  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\cap.gdx
-     7       12 GDXIN          1      12  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210221\inv.gdx
+     2        7 GDXIN          1       7  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\ref.gdx
+     3        8 GDXIN          1       8  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\bau.gdx
+     4        9 GDXIN          1       9  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\vat.gdx
+     5       10 GDXIN          1      10  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\lab.gdx
+     6       11 GDXIN          1      11  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\cap.gdx
+     7       12 GDXIN          1      12  C:\Users\Roland\Documents\NEWAGE_diss\results\diss\210227\inv.gdx
 
 
-COMPILATION TIME     =        0.015 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/21/21 22:40:12 Page 3
+COMPILATION TIME     =        0.234 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 02/27/21 18:51:21 Page 3
 merge GDX files
 E x e c u t i o n
 
 
-EXECUTION TIME       =        3.760 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =        6.115 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN

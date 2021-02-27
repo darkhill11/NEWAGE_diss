@@ -1,0 +1,2 @@
+"0","#read emplyment data from results"
+"0","gva_real <- read_excel(""report_pivot_merged.xlsx"", sheet = ""gva_real_yr"")"

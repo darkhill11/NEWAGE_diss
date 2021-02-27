@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614455097758.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F154440C",
+    "lastKnownWriteTime" : 32370073299845215,
+    "last_content_update" : 1614455097758,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8072E9CA",
+        "caption" : "energy_cons_diff",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=energy_cons_diff&cache_key=8072E9CA",
+        "displayedObservations" : "1495",
+        "environment" : "",
+        "object" : "energy_cons_diff",
+        "preview" : "0",
+        "totalObservations" : "1495",
+        "variables" : "6"
+    },
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

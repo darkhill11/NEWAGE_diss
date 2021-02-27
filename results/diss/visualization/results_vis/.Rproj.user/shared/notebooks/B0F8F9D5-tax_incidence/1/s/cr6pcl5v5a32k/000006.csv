@@ -1,0 +1,4 @@
+"0","cons_hh_filter <- cons_hh %>%"
+"0","  filter(Sector == ""CO2_NETSr"" | Sector == ""CO2_inv_pay"", Scenario != ""ref"", Year == 2030)"
+"0","cons_hh_filter <- cons_hh_filter[-c(4)] %>% "
+"0","  rename(cons_hh = Value)"

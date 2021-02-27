@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614454559662.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2340637366",
+    "id" : "1A889D83",
+    "lastKnownWriteTime" : 1614454543,
+    "last_content_update" : 1614454543,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/gva_secs.Rmd",
+    "project_path" : "gva_secs.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "41,0",
+        "scrollLine" : "28"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
