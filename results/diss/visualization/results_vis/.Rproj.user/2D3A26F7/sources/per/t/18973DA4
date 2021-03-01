@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614602693617.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2014246591",
+    "id" : "18973DA4",
+    "lastKnownWriteTime" : 1614545172,
+    "last_content_update" : 1614545172,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/gini.Rmd",
+    "project_path" : "gini.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "99,0",
+        "scrollLine" : "66",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

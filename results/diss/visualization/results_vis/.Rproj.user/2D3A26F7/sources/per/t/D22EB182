@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614610321005.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D22EB182",
+    "lastKnownWriteTime" : 7449362155140247652,
+    "last_content_update" : 1614610321005,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "400934DE",
+        "caption" : "gdp_disag",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=gdp_disag&cache_key=400934DE",
+        "displayedObservations" : 5670,
+        "environment" : "",
+        "object" : "gdp_disag",
+        "preview" : 0,
+        "totalObservations" : 5670,
+        "variables" : 5
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

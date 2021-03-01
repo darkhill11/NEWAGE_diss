@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614614306822.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2301908609",
+    "id" : "A332CB51",
+    "lastKnownWriteTime" : 1614632666,
+    "last_content_update" : 1614632666501,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/emp_vis.Rmd",
+    "project_path" : "emp_vis.Rmd",
+    "properties" : {
+        "cursorPosition" : "115,0",
+        "scrollLine" : "102"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

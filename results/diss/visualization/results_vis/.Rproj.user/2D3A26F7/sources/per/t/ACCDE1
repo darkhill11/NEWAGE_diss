@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614616300027.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "ACCDE1",
+    "lastKnownWriteTime" : 32370073299845215,
+    "last_content_update" : 1614616300027,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8FA77403",
+        "caption" : "co2_gdp_share_filter",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=co2_gdp_share_filter&cache_key=8FA77403",
+        "displayedObservations" : 60,
+        "environment" : "",
+        "object" : "co2_gdp_share_filter",
+        "preview" : 0,
+        "totalObservations" : 60,
+        "variables" : 5
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

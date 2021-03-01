@@ -4,7 +4,7 @@
 "0","  scale_color_brewer(palette=""Paired"", name = ""Region"") +"
 "0","  scale_y_continuous(name = ""CO2 payments as share of GDP"","
 "0","                     breaks = seq(0, 0.04,0.005),"
-"0","                     labels = scales::label_percent()) +"
+"0","                     labels = scales::label_percent(accuracy = 0.1)) +"
 "0","  theme_bw() +"
 "0","  theme(text         = element_text(size=10, family=""Palatino Linotype""),"
 "0","        axis.text.x = element_text(size = 10),"
