@@ -1,0 +1,8 @@
+"0","gini_filter_total <- gini %>%"
+"0","  filter(Year == 2030) %>%"
+"0","  filter(Type_1 == ""total"", Type_2 == ""gini"") %>%"
+"0","  filter(Region %in% sel_reg)"
+"0","gini_filter_net <- gini %>%"
+"0","  filter(Year == 2030) %>%"
+"0","  filter(Type_1 == ""net"", Type_2 == ""gini"") %>%"
+"0","  filter(Region %in% sel_reg)"

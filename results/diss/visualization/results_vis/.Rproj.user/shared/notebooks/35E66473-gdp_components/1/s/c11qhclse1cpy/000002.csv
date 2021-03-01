@@ -4,4 +4,4 @@
 "0","  mutate(Type = str_replace(Type, ""inv"", ""Investments"")) %>%"
 "0","  mutate(Type = str_replace(Type, ""trade"", ""Trade"")) %>%"
 "0","  mutate(Region = str_replace(Region, ""DEU"", ""Germany"")) %>%"
-"0","  mutate(Region = str_replace(Region, ""EU28"", ""EU-28""))"
+"0","  mutate(Region = str_replace(Region, ""EU28"", ""EU-28"")) "

@@ -1,0 +1,3 @@
+"0","gdp_table <- gdp_diff_filter %>% "
+"0","  filter(Year == 2030) %>%"
+"0","  spread(key = ""Scenario"", value = ""Value"")"

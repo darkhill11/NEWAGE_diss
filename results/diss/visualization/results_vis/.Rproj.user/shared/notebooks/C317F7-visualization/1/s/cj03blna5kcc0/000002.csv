@@ -40,6 +40,7 @@ Attache Paket: ‘showtextdb’
     font_install
 
 "
+"0","library(formattable)"
 "0","#font_import()"
 "0","loadfonts()"
 "2","Agency FB already registered with pdfFonts().

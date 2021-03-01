@@ -3,4 +3,7 @@
 "0","energy_cons_filter <- energy_cons_filter %>%"
 "0","  spread(key = ""Fuel"", value = ""Value"") %>%"
 "0","  mutate(FF = oil + gas + COL + CRU) %>%"
-"0","  gather(""oil"", ""gas"", ""COL"", ""CRU"", ""FF"", ""ele"", ""total"", key = ""Fuel"", value = ""Value"")"
+"0","  gather(""oil"", ""gas"", ""COL"", ""CRU"", ""FF"", ""ele"", ""total"", key = ""Fuel"", value = ""Value"") %>%"
+"0","  mutate(Fuel = str_replace(Fuel, ""FF"", ""Fossil fuels"")) %>%"
+"0","  mutate(Fuel = str_replace(Fuel, ""ele"", ""Electricity"")) %>%"
+"0","  mutate(Fuel = str_replace(Fuel, ""total"", ""Total energy \nconsumption""))"

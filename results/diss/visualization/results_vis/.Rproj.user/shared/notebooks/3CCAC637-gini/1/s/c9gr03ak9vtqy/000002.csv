@@ -1,0 +1,49 @@
+"0","gini <- read_excel(""report_pivot_merged.xlsx"", sheet = ""gini"")"
+"0","# Spread scenarios to be able to change them"
+"0","gini <- spread(gini, key = ""Scenario"", value = ""Value"")"
+"0","# Transform each scenario into the relative difference to reference scenario"
+"0","gini <- gini %>% mutate(bau = (bau-ref))"
+"0","gini <- gini %>% mutate(cAP = (cAP-ref))"
+"0","gini <- gini %>% mutate(inv = (inv-ref))"
+"0","gini <- gini %>% mutate(lab = (lab-ref))"
+"0","gini <- gini %>% mutate(vat = (vat-ref))"
+"0","# drop ref"
+"0","gini <- subset(gini, select = -c(ref))"
+"0","# gather scenarios"
+"0","gini <- gather(gini, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')"
+"0","gini$Region <- gsub(""DEU"",""Germany"", gini$Region)"
+"0","gini$Region <- gsub(""FRA"",""France"", gini$Region)"
+"0","gini$Region <- gsub(""ITA"",""Italy"", gini$Region)"
+"0","gini$Region <- gsub(""UKI"",""UK"", gini$Region)"
+"0","gini$Region <- gsub(""POL"",""Poland"", gini$Region)"
+"0","gini$Region <- gsub(""ESP"",""Spain and \nPortugal"", gini$Region)"
+"0","gini$Region <- gsub(""BNL"",""Benelux"", gini$Region)"
+"0","gini$Region <- gsub(""EUN"",""Northern EU"", gini$Region)"
+"0","gini$Region <- gsub(""EUS"",""Central and \nSoutheastern EU"", gini$Region)"
+"0","gini$Region <- ordered(gini$Region, levels = c(""Germany"","
+"0","                            ""France"","
+"0","                            ""Italy"","
+"0","                            ""UK"","
+"0","                            ""Poland"","
+"0","                            ""Spain and \nPortugal"","
+"0","                            ""Benelux"","
+"0","                            ""Northern EU"","
+"0","                            ""Central and \nSoutheastern EU""))"
+"0","gini <- gini %>% mutate_each(funs(toupper), Scenario)"
+"2","funs() is soft deprecated as of dplyr 0.8.0
+Please use a list of either functions or lambdas: 
+
+  # Simple named list: 
+  list(mean = mean, median = median)
+
+  # Auto named with `tibble::lst()`: 
+  tibble::lst(mean, median)
+
+  # Using lambdas
+  list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+[90mThis warning is displayed once per session.[39m"
+"0","gini$Scenario <- ordered(gini$Scenario, levels = c(""BAU"","
+"0","                            ""VAT"","
+"0","                            ""LAB"","
+"0","                            ""CAP"","
+"0","                            ""INV""))"

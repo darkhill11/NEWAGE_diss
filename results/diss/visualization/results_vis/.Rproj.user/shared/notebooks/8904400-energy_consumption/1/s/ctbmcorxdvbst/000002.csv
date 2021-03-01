@@ -1,6 +1,0 @@
-"0","energy_plot <- ggplot(filter(energy_cons_abs, Region == ""DEU"","
-"0","                             Sector %in% c(""hh1"", ""hh3"", ""hh5""),"
-"0","                             Fuel %in% c(""FF"", ""ele"", ""total"")), aes(x=Value, y=Fuel))"
-"0","energy_plot +"
-"0","  geom_col() +"
-"0","  facet_grid(Scenario ~ Sector)"

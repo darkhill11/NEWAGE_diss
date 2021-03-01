@@ -6063,7 +6063,7 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
                                                       + cons_accounts(r,"co2_tax",yr)
                                                       )$(NOT HH_DISAG(r)) 
                                                       + sum(hh, cons_hh_accounts(r,hh,"CO2",yr) + cons_hh_accounts(r,hh,"CO2W",yr) + cons_hh_accounts(r,hh,"CO2_NETS",yr) + cons_hh_accounts(r,hh,"CO2_NETSr",yr)
-                                                      + cons_hh_accounts(r,hh,"co2_tax",yr)
+                                                      + cons_hh_accounts(r,hh,"co2_tax",yr) + cons_hh_accounts(r,hh,"CO2_inv_pay",yr)
                                                       )$(HH_DISAG(r))
                                                       + (cons_gov_accounts(r,"CO2",yr) + cons_gov_accounts(r,"CO2W",yr) + cons_gov_accounts(r,"CO2_NETS",yr) + cons_gov_accounts(r,"CO2_NETSr",yr))$(HH_DISAG(r));  
 

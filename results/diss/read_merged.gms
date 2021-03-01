@@ -32,7 +32,9 @@ par=gini				rng=gini!B2					cDim=0
 par=emplmtno_yr			rng=emplmtno_yr!b2			cDim=0
 par=share_co2_gdp		rng=share_co2_gdp!B2		cDim=0
 par=elecontwh2_yr		rng=elecontwh2_yr!B2		cDim=0
-par=energy_cons_sec_yr	rng=energy_cons_sec_yr!b2	cDim=0		
+par=energy_cons_sec_yr	rng=energy_cons_sec_yr!b2	cDim=0
+par=im_yr				rng=im_yr!B2				cDim=0
+par=ex_yr				rng=ex_yr!b2				cDim=0		
 
 $offEcho
 

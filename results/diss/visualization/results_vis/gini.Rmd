@@ -1,0 +1,144 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(extrafont)
+library(showtext)
+
+loadfonts(device = "win")
+```
+
+```{r}
+gini <- read_excel("report_pivot_merged.xlsx", sheet = "gini")
+
+# Spread scenarios to be able to change them
+gini <- spread(gini, key = "Scenario", value = "Value")
+
+# Transform each scenario into the relative difference to reference scenario
+gini <- gini %>% mutate(bau = (bau-ref))
+gini <- gini %>% mutate(cAP = (cAP-ref))
+gini <- gini %>% mutate(inv = (inv-ref))
+gini <- gini %>% mutate(lab = (lab-ref))
+gini <- gini %>% mutate(vat = (vat-ref))
+
+# drop ref
+gini <- subset(gini, select = -c(ref))
+
+# gather scenarios
+gini <- gather(gini, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+
+gini$Region <- gsub("DEU","Germany", gini$Region)
+gini$Region <- gsub("FRA","France", gini$Region)
+gini$Region <- gsub("ITA","Italy", gini$Region)
+gini$Region <- gsub("UKI","UK", gini$Region)
+gini$Region <- gsub("POL","Poland", gini$Region)
+gini$Region <- gsub("ESP","Spain and \nPortugal", gini$Region)
+gini$Region <- gsub("BNL","Benelux", gini$Region)
+gini$Region <- gsub("EUN","Northern EU", gini$Region)
+gini$Region <- gsub("EUS","Central and \nSoutheastern EU", gini$Region)
+
+gini$Region <- ordered(gini$Region, levels = c("Germany",
+                            "France",
+                            "Italy",
+                            "UK",
+                            "Poland",
+                            "Spain and \nPortugal",
+                            "Benelux",
+                            "Northern EU",
+                            "Central and \nSoutheastern EU"))
+
+gini <- gini %>% mutate_each(funs(toupper), Scenario)
+
+gini$Scenario <- ordered(gini$Scenario, levels = c("BAU",
+                            "VAT",
+                            "LAB",
+                            "CAP",
+                            "INV"))
+
+```
+
+```{r}
+sel_reg <- c("Germany",
+             "France",
+             "Italy",
+             "Poland",
+             "UK",
+             "Spain and \nPortugal",
+             "Benelux",
+             "Northern EU",
+             "Central and \nSoutheastern EU")
+
+```
+
+```{r}
+gini_filter_total <- gini %>%
+  filter(Year == 2030) %>%
+  filter(Type_1 == "total", Type_2 == "gini") %>%
+  filter(Region %in% sel_reg)
+
+gini_filter_net <- gini %>%
+  filter(Year == 2030) %>%
+  filter(Type_1 == "net", Type_2 == "gini") %>%
+  filter(Region %in% sel_reg)
+
+```
+
+```{r}
+gini_total_plot <- ggplot(gini_filter_total, aes(x = Value, y = Scenario))
+
+gini_total_plot +
+  geom_violin(aes(fill = Scenario), color = "black") +
+  #facet_wrap(~Region) +
+  scale_x_continuous(name = "Difference of Gini coefficient compared to reference scenario",
+                     breaks = seq(-0.06, 0.01,0.01))+
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+
+ggsave(width = 6, height = 3, filename = "gini_violin.png")
+
+```
+```{r}
+gini_total_plot <- ggplot(gini_filter_total, aes(x = Value, y = Scenario))
+
+gini_total_plot +
+  geom_col(aes(fill = Scenario), color = "black") +
+  facet_wrap(~Region) +
+  scale_x_continuous(name = "Difference of Gini coefficient compared to reference scenario",
+                     breaks = seq(-0.06, 0.01,0.01))+
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom")
+
+ggsave(width = 9, height = 6, filename = "gini_grid.png")
+
+```
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

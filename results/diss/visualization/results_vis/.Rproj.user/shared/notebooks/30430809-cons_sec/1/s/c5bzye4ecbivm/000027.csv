@@ -1,0 +1,6 @@
+"0","cons_sec <- ggplot(filter(share_cons_filter, Region == ""DEU"","
+"0","                          HH %in% c(""hh1"", ""hh3"", ""hh5"")), "
+"0","                   aes(x = Value, y=Scenario))"
+"0","cons_sec +"
+"0","  geom_col(aes(fill = Scenario)) +"
+"0","  facet_grid(HH~Sector)"

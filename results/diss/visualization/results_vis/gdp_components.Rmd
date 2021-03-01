@@ -49,10 +49,13 @@ gdp_diff_filter_2 <- subset(gdp_diff_filter_2, select = -c(ref))
 # gather scenarios
 gdp_diff_filter_2 <- gather(gdp_diff_filter_2, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
 
+gdp_diff_filter_2 <- gdp_diff_filter_2 %>%
+  mutate(Scenario = str_replace(Scenario, "vat", "con"))
+
 gdp_diff_filter_2[[4]] = toupper(gdp_diff_filter_2[[4]])
 
 gdp_diff_filter_2$Scenario <- factor(gdp_diff_filter_2$Scenario, levels = c("BAU",
-                                                                            "VAT",
+                                                                            "CON",
                                                                             "LAB",
                                                                             "CAP",
                                                                             "INV"))
@@ -65,7 +68,7 @@ gdp_diff_filter_2 <- gdp_diff_filter_2 %>%
   mutate(Type = str_replace(Type, "inv", "Investments")) %>%
   mutate(Type = str_replace(Type, "trade", "Trade")) %>%
   mutate(Region = str_replace(Region, "DEU", "Germany")) %>%
-  mutate(Region = str_replace(Region, "EU28", "EU-28"))
+  mutate(Region = str_replace(Region, "EU28", "EU-28")) 
 ```
 
 
@@ -81,23 +84,27 @@ windowsFonts()
 
 
 ```{r}
-plot_gdp <- ggplot(data = gdp_diff_filter_2, aes(x = Scenario, y = Value))
+plot_gdp <- ggplot(data = filter(gdp_diff_filter_2, Type != "Trade"), aes(y = Scenario, x = Value))
 
 plot_gdp +
   geom_bar(stat="identity",aes(fill = Scenario), color = "black") +
-  facet_grid( Region ~ Type) + 
-  scale_y_continuous(name = "Difference to reference scenario [REF]",
+  facet_grid( Type ~ Region) + 
+  scale_x_continuous(name = "Difference to reference scenario [REF]",
                      labels = scales::label_percent(accuracy = 1L), breaks = seq(-0.2, 0.15,0.05)) +
   theme_bw()+
   theme(text         = element_text(size=10, family="Palatino Linotype"),
-        axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 10),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 12),
-        strip.text = element_text(size = 12),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(size = 12),
+        axis.ticks.y = element_blank(),
+        strip.text.x = element_text(size = 12),
+        strip.text.y = element_text(size = 11),
         legend.text = element_text(size = 12),
         legend.title = element_text(size = 12),
         legend.position = "bottom")
+
+#ggsave(width = 7, height = 6, filename = "gdp_components.png")
 ```  
   
   scale_x_continuous(name = "Difference to reference scenario [REF]",

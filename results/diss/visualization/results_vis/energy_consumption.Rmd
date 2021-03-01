@@ -28,7 +28,10 @@ energy_cons_filter <- energy_cons %>%
 energy_cons_filter <- energy_cons_filter %>%
   spread(key = "Fuel", value = "Value") %>%
   mutate(FF = oil + gas + COL + CRU) %>%
-  gather("oil", "gas", "COL", "CRU", "FF", "ele", "total", key = "Fuel", value = "Value")
+  gather("oil", "gas", "COL", "CRU", "FF", "ele", "total", key = "Fuel", value = "Value") %>%
+  mutate(Fuel = str_replace(Fuel, "FF", "Fossil fuels")) %>%
+  mutate(Fuel = str_replace(Fuel, "ele", "Electricity")) %>%
+  mutate(Fuel = str_replace(Fuel, "total", "Total energy \nconsumption"))
 
 
 ```
@@ -91,24 +94,65 @@ energy_cons_abs$Scenario <- factor(energy_cons_abs$Scenario, levels = c("BAU",
 ```
 
 ```{r}
+sel_ff <- c("Fossil fuels", "Electricity", "Total energy \nconsumption")
+
+#sector.labs <- c("Relative energy consum")
+
+```
+
+```{r}
 energy_plot <- ggplot(filter(energy_cons_diff, Region == "DEU",
                              Sector %in% c("sum_hh"),
-                             Fuel %in% c("FF", "ele", "total")), aes(x=Value, y=Fuel))
+                             Fuel %in% sel_ff), aes(x=Value, y=Fuel))
 
 energy_plot +
-  geom_col() +
-  facet_grid(Scenario ~ Sector)
+  geom_col(aes(fill = Fuel), color = "black") +
+  facet_grid(Scenario ~ Sector) +
+  scale_fill_discrete(name = "Energy carrier") +
+  scale_x_continuous(name = "Difference to reference scenario",
+                     labels = scales::label_percent(accuracy = 1), breaks = seq(-0.6, 0.3,0.1))+
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        strip.text.x = element_blank(),
+        legend.position = "bottom")
+
+ggsave(width = 6, height = 4, filename = "ene_cons_diff.png")
 
 ```
 
 ```{r}
 energy_plot <- ggplot(filter(energy_cons_abs, Region == "DEU",
                              Sector %in% c("hh1", "hh3", "hh5"),
-                             Fuel %in% c("FF", "ele", "total")), aes(x=Value, y=Fuel))
+                             Fuel %in% sel_ff), aes(x=Value, y=Fuel))
 
 energy_plot +
-  geom_col() +
-  facet_grid(Scenario ~ Sector)
+  geom_col(aes(fill = Fuel), color = "black") +
+  facet_grid(Scenario ~ Sector)+
+  scale_fill_discrete(name = "Energy carrier") +
+  scale_x_continuous(name = "Difference to reference scenario [PJ]",
+                     breaks = seq(-200, 60,50))+
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        #strip.text.x = element_blank(),
+        legend.position = "bottom")
+
+ggsave(width = 6, height = 4, filename = "ene_cons_hh_abs.png")
 
 ```
 
