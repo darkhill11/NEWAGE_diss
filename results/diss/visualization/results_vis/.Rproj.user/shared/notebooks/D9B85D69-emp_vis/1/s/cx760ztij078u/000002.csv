@@ -20,6 +20,18 @@
 "0","                            ""Central and \nSoutheastern EU"","
 "0","                            ""EU-28""))"
 "0","employment_diff_filter <- employment_diff_filter %>% mutate_each(funs(toupper), Scenario)"
+"2","funs() is soft deprecated as of dplyr 0.8.0
+Please use a list of either functions or lambdas: 
+
+  # Simple named list: 
+  list(mean = mean, median = median)
+
+  # Auto named with `tibble::lst()`: 
+  tibble::lst(mean, median)
+
+  # Using lambdas
+  list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+[90mThis warning is displayed once per session.[39m"
 "0","employment_diff_filter$Scenario <- ordered(employment_diff_filter$Scenario, levels = c(""BAU"","
 "0","                            ""CON"","
 "0","                            ""LAB"","

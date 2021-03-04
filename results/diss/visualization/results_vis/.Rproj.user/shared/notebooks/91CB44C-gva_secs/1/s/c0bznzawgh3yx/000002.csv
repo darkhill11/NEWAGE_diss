@@ -1,0 +1,6 @@
+"0","gva_secs <- gva_secs %>%"
+"0","  mutate(Sector = str_replace(Sector, ""SER"", ""Services"")) %>%"
+"0","  mutate(Sector = str_replace(Sector, ""non-Energy Intensive Ind"", ""Other \nIndustries"")) %>%"
+"0","  mutate(Sector = str_replace(Sector, ""Energy Intensive Ind"", ""Energy Int. \nIndustries"")) %>%"
+"0","  mutate(Region = str_replace(Region, ""DEU"", ""Germany"")) %>%"
+"0","  mutate(Region = str_replace(Region, ""EU28"", ""EU-28""))"

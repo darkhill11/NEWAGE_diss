@@ -1,0 +1,158 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(extrafont)
+library(showtext)
+
+loadfonts(device = "win")
+```
+
+```{r}
+sel_reg <-  c("DEU",
+              #"FRA",
+              #"ITA",
+              "POL",
+              #"UKI",
+              "ESP"
+              #"BNL",
+              #"EUN",
+              #"EUS"
+              )
+
+```
+
+```{r}
+sel_sec <- c(
+#  "oil", 
+#  "gas", 
+#  "COL", 
+#  "CRU", 
+#  "ele", 
+#  "FF", 
+  "energy", 
+  "dwe", 
+  "BUI" 
+  #"SER"
+  )
+
+sel_sec2 <- c(
+#  "oil", 
+#  "gas", 
+#  "COL", 
+#  "CRU", 
+  "ele", 
+  "FF", 
+#  "energy", 
+  "dwe", 
+  "BUI", 
+  "hh_ser")
+```
+  
+  
+```{r}
+share_cons <- read_excel("report_pivot_merged.xlsx", sheet = "abs_sector_hh_yr")
+
+share_cons <- share_cons %>%
+  spread(key = "Sector", value = "Value") %>%
+  mutate(FF = oil + gas + COL + CRU) %>%
+  mutate(hh_ser = FF + ele + dwe + BUI) %>%
+  gather(-c("Scenario", "Year", "Region", "HH"), key = "Sector", value = "Value")
+  #mutate(Fuel = str_replace(Fuel, "FF", "Fossil fuels")) %>%
+  #mutate(Fuel = str_replace(Fuel, "ele", "Electricity")) %>%
+  #mutate(Fuel = str_replace(Fuel, "total", "Total energy \nconsumption"))
+  
+  
+```
+
+```{r}
+share_cons_hh_ser <- share_cons %>%
+  #spread(key = "Sector", value = "Value") %>%
+  #mutate(ele = ele/hh_ser) %>%
+  #mutate(FF  = FF/hh_ser) %>%
+  #mutate(dwe = dwe/hh_ser) %>%
+  #mutate(BUI = BUI/hh_ser) %>%
+  #gather(-c("Scenario", "Year", "Region", "HH"), key = "Sector", value = "Value") %>%
+  filter(Year == 2030) %>%
+  spread(key = "Scenario", value = "Value") %>%
+  mutate(bau = (bau-ref)/ref) %>%
+  mutate(cAP = (cAP-ref)/ref) %>%
+  mutate(inv = (inv-ref)/ref) %>%
+  mutate(lab = (lab-ref)/ref) %>%
+  mutate(vat = (vat-ref)/ref) %>%
+  gather('bau', 'cAP', 'inv', 'vat', 'lab', "ref", key = 'Scenario', value = 'Value')
+```
+
+```{r}
+share_cons_filter <- share_cons_hh_ser %>%
+  filter(Year == 2030, Region %in% sel_reg, Sector %in% sel_sec,
+         Scenario != "ref")
+
+share_cons_filter$Scenario <- gsub("vat","con", share_cons_filter$Scenario)
+share_cons_filter$Region <- gsub("DEU","Germany", share_cons_filter$Region)
+share_cons_filter$Region <- gsub("ESP","Spain and \nPortugal", share_cons_filter$Region)
+share_cons_filter$Region <- gsub("POL","Poland", share_cons_filter$Region)
+share_cons_filter$Sector <- gsub("BUI","Construction", share_cons_filter$Sector)
+share_cons_filter$Sector <- gsub("dwe","Rent", share_cons_filter$Sector)
+share_cons_filter$Sector <- gsub("energy","Energy", share_cons_filter$Sector)
+
+share_cons_filter <- share_cons_filter %>% mutate_each(funs(toupper), Scenario)
+
+share_cons_filter$Scenario <- ordered(share_cons_filter$Scenario, levels = c("BAU",
+                            "CON",
+                            "LAB",
+                            "CAP",
+                            "INV"))
+```
+
+```{r}
+
+
+```
+
+```{r}
+cons_sec <- ggplot(filter(share_cons_filter, 
+                          #Scenario != "ref",
+                          #Sector != "hh_ser", 
+                          #Region == "DEU", #| Region == "DEU"#, 
+                          HH %in% c("hh1", "hh3", "hh5")), 
+                   aes(x = Value, y=HH))
+
+cons_sec +
+  geom_col(aes(fill = HH), color = "black") +
+  facet_grid(Region + Sector ~Scenario) +
+  scale_x_continuous(name = "Change of consumption in 2030 compared to REF",
+                     labels = scales::label_percent(accuracy = 1)
+                     #breaks = seq(0, 0.04,0.005)
+                     ) +
+  scale_fill_discrete( name = "Income group") +
+  #scale_x_discrete(name = "Income group") +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 14),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.text = element_text(size = 14),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 14),
+        legend.position = "bottom")
+
+ggsave(width = 10, height = 13, filename = "cons_money.png")
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

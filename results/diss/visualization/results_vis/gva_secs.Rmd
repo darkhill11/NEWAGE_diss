@@ -48,8 +48,12 @@ gva_secs <- gather(gva_secs, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario'
 # update scenario names and change order
 gva_secs[[4]] = toupper(gva_secs[[4]])
 
+
+gva_secs <- gva_secs %>%
+  mutate(Scenario = str_replace(Scenario, "VAT", "CON"))
+
 gva_secs$Scenario <- factor(gva_secs$Scenario, levels = c("BAU",
-                                                                            "VAT",
+                                                                            "CON",
                                                                             "LAB",
                                                                             "CAP",
                                                                             "INV"))
@@ -63,8 +67,8 @@ gva_secs$Sector <- factor(gva_secs$Sector, levels = c("Energy Intensive Ind",
 ```{r}
 gva_secs <- gva_secs %>%
   mutate(Sector = str_replace(Sector, "SER", "Services")) %>%
-  mutate(Sector = str_replace(Sector, "non-Energy Intensive Ind", "Other Industries")) %>%
-  mutate(Sector = str_replace(Sector, "Energy Intensive Ind", "Energy Intensive \nIndustries")) %>%
+  mutate(Sector = str_replace(Sector, "non-Energy Intensive Ind", "Other \nIndustries")) %>%
+  mutate(Sector = str_replace(Sector, "Energy Intensive Ind", "Energy Int. \nIndustries")) %>%
   mutate(Region = str_replace(Region, "DEU", "Germany")) %>%
   mutate(Region = str_replace(Region, "EU28", "EU-28"))
 ```
@@ -74,18 +78,21 @@ plot_gva <- ggplot(data = gva_secs, aes(x = Scenario, y = Value))
 
 plot_gva +
   geom_bar(stat='identity', aes(fill =  Scenario), color = "black") +
-  facet_grid(Region ~ factor(Sector, levels = c("Energy Intensive \nIndustries",
-                                "Other Industries",
+  facet_grid(Region ~ factor(Sector, levels = c("Energy Int. \nIndustries",
+                                "Other \nIndustries",
                                 "Services",
                                 "Other Sectors"))) +
-  scale_y_continuous(name = "Difference to reference scenario [REF]",
-                     labels = scales::label_percent(accuracy = 1L)) +
+  scale_y_continuous(name = "Level of GVA compared to REF",
+                     labels = scales::label_percent(accuracy = 0.1),
+                     breaks = seq(-0.03, 0.01,0.01)) +
+  scale_fill_brewer(palette="Set1") +
   theme_bw()+
   theme(text         = element_text(size=10, family="Palatino Linotype"),
         axis.text.x = element_blank(),
         axis.title.x = element_blank(),
-        axis.text.y = element_text(size = 10),
+        axis.text.y = element_text(size = 12),
         axis.title.y = element_text(size = 12),
+        axis.ticks.x = element_blank(), 
         strip.text = element_text(size = 12),
         legend.text = element_text(size = 12),
         legend.title = element_text(size = 12),

@@ -2294,11 +2294,21 @@ bta_reb_sec_reg(i,s,r)$(BTA_coa(s) AND NOT BTA_coa(r) and BTA_sec(i) and cc(i,s,
 * ----- 12.11.2020
 Parameter        e_sub(r)                       "elasticity of substitution between electricity and fossil fuels"
                  cons_sub(r)
+                 hh_e_sub(r)
 ;
 
 e_sub(r) = 0.1;
 cons_sub(r) =1;
 
+hh_e_sub("DEU") = 0.352;
+hh_e_sub("FRA") = 0.312;
+hh_e_sub("ITA") = 0.337;
+hh_e_sub("POL") = 0.415;
+hh_e_sub("UKI") = 0.348;
+hh_e_sub("ESP") = 1.148;
+hh_e_sub("BNL") = 0.319;
+hh_e_sub("EUN") = 0.393;
+hh_e_sub("EUS") = 0.391;
 
 *Execute_Unload 'cons_with_tax', cons_with_tax;
 *$EXIT
@@ -2797,7 +2807,7 @@ $prod:C_hh(hh,r)$(HH_DISAG(r) AND NOT h_t_cons_reg(r))       s:0.5   c:1     e:c
 * ----- 09.03.2020 - Consumption with specified nests for heat and transportation
 * -------------------------------------------------------------------------------
 
-$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1  tr_o(tr_e):0   h:0.6   bd(h):0.1   e(h):cons_sub(r)     oil(e):0   col(e):0   gas(e):0
+$prod:C_hh(hh,r)$(HH_DISAG(r) and h_t_cons_reg(r))   s:0.5   c:1   tr:1    ct(tr):0   tr_e(ct):1  tr_o(tr_e):0   h:hh_e_sub(r)   bd(h):0.1   e(h):cons_sub(r)     oil(e):0   col(e):0   gas(e):0
 
          o:PC_hh(hh,r)                 Q:(vom("c",r) * hh_total_consumption_share(r,hh))
 
@@ -4123,6 +4133,7 @@ PARAMETERS
          YT_yr(yr)
          A_yr(*,i,yr)
          C_yr(*,yr)
+         pc_hh_yr(r,hh,yr)
          c_hh_yr(r,hh,yr)
          ELEx_yr(*,gen,yr)
          ELEn_yr(*,gen,yr)
@@ -6130,6 +6141,8 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     taxes_region("sum_parts","eu28",yr) =   sum(r$eu28(r), taxes_region("sum_parts",r,yr));
 
 * ---- GDP Composites
+    gdpreal_disag_yr("ex",r,yr)      = ex_yr(r,"total",yr);
+    gdpreal_disag_yr("im",r,yr)      = im_yr(r,"total",yr);
     gdpreal_disag_yr("trade",r,yr)      = trdblnc_yr(r,"total",yr);
     
     gdpreal_disag_yr("cons_HH",r,yr)$HH_DISAG(r)    = sum(hh, abs_sector_hh_yr(r,"total",hh,yr));
@@ -6145,6 +6158,8 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
                                                       + sum(hh, cons_hh_accounts(r,hh,"tax_rebate",yr))$no_vat
                                                       ;
     
+    gdpreal_disag_yr("ex","eu28",yr)      = ex_yr("eu28","total",yr);
+    gdpreal_disag_yr("im","eu28",yr)      = im_yr("eu28","total",yr);
     gdpreal_disag_yr("trade", "EU28", yr) = sum(r$eu28(r), gdpreal_disag_yr("trade", r, yr));
     gdpreal_disag_yr("inv", "EU28", yr) = sum(r$eu28(r), gdpreal_disag_yr("inv", r, yr));
     gdpreal_disag_yr("total", "EU28", yr) = sum(r$eu28(r), gdpreal_disag_yr("total", r, yr));
@@ -6156,7 +6171,7 @@ invgdp_yr("World",yr)    = VINV_PINV_yr("World",yr) / gdpreal_yr("World",yr) * 1
     gdpreal_disag_yr("cons_HH", "EU28", yr) = sum(r$(eu28(r)  AND HH_DISAG(r)), gdpreal_disag_yr("cons_HH", r, yr));
      
 c_hh_yr(r,hh,yr)$HH_DISAG(r) = c_hh.l(hh,r);
-
+pc_hh_yr(r,hh,yr)$HH_DISAG(r) = pc_hh.l(hh,r);
 
 * ---- Share of GDP for CO2 payments
     share_co2_gdp(r,"consumpiton",yr)       =  taxes_region("cons_CO2",r,yr) / gdpreal_disag_yr("total", r, yr);

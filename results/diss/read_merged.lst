@@ -1,4 +1,4 @@
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/01/21 15:51:02 Page 1
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/02/21 23:15:58 Page 1
 merge GDX files
 C o m p i l a t i o n
 
@@ -9,7 +9,7 @@ C o m p i l a t i o n
   40   
   41   
   42  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-  43  Execute 'gdxxrw.exe i=210227/merged_results.gdx  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
+  43  Execute 'gdxxrw.exe i=210302/merged_results.gdx  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
   44   
       SETS
       	r  /DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW/,
@@ -55,20 +55,20 @@ C o m p i l a t i o n
   86  *Execute_unload   "201201/gini.gdx"
   87   
   88  *Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini  rng=gini!B2     cDim=0'
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/01/21 15:51:02 Page 2
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/02/21 23:15:58 Page 2
 merge GDX files
 C o m p i l a t i o n
 
 
 
 
-COMPILATION TIME     =        0.000 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
-GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/01/21 15:51:02 Page 3
+COMPILATION TIME     =        0.016 SECONDS      2 MB  24.7.3 r58181 WEX-WEI
+GAMS 24.7.3  r58181 Released Jul 11, 2016 WEX-WEI x86 64bit/MS Windows                                                                                                                                                                 03/02/21 23:15:58 Page 3
 merge GDX files
 E x e c u t i o n
 
 
-EXECUTION TIME       =       72.931 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
+EXECUTION TIME       =       78.702 SECONDS      3 MB  24.7.3 r58181 WEX-WEI
 
 
 USER: IER                                            S151125:0513AO-WIN

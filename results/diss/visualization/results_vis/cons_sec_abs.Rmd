@@ -96,16 +96,21 @@ share_cons_filter <- share_cons %>%
 ```
 
 ```{r}
+
+
+```
+
+```{r}
 cons_sec <- ggplot(filter(share_cons_hh_ser, 
                           Scenario != "ref",
                           Sector != "hh_ser", 
-                          Region == "DEU", 
+                          Region == "DEU", #| Region == "DEU"#, 
                           HH %in% c("hh1", "hh3", "hh5")), 
                    aes(x = Value, y=HH))
 
 cons_sec +
   geom_col(aes(fill = HH)) +
-  facet_grid(Sector~Scenario)
+  facet_grid(Region + Sector~Scenario)
 
 ```
 

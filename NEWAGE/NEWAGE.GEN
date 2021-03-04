@@ -1189,7 +1189,7 @@ PUT   MPS,'$MODEL:NEWAGE'/;
 {  487}    PUT /,'+CT(TR):'0;
 {  487}    PUT /,'+TR_E(CT):'1;
 {  487}    PUT /,'+TR_O(TR_E):'0;
-{  487}    PUT /,'+H:'0.6;
+{  487}    PUT /,'+H:'HH_E_SUB(R);
 {  487}    PUT /,'+BD(H):'0.1;
 {  487}    PUT /,'+E(H):'CONS_SUB(R);
 {  487}    PUT /,'+OIL(E):'0;
@@ -3802,6 +3802,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 NEWAGE.INTEGER1 = NEWAGE.INTEGER1 + 1;
-$IF %NEWAGE%=="03/01/2117:50:55" $EXIT
+$IF %NEWAGE%=="03/02/2122:35:53" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked

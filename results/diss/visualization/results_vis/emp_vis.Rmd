@@ -146,6 +146,7 @@ plot_emp2 +
   scale_y_continuous(name = "Difference of total employment compared to reference scenario",
                      labels = scales::label_percent(),
                      breaks = seq(-0.015, 0.005,0.0025))+
+  scale_fill_brewer(palette="Set1") +
   theme_bw()+
   theme(text         = element_text(size=10, family="Palatino Linotype"),
         axis.text.x = element_blank(),
