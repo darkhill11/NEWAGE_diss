@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615059942353.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FBDD4325",
+    "lastKnownWriteTime" : 32370073299845215,
+    "last_content_update" : 1615059942353,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "1516CB5C",
+        "caption" : "income_dis",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=income_dis&cache_key=1516CB5C",
+        "displayedObservations" : 270,
+        "environment" : "",
+        "object" : "income_dis",
+        "preview" : 0,
+        "totalObservations" : 270,
+        "variables" : 4
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

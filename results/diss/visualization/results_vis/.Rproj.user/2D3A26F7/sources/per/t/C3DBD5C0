@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615059843181.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1237477439",
+    "id" : "C3DBD5C0",
+    "lastKnownWriteTime" : 1615072782,
+    "last_content_update" : 1615072787376,
+    "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/income_dist.Rmd",
+    "project_path" : "income_dist.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "37,2",
+        "scrollLine" : "22",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

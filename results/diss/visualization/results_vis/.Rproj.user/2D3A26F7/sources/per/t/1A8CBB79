@@ -8,13 +8,13 @@
     "hash" : "3873886098",
     "id" : "1A8CBB79",
     "lastKnownWriteTime" : 1614796334,
-    "last_content_update" : 1614796334893,
+    "last_content_update" : 1615059864637,
     "path" : "~/NEWAGE_diss/results/diss/visualization/results_vis/energy_consumption.Rmd",
     "project_path" : "energy_consumption.Rmd",
     "properties" : {
         "chunk_output_type" : "inline",
-        "cursorPosition" : "213,27",
-        "scrollLine" : "186",
+        "cursorPosition" : "18,0",
+        "scrollLine" : "4",
         "tempName" : "Untitled1"
     },
     "relative_order" : 8,

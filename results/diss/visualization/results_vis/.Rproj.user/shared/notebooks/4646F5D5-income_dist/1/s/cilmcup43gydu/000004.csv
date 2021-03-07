@@ -1,0 +1,10 @@
+"0","#read emplyment data from results"
+"0","income_dis <- read_csv(""income_dist.csv"")"
+"2","Parsed with column specification:
+cols(
+  region = [31mcol_character()[39m,
+  quintile = [31mcol_character()[39m,
+  category = [31mcol_character()[39m,
+  Value = [32mcol_double()[39m
+)
+"
