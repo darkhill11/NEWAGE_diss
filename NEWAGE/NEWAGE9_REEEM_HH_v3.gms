@@ -166,12 +166,12 @@ SCALARS
          corona_scenario_2020                                                                               / 0 /
          germany_reference_nEHS                                                                             / 0 /
 
-         diss_ref                                                                                           / 0 /
+         diss_ref                                                                                           / 1 /
          diss_BAU                                                                                           / 0 /
          diss_CAP                                                                                           / 0 /
          diss_VAT                                                                                           / 0 /
          diss_LAB                                                                                           / 0 /
-         diss_inv_payment                                                                                   / 1 /
+         diss_inv_payment                                                                                   / 0 /
 
          test_lower_tax /0/
 ;
