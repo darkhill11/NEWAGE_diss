@@ -1,0 +1,279 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(extrafont)
+library(showtext)
+
+loadfonts()
+```
+
+```{r}
+#read employment data from results
+energy_cons <- read_excel("report_pivot_merged_energy.xlsx", sheet = "energy_cons_sec_yr")
+```
+
+```{r}
+energy_cons_filter <- energy_cons %>%
+  filter(Year == 2030, Sector %in% c("hh1", "hh2", "hh3", "hh4", "hh5", "sum_hh"))
+
+```
+
+```{r}
+energy_cons_filter <- energy_cons_filter %>%
+  spread(key = "Fuel", value = "Value") %>%
+  mutate(FF = oil + gas + COL + CRU) %>%
+  mutate(all_ele = ele_car + ele) %>%
+  gather("oil", "gas", "COL", "CRU", "FF", "ele", "total", "oil_car", "ele_car", "total_car", "all_ele", key = "Fuel", value = "Value")
+  #mutate(Fuel = str_replace(Fuel, "FF", "Fossil fuels")) %>%
+  #mutate(Fuel = str_replace(Fuel, "ele", "Electricity")) %>%
+  #mutate(Fuel = str_replace(Fuel, "total", "Total energy \nconsumption")) 
+
+```
+
+
+```{r}
+
+# Spread scenarios to be able to change them
+energy_cons_diff <- spread(energy_cons_filter, key = "Scenario", value = "Value")
+
+# Transform each scenario into the relative difference to reference scenario
+energy_cons_diff <- energy_cons_diff %>% mutate(bau = (bau-ref)/ref)
+energy_cons_diff <- energy_cons_diff %>% mutate(cAP = (cAP-ref)/ref)
+energy_cons_diff <- energy_cons_diff %>% mutate(inv = (inv-ref)/ref)
+energy_cons_diff <- energy_cons_diff %>% mutate(lab = (lab-ref)/ref)
+energy_cons_diff <- energy_cons_diff %>% mutate(vat = (vat-ref)/ref)
+
+# drop ref
+energy_cons_diff <- subset(energy_cons_diff, select = -c(ref))
+
+# gather scenarios
+energy_cons_diff <- gather(energy_cons_diff, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+
+energy_cons_diff <- energy_cons_diff %>%
+  mutate(Scenario = str_replace(Scenario, "vat", "con"))
+
+energy_cons_diff$Region <- gsub("DEU","Germany", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("FRA","France", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("ITA","Italy", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("UKI","UK", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("POL","Poland", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("ESP","Spain and \nPortugal", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("BNL","Benelux", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("EUN","Northern EU", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("EUS","Central and \nSoutheastern EU", energy_cons_diff$Region)
+energy_cons_diff$Region <- gsub("EU28","EU-28", energy_cons_diff$Region)
+
+energy_cons_diff$Region <- ordered(energy_cons_diff$Region, levels = c("Germany",
+                            "France",
+                            "Italy",
+                            "UK",
+                            "Poland",
+                            "Spain and \nPortugal",
+                            "Benelux",
+                            "Northern EU",
+                            "Central and \nSoutheastern EU",
+                            "EU-28"))
+
+# update scenario names and change order
+energy_cons_diff[[5]] = toupper(energy_cons_diff[[5]])
+
+energy_cons_diff$Scenario <- factor(energy_cons_diff$Scenario, levels = c("BAU",
+                                                                            "CON",
+                                                                            "LAB",
+                                                                            "CAP",
+                                                                            "INV"))
+energy_cons_diff$Value[is.na(energy_cons_diff$Value)] <- 0
+```
+
+```{r}
+
+# Spread scenarios to be able to change them
+energy_cons_abs <- spread(energy_cons_filter, key = "Scenario", value = "Value")
+
+# Transform each scenario into the relative difference to reference scenario
+energy_cons_abs <- energy_cons_abs %>% mutate(bau = (bau-ref))
+energy_cons_abs <- energy_cons_abs %>% mutate(cAP = (cAP-ref))
+energy_cons_abs <- energy_cons_abs %>% mutate(inv = (inv-ref))
+energy_cons_abs <- energy_cons_abs %>% mutate(lab = (lab-ref))
+energy_cons_abs <- energy_cons_abs %>% mutate(vat = (vat-ref))
+
+# drop ref
+energy_cons_abs <- subset(energy_cons_abs, select = -c(ref))
+
+# gather scenarios
+energy_cons_abs <- gather(energy_cons_abs, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+
+energy_cons_abs <- energy_cons_abs %>%
+  mutate(Scenario = str_replace(Scenario, "vat", "con"))
+
+energy_cons_abs$Region <- gsub("DEU","Germany", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("FRA","France", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("ITA","Italy", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("UKI","UK", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("POL","Poland", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("ESP","Spain and \nPortugal", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("BNL","Benelux", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("EUN","Northern EU", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("EUS","Central and \nSoutheastern EU", energy_cons_abs$Region)
+energy_cons_abs$Region <- gsub("EU28","EU-28", energy_cons_abs$Region)
+
+energy_cons_abs$Region <- ordered(energy_cons_abs$Region, levels = c("Germany",
+                            "France",
+                            "Italy",
+                            "UK",
+                            "Poland",
+                            "Spain and \nPortugal",
+                            "Benelux",
+                            "Northern EU",
+                            "Central and \nSoutheastern EU",
+                            "EU-28"))
+
+# update scenario names and change order
+energy_cons_abs[[5]] = toupper(energy_cons_abs[[5]])
+
+energy_cons_abs$Scenario <- factor(energy_cons_abs$Scenario, levels = c("BAU",
+                                                                            "CON",
+                                                                            "LAB",
+                                                                            "CAP",
+                                                                            "INV"))
+
+energy_cons_abs$Value[is.na(energy_cons_abs$Region)] <- 0
+```
+
+```{r}
+sel_ff <- c("Fossil fuels", "Electricity", "Total energy \nconsumption")
+
+sel_reg_ene <- c("Germany","Poland","Spain and \nPortugal") 
+
+```
+
+```{r}
+sel_ff <- c("FF", "ele", "total", "oil_car", "ele_car", "total_car", "all_ele")
+
+sel_reg_ene <- c("Germany","Poland","Spain and \nPortugal") 
+
+```
+
+```{r}
+energy_plot <- ggplot(filter(energy_cons_diff, 
+                             Region != "EU-28",
+                             Sector %in% c("sum_hh"),
+                             Fuel %in% sel_ff), aes(x=Value, y=Fuel))
+
+energy_plot +
+  geom_jitter(
+    aes(color = Scenario), size = 3, alpha = 0.5, height = 0.2) +
+  facet_wrap(~Region, ncol = 3) +
+  scale_color_brewer(palette="Set1") +
+  scale_fill_discrete(name = "Energy carrier") +
+  scale_x_continuous(name = "Difference to reference scenario",
+                     labels = scales::label_percent(accuracy = 1) 
+                     #breaks = seq(-0.6, 0.3,0.1)
+                     )+
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size=12),
+        #axis.ticks.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        #strip.text.x = element_blank(),
+        legend.position = "bottom")
+
+ggsave(width = 6, height = 9, filename = "ene_cons_reg.png")
+
+```
+
+```{r}
+energy_plot2 <- ggplot(filter(energy_cons_abs, 
+                             Region == "EU-28",
+                             Sector %in% c("sum_hh"),
+                             #Fuel %in% sel_ff
+                             Fuel %in% c("total_car")
+                             ),
+                       aes(x=Value, y=Fuel))
+
+energy_plot2 +
+  geom_jitter(aes(color = Scenario), size = 3, alpha = 0.5, height = 0.2) +
+  facet_wrap(~Region) +
+  #scale_fill_discrete(name = "Energy carrier") +
+  scale_color_brewer(palette="Set1") +
+  scale_x_continuous(name = "Difference in energy consumption in year \n2030 compared to reference scenario [PJ]",
+                     #labels = scales::label_percent(accuracy = 1) 
+                     #breaks = seq(-3000, 1000,500)
+                     ) +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 10),
+        #axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        #strip.text.x = element_blank(),
+        legend.position = "right")
+
+ggsave(width = 6, height = 2, filename = "ene_cons_eu2.png")
+
+```
+
+```{r}
+energy_plot3 <- ggplot(filter(energy_cons_diff, 
+                              Region %in% sel_reg_ene,
+                              Sector %in% c("hh1", "hh3", "hh5"),
+                              #Fuel %in% sel_ff),
+                              Fuel %in% c("total", "total_car")),
+                       aes(x=Value, y=Fuel))
+
+energy_plot3 +
+  geom_jitter(aes(
+    color = Scenario
+    #color = Sector
+    ),
+    alpha = 0.6,
+    size = 3,
+    height = 0.3,
+    width = 0) +
+  facet_grid(Sector~Region)+
+  scale_fill_discrete(name = "Energy carrier") +
+  scale_x_continuous(name = "Difference in energy consumption in 2030 compared to REF",
+                     labels = scales::label_percent()
+                     )+
+  scale_color_brewer(palette = "Set1") +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(),
+        #axis.ticks.y = element_blank(),
+        axis.text.x = element_text(size = 10, angle =0),
+        axis.title.x = element_text(size = 12),
+        strip.text.x = element_text(size = 12),
+        strip.text.y = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        #strip.text.x = element_blank(),
+        legend.position = "bottom")
+
+ggsave(width = 6, height = 4, filename = "ene_cons_hh2.png")
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

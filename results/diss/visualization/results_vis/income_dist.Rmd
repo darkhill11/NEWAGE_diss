@@ -10,10 +10,13 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 ```{r}
 library(tidyverse)
 library(readxl)
+#library(remotes)
+#remotes::install_version("Rttf2pt1", version = "1.3.8")
 library(extrafont)
 library(showtext)
-
-loadfonts(device = "win")
+#font_import(path = "~/.local/share/fonts/WindowsFonts")
+loadfonts()
+#loadfonts(device = "win")
 ```
 
 ```{r}

@@ -19,7 +19,8 @@ library(readxl)
 library(extrafont)
 library(showtext)
 
-loadfonts(device = "win")
+#loadfonts(device = "win")
+loadfonts()
 ```
 
 ```{r}
@@ -68,6 +69,13 @@ tax_incidence$Scenario <- ordered(tax_incidence$Scenario, levels = c("BAU",
                             "INV"))
 
 ```
+```{r}
+tax_app <- tax_incidence[-c(4,5,6)] %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'incidence')
+
+write_csv(tax_app, 'tax_app.csv')
+```
+
 
 ```{r}
 incidence_plot_point <- ggplot(tax_incidence, aes(x=HH, y=incidence, color = Region, group = Region))

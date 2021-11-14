@@ -14,8 +14,8 @@ library(extrafont)
 library(showtext)
 
 #font_import()
-
-loadfonts(device = "win")
+loadfonts()
+#loadfonts(device = "win")
 ```
 
 ```{r}
@@ -111,12 +111,43 @@ all_prices_filter_1$Scenario <- ordered(all_prices_filter_1$Scenario, levels = c
 ```
 
 ```{r}
-plot_price <-ggplot(all_prices_filter_1, aes(x=Scenario, y = Value))
+inflation <-c(3.1,	2.6,	1.5,	0.6,	0.1,	0.2,	1.7,	1.9,	1.5)
+
+inflation = 1 + (inflation/100)
+total_inf = 1
+for (i in inflation ) {
+  total_inf = i*total_inf
+}
+
+all_prices_filter_1$Value_2020 = all_prices_filter_1$Value * total_inf
+
+total_disc = 0.96^10
+
+all_prices_filter_1$Value_2020_disc = all_prices_filter_1$Value_2020 * total_disc
+
+```
+
+```{r}
+price_app <- all_prices_filter_1[-c(4,5)] %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value_2020_disc')
+
+write_csv(price_app, 'price_app2.csv')
+```
+
+```{r}
+all_prices_filter_1[-c(4,5)]
+```
+
+
+```{r}
+plot_price <-ggplot(all_prices_filter_1, aes(x=Scenario, y = Value_2020_disc))
 
 plot_price +
   #geom_boxplot(data = filter(all_prices_filter_1, Region != "EU28"))+
   geom_jitter(data = all_prices_filter_1, aes(color = Region), size = 4, alpha=1, width = 0.2) +
-  scale_y_continuous(name = "Price of t.eqCO2 [€ 2011]",
+  geom_vline(xintercept=seq(1.5, length(unique(all_prices_filter_1$Scenario))-0.5, 1), 
+             lwd=0.4, colour="black") +
+  scale_y_continuous(name = "Price of t.eqCO2 [€ 2020]",
                      breaks = seq(0, 600,100)) +
   scale_color_brewer(palette="Paired", name = "CO2-Price") +
   theme_bw() +

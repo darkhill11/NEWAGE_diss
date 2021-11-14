@@ -135,6 +135,14 @@ employment_diff_filter$Scenario <- ordered(employment_diff_filter$Scenario, leve
                             "INV"))
 
 ```
+```{r}
+emp_app <- employment_diff_filter %>%
+  filter(Year == 2030) %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
+
+write_csv(emp_app, 'emp_app.csv')
+```
+
 
 ```{r}
 

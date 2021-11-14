@@ -13,7 +13,8 @@ library(readxl)
 library(extrafont)
 library(showtext)
 
-loadfonts(device = "win")
+loadfonts()
+#loadfonts(device = "win")
 ```
 
 ```{r}
@@ -94,6 +95,13 @@ gini_filter_net <- gini %>%
 ```
 
 ```{r}
+gini_app <- gini_filter_total %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
+
+write_csv(gini_app, 'gini_app.csv')
+```
+
+```{r}
 gini_total_plot <- ggplot(gini_filter_total, aes(x = Value, y = Scenario))
 
 gini_total_plot +
@@ -102,17 +110,18 @@ gini_total_plot +
   scale_x_continuous(name = "Difference in the Gini coefficient compared to reference scenario",
                      breaks = seq(-0.06, 0.01,0.005))+
   scale_fill_brewer(palette="Set1") +
+  geom_vline(xintercept = 0) +
   theme_bw()+
   theme(text         = element_text(size=10, family="Palatino Linotype"),
-        axis.text.y = element_blank(),
+        axis.text.y = element_text(size = 12),
         axis.title.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.text.x = element_text(size = 10),
+        #axis.ticks.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),
         axis.title.x = element_text(size = 12),
         strip.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        legend.position = "bottom")
+        legend.text = element_blank(),
+        legend.title = element_blank(),
+        legend.position = "none")
 
 ggsave(width = 6, height = 3, filename = "gini_violin.png")
 
