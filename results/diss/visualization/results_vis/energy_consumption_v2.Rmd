@@ -167,6 +167,14 @@ sel_reg_ene <- c("Germany","Poland","Spain and \nPortugal")
 ```
 
 ```{r}
+energy_cons_diff_app <- energy_cons_diff %>%
+  filter(Region != "EU+UK", Sector == "sum_Q", Fuel %in% c("Fossil fuels", "Electricity", "Total energy \nconsumption")) %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
+
+write_csv(energy_cons_diff_app, 'energy_reg_app.csv')
+``` 
+
+```{r}
 energy_plot <- ggplot(filter(energy_cons_diff, 
                              Region != "EU-28",
                              Sector %in% c("sum_Q"),
@@ -205,6 +213,12 @@ ggsave(width = 8, height = 5, filename = "ene_cons_reg2.png")
 
 energy_cons_abs <- energy_cons_abs %>%
   mutate(Region = str_replace(Region, "EU-28", "EU+UK"))
+
+energy_cons_abs_app <- energy_cons_abs %>%
+  filter(Region == "EU+UK", Sector == "sum_Q", Fuel %in% c("Fossil fuels", "Electricity", "Total energy \nconsumption")) %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
+
+write_csv(energy_cons_abs_app, 'energy_eu_app.csv')
 
 ```
 
@@ -249,6 +263,14 @@ energy_cons_diff <- energy_cons_diff %>%
   mutate(Fuel = str_replace(Fuel, "FF - housing", "FF \nHousing"))
 ```
 
+```{r}
+energy_cons_hh_app <- energy_cons_diff %>%
+  filter(Region %in% sel_reg_ene, Sector %in% c("Q1", "Q3", "Q5"), Fuel %in% c("FF \nHousing", "FF \nTransport", "Electricity", "Total energy \nconsumption")) %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
+
+write_csv(energy_cons_hh_app, 'energy_hh_app.csv')
+
+```
 
 ```{r}
 energy_plot3 <- ggplot(filter(energy_cons_diff, 

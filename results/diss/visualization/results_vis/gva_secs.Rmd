@@ -26,7 +26,9 @@ gva_real <- read_excel("report_pivot_merged.xlsx", sheet = "gva_real_yr")
 ```{r}
 
 # Spread scenarios to be able to change them
-gva_diff <- spread(gva_real, key = "Scenario", value = "Value")
+gva_abs <- spread(gva_real, key = "Scenario", value = "Value")
+
+gva_diff <- gva_abs
 
 # Transform each scenario into the relative difference to reference scenario
 gva_diff <- gva_diff %>% mutate(bau = (bau-ref)/ref)
@@ -34,6 +36,20 @@ gva_diff <- gva_diff %>% mutate(cAP = (cAP-ref)/ref)
 gva_diff <- gva_diff %>% mutate(inv = (inv-ref)/ref)
 gva_diff <- gva_diff %>% mutate(lab = (lab-ref)/ref)
 gva_diff <- gva_diff %>% mutate(vat = (vat-ref)/ref)
+```
+
+```{r}
+sel_reg <-  c("DEU",
+              "FRA",
+              "ITA",
+              "POL",
+              "UKI",
+              "ESP",
+              "BNL",
+              "EUN",
+              "EUS"
+              )
+
 ```
 
 ```{r}
@@ -45,6 +61,9 @@ gva_secs <- filter(gva_secs, grepl('Energy Intensive Ind|non-Energy Intensive In
 gva_diff2 <- filter(gva_diff, grepl('2030', Year))
 gva_diff2 <- filter(gva_diff2, grepl('Energy Intensive Ind|non-Energy Intensive Ind|Other Sectors|SER', Sector))
 
+gva_abs2 <- filter(gva_abs, grepl('2030|2020', Year))
+gva_abs2 <- filter(gva_abs2, grepl('Energy Intensive Ind|non-Energy Intensive Ind|Other Sectors|SER', Sector), Region%in% sel_reg)
+
 # drop ref
 gva_secs <- subset(gva_secs, select = -c(ref))
 gva_diff2 <- subset(gva_diff2, select = -c(ref))
@@ -52,16 +71,20 @@ gva_diff2 <- subset(gva_diff2, select = -c(ref))
 # gather scenarios
 gva_secs <- gather(gva_secs, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
 gva_diff2 <- gather(gva_diff2, 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
+gva_abs2 <- gather(gva_abs2, 'ref', 'bau', 'cAP', 'inv', 'vat', 'lab', key = 'Scenario', value = 'Value')
 
 # update scenario names and change order
 gva_secs[[4]] = toupper(gva_secs[[4]])
 gva_diff2[[4]] = toupper(gva_diff2[[4]])
-
+gva_abs2[[4]] = toupper(gva_abs2[[4]])
 
 gva_secs <- gva_secs %>%
   mutate(Scenario = str_replace(Scenario, "VAT", "CON"))
 
 gva_diff2 <- gva_diff2 %>%
+  mutate(Scenario = str_replace(Scenario, "VAT", "CON"))
+
+gva_abs2 <- gva_abs2 %>%
   mutate(Scenario = str_replace(Scenario, "VAT", "CON"))
 
 gva_secs$Scenario <- factor(gva_secs$Scenario, levels = c("BAU",
@@ -76,12 +99,23 @@ gva_diff2$Scenario <- factor(gva_diff2$Scenario, levels = c("BAU",
                                                                             "CAP",
                                                                             "INV"))
 
+gva_abs2$Scenario <- factor(gva_abs2$Scenario, levels = c("REF","BAU",
+                                                                            "CON",
+                                                                            "LAB",
+                                                                            "CAP",
+                                                                            "INV"))
+
 gva_secs$Sector <- factor(gva_secs$Sector, levels = c("Energy Intensive Ind",
                                 "non-Energy Intensive Ind",
                                 "SER",
                                 "Other Sectors"))
 
 gva_diff2$Sector <- factor(gva_diff2$Sector, levels = c("Energy Intensive Ind",
+                                "non-Energy Intensive Ind",
+                                "SER",
+                                "Other Sectors"))
+
+gva_abs2$Sector <- factor(gva_abs2$Sector, levels = c("Energy Intensive Ind",
                                 "non-Energy Intensive Ind",
                                 "SER",
                                 "Other Sectors"))
@@ -93,7 +127,7 @@ gva_secs <- gva_secs %>%
   mutate(Sector = str_replace(Sector, "non-Energy Intensive Ind", "Other \nIndustries")) %>%
   mutate(Sector = str_replace(Sector, "Energy Intensive Ind", "Energy Int. \nIndustries")) %>%
   mutate(Region = str_replace(Region, "DEU", "Germany")) %>%
-  mutate(Region = str_replace(Region, "EU28", "EU-28"))
+  mutate(Region = str_replace(Region, "EU28", "EU+UK"))
 
 gva_diff2 <- gva_diff2 %>%
   mutate(Sector = str_replace(Sector, "SER", "Services")) %>%
@@ -109,6 +143,33 @@ gva_diff2 <- gva_diff2 %>%
   mutate(Region = str_replace(Region, "EUS", "Central and Southeastern EU")) %>%
   mutate(Region = str_replace(Region, "UKI", "UK")) %>%
   mutate(Region = str_replace(Region, "EU28", "EU-28"))
+
+gva_abs2 <- gva_abs2 %>%
+  mutate(Sector = str_replace(Sector, "SER", "Services")) %>%
+  mutate(Sector = str_replace(Sector, "non-Energy Intensive Ind", "Other \nIndustries")) %>%
+  mutate(Sector = str_replace(Sector, "Energy Intensive Ind", "Energy Int. \nIndustries")) %>%
+  mutate(Region = str_replace(Region, "DEU", "Germany")) %>%
+  mutate(Region = str_replace(Region, "FRA", "France")) %>%
+  mutate(Region = str_replace(Region, "ITA", "Italy")) %>%
+  mutate(Region = str_replace(Region, "POL", "Poland")) %>%
+  mutate(Region = str_replace(Region, "ESP", "Spain and Portugal")) %>%
+  mutate(Region = str_replace(Region, "BNL", "Benelux")) %>%
+  mutate(Region = str_replace(Region, "EUN", "Northern EU")) %>%
+  mutate(Region = str_replace(Region, "EUS", "Central and Southeastern EU")) %>%
+  mutate(Region = str_replace(Region, "UKI", "UK")) %>%
+  mutate(Region = str_replace(Region, "EU28", "EU-28"))
+
+gva_abs2$Region <- ordered(gva_abs2$Region, levels = c("EU-28",
+                                                       "UK",
+                                                       "Central and \nSoutheastern EU",
+                                                       "Northern EU",
+                                                       "Benelux",
+                                                       "Spain and \nPortugal",
+                                                       "Poland",
+                                                       "Italy",
+                                                       "France",
+                                                       "Germany"))
+                          
 ```
 
 ```{r}
@@ -116,6 +177,12 @@ gva_app <- gva_diff2 %>%
   pivot_wider(names_from = 'Scenario', values_from = 'Value')
 
 write_csv(gva_app, 'gva_app.csv')
+```
+
+```{r}
+gva_secs <- gva_secs %>%
+  mutate(Region = str_replace(Region, "EU-28", "EU+UK"))
+
 ```
 
 
@@ -147,6 +214,32 @@ plot_gva +
 ggsave(width = 6, height = 5, filename = "gva_secs.png")
   
 ```
+
+```{r}
+plot_gva2 <- ggplot(data = filter(gva_abs2, Year == 2020, Scenario == "REF", Region != "EU-28"), aes(y = Region, x = Value))
+
+plot_gva2 +
+  geom_bar(stat='identity', position = "fill", aes(fill = Sector), color = "black") +
+  scale_x_continuous(name = "Share of total GVA",
+                     labels = scales::label_percent(accuracy = 1)) +
+  scale_fill_brewer(palette="Set1") +
+  theme_bw()+
+  theme(text         = element_text(size=10, family="Palatino Linotype"),
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom",
+        legend.justification = "left")
+
+ggsave(width = 7, height = 4, filename = "gva_2020.png")
+```
+  
+  
+  
   geom_point(data = filter(gva_secs, Year > 2022 & Region == "EU28"), 
              aes(fill = Region), 
              colour = "blue",

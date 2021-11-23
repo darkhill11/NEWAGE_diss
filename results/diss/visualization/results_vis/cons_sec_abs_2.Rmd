@@ -13,7 +13,7 @@ library(readxl)
 library(extrafont)
 library(showtext)
 
-loadfonts(device = "win")
+loadfonts()
 ```
 
 ```{r}
@@ -97,6 +97,7 @@ share_cons_filter <- share_cons_hh_ser %>%
          Scenario != "ref")
 
 share_cons_filter$Scenario <- gsub("vat","con", share_cons_filter$Scenario)
+share_cons_filter$HH <- gsub("hh","Q", share_cons_filter$HH)
 share_cons_filter$Region <- gsub("DEU","Germany", share_cons_filter$Region)
 share_cons_filter$Region <- gsub("ESP","Spain and \nPortugal", share_cons_filter$Region)
 share_cons_filter$Region <- gsub("POL","Poland", share_cons_filter$Region)
@@ -114,7 +115,11 @@ share_cons_filter$Scenario <- ordered(share_cons_filter$Scenario, levels = c("BA
 ```
 
 ```{r}
+share_cons_app <- share_cons_filter %>%
+  filter(HH %in% c("Q1", "Q3", "Q5")) %>%
+  pivot_wider(names_from = 'Scenario', values_from = 'Value')
 
+write_csv(share_cons_app, 'share_cons_app.csv')
 
 ```
 
@@ -123,13 +128,13 @@ cons_sec <- ggplot(filter(share_cons_filter,
                           #Scenario != "ref",
                           #Sector != "hh_ser", 
                           #Region == "DEU", #| Region == "DEU"#, 
-                          HH %in% c("hh1", "hh3", "hh5")), 
+                          HH %in% c("Q1", "Q3", "Q5")), 
                    aes(x = Value, y=HH))
 
 cons_sec +
   geom_col(aes(fill = HH), color = "black") +
   facet_grid(Region + Sector ~Scenario) +
-  scale_x_continuous(name = "Change of consumption in 2030 compared to REF",
+  scale_x_continuous(name = "Change of expenditure in 2030 compared to REF",
                      labels = scales::label_percent(accuracy = 1)
                      #breaks = seq(0, 0.04,0.005)
                      ) +
