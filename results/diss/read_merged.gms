@@ -4,6 +4,7 @@ $if not set target   $set target "210302/merged_results.gdx"
 * ------ Read results from GDX-files
 
 $onEcho > howToWrite.txt
+$ontext
 par=gdpreal_disag_yr	rng=gdpreal_disag_yr!B2 	cDim=0
 par=pco2_deu_yr 		rng=pco2_deu_yr!B2 			cDim=0
 par=pco2_yr		 		rng=pco2_yr!B2	 			cDim=0
@@ -35,12 +36,17 @@ par=elecontwh2_yr		rng=elecontwh2_yr!B2		cDim=0
 par=energy_cons_sec_yr	rng=energy_cons_sec_yr!b2	cDim=0
 par=im_yr				rng=im_yr!B2				cDim=0
 par=ex_yr				rng=ex_yr!b2				cDim=0		
+$offtext
+par=VC_hh_PA			rng=VC_hh_PA!B2				cDim=0
+par=VC_HH_p_oil_trans	rng=VC_HH_p_oil_trans!B2				cDim=0
+par=VC_HH_p_ele_trans	rng=VC_HH_p_ele_trans!B2				cDim=0
+
 
 $offEcho
 
 
 * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-Execute 'gdxxrw.exe i=%target%  o=report_pivot_merged.xlsx  epsout=0  @howToWrite.txt'
+Execute 'gdxxrw.exe i=%target%  o=report_pivot_merged_v22.xlsx  epsout=0  @howToWrite.txt'
 
 $ontext
 SETS
