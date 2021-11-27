@@ -1,3 +1,4 @@
+
 par=gdpreal_disag_yr	rng=gdpreal_disag_yr!B2 	cDim=0
 par=pco2_deu_yr 		rng=pco2_deu_yr!B2 			cDim=0
 par=pco2_yr		 		rng=pco2_yr!B2	 			cDim=0
@@ -29,4 +30,6 @@ par=elecontwh2_yr		rng=elecontwh2_yr!B2		cDim=0
 par=energy_cons_sec_yr	rng=energy_cons_sec_yr!b2	cDim=0
 par=im_yr				rng=im_yr!B2				cDim=0
 par=ex_yr				rng=ex_yr!b2				cDim=0		
+
+par=VC_hh_PA_yr			rng=VC_hh_PA!B2				cDim=0
 

@@ -1,0 +1,31 @@
+--- Job read_merged.gms Start 11/27/21 18:21:53 34.3.0 rac355f3 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\34\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\read_merged.gms
+    PageSize 0
+    ScrDir C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\225a\
+    SysDir C:\GAMS\34\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: Small MUD-5 User License                       S201102/0001AO-WIN
+          University of Stuttgart, IER                             DC848-S4
+          C:\GAMS\34\gamslice.txt
+GAMS 34.3.0   Copyright (C) 1987-2021 GAMS Development. All rights reserved
+--- Starting compilation
+--- read_merged.gms(94) 2 Mb
+--- Starting execution: elapsed 0:00:00.010
+--- read_merged.gms(49) 3 Mb
+
+GDXXRW           34.3.0 rac355f3 Released Feb 25, 2021 WEI x86 64bit/MS Window
+Input file : C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\210302\merged_results.gdx
+Output file: C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\report_pivot_merged_v22.xlsx
+**** Unknown option = $ontext
+
+Any changes made to the spreadsheet were not saved
+Total time = 1031 Ms
+*** Status: Normal completion
+--- Job read_merged.gms Stop 11/27/21 18:21:54 elapsed 0:00:01.199

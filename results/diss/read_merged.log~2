@@ -1,0 +1,67 @@
+
+--- Job read_merged.gms Start 11/27/21 18:22:13 34.3.0 rac355f3 WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\34\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\read_merged.gms
+    PageSize 0
+    ScrDir C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\225a\
+    SysDir C:\GAMS\34\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: Small MUD-5 User License                       S201102/0001AO-WIN
+          University of Stuttgart, IER                             DC848-S4
+          C:\GAMS\34\gamslice.txt
+GAMS 34.3.0   Copyright (C) 1987-2021 GAMS Development. All rights reserved
+--- Starting compilation
+--- read_merged.gms(94) 2 Mb
+--- Starting execution: elapsed 0:00:00.004
+--- read_merged.gms(49) 3 Mb
+
+GDXXRW           34.3.0 rac355f3 Released Feb 25, 2021 WEI x86 64bit/MS Window
+Input file : C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\210302\merged_results.gdx
+Output file: C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\report_pivot_merged_v22.xlsx
+Adding new sheet: pco2_deu_yr
+Adding new sheet: pco2_yr
+Adding new sheet: pco2_ets_yr
+Adding new sheet: py_yr
+Adding new sheet: gva_yr
+Adding new sheet: gva_real_yr
+Adding new sheet: pco2_netsr_yr
+Adding new sheet: pco2w_yr
+Adding new sheet: prod_accounts
+Adding new sheet: elex_accounts
+Adding new sheet: elen_accounts
+Adding new sheet: armi_accounts
+Adding new sheet: cons_accounts
+Adding new sheet: taxes_region
+Adding new sheet: cons_hh_accounts
+Adding new sheet: hh_income
+Adding new sheet: no_lab_summary
+Adding new sheet: no_vat_summary
+Adding new sheet: share_sector_hh_yr
+Adding new sheet: abs_sector_hh_yr
+Adding new sheet: RA_hh_par_yr
+Adding new sheet: share_income_hh
+Adding new sheet: vc_hh_pc_yr
+Adding new sheet: gini
+Adding new sheet: emplmtno_yr
+Adding new sheet: share_co2_gdp
+Adding new sheet: elecontwh2_yr
+Adding new sheet: energy_cons_sec_yr
+Adding new sheet: im_yr
+Adding new sheet: ex_yr
+Adding new sheet: VC_hh_PA
+Adding new sheet: VC_HH_p_oil_trans
+Adding new sheet: VC_HH_p_ele_trans
+**** Keyword does not match symbol type, Symbol: VC_hh_PA
+**** Keyword does not match symbol type, Symbol: VC_HH_p_oil_trans
+**** Keyword does not match symbol type, Symbol: VC_HH_p_ele_trans
+
+Any changes made to the spreadsheet were not saved
+Total time = 1125 Ms
+*** Status: Normal completion
+--- Job read_merged.gms Stop 11/27/21 18:22:14 elapsed 0:00:01.185
