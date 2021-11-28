@@ -1,5 +1,5 @@
 
---- Job read_merged.gms Start 11/27/21 18:22:35 34.3.0 rac355f3 WEX-WEI x86 64bit/MS Windows
+--- Job read_merged.gms Start 11/27/21 18:26:07 34.3.0 rac355f3 WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\34\gmsprmNT.txt
 --- GAMS Parameters defined
@@ -17,9 +17,9 @@ Licensee: Small MUD-5 User License                       S201102/0001AO-WIN
           C:\GAMS\34\gamslice.txt
 GAMS 34.3.0   Copyright (C) 1987-2021 GAMS Development. All rights reserved
 --- Starting compilation
---- read_merged.gms(94) 2 Mb
+--- read_merged.gms(91) 2 Mb
 --- Starting execution: elapsed 0:00:00.010
---- read_merged.gms(49) 3 Mb
+--- read_merged.gms(46) 3 Mb
 
 GDXXRW           34.3.0 rac355f3 Released Feb 25, 2021 WEI x86 64bit/MS Window
 Input file : C:\Users\rolan\Documents\GitHub\NEWAGE_diss\results\diss\210302\merged_results.gdx
@@ -55,12 +55,6 @@ Adding new sheet: energy_cons_sec_yr
 Adding new sheet: im_yr
 Adding new sheet: ex_yr
 Adding new sheet: VC_hh_PA
-Adding new sheet: VC_HH_p_oil_trans
-Adding new sheet: VC_HH_p_ele_trans
-**** Symbol VC_HH_p_oil_trans_yr not found
-**** Symbol VC_HH_p_ele_trans_yr not found
-
-Any changes made to the spreadsheet were not saved
-Total time = 1047 Ms
+Total time = 25578 Ms
 *** Status: Normal completion
---- Job read_merged.gms Stop 11/27/21 18:22:36 elapsed 0:00:01.118
+--- Job read_merged.gms Stop 11/27/21 18:26:33 elapsed 0:00:25.679

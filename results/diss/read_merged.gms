@@ -38,6 +38,7 @@ par=im_yr				rng=im_yr!B2				cDim=0
 par=ex_yr				rng=ex_yr!b2				cDim=0		
 
 par=VC_hh_PA_yr			rng=VC_hh_PA!B2				cDim=0
+par=PA_yr			rng=PA!B2				cDim=0
 
 $offEcho
 

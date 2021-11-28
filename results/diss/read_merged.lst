@@ -1,4 +1,4 @@
-GAMS 34.3.0  rac355f3 Released Feb 25, 2021 WEX-WEI x86 64bit/MS Windows - 11/27/21 18:26:07 Page 1
+GAMS 34.3.0  rac355f3 Released Feb 25, 2021 WEX-WEI x86 64bit/MS Windows - 11/28/21 15:32:03 Page 1
 merge GDX files
 C o m p i l a t i o n
 
@@ -6,11 +6,11 @@ C o m p i l a t i o n
    2   
    4  * ------ Read results from GDX-files
    5   
-  43   
-  44   
-  45  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
-  46  Execute 'gdxxrw.exe i=210302/merged_results.gdx  o=report_pivot_merged_v22.xlsx  epsout=0  @howToWrite.txt'
-  47   
+  12   
+  13   
+  14  * ------ Create report_pivot_merged.xlsx for NEWAGE-Version WITH bottom-up household energy demand
+  15  Execute 'gdxxrw.exe i=210302/merged_results.gdx  o=report_pivot_merged_v22.xlsx  epsout=0  @howToWrite.txt'
+  16   
       SETS
       	r  /DEU, FRA, ITA, POL, UKI, ESP, BNL, EUN, EUS, USA, OEC, BRZ, RUS, IND, CHI, RSA, OPA, ROW/,
       	hh /hh1, hh2, hh3, hh4, hh5/,
@@ -48,20 +48,20 @@ C o m p i l a t i o n
       gini(sce,"total", "gini", r, yr) = 2 * (0.5 - sum(hh_,gini(sce,"total_area", hh_, r, yr)));
        
       display gini;
-  87  *gini(sce,"net", hh, r, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr(sce,"net_income", r, hh_, yr)) / sum( hh_, RA_hh_par_yr(sce,"net_income", r, hh_, yr));
-  88   
-  89  *Execute_unload   "201201/gini.gdx"
-  90   
-  91  *Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini  rng=gini!B2     cDim=0'
+  56  *gini(sce,"net", hh, r, yr) = sum( hh_$(ord(hh_) <= ord(hh)), RA_hh_par_yr(sce,"net_income", r, hh_, yr)) / sum( hh_, RA_hh_par_yr(sce,"net_income", r, hh_, yr));
+  57   
+  58  *Execute_unload   "201201/gini.gdx"
+  59   
+  60  *Execute 'gdxxrw.exe i=201201/gini.gdx  o=report_pivot_merged.xlsx  epsout=0  par=gini  rng=gini!B2     cDim=0'
 
 
-COMPILATION TIME     =        0.000 SECONDS      2 MB  34.3.0 rac355f3 WEX-WEI
-GAMS 34.3.0  rac355f3 Released Feb 25, 2021 WEX-WEI x86 64bit/MS Windows - 11/27/21 18:26:07 Page 2
+COMPILATION TIME     =        0.015 SECONDS      2 MB  34.3.0 rac355f3 WEX-WEI
+GAMS 34.3.0  rac355f3 Released Feb 25, 2021 WEX-WEI x86 64bit/MS Windows - 11/28/21 15:32:03 Page 2
 merge GDX files
 E x e c u t i o n
 
 
-EXECUTION TIME       =       25.672 SECONDS      3 MB  34.3.0 rac355f3 WEX-WEI
+EXECUTION TIME       =        1.985 SECONDS      3 MB  34.3.0 rac355f3 WEX-WEI
 
 
 USER: Small MUD-5 User License                       S201102/0001AO-WIN
